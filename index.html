@@ -3,34 +3,35 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>YOUGO CARS — שוק הרכבים של ישראל</title>
+<title>YOUGO CARS — שוק הרכבים הדיגיטלי</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;500;600;700;800;900&family=Noto+Kufi+Arabic:wght@400;600;700;900&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;500;700;800;900&family=Noto+Kufi+Arabic:wght@400;700;900&display=swap" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <style>
 :root {
   --red: #c8102e;
-  --red-dark: #9b0d22;
-  --red-glow: rgba(200,16,46,0.18);
+  --red-dark: #a50d25;
+  --red-glow: rgba(200,16,46,0.2);
   --gold: #d4af37;
-  --bg: #05050a;
-  --bg2: #08080f;
-  --bg3: #0d0d18;
-  --card: #0c0c16;
-  --border: rgba(255,255,255,0.065);
-  --border-hover: rgba(255,255,255,0.14);
-  --border-red: rgba(200,16,46,0.3);
-  --text: #f0f0f8;
-  --text2: rgba(240,240,248,0.5);
-  --text3: rgba(240,240,248,0.25);
-  --font: 'Heebo','Noto Kufi Arabic',sans-serif;
-  --r: 16px;
-  --r-lg: 22px;
-  --transition: all 0.22s cubic-bezier(0.4,0,0.2,1);
+  --gold-light: rgba(212,175,55,0.15);
+  --bg: #06060a;
+  --bg2: #0c0c14;
+  --bg3: #11111a;
+  --card: #0f0f18;
+  --card-hover: #14141f;
+  --border: rgba(255,255,255,0.07);
+  --border-red: rgba(200,16,46,0.35);
+  --text: #eeeef5;
+  --text2: rgba(238,238,245,0.5);
+  --text3: rgba(238,238,245,0.28);
+  --radius: 18px;
+  --font: 'Heebo', 'Noto Kufi Arabic', sans-serif;
+  --shadow-red: 0 0 40px rgba(200,16,46,0.12);
+  --shadow-card: 0 8px 32px rgba(0,0,0,0.5);
 }
 
-*, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
-html { scroll-behavior:smooth; font-size:16px; }
+* { margin:0; padding:0; box-sizing:border-box; }
+html { scroll-behavior: smooth; }
 
 body {
   font-family: var(--font);
@@ -38,805 +39,718 @@ body {
   color: var(--text);
   min-height: 100vh;
   overflow-x: hidden;
-  -webkit-font-smoothing: antialiased;
 }
 
-::-webkit-scrollbar { width:4px }
-::-webkit-scrollbar-track { background:var(--bg) }
-::-webkit-scrollbar-thumb { background:var(--red); border-radius:2px }
+/* ── SCROLLBAR ── */
+::-webkit-scrollbar { width: 5px; }
+::-webkit-scrollbar-track { background: var(--bg); }
+::-webkit-scrollbar-thumb { background: var(--red); border-radius: 3px; }
 
-/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+/* ══════════════════════════════════
    NAV
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+══════════════════════════════════ */
 nav {
-  position:fixed; top:0; left:0; right:0; z-index:300;
-  height:62px; padding:0 24px;
-  display:flex; align-items:center; justify-content:space-between; gap:12px;
-  background:rgba(5,5,10,0.85);
-  backdrop-filter:blur(28px) saturate(1.8);
-  border-bottom:1px solid var(--border);
-  transition: var(--transition);
+  position: fixed; top:0; left:0; right:0; z-index: 200;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 28px; height: 66px;
+  background: rgba(6,6,10,0.88);
+  backdrop-filter: blur(24px) saturate(1.5);
+  border-bottom: 1px solid var(--border);
 }
-nav.scrolled { background:rgba(5,5,10,0.97); border-color:rgba(255,255,255,0.09); }
 
-.nav-logo { display:flex; align-items:center; gap:10px; text-decoration:none; }
+.nav-logo {
+  display: flex; align-items: center; gap: 11px;
+  text-decoration: none;
+}
 .nav-logo-icon {
-  width:36px; height:36px; border-radius:11px;
-  background:linear-gradient(135deg,var(--red),#e8223f);
-  display:flex; align-items:center; justify-content:center;
-  font-size:17px; box-shadow:0 4px 18px rgba(200,16,46,0.45); flex-shrink:0;
+  width: 38px; height: 38px; border-radius: 12px;
+  background: linear-gradient(135deg, var(--red), #e8223f);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 19px;
+  box-shadow: 0 4px 16px rgba(200,16,46,0.4);
 }
-.nav-logo-text { font-size:17px; font-weight:900; letter-spacing:-.3px; line-height:1; }
-.nav-logo-text .red { color:var(--red); }
+.nav-logo-text { font-size: 18px; font-weight: 900; letter-spacing: -0.3px; }
+.nav-logo-text span { color: var(--red); }
 
-.nav-center { display:flex; gap:2px; }
+.nav-center { display: flex; gap: 4px; }
 .nav-link {
-  padding:6px 13px; border-radius:9px; font-size:13px; font-weight:700;
-  color:var(--text2); cursor:pointer; background:none; border:none;
-  font-family:var(--font); transition:var(--transition);
+  padding: 6px 14px; border-radius: 10px;
+  font-size: 13px; font-weight: 700; color: var(--text2);
+  cursor: pointer; background: none; border: none;
+  font-family: var(--font); transition: all 0.2s;
 }
-.nav-link:hover { color:white; background:rgba(255,255,255,0.07); }
+.nav-link:hover { color: white; background: rgba(255,255,255,0.06); }
 
-.nav-actions { display:flex; gap:8px; align-items:center; flex-shrink:0; }
+.nav-actions { display: flex; gap: 8px; align-items: center; }
 
 .lang-btn {
-  background:var(--bg3); border:1px solid var(--border);
-  color:var(--text2); padding:7px 12px; border-radius:9px;
-  font-size:12px; cursor:pointer; font-family:var(--font);
-  transition:var(--transition); font-weight:600; white-space:nowrap;
+  background: var(--bg3); border: 1px solid var(--border);
+  color: var(--text2); padding: 7px 13px; border-radius: 10px;
+  font-size: 13px; cursor: pointer; font-family: var(--font);
+  transition: all 0.2s; font-weight: 600;
 }
-.lang-btn:hover { border-color:var(--border-red); color:white; }
+.lang-btn:hover { border-color: var(--border-red); color: white; }
 
 .btn {
-  display:inline-flex; align-items:center; gap:6px;
-  padding:9px 20px; border-radius:11px;
-  font-family:var(--font); font-weight:800; font-size:13px;
-  cursor:pointer; border:none; transition:var(--transition);
-  text-decoration:none; white-space:nowrap;
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 9px 20px; border-radius: 11px;
+  font-family: var(--font); font-weight: 800; font-size: 14px;
+  cursor: pointer; border: none; transition: all 0.2s;
+  text-decoration: none; white-space: nowrap;
 }
 .btn-red {
-  background:linear-gradient(135deg,var(--red),#e0162f);
-  color:white; box-shadow:0 4px 18px rgba(200,16,46,0.38);
+  background: linear-gradient(135deg, var(--red), #e0162f);
+  color: white;
+  box-shadow: 0 4px 20px rgba(200,16,46,0.35);
 }
-.btn-red:hover { transform:translateY(-1px); box-shadow:0 6px 24px rgba(200,16,46,0.5); }
+.btn-red:hover {
+  background: linear-gradient(135deg, #d91130, var(--red));
+  transform: translateY(-1px);
+  box-shadow: 0 6px 24px rgba(200,16,46,0.45);
+}
 .btn-ghost {
-  background:rgba(255,255,255,0.07); border:1px solid var(--border);
-  color:var(--text2);
+  background: rgba(255,255,255,0.06); color: var(--text2);
+  border: 1px solid var(--border);
 }
-.btn-ghost:hover { color:white; background:rgba(255,255,255,0.11); border-color:var(--border-hover); }
-.btn-outline-red {
-  background:rgba(200,16,46,0.1); border:1px solid var(--border-red);
-  color:var(--red);
-}
-.btn-outline-red:hover { background:var(--red); color:white; }
+.btn-ghost:hover { background: rgba(255,255,255,0.1); color: white; }
 
-/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+/* ══════════════════════════════════
    ADMIN BAR
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+══════════════════════════════════ */
 .admin-bar {
-  margin-top:62px;
-  background:rgba(200,16,46,0.08);
-  border-bottom:1px solid var(--border-red);
-  padding:10px 24px;
-  display:flex; align-items:center; gap:12px; flex-wrap:wrap;
+  background: linear-gradient(90deg, rgba(200,16,46,0.08), transparent);
+  border-bottom: 1px solid var(--border-red);
+  padding: 10px 28px; display: flex; gap: 10px;
+  align-items: center; margin-top: 66px;
 }
-.admin-bar-title { font-weight:900; color:var(--red); font-size:13px; }
-.admin-actions { display:flex; gap:8px; margin-right:auto; flex-wrap:wrap; }
+.admin-bar-title { font-weight: 900; color: var(--red); font-size: 14px; }
+.admin-actions { display: flex; gap: 8px; margin-right: auto; }
 
-/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+/* ══════════════════════════════════
    HERO
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+══════════════════════════════════ */
 .hero {
-  position:relative; min-height:100vh;
-  display:flex; align-items:center; justify-content:center;
-  padding:120px 24px 80px;
-  overflow:hidden;
+  padding: 130px 28px 70px;
+  text-align: center;
+  position: relative; overflow: hidden;
+  background: var(--bg);
 }
 
 .hero-bg {
-  position:absolute; inset:0; z-index:0;
+  position: absolute; inset: 0; z-index: 0;
   background:
-    radial-gradient(ellipse 80% 60% at 50% -10%, rgba(200,16,46,0.22) 0%, transparent 60%),
-    radial-gradient(ellipse 60% 40% at 10% 90%, rgba(200,16,46,0.06) 0%, transparent 55%),
-    var(--bg);
+    radial-gradient(ellipse 70% 55% at 50% 0%, rgba(200,16,46,0.16) 0%, transparent 65%),
+    radial-gradient(ellipse 40% 30% at 20% 50%, rgba(200,16,46,0.05) 0%, transparent 60%),
+    radial-gradient(ellipse 40% 30% at 80% 50%, rgba(200,16,46,0.05) 0%, transparent 60%);
 }
 
 .hero-grid {
-  position:absolute; inset:0; z-index:0;
+  position: absolute; inset: 0; z-index: 0;
   background-image:
-    linear-gradient(rgba(255,255,255,0.032) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(255,255,255,0.032) 1px, transparent 1px);
-  background-size:48px 48px;
-  -webkit-mask-image:radial-gradient(ellipse 80% 70% at 50% 35%, black 25%, transparent 75%);
-  mask-image:radial-gradient(ellipse 80% 70% at 50% 35%, black 25%, transparent 75%);
+    linear-gradient(rgba(255,255,255,0.025) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,0.025) 1px, transparent 1px);
+  background-size: 50px 50px;
+  mask-image: radial-gradient(ellipse 85% 75% at 50% 20%, black 30%, transparent 80%);
 }
 
-.hero-content {
-  position:relative; z-index:2; max-width:780px; width:100%; text-align:center;
-}
+.hero-content { position: relative; z-index: 1; }
 
 .hero-badge {
-  display:inline-flex; align-items:center; gap:8px;
-  padding:7px 18px; border-radius:100px; margin-bottom:28px;
-  background:rgba(200,16,46,0.1); border:1px solid rgba(200,16,46,0.28);
-  backdrop-filter:blur(8px);
-  animation:fadeUp 0.6s ease both;
+  display: inline-flex; align-items: center; gap: 8px;
+  padding: 7px 18px; border-radius: 100px;
+  background: rgba(200,16,46,0.1); border: 1px solid var(--border-red);
+  font-size: 11px; font-weight: 800; color: rgba(255,255,255,0.65);
+  margin-bottom: 28px; text-transform: uppercase; letter-spacing: 0.12em;
+  animation: fadeInDown 0.7s ease;
 }
 .hero-badge .dot {
-  width:7px; height:7px; border-radius:50%;
-  background:var(--red); animation:pulse 1.8s ease-in-out infinite;
+  width: 7px; height: 7px; border-radius: 50%;
+  background: var(--red);
+  animation: pulse 2s infinite;
+  box-shadow: 0 0 8px var(--red);
 }
-.hero-badge span { font-size:12px; font-weight:800; color:rgba(255,255,255,0.75); letter-spacing:.06em; }
 
-@keyframes pulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:0.6;transform:scale(0.85)} }
-@keyframes fadeUp { from{opacity:0;transform:translateY(20px)} to{opacity:1;transform:translateY(0)} }
-@keyframes fadeIn { from{opacity:0} to{opacity:1} }
+@keyframes pulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:0.5;transform:scale(0.85)} }
+@keyframes fadeInDown { from { opacity:0; transform:translateY(-16px); } to { opacity:1; transform:translateY(0); } }
+@keyframes fadeInUp { from { opacity:0; transform:translateY(20px); } to { opacity:1; transform:translateY(0); } }
 
 .hero h1 {
-  font-size:clamp(2.6rem,7vw,5.2rem);
-  font-weight:900; line-height:1.06; letter-spacing:-1.5px;
-  margin-bottom:22px;
-  animation:fadeUp 0.6s 0.1s ease both;
+  font-size: clamp(2.4rem, 7vw, 5rem);
+  font-weight: 900; line-height: 1.08;
+  margin-bottom: 18px;
+  letter-spacing: -1px;
+  animation: fadeInUp 0.7s 0.1s ease both;
 }
-.hero h1 .red {
-  color:transparent;
-  background:linear-gradient(135deg,#ff4060,var(--red));
-  -webkit-background-clip:text; background-clip:text;
+.hero h1 .red { color: var(--red); position: relative; }
+.hero h1 .red::after {
+  content: '';
+  position: absolute; bottom: -4px; left: 0; right: 0; height: 3px;
+  background: linear-gradient(90deg, var(--red), transparent);
+  border-radius: 2px;
 }
 
 .hero-sub {
-  font-size:clamp(1rem,2vw,1.15rem); color:var(--text2); line-height:1.7;
-  max-width:520px; margin:0 auto 36px;
-  animation:fadeUp 0.6s 0.2s ease both;
+  font-size: 16px; color: var(--text2); max-width: 480px;
+  margin: 0 auto 38px; line-height: 1.75;
+  animation: fadeInUp 0.7s 0.2s ease both;
 }
 
 .hero-btns {
-  display:flex; gap:12px; justify-content:center; flex-wrap:wrap;
-  margin-bottom:52px;
-  animation:fadeUp 0.6s 0.3s ease both;
+  display: flex; gap: 12px; justify-content: center; flex-wrap: wrap;
+  animation: fadeInUp 0.7s 0.3s ease both;
 }
-.hero-btns .btn { padding:14px 32px; font-size:15px; }
 
 .hero-stats {
-  display:grid; grid-template-columns:repeat(3,1fr);
-  gap:1px; max-width:520px; margin:0 auto;
-  background:var(--border);
-  border-radius:18px; overflow:hidden;
-  border:1px solid var(--border);
-  animation:fadeUp 0.6s 0.4s ease both;
+  display: flex; justify-content: center; gap: 0;
+  margin-top: 52px; flex-wrap: wrap;
+  background: var(--bg2); border: 1px solid var(--border);
+  border-radius: 20px; max-width: 520px; margin-inline: auto;
+  overflow: hidden;
+  animation: fadeInUp 0.7s 0.4s ease both;
 }
 .hero-stat {
-  padding:20px 16px; text-align:center;
-  background:rgba(255,255,255,0.025);
-  transition:var(--transition);
+  flex: 1; padding: 20px 16px; text-align: center;
+  position: relative;
 }
-.hero-stat:hover { background:rgba(255,255,255,0.04); }
-.hero-stat-val { font-size:1.9rem; font-weight:900; color:white; line-height:1.1; }
-.hero-stat-val .accent { color:var(--red); }
-.hero-stat-label { font-size:11px; font-weight:600; color:var(--text3); margin-top:4px; letter-spacing:.04em; }
+.hero-stat:not(:last-child)::after {
+  content: '';
+  position: absolute; right: 0; top: 20%; bottom: 20%;
+  width: 1px; background: var(--border);
+}
+.hero-stat-val { font-size: 26px; font-weight: 900; }
+.hero-stat-val .accent { color: var(--red); }
+.hero-stat-label { font-size: 11px; color: var(--text3); margin-top: 3px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; }
 
-/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-   FEATURES STRIP
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
-.features-strip {
-  display:flex; align-items:center; justify-content:center;
-  flex-wrap:wrap; gap:0;
-  border-top:1px solid var(--border);
-  border-bottom:1px solid var(--border);
-  background:rgba(255,255,255,0.016);
-  padding:0;
-  overflow:hidden;
-}
-.feature-item {
-  display:flex; align-items:center; gap:8px;
-  padding:14px 22px; font-size:13px; font-weight:700; color:var(--text2);
-  border-left:1px solid var(--border);
-  transition:var(--transition); white-space:nowrap;
-}
-.feature-item:first-child { border-left:none; }
-.feature-item .icon { font-size:16px; }
-.feature-item:hover { color:white; background:rgba(255,255,255,0.035); }
-
-/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-   PACKAGES BANNER
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
-.packages-banner {
-  padding:64px 24px;
-  max-width:1200px; margin:0 auto;
-}
-
-.section-eyebrow {
-  display:inline-flex; align-items:center; gap:8px;
-  padding:6px 16px; border-radius:100px; margin-bottom:18px;
-  background:rgba(200,16,46,0.1); border:1px solid rgba(200,16,46,0.25);
-  font-size:11px; font-weight:900; color:var(--red); letter-spacing:.1em; text-transform:uppercase;
-}
-
-.packages-banner h2 {
-  font-size:clamp(1.8rem,4vw,2.8rem); font-weight:900; margin-bottom:10px; letter-spacing:-.5px;
-}
-.packages-banner h2 span { color:var(--red); }
-.packages-banner .sub { color:var(--text2); font-size:15px; margin-bottom:36px; max-width:540px; }
-
-.packages-grid {
-  display:grid;
-  grid-template-columns:repeat(4,1fr);
-  gap:14px; margin-bottom:28px;
-}
-
-.pkg-card {
-  position:relative; border-radius:var(--r-lg); overflow:hidden;
-  padding:24px 20px;
-  background:var(--card);
-  border:1.5px solid var(--border);
-  transition:var(--transition);
-  cursor:pointer;
-  display:flex; flex-direction:column; gap:14px;
-}
-.pkg-card:hover { transform:translateY(-4px); border-color:var(--border-hover); }
-.pkg-card::before {
-  content:''; position:absolute; top:0; left:0; right:0; height:3px;
-}
-.pkg-card.free::before { background:linear-gradient(90deg,transparent,#4ade80,transparent); }
-.pkg-card.basic::before { background:linear-gradient(90deg,transparent,#22c55e,transparent); }
-.pkg-card.pro::before { background:linear-gradient(90deg,transparent,var(--red),transparent); }
-.pkg-card.vip::before { background:linear-gradient(90deg,transparent,var(--gold),transparent); }
-
-.pkg-card.pro { border-color:rgba(200,16,46,0.35); background:linear-gradient(145deg,#130a0d,#0c0c16); }
-.pkg-card.vip { border-color:rgba(212,175,55,0.35); background:linear-gradient(145deg,#13100a,#0c0c16); }
-
-.pkg-badge {
-  position:absolute; top:14px; left:14px;
-  padding:3px 10px; border-radius:100px;
-  font-size:10px; font-weight:900; letter-spacing:.06em;
-}
-.pkg-badge.popular { background:linear-gradient(135deg,var(--red),#e0162f); color:white; }
-.pkg-badge.new-badge { background:rgba(74,222,128,0.15); border:1px solid rgba(74,222,128,0.3); color:#4ade80; }
-.pkg-badge.vip-badge { background:linear-gradient(135deg,var(--gold),#b8860b); color:#000; }
-
-.pkg-icon { font-size:28px; }
-.pkg-name { font-size:18px; font-weight:900; }
-.pkg-name.green { color:#4ade80; }
-.pkg-name.green-mid { color:#22c55e; }
-.pkg-name.red { color:var(--red); }
-.pkg-name.gold { color:var(--gold); }
-.pkg-price { font-size:26px; font-weight:900; line-height:1; }
-.pkg-price.green { color:#4ade80; }
-.pkg-price.green-mid { color:#22c55e; }
-.pkg-price.red { color:var(--red); }
-.pkg-price.gold { color:var(--gold); }
-.pkg-orig { font-size:12px; color:var(--text3); text-decoration:line-through; margin-top:2px; }
-.pkg-desc { font-size:12px; color:var(--text2); line-height:1.6; flex:1; }
-.pkg-features { list-style:none; display:flex; flex-direction:column; gap:7px; }
-.pkg-features li {
-  display:flex; align-items:flex-start; gap:8px; font-size:12px; color:var(--text2); line-height:1.5;
-}
-.pkg-features li::before { content:'✓'; color:var(--red); font-weight:900; flex-shrink:0; margin-top:1px; }
-.pkg-card.free .pkg-features li::before { color:#4ade80; }
-.pkg-card.basic .pkg-features li::before { color:#22c55e; }
-.pkg-card.vip .pkg-features li::before { color:var(--gold); }
-
-.pkg-cta {
-  padding:11px 0; border-radius:11px; font-family:var(--font);
-  font-size:13px; font-weight:900; cursor:pointer; border:none;
-  width:100%; transition:var(--transition);
-  display:flex; align-items:center; justify-content:center; gap:6px;
-}
-.pkg-cta.free-cta { background:rgba(74,222,128,0.12); border:1.5px solid rgba(74,222,128,0.3); color:#4ade80; }
-.pkg-cta.free-cta:hover { background:rgba(74,222,128,0.2); }
-.pkg-cta.basic-cta { background:rgba(34,197,94,0.12); border:1.5px solid rgba(34,197,94,0.3); color:#22c55e; }
-.pkg-cta.basic-cta:hover { background:rgba(34,197,94,0.2); }
-.pkg-cta.pro-cta { background:linear-gradient(135deg,var(--red),#e0162f); color:white; box-shadow:0 4px 18px rgba(200,16,46,0.35); }
-.pkg-cta.pro-cta:hover { transform:translateY(-1px); box-shadow:0 6px 24px rgba(200,16,46,0.5); }
-.pkg-cta.vip-cta { background:linear-gradient(135deg,var(--gold),#b8860b); color:#000; font-weight:900; }
-.pkg-cta.vip-cta:hover { transform:translateY(-1px); }
-
-.packages-yougo-link {
-  display:flex; align-items:center; justify-content:center;
-  padding:18px 28px; border-radius:var(--r-lg);
-  background:linear-gradient(135deg,rgba(200,16,46,0.1),rgba(200,16,46,0.04));
-  border:1px solid rgba(200,16,46,0.22);
-  gap:14px; transition:var(--transition); cursor:pointer;
-  text-decoration:none;
-}
-.packages-yougo-link:hover { border-color:rgba(200,16,46,0.45); background:rgba(200,16,46,0.12); }
-.packages-yougo-link-text { flex:1; }
-.packages-yougo-link-text strong { font-size:14px; font-weight:900; color:white; display:block; margin-bottom:3px; }
-.packages-yougo-link-text span { font-size:12px; color:var(--text2); }
-.packages-yougo-link-arrow { font-size:20px; color:var(--red); }
-
-/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-   SEARCH
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+/* ══════════════════════════════════
+   SEARCH / FILTERS
+══════════════════════════════════ */
 .search-section {
-  padding:0 24px 48px;
-  max-width:1200px; margin:0 auto;
+  padding: 0 28px 52px;
+  background: var(--bg);
+  position: relative; z-index: 10;
 }
 
 .search-box {
-  background:var(--bg2);
-  border:1px solid var(--border);
-  border-radius:var(--r-lg); overflow:hidden;
-  transition:var(--transition);
+  max-width: 960px; margin: 0 auto;
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: 22px; padding: 22px 24px;
+  box-shadow: 0 24px 64px rgba(0,0,0,0.45);
 }
-.search-box:focus-within { border-color:rgba(200,16,46,0.4); box-shadow:0 0 0 4px rgba(200,16,46,0.06); }
 
 .search-row {
-  display:flex; align-items:center; padding:6px 6px 6px 20px; gap:8px;
-  border-bottom:1px solid var(--border);
+  display: flex; gap: 10px; margin-bottom: 14px; flex-wrap: wrap;
 }
+
 .search-input {
-  flex:1; background:none; border:none; outline:none;
-  font-size:15px; font-weight:600; color:white; font-family:var(--font);
-  padding:10px 0;
+  flex: 1; min-width: 220px;
+  background: var(--bg3); border: 1px solid var(--border);
+  color: white; padding: 13px 18px; border-radius: 13px;
+  font-family: var(--font); font-size: 14px;
+  outline: none; transition: all 0.2s;
 }
-.search-input::placeholder { color:var(--text3); }
-.search-btn {
-  padding:11px 24px; border-radius:11px;
-  background:linear-gradient(135deg,var(--red),#e0162f);
-  color:white; border:none; font-family:var(--font);
-  font-size:14px; font-weight:900; cursor:pointer;
-  transition:var(--transition); flex-shrink:0;
+.search-input:focus {
+  border-color: var(--red);
+  box-shadow: 0 0 0 3px rgba(200,16,46,0.1);
 }
-.search-btn:hover { transform:translateY(-1px); }
+.search-input::placeholder { color: var(--text3); }
 
-.filter-row {
-  display:flex; gap:0; overflow-x:auto; padding:0;
-}
+.filter-row { display: flex; gap: 8px; flex-wrap: wrap; }
+
 .filter-select {
-  flex:1; min-width:120px; background:none; border:none; border-left:1px solid var(--border);
-  color:var(--text2); padding:12px 14px;
-  font-size:13px; font-family:var(--font); font-weight:600;
-  outline:none; cursor:pointer; transition:var(--transition);
-  appearance:none; -webkit-appearance:none;
+  background: var(--bg3); border: 1px solid var(--border);
+  color: var(--text2); padding: 10px 14px; border-radius: 11px;
+  font-family: var(--font); font-size: 13px;
+  cursor: pointer; outline: none; flex: 1; min-width: 130px;
+  transition: border-color 0.2s;
 }
-.filter-select:first-child { border-left:none; }
-.filter-select:hover { color:white; background:rgba(255,255,255,0.03); }
-.filter-select option { background:var(--bg3); color:white; }
+.filter-select:focus { border-color: var(--red); }
+option { background: #111; }
 
-/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-   LISTINGS
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+.search-btn {
+  background: linear-gradient(135deg, var(--red), #e0162f);
+  color: white; border: none;
+  padding: 13px 30px; border-radius: 13px; font-weight: 800;
+  font-family: var(--font); font-size: 15px; cursor: pointer;
+  transition: all 0.2s; white-space: nowrap;
+  box-shadow: 0 4px 16px rgba(200,16,46,0.3);
+}
+.search-btn:hover { transform: translateY(-1px); box-shadow: 0 6px 20px rgba(200,16,46,0.4); }
+
+/* ══════════════════════════════════
+   MAIN LAYOUT & SECTION
+══════════════════════════════════ */
 .main-container {
-  max-width:1200px; margin:0 auto;
-  padding:0 24px 80px;
+  max-width: 1240px; margin: 0 auto; padding: 0 28px 100px;
 }
 
-.listings-header {
-  display:flex; align-items:center; justify-content:space-between;
-  flex-wrap:wrap; gap:14px; margin-bottom:20px;
+.section-header {
+  display: flex; align-items: center; justify-content: space-between;
+  margin-bottom: 28px;
 }
-.section-title { font-size:1.5rem; font-weight:900; }
-.section-title span { color:var(--red); }
+
+.section-title { font-size: 23px; font-weight: 900; }
+.section-title .red { color: var(--red); }
+
 .count-badge {
-  padding:5px 14px; border-radius:100px;
-  background:rgba(200,16,46,0.1); border:1px solid rgba(200,16,46,0.2);
-  font-size:12px; font-weight:800; color:var(--red);
+  background: var(--bg2); border: 1px solid var(--border);
+  padding: 6px 16px; border-radius: 100px;
+  font-size: 13px; color: var(--text2); font-weight: 600;
 }
 
 .sort-row {
-  display:flex; gap:6px; flex-wrap:wrap; margin-bottom:24px;
+  display: flex; gap: 8px; margin-bottom: 24px; flex-wrap: wrap;
 }
 .sort-btn {
-  padding:8px 16px; border-radius:10px; border:1px solid var(--border);
-  background:none; color:var(--text2); font-family:var(--font);
-  font-size:12px; font-weight:700; cursor:pointer; transition:var(--transition);
+  padding: 7px 16px; border-radius: 10px; border: 1px solid var(--border);
+  background: var(--bg2); color: var(--text2); font-family: var(--font);
+  font-size: 12px; font-weight: 700; cursor: pointer; transition: all 0.2s;
 }
-.sort-btn:hover { color:white; border-color:var(--border-hover); background:rgba(255,255,255,0.05); }
-.sort-btn.active { background:rgba(200,16,46,0.1); border-color:rgba(200,16,46,0.35); color:var(--red); }
+.sort-btn.active { background: var(--red); border-color: var(--red); color: white; }
+.sort-btn:hover:not(.active) { border-color: var(--border-red); color: white; }
 
-/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-   CAR CARDS GRID
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+/* ══════════════════════════════════
+   CARS GRID
+══════════════════════════════════ */
 .cars-grid {
-  display:grid;
-  grid-template-columns:repeat(auto-fill,minmax(290px,1fr));
-  gap:18px;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(290px, 1fr));
+  gap: 22px;
 }
 
 .car-card {
-  background:var(--card);
-  border:1px solid var(--border);
-  border-radius:var(--r-lg); overflow:hidden;
-  cursor:pointer; transition:var(--transition);
-  position:relative;
-  display:flex; flex-direction:column;
-}
-.car-card:hover {
-  transform:translateY(-4px);
-  border-color:rgba(200,16,46,0.3);
-  box-shadow:0 12px 40px rgba(0,0,0,0.5), 0 0 0 1px rgba(200,16,46,0.12);
+  background: var(--card); border: 1px solid var(--border);
+  border-radius: var(--radius); overflow: hidden;
+  transition: all 0.28s cubic-bezier(0.4,0,0.2,1);
+  cursor: pointer; text-decoration: none; color: inherit;
+  position: relative;
 }
 
-.car-img-wrap {
-  position:relative; aspect-ratio:16/10;
-  background:var(--bg3); overflow:hidden; flex-shrink:0;
+.car-card::before {
+  content: '';
+  position: absolute; inset: 0;
+  background: linear-gradient(135deg, transparent 60%, rgba(200,16,46,0.03) 100%);
+  opacity: 0; transition: opacity 0.3s;
+  pointer-events: none; z-index: 1;
 }
+
+.car-card:hover {
+  border-color: var(--border-red);
+  transform: translateY(-5px);
+  box-shadow: 0 16px 48px rgba(200,16,46,0.12), 0 4px 16px rgba(0,0,0,0.4);
+  background: var(--card-hover);
+}
+.car-card:hover::before { opacity: 1; }
+
+/* Image */
+.car-img-wrap { position: relative; overflow: hidden; }
+
 .car-img {
-  width:100%; height:100%; object-fit:cover;
-  transition:transform 0.4s ease;
+  width: 100%; height: 210px;
+  object-fit: cover; display: block;
+  transition: transform 0.4s ease;
 }
-.car-card:hover .car-img { transform:scale(1.04); }
+.car-card:hover .car-img { transform: scale(1.04); }
 
 .car-img-placeholder {
-  width:100%; height:100%;
-  display:flex; align-items:center; justify-content:center;
-  font-size:52px; opacity:.25;
+  width: 100%; height: 210px;
+  background: linear-gradient(135deg, var(--bg3) 0%, var(--bg2) 100%);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 52px;
 }
 
 .car-badges {
-  position:absolute; top:10px; right:10px;
-  display:flex; flex-direction:column; gap:5px; align-items:flex-end;
+  position: absolute; top: 12px; right: 12px;
+  display: flex; gap: 5px; flex-wrap: wrap; z-index: 2;
 }
+
 .badge {
-  padding:3px 10px; border-radius:100px; font-size:10px; font-weight:900; backdrop-filter:blur(8px);
+  padding: 4px 10px; border-radius: 100px;
+  font-size: 10px; font-weight: 800; backdrop-filter: blur(8px);
 }
-.badge-featured { background:rgba(212,175,55,0.85); color:#000; }
-.badge-sold { background:rgba(239,68,68,0.85); color:white; }
-.badge-new { background:rgba(200,16,46,0.85); color:white; }
-.badge-pending { background:rgba(251,191,36,0.85); color:#000; }
+.badge-new { background: rgba(74,222,128,0.18); color: #4ade80; border: 1px solid rgba(74,222,128,0.35); }
+.badge-featured { background: rgba(212,175,55,0.18); color: var(--gold); border: 1px solid rgba(212,175,55,0.35); }
+.badge-sold { background: rgba(239,68,68,0.18); color: #ef4444; border: 1px solid rgba(239,68,68,0.35); }
 
 .car-img-count {
-  position:absolute; bottom:10px; left:10px;
-  padding:3px 9px; border-radius:100px; font-size:10px; font-weight:800;
-  background:rgba(0,0,0,0.65); color:rgba(255,255,255,0.85);
-  backdrop-filter:blur(6px);
+  position: absolute; bottom: 10px; left: 10px; z-index: 2;
+  background: rgba(0,0,0,0.65); backdrop-filter: blur(8px);
+  padding: 3px 9px; border-radius: 7px;
+  font-size: 11px; color: var(--text2); font-weight: 700;
 }
 
-.status-pending-bar {
-  background:rgba(251,191,36,0.1); border-bottom:1px solid rgba(251,191,36,0.2);
-  color:#eab308; font-size:11px; font-weight:800;
-  padding:6px 14px; text-align:center;
+/* Card body */
+.car-body { padding: 18px; }
+
+.car-title {
+  font-size: 18px; font-weight: 900;
+  margin-bottom: 4px; line-height: 1.25;
+  letter-spacing: -0.2px;
 }
 
-.car-body { padding:16px; display:flex; flex-direction:column; gap:10px; flex:1; }
+.car-sub { font-size: 13px; color: var(--text2); margin-bottom: 14px; }
 
-.car-title { font-size:16px; font-weight:900; line-height:1.3; }
-.car-sub { font-size:12px; color:var(--text2); font-weight:600; }
+.car-price-row { display: flex; align-items: baseline; gap: 6px; margin-bottom: 14px; }
+.car-price { font-size: 24px; font-weight: 900; color: white; }
+.car-price-label { font-size: 12px; color: var(--text3); }
 
-.car-price-row { display:flex; align-items:center; justify-content:space-between; }
-.car-price { font-size:22px; font-weight:900; color:var(--red); letter-spacing:-.5px; }
+.car-specs {
+  display: flex; gap: 7px; flex-wrap: wrap; margin-bottom: 14px;
+}
 
-.car-specs { display:flex; flex-wrap:wrap; gap:5px; }
 .spec-tag {
-  padding:4px 10px; border-radius:8px;
-  background:rgba(255,255,255,0.05); border:1px solid var(--border);
-  font-size:11px; font-weight:700; color:var(--text2);
-  transition:var(--transition);
+  background: var(--bg3); border: 1px solid var(--border);
+  padding: 5px 11px; border-radius: 9px;
+  font-size: 12px; color: var(--text2);
+  display: flex; align-items: center; gap: 4px; font-weight: 600;
 }
-.car-card:hover .spec-tag { border-color:var(--border-hover); }
 
 .car-footer {
-  display:flex; align-items:center; justify-content:space-between;
-  padding-top:10px; border-top:1px solid var(--border); margin-top:auto;
+  display: flex; align-items: center; justify-content: space-between;
+  padding-top: 13px; border-top: 1px solid var(--border);
 }
-.car-city { font-size:12px; color:var(--text3); font-weight:600; }
 
-.car-contact { display:flex; gap:6px; }
+.car-city {
+  font-size: 12px; color: var(--text3);
+  display: flex; align-items: center; gap: 4px; font-weight: 600;
+}
+
+.car-contact { display: flex; gap: 6px; }
+
 .wa-btn, .call-btn {
-  width:34px; height:34px; border-radius:9px;
-  display:flex; align-items:center; justify-content:center;
-  text-decoration:none; font-size:16px; transition:var(--transition);
-  border:1px solid var(--border);
+  width: 34px; height: 34px; border-radius: 10px;
+  display: flex; align-items: center; justify-content: center;
+  text-decoration: none; font-size: 16px; transition: all 0.2s;
 }
-.wa-btn { background:rgba(37,211,102,0.1); }
-.wa-btn:hover { background:rgba(37,211,102,0.22); transform:scale(1.1); }
-.call-btn { background:rgba(59,130,246,0.1); }
-.call-btn:hover { background:rgba(59,130,246,0.22); transform:scale(1.1); }
+.wa-btn { background: rgba(37,211,102,0.1); border: 1px solid rgba(37,211,102,0.2); }
+.wa-btn:hover { background: rgba(37,211,102,0.22); transform: scale(1.08); }
+.call-btn { background: rgba(96,165,250,0.1); border: 1px solid rgba(96,165,250,0.2); }
+.call-btn:hover { background: rgba(96,165,250,0.22); transform: scale(1.08); }
 
-/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-   LOADING / EMPTY
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
-.loading {
-  grid-column:1/-1; display:flex; flex-direction:column;
-  align-items:center; justify-content:center; gap:16px; padding:80px;
+/* Pending bar */
+.status-pending-bar {
+  background: rgba(234,179,8,0.08);
+  border-bottom: 1px solid rgba(234,179,8,0.2);
+  padding: 7px 14px; font-size: 11px; color: #eab308; font-weight: 800;
+  display: flex; align-items: center; gap: 6px;
 }
-.spinner {
-  width:40px; height:40px; border-radius:50%;
-  border:3px solid rgba(255,255,255,0.08);
-  border-top-color:var(--red); animation:spin 0.8s linear infinite;
-}
-@keyframes spin { to { transform:rotate(360deg) } }
 
+/* ══════════════════════════════════
+   EMPTY / LOADING
+══════════════════════════════════ */
 .empty-state {
-  grid-column:1/-1; text-align:center; padding:80px 24px;
+  text-align: center; padding: 90px 24px; color: var(--text2);
+  grid-column: 1 / -1;
 }
-.empty-icon { font-size:56px; margin-bottom:16px; opacity:.4; }
-.empty-state h3 { font-size:1.4rem; font-weight:900; margin-bottom:8px; }
-.empty-state p { color:var(--text2); }
+.empty-icon { font-size: 70px; margin-bottom: 20px; }
+.empty-state h3 { font-size: 22px; font-weight: 800; color: white; margin-bottom: 10px; }
 
-/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-   DETAIL MODAL
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+.loading { text-align: center; padding: 80px; grid-column: 1 / -1; }
+.spinner {
+  width: 44px; height: 44px; border-radius: 50%;
+  border: 3px solid var(--border);
+  border-top-color: var(--red);
+  animation: spin 0.8s linear infinite;
+  margin: 0 auto 18px;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* ══════════════════════════════════
+   MODAL BASE
+══════════════════════════════════ */
 .modal-overlay {
-  position:fixed; inset:0; z-index:500;
-  background:rgba(0,0,0,0); backdrop-filter:blur(0px);
-  display:flex; align-items:flex-end; justify-content:center;
-  pointer-events:none; transition:all 0.32s cubic-bezier(0.4,0,0.2,1);
+  position: fixed; inset: 0; z-index: 1000;
+  background: rgba(0,0,0,0.88); backdrop-filter: blur(16px);
+  display: flex; align-items: center; justify-content: center;
+  padding: 16px; opacity: 0; pointer-events: none;
+  transition: opacity 0.25s;
 }
-.modal-overlay.open {
-  background:rgba(0,0,0,0.82); backdrop-filter:blur(16px);
-  pointer-events:all; align-items:center;
-}
+.modal-overlay.open { opacity: 1; pointer-events: all; }
 
 .modal {
-  background:var(--bg2); border:1px solid var(--border);
-  border-radius:var(--r-lg); width:100%; max-width:680px;
-  max-height:90vh; overflow-y:auto;
-  transform:translateY(40px) scale(0.97); opacity:0;
-  transition:all 0.32s cubic-bezier(0.4,0,0.2,1);
-  position:relative; overflow:hidden;
+  background: var(--bg2); border: 1px solid var(--border);
+  border-radius: 24px; width: 100%; max-width: 660px;
+  max-height: 92vh; overflow-y: auto;
+  transform: scale(0.96) translateY(18px);
+  transition: transform 0.28s cubic-bezier(0.4,0,0.2,1);
 }
-.modal-overlay.open .modal { transform:translateY(0) scale(1); opacity:1; }
-.modal::-webkit-scrollbar { display:none }
+.modal-overlay.open .modal { transform: scale(1) translateY(0); }
 
 .modal-header {
-  position:sticky; top:0; z-index:10;
-  display:flex; align-items:center; justify-content:space-between;
-  padding:18px 22px;
-  background:rgba(8,8,15,0.92); backdrop-filter:blur(12px);
-  border-bottom:1px solid var(--border);
+  padding: 22px 24px 18px;
+  border-bottom: 1px solid var(--border);
+  display: flex; align-items: center; justify-content: space-between;
+  position: sticky; top: 0; background: var(--bg2); z-index: 1;
 }
-.modal-title { font-size:16px; font-weight:900; }
+.modal-title { font-size: 19px; font-weight: 900; }
 .modal-close {
-  width:32px; height:32px; border-radius:9px;
-  background:rgba(255,255,255,0.07); border:1px solid var(--border);
-  color:var(--text2); cursor:pointer; font-size:18px; line-height:1;
-  display:flex; align-items:center; justify-content:center;
-  transition:var(--transition);
+  width: 36px; height: 36px; border-radius: 10px;
+  background: var(--bg3); border: 1px solid var(--border);
+  color: var(--text2); font-size: 18px; cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  transition: all 0.2s;
 }
-.modal-close:hover { background:rgba(239,68,68,0.12); color:#ef4444; border-color:rgba(239,68,68,0.3); }
-.modal-body { padding:22px; overflow-y:auto; max-height:calc(90vh - 65px); }
-.modal-body::-webkit-scrollbar { width:3px }
-.modal-body::-webkit-scrollbar-thumb { background:var(--red); }
+.modal-close:hover { color: white; border-color: rgba(255,255,255,0.2); }
+.modal-body { padding: 24px; }
 
-/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-   DETAIL CONTENT
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
-.detail-gallery { margin-bottom:20px; border-radius:var(--r); overflow:hidden; }
-.detail-img-main {
-  width:100%; aspect-ratio:16/9; object-fit:cover; display:block;
-  border-radius:var(--r); cursor:zoom-in;
-}
-.detail-thumbs {
-  display:flex; gap:8px; padding:10px 0;
-  overflow-x:auto; scroll-snap-type:x mandatory;
-}
-.detail-thumbs::-webkit-scrollbar { height:3px }
-.detail-thumbs::-webkit-scrollbar-thumb { background:var(--red); border-radius:2px; }
-.detail-thumb {
-  width:72px; height:52px; object-fit:cover; border-radius:9px;
-  cursor:pointer; border:2px solid transparent; transition:var(--transition);
-  flex-shrink:0; scroll-snap-align:start; opacity:.65;
-}
-.detail-thumb.active, .detail-thumb:hover { border-color:var(--red); opacity:1; }
+/* ══════════════════════════════════
+   FORM
+══════════════════════════════════ */
+.form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+.form-group { display: flex; flex-direction: column; gap: 6px; }
+.form-group.full { grid-column: 1 / -1; }
+.form-label { font-size: 12px; font-weight: 800; color: var(--text2); text-transform: uppercase; letter-spacing: 0.06em; }
 
-.detail-header-row {
-  display:flex; align-items:flex-start; justify-content:space-between;
-  gap:12px; margin-bottom:20px; flex-wrap:wrap;
-}
-.detail-car-name { font-size:1.5rem; font-weight:900; margin-bottom:5px; }
-.detail-car-sub { font-size:13px; color:var(--text2); font-weight:600; }
-.detail-price { font-size:1.8rem; font-weight:900; color:var(--red); text-align:left; }
-.detail-price-label { font-size:11px; color:var(--text3); font-weight:700; text-align:left; }
-
-.detail-specs {
-  display:grid; grid-template-columns:repeat(3,1fr); gap:10px; margin-bottom:20px;
-}
-.detail-spec {
-  background:rgba(255,255,255,0.03); border:1px solid var(--border);
-  border-radius:12px; padding:14px 12px; text-align:center;
-  transition:var(--transition);
-}
-.detail-spec:hover { border-color:var(--border-hover); }
-.detail-spec-val { font-size:14px; font-weight:800; color:white; margin-bottom:4px; }
-.detail-spec-key { font-size:10px; color:var(--text3); font-weight:700; letter-spacing:.06em; text-transform:uppercase; }
-
-.detail-desc {
-  background:rgba(255,255,255,0.03); border:1px solid var(--border);
-  border-radius:12px; padding:16px; font-size:14px; color:var(--text2);
-  line-height:1.7; margin-bottom:18px;
-}
-
-.seller-card {
-  display:flex; align-items:center; gap:14px;
-  background:rgba(255,255,255,0.03); border:1px solid var(--border);
-  border-radius:12px; padding:16px; margin-bottom:14px;
-}
-.seller-avatar {
-  width:46px; height:46px; border-radius:50%;
-  background:rgba(200,16,46,0.12); border:1px solid rgba(200,16,46,0.25);
-  display:flex; align-items:center; justify-content:center; font-size:20px; flex-shrink:0;
-}
-.seller-name { font-weight:800; font-size:15px; margin-bottom:3px; }
-.seller-city { font-size:12px; color:var(--text2); }
-
-.contact-bar { display:flex; gap:10px; }
-.contact-wa, .contact-call {
-  flex:1; padding:14px 18px; border-radius:13px;
-  display:flex; align-items:center; justify-content:center; gap:8px;
-  font-size:14px; font-weight:900; text-decoration:none; font-family:var(--font);
-  transition:var(--transition);
-}
-.contact-wa { background:rgba(37,211,102,0.12); border:1px solid rgba(37,211,102,0.3); color:#4ade80; }
-.contact-wa:hover { background:rgba(37,211,102,0.22); transform:translateY(-2px); }
-.contact-call { background:rgba(59,130,246,0.12); border:1px solid rgba(59,130,246,0.3); color:#60a5fa; }
-.contact-call:hover { background:rgba(59,130,246,0.22); transform:translateY(-2px); }
-
-/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-   ADD CAR MODAL
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
-.form-grid { display:grid; grid-template-columns:1fr 1fr; gap:12px; }
-.form-group { display:flex; flex-direction:column; gap:6px; }
-.form-group.span2 { grid-column:1/-1; }
-.form-label { font-size:11px; font-weight:800; color:var(--text2); text-transform:uppercase; letter-spacing:.08em; }
 .form-input, .form-select, .form-textarea {
-  background:var(--bg3); border:1px solid var(--border);
-  color:white; padding:11px 14px; border-radius:11px;
-  font-family:var(--font); font-size:14px; outline:none; transition:var(--transition);
-  width:100%;
+  background: var(--bg3); border: 1px solid var(--border);
+  color: white; padding: 12px 15px; border-radius: 11px;
+  font-family: var(--font); font-size: 14px; outline: none;
+  transition: all 0.2s; width: 100%;
 }
 .form-input:focus, .form-select:focus, .form-textarea:focus {
-  border-color:rgba(200,16,46,0.5); box-shadow:0 0 0 3px rgba(200,16,46,0.08);
+  border-color: var(--red);
+  box-shadow: 0 0 0 3px rgba(200,16,46,0.1);
 }
-.form-input::placeholder { color:var(--text3); }
-.form-select option { background:var(--bg3); }
-.form-textarea { resize:vertical; min-height:90px; }
+.form-textarea { resize: vertical; min-height: 85px; }
 
-.img-upload-area {
-  border:2px dashed var(--border); border-radius:var(--r);
-  padding:28px 20px; text-align:center; cursor:pointer;
-  transition:var(--transition); position:relative;
+.section-divider {
+  font-size: 11px; font-weight: 900; color: var(--red);
+  text-transform: uppercase; letter-spacing: 0.18em;
+  margin: 22px 0 16px; padding-bottom: 9px;
+  border-bottom: 1px solid var(--border-red);
+  display: flex; align-items: center; gap: 8px;
 }
-.img-upload-area:hover { border-color:var(--border-red); background:rgba(200,16,46,0.04); }
-.img-upload-area input { position:absolute; inset:0; opacity:0; cursor:pointer; }
-.upload-icon { font-size:32px; margin-bottom:8px; opacity:.5; }
-.upload-text { font-size:13px; color:var(--text2); font-weight:600; }
 
-.preview-grid {
-  display:flex; flex-wrap:wrap; gap:8px; margin-top:10px;
+/* Upload area */
+.upload-area {
+  border: 2px dashed rgba(255,255,255,0.1); border-radius: 14px;
+  padding: 30px; text-align: center; cursor: pointer;
+  transition: all 0.2s; background: rgba(255,255,255,0.02);
 }
-.preview-wrap {
-  position:relative; width:72px; height:52px;
-  border-radius:9px; overflow:hidden;
+.upload-area:hover {
+  border-color: var(--red);
+  background: rgba(200,16,46,0.04);
 }
-.preview-img { width:100%; height:100%; object-fit:cover; }
+.upload-icon { font-size: 38px; margin-bottom: 10px; }
+.upload-text { font-size: 14px; color: var(--text2); }
+.upload-text strong { color: var(--red); }
+
+.preview-grid { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 14px; }
+.preview-wrap { position: relative; }
+.preview-img { width: 82px; height: 82px; border-radius: 12px; object-fit: cover; }
 .preview-remove {
-  position:absolute; top:2px; right:2px; width:18px; height:18px;
-  border-radius:50%; background:rgba(239,68,68,0.85); color:white;
-  border:none; cursor:pointer; font-size:11px; line-height:1;
-  display:flex; align-items:center; justify-content:center; font-weight:900;
-}
-
-.progress-wrap {
-  margin:8px 0; display:none;
-  background:var(--bg3); border-radius:100px; height:5px; overflow:hidden;
-}
-.progress-bar {
-  height:100%; background:linear-gradient(90deg,var(--red),#e0162f);
-  border-radius:100px; width:0%; transition:width 0.3s ease;
+  position: absolute; top: -5px; right: -5px;
+  width: 20px; height: 20px; border-radius: 50%;
+  background: var(--red); color: white; border: none;
+  font-size: 12px; cursor: pointer; display: flex;
+  align-items: center; justify-content: center; font-weight: 900;
 }
 
 .submit-btn {
-  width:100%; padding:15px 0; border-radius:13px;
-  background:linear-gradient(135deg,var(--red),#e0162f);
-  color:white; border:none; font-family:var(--font);
-  font-size:16px; font-weight:900; cursor:pointer; transition:var(--transition);
-  box-shadow:0 6px 24px rgba(200,16,46,0.35); margin-top:8px;
+  width: 100%; padding: 16px; border-radius: 14px;
+  background: linear-gradient(135deg, var(--red), #e0162f);
+  color: white; border: none;
+  font-family: var(--font); font-size: 16px; font-weight: 900;
+  cursor: pointer; margin-top: 22px; transition: all 0.2s;
+  box-shadow: 0 6px 24px rgba(200,16,46,0.35);
+  letter-spacing: 0.02em;
 }
-.submit-btn:hover:not(:disabled) { transform:translateY(-1px); box-shadow:0 8px 28px rgba(200,16,46,0.45); }
-.submit-btn:disabled { opacity:.6; cursor:not-allowed; transform:none; }
+.submit-btn:hover:not(:disabled) { transform: translateY(-1px); box-shadow: 0 8px 28px rgba(200,16,46,0.45); }
+.submit-btn:disabled { opacity: 0.45; cursor: not-allowed; transform: none; }
 
-.success-msg { text-align:center; padding:40px 24px; }
-.success-icon { font-size:56px; margin-bottom:16px; }
-.success-msg h3 { font-size:1.5rem; font-weight:900; margin-bottom:8px; }
-.success-msg p { color:var(--text2); font-size:14px; }
+.upload-progress {
+  margin-top: 12px; height: 4px; background: var(--bg3);
+  border-radius: 2px; overflow: hidden; display: none;
+}
+.upload-progress-bar {
+  height: 100%; background: linear-gradient(90deg, var(--red), #ff4060);
+  border-radius: 2px; transition: width 0.3s;
+}
 
-.section-divider { border:none; border-top:1px solid var(--border); margin:8px 0; }
+.success-msg { text-align: center; padding: 44px 24px; }
+.success-icon { font-size: 72px; margin-bottom: 18px; }
+.success-msg h3 { font-size: 24px; font-weight: 900; margin-bottom: 10px; }
+.success-msg p { color: var(--text2); font-size: 15px; line-height: 1.65; }
 
-/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-   FOOTER
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
-footer {
-  border-top:1px solid var(--border);
-  padding:40px 24px 32px;
+/* ══════════════════════════════════
+   CAR DETAIL MODAL
+══════════════════════════════════ */
+.detail-gallery { position: relative; margin-bottom: 20px; }
+.detail-img-main {
+  width: 100%; height: 300px; object-fit: cover;
+  border-radius: 16px; display: block;
 }
-.footer-inner {
-  max-width:1200px; margin:0 auto;
-  display:flex; align-items:center; justify-content:space-between;
-  flex-wrap:wrap; gap:20px;
+.detail-thumbs {
+  display: flex; gap: 8px; overflow-x: auto;
+  padding: 10px 0 4px; scrollbar-width: none;
 }
-.footer-brand { display:flex; align-items:center; gap:10px; }
-.footer-brand-icon {
-  width:34px; height:34px; border-radius:10px;
-  background:linear-gradient(135deg,var(--red),#e0162f);
-  display:flex; align-items:center; justify-content:center; font-size:16px;
+.detail-thumbs::-webkit-scrollbar { display: none; }
+.detail-thumb {
+  width: 76px; height: 56px; object-fit: cover;
+  border-radius: 10px; cursor: pointer; flex-shrink: 0;
+  border: 2px solid transparent; transition: all 0.2s;
 }
-.footer-brand-text { font-size:15px; font-weight:900; }
-.footer-brand-text .red { color:var(--red); }
-.footer-copy { font-size:12px; color:var(--text3); font-weight:600; }
-.footer-links { display:flex; gap:8px; align-items:center; flex-wrap:wrap; }
-.footer-link {
-  padding:6px 12px; border-radius:8px; font-size:12px; font-weight:700;
-  color:var(--text3); cursor:pointer; text-decoration:none;
-  background:rgba(255,255,255,0.04); border:1px solid var(--border);
-  transition:var(--transition);
-}
-.footer-link:hover { color:white; border-color:var(--border-hover); }
-.footer-admin-dot {
-  cursor:pointer; opacity:.15; transition:opacity 0.2s; font-size:18px; color:var(--red);
-  user-select:none; padding:4px;
-}
-.footer-admin-dot:hover { opacity:.45; }
+.detail-thumb.active { border-color: var(--red); }
+.detail-thumb:hover { border-color: var(--border-red); }
 
-/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+.detail-header-row {
+  display: flex; align-items: flex-start;
+  justify-content: space-between; margin-bottom: 16px;
+}
+.detail-title-group {}
+.detail-car-name { font-size: 26px; font-weight: 900; line-height: 1.2; }
+.detail-car-sub { font-size: 14px; color: var(--text2); margin-top: 4px; }
+
+.detail-price { font-size: 30px; font-weight: 900; color: white; text-align: left; }
+.detail-price-label { font-size: 11px; color: var(--text3); text-align: left; font-weight: 600; }
+
+.detail-specs {
+  display: grid; grid-template-columns: repeat(3, 1fr);
+  gap: 10px; margin: 18px 0;
+}
+.detail-spec {
+  background: var(--bg3); border: 1px solid var(--border);
+  padding: 13px 12px; border-radius: 13px; text-align: center;
+}
+.detail-spec-val { font-size: 15px; font-weight: 800; }
+.detail-spec-key { font-size: 11px; color: var(--text3); margin-top: 3px; font-weight: 600; }
+
+.detail-desc {
+  background: var(--bg3); border: 1px solid var(--border);
+  border-radius: 13px; padding: 16px; margin: 16px 0;
+  font-size: 14px; color: var(--text2); line-height: 1.7;
+}
+
+.seller-card {
+  background: var(--bg3); border: 1px solid var(--border);
+  border-radius: 13px; padding: 16px; margin: 16px 0;
+  display: flex; align-items: center; gap: 14px;
+}
+.seller-avatar {
+  width: 48px; height: 48px; border-radius: 14px;
+  background: linear-gradient(135deg, var(--red), #e0162f);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 22px; flex-shrink: 0;
+}
+.seller-name { font-weight: 800; font-size: 15px; }
+.seller-city { font-size: 12px; color: var(--text2); margin-top: 2px; }
+
+.contact-bar {
+  display: flex; gap: 10px; margin-top: 20px;
+}
+.contact-bar a {
+  flex: 1; display: flex; align-items: center; justify-content: center;
+  gap: 8px; padding: 15px; border-radius: 14px;
+  font-family: var(--font); font-weight: 800; font-size: 15px;
+  text-decoration: none; transition: all 0.2s;
+}
+.contact-wa {
+  background: rgba(37,211,102,0.1); color: #25d366;
+  border: 1px solid rgba(37,211,102,0.25);
+}
+.contact-wa:hover { background: rgba(37,211,102,0.18); transform: translateY(-1px); }
+.contact-call {
+  background: rgba(96,165,250,0.1); color: #60a5fa;
+  border: 1px solid rgba(96,165,250,0.25);
+}
+.contact-call:hover { background: rgba(96,165,250,0.18); transform: translateY(-1px); }
+
+/* ══════════════════════════════════
    TOAST
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+══════════════════════════════════ */
 .toast {
-  position:fixed; bottom:28px; left:50%; transform:translateX(-50%) translateY(80px);
-  padding:13px 24px; border-radius:13px; font-size:14px; font-weight:800;
-  z-index:9999; pointer-events:none; transition:all 0.3s cubic-bezier(0.4,0,0.2,1);
-  backdrop-filter:blur(12px); white-space:nowrap;
-  background:rgba(20,20,30,0.95); border:1px solid var(--border);
-  box-shadow:0 8px 32px rgba(0,0,0,0.5);
+  position: fixed; bottom: 26px; left: 50%;
+  transform: translateX(-50%) translateY(100px);
+  background: var(--bg2); border: 1px solid var(--border);
+  padding: 13px 26px; border-radius: 100px;
+  font-size: 14px; font-weight: 700;
+  z-index: 9999; transition: transform 0.35s cubic-bezier(0.4,0,0.2,1);
+  white-space: nowrap; pointer-events: none;
+  backdrop-filter: blur(12px);
 }
-.toast.show { transform:translateX(-50%) translateY(0); }
-.toast.success { border-color:rgba(74,222,128,0.4); color:#4ade80; }
-.toast.error { border-color:rgba(239,68,68,0.4); color:#ef4444; }
+.toast.show { transform: translateX(-50%) translateY(0); }
+.toast.success { border-color: rgba(74,222,128,0.4); color: #4ade80; }
+.toast.error { border-color: rgba(239,68,68,0.4); color: #ef4444; }
+.toast.info { border-color: rgba(96,165,250,0.4); color: #60a5fa; }
 
-/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-   RESPONSIVE
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
-@media (max-width:900px) {
-  .packages-grid { grid-template-columns:repeat(2,1fr); }
+/* ══════════════════════════════════
+   FEATURES STRIP
+══════════════════════════════════ */
+.features-strip {
+  padding: 22px 28px;
+  display: flex; justify-content: center; gap: 0;
+  background: var(--bg2); border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+  overflow-x: auto;
 }
-@media (max-width:640px) {
-  nav { padding:0 14px; }
-  .nav-center { display:none; }
-  .hero { padding:100px 16px 60px; }
-  .hero h1 { font-size:2.3rem; }
-  .hero-stats { grid-template-columns:repeat(3,1fr); }
-  .hero-stat-val { font-size:1.5rem; }
-  .search-section, .main-container, .packages-banner { padding-left:14px; padding-right:14px; }
-  .features-strip { display:none; }
-  .packages-grid { grid-template-columns:1fr; }
-  .form-grid { grid-template-columns:1fr; }
-  .detail-specs { grid-template-columns:repeat(2,1fr); }
-  .filter-select { min-width:100px; padding:10px 10px; font-size:12px; }
-  .footer-inner { flex-direction:column; gap:14px; text-align:center; }
+.feature-item {
+  display: flex; align-items: center; gap: 8px;
+  padding: 0 28px; font-size: 13px; font-weight: 700; color: var(--text2);
+  white-space: nowrap;
+}
+.feature-item:not(:last-child) { border-left: 1px solid var(--border); }
+.feature-item span.icon { font-size: 18px; }
+
+/* ══════════════════════════════════
+   FOOTER
+══════════════════════════════════ */
+footer {
+  text-align: center; padding: 36px 24px;
+  border-top: 1px solid var(--border);
+  color: var(--text3); font-size: 13px;
+}
+footer strong { color: var(--red); }
+footer .footer-admin {
+  cursor: pointer; opacity: 0.2; transition: opacity 0.2s;
+  user-select: none;
+}
+footer .footer-admin:hover { opacity: 0.5; }
+
+/* ══════════════════════════════════
+   RESPONSIVE
+══════════════════════════════════ */
+@media (max-width: 640px) {
+  nav { padding: 0 16px; }
+  .nav-center { display: none; }
+  .hero { padding: 100px 16px 56px; }
+  .hero h1 { font-size: 2.1rem; }
+  .search-section { padding: 0 16px 40px; }
+  .main-container { padding: 0 16px 80px; }
+  .cars-grid { grid-template-columns: 1fr; }
+  .form-grid { grid-template-columns: 1fr; }
+  .detail-specs { grid-template-columns: repeat(2,1fr); }
+  .features-strip { justify-content: flex-start; }
+  .hero-stats { flex-direction: row; }
+  .contact-bar { flex-direction: column; }
 }
 </style>
 </head>
 <body>
 
-<!-- ══════════ NAV ══════════ -->
-<nav id="mainNav">
-  <a class="nav-logo" href="#">
+<!-- ── NAV ── -->
+<nav>
+  <a href="#" class="nav-logo" onclick="showHome()">
     <div class="nav-logo-icon">🚗</div>
-    <div class="nav-logo-text"><span class="red">YOUGO</span> CARS</div>
+    <span class="nav-logo-text"><span>YOUGO</span> CARS</span>
   </a>
-
   <div class="nav-center">
-    <button class="nav-link" onclick="scrollToSection('packagesSection')">⭐ חבילות</button>
-    <button class="nav-link" onclick="scrollToSection('listingsSection')">🚗 מודעות</button>
-    <button class="nav-link" onclick="window.open('https://yougo-roan.vercel.app','_blank')">🌐 YOUGO ISRAEL</button>
+    <button class="nav-link" onclick="scrollToListings()">מודעות</button>
+    <button class="nav-link" onclick="openAddModal()">פרסם רכב</button>
   </div>
-
   <div class="nav-actions">
     <button class="lang-btn" onclick="cycleLang()" id="langBtn">🇦🇪 عربي</button>
-    <a class="btn btn-ghost" href="https://yougo-roan.vercel.app" target="_blank" style="font-size:12px;padding:8px 14px;">💼 חבילות פרסום</a>
-    <button class="btn btn-red" onclick="openAddModal()">+ <span id="navAddBtn">פרסם רכב</span></button>
+    <button class="btn btn-red" onclick="openAddModal()">+ <span>פרסם רכב</span></button>
   </div>
 </nav>
 
-<!-- ══════════ ADMIN BAR ══════════ -->
-<div id="adminBar" style="display:none" class="admin-bar">
+<!-- ── ADMIN BAR (hidden) ── -->
+<div id="adminBar" style="display:none;margin-top:66px" class="admin-bar">
   <span class="admin-bar-title">🔑 Admin Mode</span>
   <div class="admin-actions" id="adminActions"></div>
 </div>
 
-<!-- ══════════ HERO ══════════ -->
-<div class="hero" id="heroSection" style="margin-top:62px">
+<!-- ── HERO ── -->
+<div class="hero" id="heroSection" style="margin-top:66px">
   <div class="hero-bg"></div>
   <div class="hero-grid"></div>
   <div class="hero-content">
@@ -847,9 +761,8 @@ footer {
     <h1 id="heroTitle">שוק הרכבים <span class="red">הדיגיטלי</span><br>של ישראל</h1>
     <p class="hero-sub" id="heroSub">קנה ומכור רכב בקלות ובמהירות. מודעות מאומתות עם אפשרות יצירת קשר מיידית.</p>
     <div class="hero-btns">
-      <button class="btn btn-red" style="padding:14px 32px;font-size:15px" onclick="openAddModal()" id="heroAddBtn">🚗 פרסם רכב בחינם</button>
-      <button class="btn btn-ghost" style="padding:14px 32px;font-size:15px" onclick="scrollToSection('listingsSection')" id="heroBrowseBtn">🔍 חפש רכב</button>
-      <a class="btn btn-outline-red" style="padding:14px 32px;font-size:15px" href="https://yougo-roan.vercel.app" target="_blank" id="heroPackagesBtn">💼 חבילות פרסום</a>
+      <button class="btn btn-red" style="padding:15px 34px;font-size:16px" onclick="openAddModal()" id="heroAddBtn">🚗 פרסם רכב בחינם</button>
+      <button class="btn btn-ghost" style="padding:15px 34px;font-size:16px" onclick="scrollToListings()" id="heroBrowseBtn">🔍 חפש רכב</button>
     </div>
     <div class="hero-stats">
       <div class="hero-stat">
@@ -868,111 +781,17 @@ footer {
   </div>
 </div>
 
-<!-- ══════════ FEATURES STRIP ══════════ -->
+<!-- ── FEATURES STRIP ── -->
 <div class="features-strip">
-  <div class="feature-item"><span class="icon">✅</span> פרסום חינמי מיידי</div>
-  <div class="feature-item"><span class="icon">⚡</span> פרסום ב-60 שניות</div>
-  <div class="feature-item"><span class="icon">📱</span> פנייה ישירה ב-WhatsApp</div>
+  <div class="feature-item"><span class="icon">✅</span> פרסום חינמי</div>
+  <div class="feature-item"><span class="icon">⚡</span> פרסום מיידי</div>
+  <div class="feature-item"><span class="icon">📱</span> פנייה ב-WhatsApp</div>
   <div class="feature-item"><span class="icon">🔒</span> מאובטח ובטוח</div>
   <div class="feature-item"><span class="icon">🌐</span> עברית | عربية | English</div>
-  <div class="feature-item"><span class="icon">🚀</span> פרסום מקצועי עם YOUGO ISRAEL</div>
 </div>
 
-<!-- ══════════ PACKAGES BANNER ══════════ -->
-<div class="packages-banner" id="packagesSection">
-  <div class="section-eyebrow">⭐ חבילות פרסום</div>
-  <h2>פרסם ב<span>YOUGO CARS</span> — ישירות!</h2>
-  <p class="sub">בחר את החבילה המתאימה לרכב שלך ותגיע לאלפי קונים. מחינם ועד VIP.</p>
-
-  <div class="packages-grid">
-    <!-- FREE -->
-    <div class="pkg-card free">
-      <div class="pkg-badge new-badge">⚡ חינם</div>
-      <div class="pkg-icon">🟢</div>
-      <div>
-        <div class="pkg-name green">חינמי</div>
-        <div class="pkg-price green">חינם</div>
-        <div class="pkg-orig">לתמיד חינם</div>
-      </div>
-      <ul class="pkg-features">
-        <li>מודעה בסיסית ל-3 ימים</li>
-        <li>תמונה אחת</li>
-        <li>כפתור WhatsApp ישיר</li>
-        <li>גלוי לכל הגולשים</li>
-      </ul>
-      <button class="pkg-cta free-cta" onclick="openAddModal()">⚡ פרסם בחינם עכשיו</button>
-    </div>
-
-    <!-- BASIC -->
-    <div class="pkg-card basic">
-      <div class="pkg-icon">🌿</div>
-      <div>
-        <div class="pkg-name green-mid">BASIC</div>
-        <div class="pkg-price green-mid">₪69</div>
-        <div class="pkg-orig">במקום ₪99</div>
-      </div>
-      <ul class="pkg-features">
-        <li>מודעה 30 ימים</li>
-        <li>עד 5 תמונות איכותיות</li>
-        <li>מיקום בעמוד הראשי</li>
-        <li>כפתורי WhatsApp + שיחה</li>
-      </ul>
-      <button class="pkg-cta basic-cta" onclick="window.open('https://yougo-roan.vercel.app','_blank')">הזמן BASIC</button>
-    </div>
-
-    <!-- PRO -->
-    <div class="pkg-card pro">
-      <div class="pkg-badge popular">🔥 הכי פופולרי</div>
-      <div class="pkg-icon">🔴</div>
-      <div>
-        <div class="pkg-name red">PRO</div>
-        <div class="pkg-price red">₪149</div>
-        <div class="pkg-orig">במקום ₪219</div>
-      </div>
-      <ul class="pkg-features">
-        <li>מודעה 60 ימים</li>
-        <li>עד 10 תמונות + תיאור מורחב</li>
-        <li>בנר "מומלץ" בולט</li>
-        <li>עולה ראשון בחיפוש</li>
-        <li>סטטיסטיקות צפיות</li>
-      </ul>
-      <button class="pkg-cta pro-cta" onclick="window.open('https://yougo-roan.vercel.app','_blank')">🚀 הזמן PRO</button>
-    </div>
-
-    <!-- VIP -->
-    <div class="pkg-card vip">
-      <div class="pkg-badge vip-badge">👑 VIP</div>
-      <div class="pkg-icon">⭐</div>
-      <div>
-        <div class="pkg-name gold">VIP</div>
-        <div class="pkg-price gold">₪269</div>
-        <div class="pkg-orig">במקום ₪389</div>
-      </div>
-      <ul class="pkg-features">
-        <li>מודעה 90 ימים</li>
-        <li>עד 20 תמונות + וידאו</li>
-        <li>עמוד VIP בלעדי + לוגו</li>
-        <li>מקום ראשון + תג VIP זהוב</li>
-        <li>שיתוף ב-WhatsApp Groups</li>
-        <li>פרסום גם ב-YOUGO ISRAEL</li>
-      </ul>
-      <button class="pkg-cta vip-cta" onclick="window.open('https://yougo-roan.vercel.app','_blank')">👑 הזמן VIP</button>
-    </div>
-  </div>
-
-  <!-- Link to main site -->
-  <a class="packages-yougo-link" href="https://yougo-roan.vercel.app" target="_blank">
-    <div style="font-size:24px">🌐</div>
-    <div class="packages-yougo-link-text">
-      <strong>פרסם גם באינסטגרם עם YOUGO ISRAEL ← 50K+ עוקבים</strong>
-      <span>חבילות סושיאל מדיה מקצועיות — מ-₪219 בלבד. לחץ לפרטים</span>
-    </div>
-    <div class="packages-yougo-link-arrow">←</div>
-  </a>
-</div>
-
-<!-- ══════════ SEARCH ══════════ -->
-<div class="search-section">
+<!-- ── SEARCH ── -->
+<div class="search-section" style="padding-top:40px">
   <div class="search-box">
     <div class="search-row">
       <input class="search-input" id="searchText" placeholder="🔍 חפש לפי יצרן, דגם, עיר..." oninput="filterCars()">
@@ -1015,54 +834,36 @@ footer {
   </div>
 </div>
 
-<!-- ══════════ LISTINGS ══════════ -->
+<!-- ── LISTINGS ── -->
 <div class="main-container" id="listingsSection">
-  <div class="listings-header">
-    <h2 class="section-title" id="sectionTitle">מודעות <span>פעילות</span></h2>
+  <div class="section-header">
+    <h2 class="section-title" id="sectionTitle">מודעות <span class="red">פעילות</span></h2>
     <span class="count-badge" id="countBadge">טוען...</span>
   </div>
   <div class="sort-row">
-    <button class="sort-btn active" onclick="sortCars('newest',this)">🆕 החדשים</button>
-    <button class="sort-btn" onclick="sortCars('price_asc',this)">💰 מחיר נמוך</button>
-    <button class="sort-btn" onclick="sortCars('price_desc',this)">💎 מחיר גבוה</button>
+    <button class="sort-btn active" onclick="sortCars('newest',this)">🆕 החדשים ביותר</button>
+    <button class="sort-btn" onclick="sortCars('price_asc',this)">💰 מחיר: נמוך לגבוה</button>
+    <button class="sort-btn" onclick="sortCars('price_desc',this)">💎 מחיר: גבוה לנמוך</button>
     <button class="sort-btn" onclick="sortCars('km_asc',this)">📏 ק"מ נמוך</button>
   </div>
   <div id="carsContainer">
-    <div class="loading">
+    <div class="loading" style="grid-column:1/-1">
       <div class="spinner"></div>
       <p style="color:var(--text2);font-weight:600">טוען מודעות...</p>
     </div>
   </div>
 </div>
 
-<!-- ══════════ FOOTER ══════════ -->
+<!-- ── FOOTER ── -->
 <footer>
-  <div class="footer-inner">
-    <div class="footer-brand">
-      <div class="footer-brand-icon">🚗</div>
-      <div class="footer-brand-text"><span class="red">YOUGO</span> CARS</div>
-    </div>
-    <div class="footer-copy">© 2026 YOUGO CARS — כל הזכויות שמורות</div>
-    <div class="footer-links">
-      <a class="footer-link" href="https://yougo-roan.vercel.app" target="_blank">💼 YOUGO ISRAEL</a>
-      <a class="footer-link" href="https://wa.me/972546980606" target="_blank">💬 WhatsApp</a>
-      <span class="footer-admin-dot" onclick="adminLogin()" title="Admin">●</span>
-    </div>
-  </div>
+  <p>© 2026 <strong>YOUGO CARS</strong> — כל הזכויות שמורות</p>
+  <p style="margin-top:6px">פרסם רכב בחינם ומכור מהר יותר עם YOUGO ISRAEL</p>
+  <p style="margin-top:12px">
+    <span class="footer-admin" onclick="adminLogin()">●</span>
+  </p>
 </footer>
 
-<!-- ══════════ DETAIL MODAL ══════════ -->
-<div class="modal-overlay" id="detailModal" onclick="handleModalClick(event,'detailModal')">
-  <div class="modal" onclick="event.stopPropagation()">
-    <div class="modal-header">
-      <h3 class="modal-title" id="detailTitle">פרטי רכב</h3>
-      <button class="modal-close" onclick="closeDetailModal()">×</button>
-    </div>
-    <div class="modal-body" id="detailBody"></div>
-  </div>
-</div>
-
-<!-- ══════════ ADD CAR MODAL ══════════ -->
+<!-- ── ADD CAR MODAL ── -->
 <div class="modal-overlay" id="addModal" onclick="handleModalClick(event,'addModal')">
   <div class="modal" onclick="event.stopPropagation()">
     <div class="modal-header">
@@ -1071,22 +872,23 @@ footer {
     </div>
     <div class="modal-body" id="addModalBody">
       <form id="addCarForm" onsubmit="submitCar(event)">
+        <div class="section-divider">🚗 פרטי הרכב</div>
         <div class="form-grid">
           <div class="form-group">
             <label class="form-label">יצרן *</label>
-            <input class="form-input" id="f_make" placeholder="טויוטה, מאזדה..." required>
+            <input class="form-input" id="f_make" placeholder="Toyota, BMW, Hyundai..." required>
           </div>
           <div class="form-group">
             <label class="form-label">דגם *</label>
-            <input class="form-input" id="f_model" placeholder="קורולה, 3..." required>
+            <input class="form-input" id="f_model" placeholder="Corolla, X5..." required>
           </div>
           <div class="form-group">
             <label class="form-label">שנה *</label>
-            <input class="form-input" id="f_year" type="number" placeholder="2020" min="1990" max="2026" required>
+            <input class="form-input" id="f_year" type="number" min="1990" max="2026" placeholder="2022" required>
           </div>
           <div class="form-group">
             <label class="form-label">מחיר ₪ *</label>
-            <input class="form-input" id="f_price" type="number" placeholder="85000" required>
+            <input class="form-input" id="f_price" type="number" placeholder="80000" required>
           </div>
           <div class="form-group">
             <label class="form-label">קילומטראז'</label>
@@ -1095,336 +897,422 @@ footer {
           <div class="form-group">
             <label class="form-label">יד</label>
             <select class="form-select" id="f_hand">
-              <option value="1">יד 1</option>
-              <option value="2">יד 2</option>
-              <option value="3">יד 3</option>
-              <option value="4">יד 4+</option>
+              <option value="1">יד ראשונה</option>
+              <option value="2" selected>יד שנייה</option>
+              <option value="3">יד שלישית</option>
+              <option value="4">יד רביעית+</option>
             </select>
           </div>
           <div class="form-group">
-            <label class="form-label">גיר</label>
+            <label class="form-label">תיבת הילוכים</label>
             <select class="form-select" id="f_gear">
-              <option value="אוטומט">אוטומט</option>
+              <option value="אוטומט">אוטומטי</option>
               <option value="ידני">ידני</option>
               <option value="CVT">CVT</option>
             </select>
           </div>
           <div class="form-group">
-            <label class="form-label">דלק</label>
+            <label class="form-label">סוג דלק</label>
             <select class="form-select" id="f_fuel">
               <option value="בנזין">בנזין</option>
               <option value="דיזל">דיזל</option>
               <option value="היברידי">היברידי</option>
               <option value="חשמלי">חשמלי</option>
+              <option value="גז">גז</option>
             </select>
           </div>
           <div class="form-group">
             <label class="form-label">צבע</label>
-            <input class="form-input" id="f_color" placeholder="לבן, שחור...">
+            <input class="form-input" id="f_color" placeholder="לבן, שחור, כסוף...">
           </div>
           <div class="form-group">
             <label class="form-label">נפח מנוע (ליטר)</label>
             <input class="form-input" id="f_engine" type="number" step="0.1" placeholder="1.6">
           </div>
-          <div class="form-group span2">
-            <label class="form-label">תיאור (עברית)</label>
-            <textarea class="form-textarea" id="f_desc_he" placeholder="תאר את הרכב..."></textarea>
-          </div>
-          <div class="form-group span2">
-            <label class="form-label">תיאור (عربي)</label>
-            <textarea class="form-textarea" id="f_desc_ar" placeholder="وصف السيارة..."></textarea>
-          </div>
-          <hr class="section-divider" style="grid-column:1/-1">
+        </div>
+
+        <div class="section-divider" style="margin-top:20px">📝 תיאור</div>
+        <div class="form-group">
+          <label class="form-label">תיאור בעברית</label>
+          <textarea class="form-textarea" id="f_desc_he" placeholder="תאר את מצב הרכב, תוספות, היסטוריה..."></textarea>
+        </div>
+        <div class="form-group" style="margin-top:12px">
+          <label class="form-label">وصف بالعربية</label>
+          <textarea class="form-textarea" id="f_desc_ar" placeholder="اكتب وصف السيارة، الحالة، الإضافات..."></textarea>
+        </div>
+
+        <div class="section-divider" style="margin-top:20px">📷 תמונות</div>
+        <div class="upload-area" onclick="document.getElementById('imgInput').click()" id="uploadArea">
+          <div class="upload-icon">📷</div>
+          <div class="upload-text" id="uploadText">לחץ להוספת תמונות <strong>(עד 10)</strong></div>
+        </div>
+        <input type="file" id="imgInput" multiple accept="image/*" style="display:none" onchange="handleImages(this)">
+        <div class="upload-progress" id="uploadProgress">
+          <div class="upload-progress-bar" id="uploadProgressBar"></div>
+        </div>
+        <div class="preview-grid" id="previewGrid"></div>
+
+        <div class="section-divider" style="margin-top:20px">👤 פרטי המוכר</div>
+        <div class="form-grid">
           <div class="form-group">
             <label class="form-label">שם מלא *</label>
             <input class="form-input" id="f_name" placeholder="ישראל ישראלי" required>
           </div>
           <div class="form-group">
             <label class="form-label">טלפון *</label>
-            <input class="form-input" id="f_phone" type="tel" placeholder="050-1234567" required>
+            <input class="form-input" id="f_phone" placeholder="050-0000000" required>
           </div>
-          <div class="form-group span2">
+          <div class="form-group full">
             <label class="form-label">עיר *</label>
-            <input class="form-input" id="f_city" placeholder="תל אביב" required>
-          </div>
-          <div class="form-group span2">
-            <label class="form-label">תמונות (עד 10)</label>
-            <div class="img-upload-area">
-              <input type="file" id="imgInput" multiple accept="image/*" onchange="handleImages(this)">
-              <div class="upload-icon">📷</div>
-              <div class="upload-text" id="uploadText">לחץ להוספת תמונות <strong>(עד 10)</strong></div>
-            </div>
-            <div class="preview-grid" id="previewGrid"></div>
-            <div class="progress-wrap" id="uploadProgress">
-              <div class="progress-bar" id="uploadProgressBar"></div>
-            </div>
+            <input class="form-input" id="f_city" placeholder="תל אביב, חיפה, ירושלים..." required>
           </div>
         </div>
+
         <button type="submit" class="submit-btn" id="submitBtn">🚗 פרסם מודעה בחינם — מיידי!</button>
       </form>
     </div>
   </div>
 </div>
 
-<!-- TOAST -->
+<!-- ── CAR DETAIL MODAL ── -->
+<div class="modal-overlay" id="detailModal" onclick="handleModalClick(event,'detailModal')">
+  <div class="modal" style="max-width:720px" onclick="event.stopPropagation()">
+    <div class="modal-header">
+      <h3 class="modal-title" id="detailTitle">פרטי הרכב</h3>
+      <button class="modal-close" onclick="closeDetailModal()">×</button>
+    </div>
+    <div class="modal-body" id="detailBody"></div>
+  </div>
+</div>
+
+<!-- ── TOAST ── -->
 <div class="toast" id="toast"></div>
 
 <script>
-// ══════════════════════════════
-// CONFIG
-// ══════════════════════════════
-const SUPABASE_URL  = 'https://arsbodqhmmtmoqqhykep.supabase.co';
-const SUPABASE_KEY  = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImFyc2JvZHFobW10bW9xcWh5a2VwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzIxNTgxMTQsImV4cCI6MjA4NzczNDExNH0.mt_WpPshp5xdbIx23pMmcwq7MhktA0-vWPIstOy1_HM';
-const sb            = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+// ══════════════════════════════════
+// SUPABASE CONFIG — החלף כאן!
+// ══════════════════════════════════
+const SUPABASE_URL = 'https://arsbodqhmmtmoqqhykep.supabase.co';
+const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImFyc2JvZHFobW10bW9xcWh5a2VwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzIxNTgxMTQsImV4cCI6MjA4NzczNDExNH0.mt_WpPshp5xdbIx23pMmcwq7MhktA0-vWPIstOy1_HM';
+const sb = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
-const CLOUDINARY_CLOUD_NAME   = 'dbd2dgqti';
+// ══════════════════════════════════
+// CLOUDINARY CONFIG — הכנס את הפרטים שלך אחרי ההרשמה!
+// ══════════════════════════════════
+const CLOUDINARY_CLOUD_NAME = 'dbd2dgqti';
 const CLOUDINARY_UPLOAD_PRESET = 'htxdjln0';
-const ADMIN_PASS  = 'yougo2026';
 
-// ══════════════════════════════
+// ══════════════════════════════════
+// ADMIN CONFIG
+// ══════════════════════════════════
+const ADMIN_PASS = 'yougo2026';
+
+// ══════════════════════════════════
 // STATE
-// ══════════════════════════════
-let allCars = [], filteredCars = [], uploadedImages = [];
-let isAdmin = false, currentLang = 'he', currentSort = 'newest';
+// ══════════════════════════════════
+let allCars = [];
+let filteredCars = [];
+let uploadedImages = [];
+let isAdmin = false;
+let currentLang = 'he';
+let currentSort = 'newest';
 
-// ══════════════════════════════
+// ══════════════════════════════════
 // TRANSLATIONS
-// ══════════════════════════════
+// ══════════════════════════════════
 const T = {
   he: {
-    heroBadge:'YOUGO ISRAEL — הפלטפורמה המובילה',
-    heroTitle:'שוק הרכבים <span class="red">הדיגיטלי</span><br>של ישראל',
-    heroSub:'קנה ומכור רכב בקלות ובמהירות. מודעות מאומתות עם אפשרות יצירת קשר מיידית.',
-    heroAdd:'🚗 פרסם רכב בחינם', heroBrowse:'🔍 חפש רכב', heroPackages:'💼 חבילות פרסום',
-    statCarsLabel:'מודעות פעילות', statFollowers:'עוקבים', statFree:'חינם לפרסם',
-    sectionTitle:'מודעות <span>פעילות</span>',
-    addModalTitle:'🚗 פרסם את הרכב שלך', submitBtn:'🚗 פרסם מודעה בחינם — מיידי!',
-    uploadText:'לחץ להוספת תמונות <strong>(עד 10)</strong>',
-    allMakes:'כל היצרנים', allYears:'כל השנים', allPrices:'כל המחירים',
-    allCities:'כל הערים', allGears:'כל הגירים',
-    noCars:'אין מודעות תואמות', noCarsDesc:'נסה לשנות את פרמטרי החיפוש',
-    sold:'נמכר', featured:'מומלץ', newBadge:'✨ חדש',
-    lang:'🇦🇪 عربي', addCar:'פרסם רכב',
-    km:'ק"מ', contact:'פרטי קשר', whatsapp:'שלח WhatsApp', call:'התקשר',
-    year:'שנה', price:'מחיר', hand:'יד', gear:'גיר', fuel:'דלק', color:'צבע',
-    seller:'המוכר', city:'עיר', description:'תיאור', searchBtn:'חפש', dir:'rtl'
+    heroBadge: 'YOUGO ISRAEL — הפלטפורמה המובילה',
+    heroTitle: 'שוק הרכבים <span class="red">הדיגיטלי</span><br>של ישראל',
+    heroSub: 'קנה ומכור רכב בקלות ובמהירות. מודעות מאומתות עם אפשרות יצירת קשר מיידית.',
+    heroAdd: '🚗 פרסם רכב בחינם',
+    heroBrowse: '🔍 חפש רכב',
+    statCarsLabel: 'מודעות פעילות',
+    statFollowers: 'עוקבים',
+    statFree: 'חינם לפרסם',
+    sectionTitle: 'מודעות <span class="red">פעילות</span>',
+    addModalTitle: '🚗 פרסם את הרכב שלך',
+    submitBtn: '🚗 פרסם מודעה בחינם — מיידי!',
+    uploadText: 'לחץ להוספת תמונות <strong>(עד 10)</strong>',
+    pendingMsg: '✅ המודעה פורסמה! היא זמינה כעת לכולם.',
+    allMakes: 'כל היצרנים', allYears: 'כל השנים',
+    allPrices: 'כל המחירים', allCities: 'כל הערים', allGears: 'כל הגירים',
+    noCars: 'אין מודעות תואמות', noCarsDesc: 'נסה לשנות את פרמטרי החיפוש',
+    sold: 'נמכר', featured: 'מומלץ', newBadge: '✨ חדש',
+    dir: 'rtl', lang: '🇦🇪 عربي', addCar: 'פרסם רכב',
+    km: 'ק"מ', contact: 'פרטי קשר', whatsapp: 'שלח WhatsApp', call: 'התקשר',
+    year: 'שנה', price: 'מחיר', hand: 'יד', gear: 'גיר', fuel: 'דלק', color: 'צבע',
+    seller: 'המוכר', city: 'עיר', description: 'תיאור',
+    searchBtn: 'חפש', mileage: 'ק"מ'
   },
   ar: {
-    heroBadge:'YOUGO ISRAEL — المنصة الرائدة',
-    heroTitle:'سوق السيارات <span class="red">الرقمي</span><br>في إسرائيل',
-    heroSub:'اشترِ وبِع سيارتك بسهولة وسرعة. إعلانات موثقة مع تواصل فوري.',
-    heroAdd:'🚗 أعلن مجاناً', heroBrowse:'🔍 تصفح السيارات', heroPackages:'💼 باقات الإعلان',
-    statCarsLabel:'إعلان نشط', statFollowers:'متابع', statFree:'نشر مجاني',
-    sectionTitle:'الإعلانات <span>النشطة</span>',
-    addModalTitle:'🚗 أضف إعلانك', submitBtn:'🚗 انشر الآن — مجاناً!',
-    uploadText:'انقر لإضافة صور <strong>(حتى 10)</strong>',
-    allMakes:'كل الماركات', allYears:'كل السنوات', allPrices:'كل الأسعار',
-    allCities:'كل المدن', allGears:'كل الناقلات',
-    noCars:'لا توجد إعلانات', noCarsDesc:'جرّب تغيير معايير البحث',
-    sold:'مباع', featured:'مميز', newBadge:'✨ جديد',
-    lang:'🇮🇱 עברית', addCar:'أعلن عن سيارتك',
-    km:'كم', contact:'تواصل', whatsapp:'واتساب', call:'اتصل',
-    year:'سنة', price:'سعر', hand:'يد', gear:'ناقل', fuel:'وقود', color:'لون',
-    seller:'البائع', city:'مدينة', description:'وصف', searchBtn:'بحث', dir:'rtl'
+    heroBadge: 'YOUGO ISRAEL — المنصة الرائدة',
+    heroTitle: 'سوق السيارات <span class="red">الرقمي</span><br>في إسرائيل',
+    heroSub: 'اشترِ وبِع سيارتك بسهولة وسرعة. إعلانات موثقة مع تواصل فوري.',
+    heroAdd: '🚗 أعلن عن سيارتك مجاناً',
+    heroBrowse: '🔍 تصفح السيارات',
+    statCarsLabel: 'إعلان نشط',
+    statFollowers: 'متابع',
+    statFree: 'نشر مجاني',
+    sectionTitle: 'الإعلانات <span class="red">النشطة</span>',
+    addModalTitle: '🚗 أضف إعلانك',
+    submitBtn: '🚗 انشر الإعلان الآن — مجاناً!',
+    uploadText: 'انقر لإضافة صور <strong>(حتى 10)</strong>',
+    pendingMsg: '✅ تم نشر إعلانك! متاح الآن للجميع.',
+    allMakes: 'كل الماركات', allYears: 'كل السنوات',
+    allPrices: 'كل الأسعار', allCities: 'كل المدن', allGears: 'كل الناقلات',
+    noCars: 'لا توجد إعلانات', noCarsDesc: 'جرّب تغيير معايير البحث',
+    sold: 'مباع', featured: 'مميز', newBadge: '✨ جديد',
+    dir: 'rtl', lang: '🇮🇱 עברית', addCar: 'أعلن عن سيارتك',
+    km: 'كم', contact: 'تواصل', whatsapp: 'واتساب', call: 'اتصل',
+    year: 'سنة', price: 'سعر', hand: 'يد', gear: 'ناقل', fuel: 'وقود', color: 'لون',
+    seller: 'البائع', city: 'مدينة', description: 'وصف',
+    searchBtn: 'بحث', mileage: 'كم'
   },
   en: {
-    heroBadge:"YOUGO ISRAEL — The Leading Platform",
-    heroTitle:'Israel\'s <span class="red">Digital</span><br>Car Market',
-    heroSub:'Buy and sell cars easily and fast. Verified listings with instant contact.',
-    heroAdd:'🚗 Post Your Car Free', heroBrowse:'🔍 Browse Cars', heroPackages:'💼 Ad Packages',
-    statCarsLabel:'Active Listings', statFollowers:'Followers', statFree:'Free to Post',
-    sectionTitle:'<span>Active</span> Listings',
-    addModalTitle:'🚗 Post Your Car', submitBtn:'🚗 Post Now — Free!',
-    uploadText:'Click to add photos <strong>(up to 10)</strong>',
-    allMakes:'All Makes', allYears:'All Years', allPrices:'All Prices',
-    allCities:'All Cities', allGears:'All Transmissions',
-    noCars:'No listings found', noCarsDesc:'Try changing search filters',
-    sold:'Sold', featured:'Featured', newBadge:'✨ New',
-    lang:'🇦🇪 عربي', addCar:'Post Car',
-    km:'km', contact:'Contact', whatsapp:'WhatsApp', call:'Call',
-    year:'Year', price:'Price', hand:'Hand', gear:'Gear', fuel:'Fuel', color:'Color',
-    seller:'Seller', city:'City', description:'Description', searchBtn:'Search', dir:'ltr'
+    heroBadge: 'YOUGO ISRAEL — The Leading Platform',
+    heroTitle: 'Israel\'s <span class="red">Digital</span><br>Car Market',
+    heroSub: 'Buy and sell cars easily and fast. Verified listings with instant contact.',
+    heroAdd: '🚗 Post Your Car for Free',
+    heroBrowse: '🔍 Browse Cars',
+    statCarsLabel: 'Active Listings',
+    statFollowers: 'Followers',
+    statFree: 'Free to Post',
+    sectionTitle: '<span class="red">Active</span> Listings',
+    addModalTitle: '🚗 Post Your Car',
+    submitBtn: '🚗 Post Now — Instantly Free!',
+    uploadText: 'Click to add photos <strong>(up to 10)</strong>',
+    pendingMsg: '✅ Your listing is live! Everyone can see it now.',
+    allMakes: 'All Makes', allYears: 'All Years',
+    allPrices: 'All Prices', allCities: 'All Cities', allGears: 'All Transmissions',
+    noCars: 'No listings found', noCarsDesc: 'Try changing search filters',
+    sold: 'Sold', featured: 'Featured', newBadge: '✨ New',
+    dir: 'ltr', lang: '🇦🇪 عربي', addCar: 'Post Car',
+    km: 'km', contact: 'Contact', whatsapp: 'WhatsApp', call: 'Call',
+    year: 'Year', price: 'Price', hand: 'Hand', gear: 'Gear', fuel: 'Fuel', color: 'Color',
+    seller: 'Seller', city: 'City', description: 'Description',
+    searchBtn: 'Search', mileage: 'km'
   }
 };
-function t(key){ return T[currentLang]?.[key] || T.he[key] || key; }
 
-// ══════════════════════════════
-// SCROLL NAV EFFECT
-// ══════════════════════════════
-window.addEventListener('scroll', () => {
-  document.getElementById('mainNav').classList.toggle('scrolled', window.scrollY > 40);
-}, { passive:true });
+function t(key) { return T[currentLang]?.[key] || T.he[key] || key; }
 
-function scrollToSection(id){
-  document.getElementById(id)?.scrollIntoView({ behavior:'smooth' });
-}
-
-// ══════════════════════════════
+// ══════════════════════════════════
 // LANGUAGE
-// ══════════════════════════════
-function cycleLang(){
-  const langs=['he','ar','en'], idx=langs.indexOf(currentLang);
-  currentLang=langs[(idx+1)%langs.length]; applyLang();
+// ══════════════════════════════════
+function cycleLang() {
+  const langs = ['he','ar','en'];
+  const idx = langs.indexOf(currentLang);
+  currentLang = langs[(idx+1) % langs.length];
+  applyLang();
 }
-function applyLang(){
-  const L=T[currentLang];
-  document.documentElement.lang=currentLang;
-  document.documentElement.dir=L.dir;
-  document.getElementById('langBtn').textContent=L.lang;
-  document.getElementById('heroBadgeText').textContent=L.heroBadge;
-  document.getElementById('heroTitle').innerHTML=L.heroTitle;
-  document.getElementById('heroSub').textContent=L.heroSub;
-  document.getElementById('heroAddBtn').textContent=L.heroAdd;
-  document.getElementById('heroBrowseBtn').textContent=L.heroBrowse;
-  document.getElementById('heroPackagesBtn').textContent=L.heroPackages;
-  document.getElementById('navAddBtn').textContent=L.addCar;
-  document.getElementById('statCarsLabel').textContent=L.statCarsLabel;
-  document.getElementById('statFollowers').textContent=L.statFollowers;
-  document.getElementById('statFree').textContent=L.statFree;
-  document.getElementById('sectionTitle').innerHTML=L.sectionTitle;
-  document.getElementById('addModalTitle').textContent=L.addModalTitle;
-  document.getElementById('submitBtn').textContent=L.submitBtn;
-  document.getElementById('uploadText').innerHTML=L.uploadText;
-  document.getElementById('searchBtnEl').textContent=L.searchBtn;
-  document.getElementById('filterMake').options[0].text=L.allMakes;
-  document.getElementById('filterYear').options[0].text=L.allYears;
-  document.getElementById('filterMaxPrice').options[0].text=L.allPrices;
-  document.getElementById('filterCity').options[0].text=L.allCities;
-  document.getElementById('filterGear').options[0].text=L.allGears;
+
+function applyLang() {
+  const L = T[currentLang];
+  document.documentElement.lang = currentLang;
+  document.documentElement.dir = L.dir;
+  document.getElementById('langBtn').textContent = L.lang;
+  document.getElementById('heroBadgeText').textContent = L.heroBadge;
+  document.getElementById('heroTitle').innerHTML = L.heroTitle;
+  document.getElementById('heroSub').textContent = L.heroSub;
+  document.getElementById('heroAddBtn').textContent = L.heroAdd;
+  document.getElementById('heroBrowseBtn').textContent = L.heroBrowse;
+  document.getElementById('statCarsLabel').textContent = L.statCarsLabel;
+  document.getElementById('statFollowers').textContent = L.statFollowers;
+  document.getElementById('statFree').textContent = L.statFree;
+  document.getElementById('sectionTitle').innerHTML = L.sectionTitle;
+  document.getElementById('addModalTitle').textContent = L.addModalTitle;
+  document.getElementById('submitBtn').textContent = L.submitBtn;
+  document.getElementById('uploadText').innerHTML = L.uploadText;
+  document.getElementById('searchBtnEl').textContent = L.searchBtn;
+  document.getElementById('filterMake').options[0].text = L.allMakes;
+  document.getElementById('filterYear').options[0].text = L.allYears;
+  document.getElementById('filterMaxPrice').options[0].text = L.allPrices;
+  document.getElementById('filterCity').options[0].text = L.allCities;
+  document.getElementById('filterGear').options[0].text = L.allGears;
   renderCars(filteredCars);
 }
 
-// ══════════════════════════════
+// ══════════════════════════════════
 // LOAD CARS
-// ══════════════════════════════
-async function loadCars(){
-  document.getElementById('carsContainer').innerHTML=`
-    <div class="loading"><div class="spinner"></div><p style="color:var(--text2);font-weight:600">טוען מודעות...</p></div>`;
+// ══════════════════════════════════
+async function loadCars() {
+  document.getElementById('carsContainer').innerHTML = `
+    <div class="loading">
+      <div class="spinner"></div>
+      <p style="color:var(--text2);font-weight:600">טוען מודעות...</p>
+    </div>`;
+
   try {
     const query = isAdmin
-      ? sb.from('cars').select('*').order('created_at',{ascending:false})
-      : sb.from('cars').select('*').eq('status','active').order('created_at',{ascending:false});
+      ? sb.from('cars').select('*').order('created_at', { ascending: false })
+      : sb.from('cars').select('*').eq('status', 'active').order('created_at', { ascending: false });
+
     const { data, error } = await query;
-    if(error) throw error;
-    allCars = data||[];
-    filteredCars=[...allCars];
-    populateFilters(); sortCars(currentSort);
-    document.getElementById('statCars').textContent=allCars.filter(c=>c.status==='active').length;
-    document.getElementById('countBadge').textContent=filteredCars.length+' מודעות';
-  } catch(e){
-    document.getElementById('carsContainer').innerHTML=`
-      <div class="empty-state"><div class="empty-icon">⚠️</div><h3>שגיאה בטעינה</h3>
-      <p>${e.message}</p><button class="btn btn-red" style="margin-top:16px" onclick="loadCars()">נסה שוב</button></div>`;
+    if (error) throw error;
+
+    allCars = data || [];
+    filteredCars = [...allCars];
+    populateFilters();
+    sortCars(currentSort);
+    const activeCount = allCars.filter(c => c.status === 'active').length;
+    document.getElementById('statCars').textContent = activeCount;
+    document.getElementById('countBadge').textContent = filteredCars.length + ' מודעות';
+  } catch(e) {
+    console.error(e);
+    document.getElementById('carsContainer').innerHTML = `
+      <div class="empty-state">
+        <div class="empty-icon">⚠️</div>
+        <h3>שגיאה בטעינה</h3>
+        <p>${e.message}</p>
+        <button class="btn btn-red" style="margin-top:16px" onclick="loadCars()">נסה שוב</button>
+      </div>`;
   }
 }
 
-// ══════════════════════════════
-// FILTERS
-// ══════════════════════════════
-function populateFilters(){
-  const makes=[...new Set(allCars.map(c=>c.make).filter(Boolean))].sort();
-  const years=[...new Set(allCars.map(c=>c.year).filter(Boolean))].sort((a,b)=>b-a);
-  const cities=[...new Set(allCars.map(c=>c.seller_city).filter(Boolean))].sort();
-  const makeEl=document.getElementById('filterMake'), yearEl=document.getElementById('filterYear'), cityEl=document.getElementById('filterCity');
-  const [cm,cy,cc]=[makeEl.value,yearEl.value,cityEl.value];
-  while(makeEl.options.length>1) makeEl.remove(1);
-  while(yearEl.options.length>1) yearEl.remove(1);
-  while(cityEl.options.length>1) cityEl.remove(1);
-  makes.forEach(m=>makeEl.add(new Option(m,m)));
-  years.forEach(y=>yearEl.add(new Option(y,y)));
-  cities.forEach(c=>cityEl.add(new Option(c,c)));
-  makeEl.value=cm; yearEl.value=cy; cityEl.value=cc;
+// ══════════════════════════════════
+// POPULATE FILTERS
+// ══════════════════════════════════
+function populateFilters() {
+  const makes = [...new Set(allCars.map(c => c.make).filter(Boolean))].sort();
+  const years = [...new Set(allCars.map(c => c.year).filter(Boolean))].sort((a,b)=>b-a);
+  const cities = [...new Set(allCars.map(c => c.seller_city).filter(Boolean))].sort();
+
+  const makeEl = document.getElementById('filterMake');
+  const yearEl = document.getElementById('filterYear');
+  const cityEl = document.getElementById('filterCity');
+
+  // Save current values
+  const curMake = makeEl.value, curYear = yearEl.value, curCity = cityEl.value;
+
+  // Reset and repopulate
+  while(makeEl.options.length > 1) makeEl.remove(1);
+  while(yearEl.options.length > 1) yearEl.remove(1);
+  while(cityEl.options.length > 1) cityEl.remove(1);
+
+  makes.forEach(m => makeEl.add(new Option(m, m)));
+  years.forEach(y => yearEl.add(new Option(y, y)));
+  cities.forEach(c => cityEl.add(new Option(c, c)));
+
+  makeEl.value = curMake; yearEl.value = curYear; cityEl.value = curCity;
 }
 
-function filterCars(){
-  const text=document.getElementById('searchText').value.toLowerCase();
-  const make=document.getElementById('filterMake').value;
-  const year=document.getElementById('filterYear').value;
-  const maxPrice=document.getElementById('filterMaxPrice').value;
-  const city=document.getElementById('filterCity').value;
-  const gear=document.getElementById('filterGear').value;
-  const fuel=document.getElementById('filterFuel').value;
-  filteredCars=allCars.filter(car=>{
-    if(text && !`${car.make} ${car.model} ${car.seller_city} ${car.color}`.toLowerCase().includes(text)) return false;
-    if(make && car.make!==make) return false;
-    if(year && car.year!=year) return false;
-    if(maxPrice && car.price>parseInt(maxPrice)) return false;
-    if(city && car.seller_city!==city) return false;
-    if(gear && car.gear_type!==gear) return false;
-    if(fuel && car.fuel_type!==fuel) return false;
+// ══════════════════════════════════
+// FILTER & SORT
+// ══════════════════════════════════
+function filterCars() {
+  const text = document.getElementById('searchText').value.toLowerCase();
+  const make = document.getElementById('filterMake').value;
+  const year = document.getElementById('filterYear').value;
+  const maxPrice = document.getElementById('filterMaxPrice').value;
+  const city = document.getElementById('filterCity').value;
+  const gear = document.getElementById('filterGear').value;
+  const fuel = document.getElementById('filterFuel').value;
+
+  filteredCars = allCars.filter(car => {
+    if (text && !`${car.make} ${car.model} ${car.seller_city} ${car.color}`.toLowerCase().includes(text)) return false;
+    if (make && car.make !== make) return false;
+    if (year && car.year != year) return false;
+    if (maxPrice && car.price > parseInt(maxPrice)) return false;
+    if (city && car.seller_city !== city) return false;
+    if (gear && car.gear_type !== gear) return false;
+    if (fuel && car.fuel_type !== fuel) return false;
     return true;
   });
+
   sortCars(currentSort);
 }
 
-function sortCars(type,btn){
-  currentSort=type;
-  if(btn){ document.querySelectorAll('.sort-btn').forEach(b=>b.classList.remove('active')); btn.classList.add('active'); }
-  const sorted=[...filteredCars];
-  if(type==='price_asc') sorted.sort((a,b)=>a.price-b.price);
-  else if(type==='price_desc') sorted.sort((a,b)=>b.price-a.price);
-  else if(type==='km_asc') sorted.sort((a,b)=>(a.mileage||999999)-(b.mileage||999999));
-  else sorted.sort((a,b)=>new Date(b.created_at)-new Date(a.created_at));
+function sortCars(type, btn) {
+  currentSort = type;
+
+  // Update button styles
+  if (btn) {
+    document.querySelectorAll('.sort-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+  }
+
+  const sorted = [...filteredCars];
+  if (type === 'price_asc') sorted.sort((a,b) => a.price - b.price);
+  else if (type === 'price_desc') sorted.sort((a,b) => b.price - a.price);
+  else if (type === 'km_asc') sorted.sort((a,b) => (a.mileage||999999) - (b.mileage||999999));
+  else sorted.sort((a,b) => new Date(b.created_at) - new Date(a.created_at));
+
   renderCars(sorted);
-  document.getElementById('countBadge').textContent=filteredCars.length+' מודעות';
+  document.getElementById('countBadge').textContent = filteredCars.length + ' מודעות';
 }
 
-// ══════════════════════════════
-// RENDER
-// ══════════════════════════════
-function renderCars(cars){
-  const container=document.getElementById('carsContainer');
-  if(!cars.length){
-    container.innerHTML=`<div class="empty-state"><div class="empty-icon">🔍</div><h3>${t('noCars')}</h3><p>${t('noCarsDesc')}</p></div>`;
+// ══════════════════════════════════
+// RENDER CARS
+// ══════════════════════════════════
+function renderCars(cars) {
+  const container = document.getElementById('carsContainer');
+
+  if (!cars.length) {
+    container.innerHTML = `
+      <div class="empty-state">
+        <div class="empty-icon">🔍</div>
+        <h3>${t('noCars')}</h3>
+        <p>${t('noCarsDesc')}</p>
+      </div>`;
     return;
   }
-  container.innerHTML=`<div class="cars-grid">${cars.map(c=>carCard(c)).join('')}</div>`;
+
+  container.innerHTML = `<div class="cars-grid">${cars.map(car => carCard(car)).join('')}</div>`;
 }
 
-function carCard(car){
-  const imgs=car.images||[], img=car.main_image||imgs[0];
-  const imgHtml=img?`<img class="car-img" src="${img}" alt="${car.make} ${car.model}" loading="lazy" onerror="this.style.display='none';this.parentElement.querySelector('.car-img-placeholder').style.display='flex'">`:'';
-  const phHtml=`<div class="car-img-placeholder" style="${img?'display:none':''}">🚗</div>`;
+function carCard(car) {
+  const imgs = car.images || [];
+  const img = car.main_image || imgs[0];
+  const imgHtml = img
+    ? `<img class="car-img" src="${img}" alt="${car.make} ${car.model}" loading="lazy" onerror="this.style.display='none';this.parentElement.querySelector('.car-img-placeholder').style.display='flex'">`
+    : '';
+  const placeholderHtml = `<div class="car-img-placeholder" style="${img ? 'display:none' : ''}">🚗</div>`;
 
-  const badges=[];
-  if(car.featured) badges.push(`<span class="badge badge-featured">⭐ ${t('featured')}</span>`);
-  if(car.status==='sold') badges.push(`<span class="badge badge-sold">✓ ${t('sold')}</span>`);
-  if(car.status==='pending' && isAdmin) badges.push(`<span class="badge badge-pending">⏳ ממתין</span>`);
-  const isNew=(Date.now()-new Date(car.created_at))<86400000*3;
-  if(isNew&&car.status!=='sold') badges.push(`<span class="badge badge-new">${t('newBadge')}</span>`);
+  const badges = [];
+  if (car.featured) badges.push(`<span class="badge badge-featured">⭐ ${t('featured')}</span>`);
+  if (car.status === 'sold') badges.push(`<span class="badge badge-sold">✓ ${t('sold')}</span>`);
+  const isNew = (Date.now() - new Date(car.created_at)) < 86400000 * 3;
+  if (isNew && car.status !== 'sold') badges.push(`<span class="badge badge-new">${t('newBadge')}</span>`);
 
-  const adminBtns=isAdmin?`
-    <div style="padding:10px 14px;display:flex;gap:7px;border-top:1px solid var(--border)">
-      ${car.status==='pending'?`<button onclick="approveCar('${car.id}');event.stopPropagation()" style="flex:1;padding:8px;background:rgba(74,222,128,0.1);border:1px solid rgba(74,222,128,0.3);color:#4ade80;border-radius:9px;cursor:pointer;font-size:12px;font-weight:900;font-family:var(--font)">✓ אשר</button>`:''}
-      ${car.status==='active'?`<button onclick="markSold('${car.id}');event.stopPropagation()" style="flex:1;padding:8px;background:rgba(212,175,55,0.1);border:1px solid rgba(212,175,55,0.3);color:var(--gold);border-radius:9px;cursor:pointer;font-size:12px;font-weight:900;font-family:var(--font)">💰 נמכר</button>`:''}
-      <button onclick="deleteCar('${car.id}');event.stopPropagation()" style="padding:8px 12px;background:rgba(239,68,68,0.1);border:1px solid rgba(239,68,68,0.3);color:#ef4444;border-radius:9px;cursor:pointer;font-size:12px;font-weight:900;font-family:var(--font)">✕</button>
-    </div>`:'';
+  const adminBtns = isAdmin ? `
+    <div style="padding:8px 14px;display:flex;gap:6px;border-top:1px solid var(--border)">
+      ${car.status==='pending' ? `<button onclick="approveCar('${car.id}');event.stopPropagation()" style="flex:1;padding:7px;background:rgba(74,222,128,0.12);border:1px solid rgba(74,222,128,0.3);color:#4ade80;border-radius:9px;cursor:pointer;font-size:12px;font-weight:800;font-family:var(--font)">✓ אשר פרסום</button>` : ''}
+      ${car.status==='active' ? `<button onclick="markSold('${car.id}');event.stopPropagation()" style="flex:1;padding:7px;background:rgba(212,175,55,0.12);border:1px solid rgba(212,175,55,0.3);color:var(--gold);border-radius:9px;cursor:pointer;font-size:12px;font-weight:800;font-family:var(--font)">נמכר</button>` : ''}
+      <button onclick="deleteCar('${car.id}');event.stopPropagation()" style="padding:7px 13px;background:rgba(239,68,68,0.12);border:1px solid rgba(239,68,68,0.3);color:#ef4444;border-radius:9px;cursor:pointer;font-size:12px;font-weight:800;font-family:var(--font)">✕</button>
+    </div>` : '';
+
+  const pendingBar = car.status === 'pending' && isAdmin
+    ? `<div class="status-pending-bar">⏳ ממתין לאישור</div>` : '';
+
+  const imgCountHtml = imgs.length > 1
+    ? `<div class="car-img-count">📷 ${imgs.length}</div>` : '';
 
   return `
     <div class="car-card" onclick="openDetail('${car.id}')">
       <div class="car-img-wrap">
-        ${phHtml}${imgHtml}
+        ${placeholderHtml}${imgHtml}
         <div class="car-badges">${badges.join('')}</div>
-        ${imgs.length>1?`<div class="car-img-count">📷 ${imgs.length}</div>`:''}
+        ${imgCountHtml}
       </div>
-      ${car.status==='pending'&&isAdmin?'<div class="status-pending-bar">⏳ ממתין לאישור</div>':''}
+      ${pendingBar}
       <div class="car-body">
         <div class="car-title">${car.make} ${car.model}</div>
-        <div class="car-sub">${car.year} · ${car.seller_city}</div>
+        <div class="car-sub">${car.year} • ${car.seller_city}</div>
         <div class="car-price-row">
           <div class="car-price">₪${Number(car.price).toLocaleString()}</div>
         </div>
         <div class="car-specs">
-          <span class="spec-tag">🔄 ${car.gear_type||'—'}</span>
-          <span class="spec-tag">⛽ ${car.fuel_type||'—'}</span>
-          ${car.mileage?`<span class="spec-tag">📏 ${Number(car.mileage).toLocaleString()} ${t('km')}</span>`:''}
-          ${car.hand?`<span class="spec-tag">✋ יד ${car.hand}</span>`:''}
+          <span class="spec-tag">🔄 ${car.gear_type || 'אוטומט'}</span>
+          <span class="spec-tag">⛽ ${car.fuel_type || 'בנזין'}</span>
+          ${car.mileage ? `<span class="spec-tag">📏 ${Number(car.mileage).toLocaleString()} ${t('km')}</span>` : ''}
+          ${car.hand ? `<span class="spec-tag">✋ יד ${car.hand}</span>` : ''}
         </div>
         <div class="car-footer">
           <span class="car-city">📍 ${car.seller_city}</span>
           <div class="car-contact" onclick="event.stopPropagation()">
-            <a class="wa-btn" href="https://wa.me/972${(car.seller_phone||'').replace(/\D/g,'').replace(/^0/,'')}" target="_blank">💬</a>
-            <a class="call-btn" href="tel:${car.seller_phone}">📞</a>
+            <a class="wa-btn" href="https://wa.me/972${(car.seller_phone||'').replace(/\D/g,'').replace(/^0/,'')}" target="_blank" title="WhatsApp">💬</a>
+            <a class="call-btn" href="tel:${car.seller_phone}" title="${t('call')}">📞</a>
           </div>
         </div>
       </div>
@@ -1432,229 +1320,328 @@ function carCard(car){
     </div>`;
 }
 
-// ══════════════════════════════
-// DETAIL
-// ══════════════════════════════
-function openDetail(id){
-  const car=allCars.find(c=>c.id===id); if(!car) return;
-  const imgs=car.images&&car.images.length?car.images:(car.main_image?[car.main_image]:[]);
-  const mainImg=imgs[0]||null;
+// ══════════════════════════════════
+// CAR DETAIL
+// ══════════════════════════════════
+function openDetail(id) {
+  const car = allCars.find(c => c.id === id);
+  if (!car) return;
 
-  const galleryHtml=mainImg?`
+  const imgs = car.images && car.images.length ? car.images : (car.main_image ? [car.main_image] : []);
+  const mainImg = imgs[0] || null;
+
+  const galleryHtml = mainImg ? `
     <div class="detail-gallery">
       <img class="detail-img-main" id="mainDetailImg" src="${mainImg}" alt="${car.make} ${car.model}">
-      ${imgs.length>1?`<div class="detail-thumbs">
-        ${imgs.map((src,i)=>`<img class="detail-thumb ${i===0?'active':''}" src="${src}" onclick="switchDetailImg('${src}',this)" loading="lazy">`).join('')}
-      </div>`:''}
-    </div>`:'';
+      ${imgs.length > 1 ? `
+        <div class="detail-thumbs">
+          ${imgs.map((src, i) => `<img class="detail-thumb ${i===0?'active':''}" src="${src}" onclick="switchDetailImg('${src}',this)" loading="lazy">`).join('')}
+        </div>` : ''}
+    </div>` : '';
 
-  document.getElementById('detailTitle').textContent=`${car.make} ${car.model} ${car.year}`;
-  document.getElementById('detailBody').innerHTML=`
+  const desc = car.description_he || car.description_ar || '';
+  const descHtml = desc ? `
+    <div class="detail-desc">${desc}</div>` : '';
+
+  document.getElementById('detailTitle').textContent = `${car.make} ${car.model} ${car.year}`;
+  document.getElementById('detailBody').innerHTML = `
     ${galleryHtml}
     <div class="detail-header-row">
-      <div><div class="detail-car-name">${car.make} ${car.model}</div>
-        <div class="detail-car-sub">${car.year} · יד ${car.hand||'—'} · ${car.seller_city}</div></div>
-      <div><div class="detail-price">₪${Number(car.price).toLocaleString()}</div>
-        <div class="detail-price-label">מחיר מבוקש</div></div>
+      <div class="detail-title-group">
+        <div class="detail-car-name">${car.make} ${car.model}</div>
+        <div class="detail-car-sub">${car.year} • יד ${car.hand || '—'} • ${car.seller_city}</div>
+      </div>
+      <div>
+        <div class="detail-price">₪${Number(car.price).toLocaleString()}</div>
+        <div class="detail-price-label">מחיר מבוקש</div>
+      </div>
     </div>
     <div class="detail-specs">
-      ${car.mileage?`<div class="detail-spec"><div class="detail-spec-val">📏 ${Number(car.mileage).toLocaleString()}</div><div class="detail-spec-key">${t('km')}</div></div>`:''}
+      ${car.mileage ? `<div class="detail-spec"><div class="detail-spec-val">📏 ${Number(car.mileage).toLocaleString()}</div><div class="detail-spec-key">${t('km')}</div></div>` : ''}
       <div class="detail-spec"><div class="detail-spec-val">🔄 ${car.gear_type||'—'}</div><div class="detail-spec-key">${t('gear')}</div></div>
       <div class="detail-spec"><div class="detail-spec-val">⛽ ${car.fuel_type||'—'}</div><div class="detail-spec-key">${t('fuel')}</div></div>
-      ${car.color?`<div class="detail-spec"><div class="detail-spec-val">🎨 ${car.color}</div><div class="detail-spec-key">${t('color')}</div></div>`:''}
-      ${car.engine_size?`<div class="detail-spec"><div class="detail-spec-val">🔧 ${car.engine_size}L</div><div class="detail-spec-key">מנוע</div></div>`:''}
+      ${car.color ? `<div class="detail-spec"><div class="detail-spec-val">🎨 ${car.color}</div><div class="detail-spec-key">${t('color')}</div></div>` : ''}
+      ${car.engine_size ? `<div class="detail-spec"><div class="detail-spec-val">🔧 ${car.engine_size}L</div><div class="detail-spec-key">מנוע</div></div>` : ''}
       <div class="detail-spec"><div class="detail-spec-val">✋ יד ${car.hand||'—'}</div><div class="detail-spec-key">${t('hand')}</div></div>
     </div>
-    ${car.description_he?`<div class="detail-desc">${car.description_he}</div>`:''}
+    ${descHtml}
     <div class="seller-card">
       <div class="seller-avatar">👤</div>
-      <div><div class="seller-name">${car.seller_name||'—'}</div><div class="seller-city">📍 ${car.seller_city||'—'}</div></div>
+      <div>
+        <div class="seller-name">${car.seller_name || '—'}</div>
+        <div class="seller-city">📍 ${car.seller_city || '—'}</div>
+      </div>
     </div>
     <div class="contact-bar">
-      <a class="contact-wa" href="https://wa.me/972${(car.seller_phone||'').replace(/\D/g,'').replace(/^0/,'')}" target="_blank">💬 ${t('whatsapp')}</a>
-      <a class="contact-call" href="tel:${car.seller_phone}">📞 ${t('call')} ${car.seller_phone}</a>
+      <a class="contact-wa" href="https://wa.me/972${(car.seller_phone||'').replace(/\D/g,'').replace(/^0/,'')}" target="_blank">
+        💬 ${t('whatsapp')}
+      </a>
+      <a class="contact-call" href="tel:${car.seller_phone}">
+        📞 ${t('call')} — ${car.seller_phone}
+      </a>
     </div>
-    ${isAdmin?`
-    <div style="display:flex;gap:8px;margin-top:14px">
-      ${car.status==='pending'?`<button onclick="approveCar('${car.id}');closeDetailModal()" style="flex:1;padding:13px;background:rgba(74,222,128,0.1);border:1px solid rgba(74,222,128,0.3);color:#4ade80;border-radius:12px;cursor:pointer;font-size:14px;font-weight:900;font-family:var(--font)">✓ אשר פרסום</button>`:''}
-      <button onclick="deleteCar('${car.id}');closeDetailModal()" style="flex:1;padding:13px;background:rgba(239,68,68,0.1);border:1px solid rgba(239,68,68,0.3);color:#ef4444;border-radius:12px;cursor:pointer;font-size:14px;font-weight:900;font-family:var(--font)">🗑 מחק</button>
-    </div>`:''}`;
+    ${isAdmin ? `
+      <div style="display:flex;gap:8px;margin-top:12px">
+        ${car.status==='pending' ? `<button onclick="approveCar('${car.id}');closeDetailModal()" style="flex:1;padding:12px;background:rgba(74,222,128,0.12);border:1px solid rgba(74,222,128,0.3);color:#4ade80;border-radius:12px;cursor:pointer;font-size:14px;font-weight:800;font-family:var(--font)">✓ אשר פרסום</button>` : ''}
+        <button onclick="deleteCar('${car.id}');closeDetailModal()" style="flex:1;padding:12px;background:rgba(239,68,68,0.12);border:1px solid rgba(239,68,68,0.3);color:#ef4444;border-radius:12px;cursor:pointer;font-size:14px;font-weight:800;font-family:var(--font)">🗑 מחק מודעה</button>
+      </div>` : ''}`;
 
   document.getElementById('detailModal').classList.add('open');
 }
 
-function switchDetailImg(src,el){
-  document.getElementById('mainDetailImg').src=src;
-  document.querySelectorAll('.detail-thumb').forEach(t=>t.classList.remove('active'));
+function switchDetailImg(src, el) {
+  document.getElementById('mainDetailImg').src = src;
+  document.querySelectorAll('.detail-thumb').forEach(t => t.classList.remove('active'));
   el.classList.add('active');
 }
-function closeDetailModal(){ document.getElementById('detailModal').classList.remove('open'); }
 
-// ══════════════════════════════
-// ADD MODAL
-// ══════════════════════════════
-function openAddModal(){
+function closeDetailModal() {
+  document.getElementById('detailModal').classList.remove('open');
+}
+
+// ══════════════════════════════════
+// ADD CAR MODAL
+// ══════════════════════════════════
+function openAddModal() {
   document.getElementById('addModal').classList.add('open');
   document.getElementById('addCarForm').reset();
-  document.getElementById('previewGrid').innerHTML='';
-  uploadedImages=[];
-}
-function closeAddModal(){ document.getElementById('addModal').classList.remove('open'); }
-function handleModalClick(e,id){
-  if(e.target.id===id){ if(id==='addModal') closeAddModal(); else closeDetailModal(); }
+  document.getElementById('previewGrid').innerHTML = '';
+  uploadedImages = [];
 }
 
-// ══════════════════════════════
-// IMAGES
-// ══════════════════════════════
-function handleImages(input){
-  const files=[...input.files].slice(0,10);
-  uploadedImages=files;
-  const preview=document.getElementById('previewGrid');
-  preview.innerHTML='';
-  files.forEach((f,idx)=>{
-    const reader=new FileReader();
-    reader.onload=e=>{
-      const wrap=document.createElement('div'); wrap.className='preview-wrap';
-      wrap.innerHTML=`<img src="${e.target.result}" class="preview-img"><button class="preview-remove" onclick="removeImage(${idx})" type="button">×</button>`;
+function closeAddModal() {
+  document.getElementById('addModal').classList.remove('open');
+}
+
+function handleModalClick(e, id) {
+  if (e.target.id === id) {
+    if (id === 'addModal') closeAddModal();
+    if (id === 'detailModal') closeDetailModal();
+  }
+}
+
+// ══════════════════════════════════
+// IMAGE HANDLING
+// ══════════════════════════════════
+function handleImages(input) {
+  const files = [...input.files].slice(0, 10);
+  uploadedImages = files;
+  const preview = document.getElementById('previewGrid');
+  preview.innerHTML = '';
+  files.forEach((f, idx) => {
+    const reader = new FileReader();
+    reader.onload = e => {
+      const wrap = document.createElement('div');
+      wrap.className = 'preview-wrap';
+      wrap.innerHTML = `
+        <img src="${e.target.result}" class="preview-img">
+        <button class="preview-remove" onclick="removeImage(${idx})" type="button">×</button>`;
       preview.appendChild(wrap);
     };
     reader.readAsDataURL(f);
   });
 }
-function removeImage(idx){
-  uploadedImages.splice(idx,1);
-  const dt=new DataTransfer();
-  uploadedImages.forEach(f=>dt.items.add(f));
-  document.getElementById('imgInput').files=dt.files;
+
+function removeImage(idx) {
+  uploadedImages.splice(idx, 1);
+  const newDt = new DataTransfer();
+  uploadedImages.forEach(f => newDt.items.add(f));
+  document.getElementById('imgInput').files = newDt.files;
   handleImages(document.getElementById('imgInput'));
 }
 
-// ══════════════════════════════
-// CLOUDINARY UPLOAD
-// ══════════════════════════════
-async function uploadToCloudinary(file){
-  const fd=new FormData();
-  fd.append('file',file);
-  fd.append('upload_preset',CLOUDINARY_UPLOAD_PRESET);
-  fd.append('folder','yougo-cars');
-  const res=await fetch(`https://api.cloudinary.com/v1_1/${CLOUDINARY_CLOUD_NAME}/image/upload`,{method:'POST',body:fd});
-  if(!res.ok) throw new Error('Upload failed');
-  return (await res.json()).secure_url;
+// ══════════════════════════════════
+// UPLOAD IMAGE TO CLOUDINARY
+// ══════════════════════════════════
+async function uploadToCloudinary(file, progressCallback) {
+  // אם Cloudinary לא מוגדר, השתמש ב-Supabase Storage
+  if (CLOUDINARY_CLOUD_NAME === 'YOUR_CLOUD_NAME') {
+    return await uploadToSupabase(file);
+  }
+
+  const formData = new FormData();
+  formData.append('file', file);
+  formData.append('upload_preset', CLOUDINARY_UPLOAD_PRESET);
+  formData.append('folder', 'yougo-cars');
+
+  const res = await fetch(`https://api.cloudinary.com/v1_1/${CLOUDINARY_CLOUD_NAME}/image/upload`, {
+    method: 'POST',
+    body: formData
+  });
+
+  if (!res.ok) throw new Error('Cloudinary upload failed');
+  const data = await res.json();
+  return data.secure_url;
 }
 
-// ══════════════════════════════
-// SUBMIT CAR
-// ══════════════════════════════
-async function submitCar(e){
+async function uploadToSupabase(file) {
+  const ext = file.name.split('.').pop();
+  const path = `${Date.now()}-${Math.random().toString(36).slice(2)}.${ext}`;
+  const { data, error } = await sb.storage.from('car-images').upload(path, file, {
+    cacheControl: '3600', upsert: false
+  });
+  if (error) throw error;
+  const { data: urlData } = sb.storage.from('car-images').getPublicUrl(path);
+  return urlData.publicUrl;
+}
+
+// ══════════════════════════════════
+// SUBMIT CAR — פרסום מיידי!
+// ══════════════════════════════════
+async function submitCar(e) {
   e.preventDefault();
-  const btn=document.getElementById('submitBtn');
-  const progressEl=document.getElementById('uploadProgress');
-  const progressBar=document.getElementById('uploadProgressBar');
-  btn.disabled=true;
-  btn.textContent='⏳ מעלה תמונות...';
-  if(uploadedImages.length>0) progressEl.style.display='block';
+  const btn = document.getElementById('submitBtn');
+  const progressEl = document.getElementById('uploadProgress');
+  const progressBar = document.getElementById('uploadProgressBar');
+
+  btn.disabled = true;
+  btn.textContent = '⏳ מעלה תמונות...';
+
+  if (uploadedImages.length > 0) {
+    progressEl.style.display = 'block';
+  }
 
   try {
-    const imageUrls=[];
-    for(let i=0;i<uploadedImages.length;i++){
-      btn.textContent=`⏳ תמונה ${i+1}/${uploadedImages.length}...`;
-      progressBar.style.width=`${((i+1)/uploadedImages.length)*100}%`;
-      imageUrls.push(await uploadToCloudinary(uploadedImages[i]));
+    // Upload images
+    const imageUrls = [];
+    for (let i = 0; i < uploadedImages.length; i++) {
+      const file = uploadedImages[i];
+      btn.textContent = `⏳ מעלה תמונה ${i+1}/${uploadedImages.length}...`;
+      progressBar.style.width = `${((i+1)/uploadedImages.length)*100}%`;
+
+      const url = await uploadToCloudinary(file);
+      imageUrls.push(url);
     }
-    progressEl.style.display='none'; btn.textContent='💾 שומר...';
-    const { error }=await sb.from('cars').insert({
-      make:document.getElementById('f_make').value.trim(),
-      model:document.getElementById('f_model').value.trim(),
-      year:parseInt(document.getElementById('f_year').value),
-      price:parseInt(document.getElementById('f_price').value),
-      mileage:parseInt(document.getElementById('f_mileage').value)||0,
-      hand:parseInt(document.getElementById('f_hand').value),
-      gear_type:document.getElementById('f_gear').value,
-      fuel_type:document.getElementById('f_fuel').value,
-      color:document.getElementById('f_color').value.trim(),
-      engine_size:parseFloat(document.getElementById('f_engine').value)||null,
-      description_he:document.getElementById('f_desc_he').value,
-      description_ar:document.getElementById('f_desc_ar').value,
-      seller_name:document.getElementById('f_name').value.trim(),
-      seller_phone:document.getElementById('f_phone').value.trim(),
-      seller_city:document.getElementById('f_city').value.trim(),
-      images:imageUrls, main_image:imageUrls[0]||null, status:'active'
-    });
-    if(error) throw error;
+
+    progressEl.style.display = 'none';
+    btn.textContent = '💾 שומר מודעה...';
+
+    // ⚡ פרסום מיידי — status: 'active'
+    const carData = {
+      make: document.getElementById('f_make').value.trim(),
+      model: document.getElementById('f_model').value.trim(),
+      year: parseInt(document.getElementById('f_year').value),
+      price: parseInt(document.getElementById('f_price').value),
+      mileage: parseInt(document.getElementById('f_mileage').value) || 0,
+      hand: parseInt(document.getElementById('f_hand').value),
+      gear_type: document.getElementById('f_gear').value,
+      fuel_type: document.getElementById('f_fuel').value,
+      color: document.getElementById('f_color').value.trim(),
+      engine_size: parseFloat(document.getElementById('f_engine').value) || null,
+      description_he: document.getElementById('f_desc_he').value,
+      description_ar: document.getElementById('f_desc_ar').value,
+      seller_name: document.getElementById('f_name').value.trim(),
+      seller_phone: document.getElementById('f_phone').value.trim(),
+      seller_city: document.getElementById('f_city').value.trim(),
+      images: imageUrls,
+      main_image: imageUrls[0] || null,
+      status: 'active', // ← פרסום מיידי תמיד!
+    };
+
+    const { error } = await sb.from('cars').insert(carData);
+    if (error) throw error;
+
+    // Reload cars to show the new listing
     await loadCars();
-    document.getElementById('addModalBody').innerHTML=`
+
+    // Show success
+    document.getElementById('addModalBody').innerHTML = `
       <div class="success-msg">
         <div class="success-icon">🎉</div>
         <h3>המודעה פורסמה!</h3>
-        <p>הרכב שלך נראה עכשיו לכולם 🚗✨</p>
-        <button class="btn btn-red" style="margin-top:24px;padding:14px 36px" onclick="closeAddModal();document.getElementById('addModalBody').innerHTML=''">סגור</button>
+        <p>הרכב שלך זמין עכשיו לכולם לראות 🚗✨</p>
+        <button class="btn btn-red" style="margin-top:24px;padding:14px 36px;font-size:16px" onclick="closeAddModal();document.getElementById('addModalBody').innerHTML=''">
+          סגור
+        </button>
       </div>`;
-    showToast('🚗 המודעה פורסמה בהצלחה!','success');
-  } catch(err){
-    showToast('❌ שגיאה: '+err.message,'error');
-    btn.disabled=false; btn.textContent=t('submitBtn'); progressEl.style.display='none';
+
+    showToast('🚗 המודעה פורסמה בהצלחה!', 'success');
+
+  } catch(err) {
+    showToast('❌ שגיאה: ' + err.message, 'error');
+    btn.disabled = false;
+    btn.textContent = t('submitBtn');
+    progressEl.style.display = 'none';
   }
 }
 
-// ══════════════════════════════
-// ADMIN
-// ══════════════════════════════
-function adminLogin(){
-  const pass=prompt('🔑 Admin Password:');
-  if(pass===null) return;
-  if(pass===ADMIN_PASS){
-    isAdmin=true;
-    const bar=document.getElementById('adminBar');
-    bar.style.display='flex';
-    document.getElementById('heroSection').style.marginTop='0';
-    document.getElementById('adminActions').innerHTML=`
+// ══════════════════════════════════
+// ADMIN FUNCTIONS
+// ══════════════════════════════════
+function adminLogin() {
+  const pass = prompt('🔑 Admin Password:');
+  if (pass === null) return;
+
+  if (pass === ADMIN_PASS) {
+    isAdmin = true;
+    const bar = document.getElementById('adminBar');
+    bar.style.display = 'flex';
+    document.getElementById('heroSection').style.marginTop = '0';
+    document.getElementById('adminActions').innerHTML = `
       <span style="color:var(--text2);font-size:13px;font-weight:600">מצב אדמין פעיל</span>
       <button onclick="loadCars()" style="background:rgba(200,16,46,0.12);border:1px solid var(--border-red);color:var(--red);padding:7px 16px;border-radius:9px;cursor:pointer;font-size:13px;font-weight:800;font-family:var(--font)">🔄 רענן</button>
       <a href="admin.html" style="background:rgba(59,130,246,0.12);border:1px solid rgba(59,130,246,0.3);color:#60a5fa;padding:7px 16px;border-radius:9px;cursor:pointer;font-size:13px;font-weight:800;font-family:var(--font);text-decoration:none">⚙️ לוח ניהול</a>
       <button onclick="adminLogout()" style="background:var(--bg3);border:1px solid var(--border);color:var(--text2);padding:7px 16px;border-radius:9px;cursor:pointer;font-size:13px;font-family:var(--font);font-weight:700">יציאה</button>`;
     loadCars();
-    showToast('✅ ברוך הבא, Admin!','success');
+    showToast('✅ ברוך הבא, Admin!', 'success');
   } else {
-    showToast('❌ סיסמה שגויה','error');
+    showToast('❌ סיסמה שגויה', 'error');
   }
 }
-function adminLogout(){
-  isAdmin=false;
-  document.getElementById('adminBar').style.display='none';
-  document.getElementById('heroSection').style.marginTop='';
+
+function adminLogout() {
+  isAdmin = false;
+  document.getElementById('adminBar').style.display = 'none';
+  document.getElementById('heroSection').style.marginTop = '';
   loadCars();
 }
-async function approveCar(id){
-  const { error }=await sb.from('cars').update({status:'active'}).eq('id',id);
-  if(!error){ showToast('✅ המודעה אושרה!','success'); loadCars(); }
-  else showToast('❌ שגיאה: '+error.message,'error');
-}
-async function markSold(id){
-  const { error }=await sb.from('cars').update({status:'sold'}).eq('id',id);
-  if(!error){ showToast('✅ סומן כנמכר','success'); loadCars(); }
-}
-async function deleteCar(id){
-  if(!confirm('למחוק מודעה זו לצמיתות?')) return;
-  const { error }=await sb.from('cars').delete().eq('id',id);
-  if(!error){ showToast('🗑️ המודעה נמחקה','success'); loadCars(); }
-  else showToast('❌ שגיאה: '+error.message,'error');
+
+async function approveCar(id) {
+  const { error } = await sb.from('cars').update({ status: 'active' }).eq('id', id);
+  if (!error) { showToast('✅ המודעה אושרה!', 'success'); loadCars(); }
+  else showToast('❌ שגיאה: ' + error.message, 'error');
 }
 
-// ══════════════════════════════
+async function markSold(id) {
+  const { error } = await sb.from('cars').update({ status: 'sold' }).eq('id', id);
+  if (!error) { showToast('✅ סומן כנמכר', 'success'); loadCars(); }
+}
+
+async function deleteCar(id) {
+  if (!confirm('למחוק מודעה זו לצמיתות?')) return;
+  const { error } = await sb.from('cars').delete().eq('id', id);
+  if (!error) { showToast('🗑️ המודעה נמחקה', 'success'); loadCars(); }
+  else showToast('❌ שגיאה: ' + error.message, 'error');
+}
+
+// ══════════════════════════════════
 // UTILS
-// ══════════════════════════════
-function showToast(msg,type='success'){
-  const el=document.getElementById('toast');
-  el.textContent=msg; el.className=`toast ${type} show`;
-  setTimeout(()=>el.classList.remove('show'),3500);
+// ══════════════════════════════════
+function showToast(msg, type = 'success') {
+  const el = document.getElementById('toast');
+  el.textContent = msg;
+  el.className = `toast ${type} show`;
+  setTimeout(() => el.classList.remove('show'), 3500);
 }
 
-document.addEventListener('keydown',e=>{
-  if(e.key==='Escape'){ closeDetailModal(); closeAddModal(); }
+function scrollToListings() {
+  document.getElementById('listingsSection').scrollIntoView({ behavior: 'smooth' });
+}
+
+function showHome() {
+  filteredCars = [...allCars];
+  sortCars(currentSort);
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+// ESC to close modals
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') { closeDetailModal(); closeAddModal(); }
 });
 
+// ══════════════════════════════════
 // INIT
+// ══════════════════════════════════
 loadCars();
 </script>
 </body>
