@@ -3,36 +3,33 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>YOUGO CARS — שוק הרכבים הדיגיטלי</title>
+<title>YOUGO CARS — שוק הרכבים</title>
+<meta name="description" content="פרסם רכב בחינם. עולה תוך שניות, נמכר מהר יותר.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;500;700;800;900&family=Noto+Kufi+Arabic:wght@400;700;900&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;500;700;800;900&display=swap" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <style>
 :root {
-  --red: #c8102e;
-  --red-dark: #a50d25;
-  --red-glow: rgba(200,16,46,0.2);
-  --gold: #d4af37;
-  --gold-light: rgba(212,175,55,0.15);
-  --bg: #06060a;
-  --bg2: #0c0c14;
-  --bg3: #11111a;
-  --card: #0f0f18;
-  --card-hover: #14141f;
-  --border: rgba(255,255,255,0.07);
-  --border-red: rgba(200,16,46,0.35);
-  --text: #eeeef5;
-  --text2: rgba(238,238,245,0.5);
-  --text3: rgba(238,238,245,0.28);
-  --radius: 18px;
-  --font: 'Heebo', 'Noto Kufi Arabic', sans-serif;
-  --shadow-red: 0 0 40px rgba(200,16,46,0.12);
-  --shadow-card: 0 8px 32px rgba(0,0,0,0.5);
+  --red: #e8112d;
+  --red2: #ff2442;
+  --red-glow: rgba(232,17,45,0.3);
+  --bg: #080810;
+  --bg2: #0d0d1a;
+  --bg3: #12121f;
+  --bg4: #17172a;
+  --card: #0f0f1c;
+  --border: rgba(255,255,255,0.06);
+  --border2: rgba(255,255,255,0.1);
+  --text: #f0f0ff;
+  --text2: rgba(240,240,255,0.5);
+  --text3: rgba(240,240,255,0.25);
+  --green: #00e676;
+  --gold: #ffd700;
+  --font: 'Heebo', sans-serif;
+  --r: 20px;
 }
-
 * { margin:0; padding:0; box-sizing:border-box; }
-html { scroll-behavior: smooth; }
-
+html { scroll-behavior:smooth; }
 body {
   font-family: var(--font);
   background: var(--bg);
@@ -41,1608 +38,1123 @@ body {
   overflow-x: hidden;
 }
 
-/* ── SCROLLBAR ── */
-::-webkit-scrollbar { width: 5px; }
-::-webkit-scrollbar-track { background: var(--bg); }
-::-webkit-scrollbar-thumb { background: var(--red); border-radius: 3px; }
+/* NOISE TEXTURE OVERLAY */
+body::before {
+  content: '';
+  position: fixed; inset: 0; z-index: 0; pointer-events: none;
+  opacity: 0.025;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+}
+
+::-webkit-scrollbar { width: 4px; }
+::-webkit-scrollbar-thumb { background: var(--red); border-radius: 2px; }
 
 /* ══════════════════════════════════
    NAV
 ══════════════════════════════════ */
 nav {
-  position: fixed; top:0; left:0; right:0; z-index: 200;
+  position: fixed; top: 0; left: 0; right: 0; z-index: 200;
+  height: 64px;
   display: flex; align-items: center; justify-content: space-between;
-  padding: 0 28px; height: 66px;
-  background: rgba(6,6,10,0.88);
-  backdrop-filter: blur(24px) saturate(1.5);
+  padding: 0 24px;
+  background: rgba(8,8,16,0.85);
+  backdrop-filter: blur(28px) saturate(1.5);
   border-bottom: 1px solid var(--border);
 }
-
 .nav-logo {
-  display: flex; align-items: center; gap: 11px;
+  display: flex; align-items: center; gap: 10px;
   text-decoration: none;
 }
-.nav-logo-icon {
+.nav-logo-mark {
   width: 38px; height: 38px; border-radius: 12px;
-  background: linear-gradient(135deg, var(--red), #e8223f);
+  background: var(--red);
   display: flex; align-items: center; justify-content: center;
-  font-size: 19px;
-  box-shadow: 0 4px 16px rgba(200,16,46,0.4);
+  font-size: 18px; font-weight: 900; color: white;
+  box-shadow: 0 0 20px var(--red-glow);
+  letter-spacing: -1px;
 }
-.nav-logo-text { font-size: 18px; font-weight: 900; letter-spacing: -0.3px; }
-.nav-logo-text span { color: var(--red); }
-
-.nav-center { display: flex; gap: 4px; }
-.nav-link {
-  padding: 6px 14px; border-radius: 10px;
-  font-size: 13px; font-weight: 700; color: var(--text2);
-  cursor: pointer; background: none; border: none;
-  font-family: var(--font); transition: all 0.2s;
+.nav-logo-text {
+  font-size: 18px; font-weight: 900;
+  background: linear-gradient(135deg, #fff 30%, rgba(255,255,255,0.6));
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  background-clip: text;
 }
-.nav-link:hover { color: white; background: rgba(255,255,255,0.06); }
-
-.nav-actions { display: flex; gap: 8px; align-items: center; }
-
-.lang-btn {
-  background: var(--bg3); border: 1px solid var(--border);
-  color: var(--text2); padding: 7px 13px; border-radius: 10px;
-  font-size: 13px; cursor: pointer; font-family: var(--font);
-  transition: all 0.2s; font-weight: 600;
+.nav-logo-text em { color: var(--red); -webkit-text-fill-color: var(--red); font-style: normal; }
+.nav-right { display: flex; align-items: center; gap: 10px; }
+.nav-post-btn {
+  display: flex; align-items: center; gap: 7px;
+  padding: 9px 20px; border-radius: 12px;
+  background: var(--red);
+  color: white; font-weight: 800; font-size: 14px;
+  border: none; cursor: pointer; font-family: var(--font);
+  box-shadow: 0 4px 20px var(--red-glow);
+  transition: all 0.2s;
 }
-.lang-btn:hover { border-color: var(--border-red); color: white; }
-
-.btn {
-  display: inline-flex; align-items: center; gap: 6px;
-  padding: 9px 20px; border-radius: 11px;
-  font-family: var(--font); font-weight: 800; font-size: 14px;
-  cursor: pointer; border: none; transition: all 0.2s;
-  text-decoration: none; white-space: nowrap;
-}
-.btn-red {
-  background: linear-gradient(135deg, var(--red), #e0162f);
-  color: white;
-  box-shadow: 0 4px 20px rgba(200,16,46,0.35);
-}
-.btn-red:hover {
-  background: linear-gradient(135deg, #d91130, var(--red));
-  transform: translateY(-1px);
-  box-shadow: 0 6px 24px rgba(200,16,46,0.45);
-}
-.btn-ghost {
-  background: rgba(255,255,255,0.06); color: var(--text2);
-  border: 1px solid var(--border);
-}
-.btn-ghost:hover { background: rgba(255,255,255,0.1); color: white; }
-
-/* ══════════════════════════════════
-   ADMIN BAR
-══════════════════════════════════ */
-.admin-bar {
-  background: linear-gradient(90deg, rgba(200,16,46,0.08), transparent);
-  border-bottom: 1px solid var(--border-red);
-  padding: 10px 28px; display: flex; gap: 10px;
-  align-items: center; margin-top: 66px;
-}
-.admin-bar-title { font-weight: 900; color: var(--red); font-size: 14px; }
-.admin-actions { display: flex; gap: 8px; margin-right: auto; }
+.nav-post-btn:hover { transform: scale(1.03); box-shadow: 0 6px 28px var(--red-glow); }
+.nav-admin { font-size: 11px; color: var(--text3); cursor: pointer; padding: 6px 10px; }
+.nav-admin:hover { color: var(--text2); }
 
 /* ══════════════════════════════════
    HERO
 ══════════════════════════════════ */
 .hero {
-  padding: 130px 28px 70px;
+  position: relative;
+  padding: 110px 24px 56px;
   text-align: center;
-  position: relative; overflow: hidden;
-  background: var(--bg);
+  overflow: hidden;
 }
-
-.hero-bg {
-  position: absolute; inset: 0; z-index: 0;
+/* Animated gradient bg */
+.hero-glow {
+  position: absolute; inset: 0; pointer-events: none;
   background:
-    radial-gradient(ellipse 70% 55% at 50% 0%, rgba(200,16,46,0.16) 0%, transparent 65%),
-    radial-gradient(ellipse 40% 30% at 20% 50%, rgba(200,16,46,0.05) 0%, transparent 60%),
-    radial-gradient(ellipse 40% 30% at 80% 50%, rgba(200,16,46,0.05) 0%, transparent 60%);
+    radial-gradient(ellipse 90% 70% at 50% -10%, rgba(232,17,45,0.22) 0%, transparent 60%),
+    radial-gradient(ellipse 40% 40% at 20% 60%, rgba(232,17,45,0.06) 0%, transparent 50%),
+    radial-gradient(ellipse 40% 40% at 80% 60%, rgba(100,80,255,0.06) 0%, transparent 50%);
+  animation: heroBreath 8s ease-in-out infinite;
 }
-
+@keyframes heroBreath {
+  0%,100% { opacity: 1; }
+  50% { opacity: 0.7; }
+}
+/* Grid lines */
 .hero-grid {
-  position: absolute; inset: 0; z-index: 0;
+  position: absolute; inset: 0; pointer-events: none;
   background-image:
     linear-gradient(rgba(255,255,255,0.025) 1px, transparent 1px),
     linear-gradient(90deg, rgba(255,255,255,0.025) 1px, transparent 1px);
-  background-size: 50px 50px;
-  mask-image: radial-gradient(ellipse 85% 75% at 50% 20%, black 30%, transparent 80%);
+  background-size: 40px 40px;
+  mask-image: radial-gradient(ellipse 80% 70% at 50% 30%, black 20%, transparent 80%);
 }
 
 .hero-content { position: relative; z-index: 1; }
 
-.hero-badge {
-  display: inline-flex; align-items: center; gap: 8px;
-  padding: 7px 18px; border-radius: 100px;
-  background: rgba(200,16,46,0.1); border: 1px solid var(--border-red);
-  font-size: 11px; font-weight: 800; color: rgba(255,255,255,0.65);
-  margin-bottom: 28px; text-transform: uppercase; letter-spacing: 0.12em;
-  animation: fadeInDown 0.7s ease;
+/* Trust badges row — like the screenshot */
+.trust-bar {
+  display: flex; align-items: center; justify-content: center;
+  gap: 0; margin-bottom: 28px; flex-wrap: wrap;
 }
-.hero-badge .dot {
-  width: 7px; height: 7px; border-radius: 50%;
-  background: var(--red);
-  animation: pulse 2s infinite;
-  box-shadow: 0 0 8px var(--red);
+.trust-item {
+  display: flex; align-items: center; gap: 8px;
+  padding: 10px 22px;
+  border: 1px solid var(--border2);
+  font-size: 13px; font-weight: 700; color: var(--text2);
+  background: rgba(255,255,255,0.03);
+  backdrop-filter: blur(8px);
+  transition: all 0.2s;
+  white-space: nowrap;
 }
-
-@keyframes pulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:0.5;transform:scale(0.85)} }
-@keyframes fadeInDown { from { opacity:0; transform:translateY(-16px); } to { opacity:1; transform:translateY(0); } }
-@keyframes fadeInUp { from { opacity:0; transform:translateY(20px); } to { opacity:1; transform:translateY(0); } }
+.trust-item:first-child { border-radius: 14px 0 0 14px; }
+.trust-item:last-child { border-radius: 0 14px 14px 0; }
+.trust-item:not(:first-child) { border-right: none; }
+.trust-item:hover { background: rgba(255,255,255,0.06); color: white; }
+.trust-icon {
+  width: 28px; height: 28px; border-radius: 8px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 14px;
+}
+.ti-green { background: rgba(0,230,118,0.12); border: 1px solid rgba(0,230,118,0.2); color: var(--green); }
+.ti-red { background: rgba(232,17,45,0.12); border: 1px solid rgba(232,17,45,0.2); color: var(--red); }
+.ti-blue { background: rgba(100,149,237,0.12); border: 1px solid rgba(100,149,237,0.2); color: #6495ed; }
+.ti-gold { background: rgba(255,215,0,0.1); border: 1px solid rgba(255,215,0,0.2); color: var(--gold); }
+.trust-val { font-size: 15px; font-weight: 900; color: white; }
 
 .hero h1 {
-  font-size: clamp(2.4rem, 7vw, 5rem);
-  font-weight: 900; line-height: 1.08;
-  margin-bottom: 18px;
-  letter-spacing: -1px;
-  animation: fadeInUp 0.7s 0.1s ease both;
+  font-size: clamp(2.2rem, 6vw, 4.2rem);
+  font-weight: 900; line-height: 1.05;
+  margin-bottom: 14px;
+  letter-spacing: -0.02em;
 }
-.hero h1 .red { color: var(--red); position: relative; }
-.hero h1 .red::after {
-  content: '';
-  position: absolute; bottom: -4px; left: 0; right: 0; height: 3px;
-  background: linear-gradient(90deg, var(--red), transparent);
-  border-radius: 2px;
+.hero h1 .accent {
+  background: linear-gradient(135deg, var(--red), var(--red2));
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  background-clip: text;
 }
-
 .hero-sub {
   font-size: 16px; color: var(--text2); max-width: 480px;
-  margin: 0 auto 38px; line-height: 1.75;
-  animation: fadeInUp 0.7s 0.2s ease both;
+  margin: 0 auto 32px; line-height: 1.7; font-weight: 400;
 }
-
-.hero-btns {
-  display: flex; gap: 12px; justify-content: center; flex-wrap: wrap;
-  animation: fadeInUp 0.7s 0.3s ease both;
-}
-
-.hero-stats {
-  display: flex; justify-content: center; gap: 0;
-  margin-top: 52px; flex-wrap: wrap;
-  background: var(--bg2); border: 1px solid var(--border);
-  border-radius: 20px; max-width: 520px; margin-inline: auto;
-  overflow: hidden;
-  animation: fadeInUp 0.7s 0.4s ease both;
-}
-.hero-stat {
-  flex: 1; padding: 20px 16px; text-align: center;
-  position: relative;
-}
-.hero-stat:not(:last-child)::after {
-  content: '';
-  position: absolute; right: 0; top: 20%; bottom: 20%;
-  width: 1px; background: var(--border);
-}
-.hero-stat-val { font-size: 26px; font-weight: 900; }
-.hero-stat-val .accent { color: var(--red); }
-.hero-stat-label { font-size: 11px; color: var(--text3); margin-top: 3px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; }
 
 /* ══════════════════════════════════
-   SEARCH / FILTERS
+   STATS ROW
+══════════════════════════════════ */
+.stats-row {
+  display: flex; justify-content: center; gap: 0;
+  max-width: 500px; margin: 0 auto 40px;
+  background: var(--bg2); border: 1px solid var(--border2);
+  border-radius: 18px; overflow: hidden;
+}
+.stat-item {
+  flex: 1; padding: 16px 12px; text-align: center;
+  border-left: 1px solid var(--border);
+  transition: background 0.2s;
+}
+.stat-item:last-child { border-left: none; }
+.stat-item:hover { background: rgba(255,255,255,0.02); }
+.stat-num {
+  font-size: 26px; font-weight: 900; line-height: 1;
+  margin-bottom: 4px;
+}
+.stat-num.red { color: var(--red); }
+.stat-num.white { color: white; }
+.stat-num.green { color: var(--green); }
+.stat-lbl { font-size: 11px; color: var(--text3); font-weight: 600; }
+
+/* ══════════════════════════════════
+   SEARCH
 ══════════════════════════════════ */
 .search-section {
-  padding: 0 28px 52px;
-  background: var(--bg);
-  position: relative; z-index: 10;
+  max-width: 860px; margin: 0 auto;
+  padding: 0 20px 48px;
 }
-
 .search-box {
-  max-width: 960px; margin: 0 auto;
   background: var(--bg2);
-  border: 1px solid var(--border);
-  border-radius: 22px; padding: 22px 24px;
-  box-shadow: 0 24px 64px rgba(0,0,0,0.45);
+  border: 1px solid var(--border2);
+  border-radius: 22px; padding: 18px 20px;
+  box-shadow: 0 24px 80px rgba(0,0,0,0.5);
 }
-
-.search-row {
-  display: flex; gap: 10px; margin-bottom: 14px; flex-wrap: wrap;
+.search-top {
+  display: flex; gap: 10px; margin-bottom: 14px;
 }
-
-.search-input {
-  flex: 1; min-width: 220px;
+.s-input {
+  flex: 1;
   background: var(--bg3); border: 1px solid var(--border);
-  color: white; padding: 13px 18px; border-radius: 13px;
-  font-family: var(--font); font-size: 14px;
-  outline: none; transition: all 0.2s;
+  color: white; padding: 13px 18px; border-radius: 14px;
+  font-family: var(--font); font-size: 14px; outline: none;
+  transition: all 0.2s;
 }
-.search-input:focus {
-  border-color: var(--red);
-  box-shadow: 0 0 0 3px rgba(200,16,46,0.1);
+.s-input:focus { border-color: var(--red); box-shadow: 0 0 0 3px rgba(232,17,45,0.1); }
+.s-input::placeholder { color: var(--text3); }
+.search-go {
+  padding: 13px 28px; border-radius: 14px;
+  background: var(--red); color: white;
+  border: none; font-family: var(--font); font-weight: 800; font-size: 15px;
+  cursor: pointer; transition: all 0.2s; white-space: nowrap;
+  box-shadow: 0 4px 16px var(--red-glow);
 }
-.search-input::placeholder { color: var(--text3); }
-
-.filter-row { display: flex; gap: 8px; flex-wrap: wrap; }
-
-.filter-select {
+.search-go:hover { background: var(--red2); transform: scale(1.02); }
+.search-filters {
+  display: flex; gap: 8px; flex-wrap: wrap;
+}
+.s-select {
   background: var(--bg3); border: 1px solid var(--border);
-  color: var(--text2); padding: 10px 14px; border-radius: 11px;
-  font-family: var(--font); font-size: 13px;
-  cursor: pointer; outline: none; flex: 1; min-width: 130px;
+  color: var(--text2); padding: 9px 13px; border-radius: 11px;
+  font-family: var(--font); font-size: 13px; cursor: pointer;
+  outline: none; flex: 1; min-width: 120px;
   transition: border-color 0.2s;
 }
-.filter-select:focus { border-color: var(--red); }
-option { background: #111; }
-
-.search-btn {
-  background: linear-gradient(135deg, var(--red), #e0162f);
-  color: white; border: none;
-  padding: 13px 30px; border-radius: 13px; font-weight: 800;
-  font-family: var(--font); font-size: 15px; cursor: pointer;
-  transition: all 0.2s; white-space: nowrap;
-  box-shadow: 0 4px 16px rgba(200,16,46,0.3);
-}
-.search-btn:hover { transform: translateY(-1px); box-shadow: 0 6px 20px rgba(200,16,46,0.4); }
+.s-select:focus { border-color: var(--red); }
 
 /* ══════════════════════════════════
-   MAIN LAYOUT & SECTION
+   LISTINGS
 ══════════════════════════════════ */
-.main-container {
-  max-width: 1240px; margin: 0 auto; padding: 0 28px 100px;
+.listings-section {
+  max-width: 1200px; margin: 0 auto;
+  padding: 0 20px 80px;
 }
-
-.section-header {
+.sec-header {
   display: flex; align-items: center; justify-content: space-between;
-  margin-bottom: 28px;
+  margin-bottom: 22px; flex-wrap: wrap; gap: 10px;
 }
-
-.section-title { font-size: 23px; font-weight: 900; }
-.section-title .red { color: var(--red); }
-
-.count-badge {
+.sec-title { font-size: 20px; font-weight: 800; }
+.sec-title em { color: var(--red); font-style: normal; }
+.sec-count {
+  font-size: 12px; color: var(--text3);
   background: var(--bg2); border: 1px solid var(--border);
-  padding: 6px 16px; border-radius: 100px;
-  font-size: 13px; color: var(--text2); font-weight: 600;
+  padding: 5px 14px; border-radius: 100px;
 }
-
-.sort-row {
-  display: flex; gap: 8px; margin-bottom: 24px; flex-wrap: wrap;
-}
-.sort-btn {
-  padding: 7px 16px; border-radius: 10px; border: 1px solid var(--border);
-  background: var(--bg2); color: var(--text2); font-family: var(--font);
-  font-size: 12px; font-weight: 700; cursor: pointer; transition: all 0.2s;
-}
-.sort-btn.active { background: var(--red); border-color: var(--red); color: white; }
-.sort-btn:hover:not(.active) { border-color: var(--border-red); color: white; }
 
 /* ══════════════════════════════════
-   CARS GRID
+   INSTAGRAM-STYLE GRID
 ══════════════════════════════════ */
-.cars-grid {
+.ig-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(290px, 1fr));
-  gap: 22px;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 3px;
 }
+@media(max-width:768px) { .ig-grid { grid-template-columns: repeat(2, 1fr); gap: 2px; } }
+@media(max-width:480px) { .ig-grid { grid-template-columns: repeat(2, 1fr); gap: 2px; } }
 
-.car-card {
-  background: var(--card); border: 1px solid var(--border);
-  border-radius: var(--radius); overflow: hidden;
-  transition: all 0.28s cubic-bezier(0.4,0,0.2,1);
-  cursor: pointer; text-decoration: none; color: inherit;
+/* Featured post — bigger */
+.ig-post {
   position: relative;
+  aspect-ratio: 1/1;
+  overflow: hidden;
+  background: var(--bg3);
+  cursor: pointer;
 }
-
-.car-card::before {
-  content: '';
-  position: absolute; inset: 0;
-  background: linear-gradient(135deg, transparent 60%, rgba(200,16,46,0.03) 100%);
-  opacity: 0; transition: opacity 0.3s;
-  pointer-events: none; z-index: 1;
+.ig-post.featured {
+  grid-column: span 2;
+  grid-row: span 2;
 }
-
-.car-card:hover {
-  border-color: var(--border-red);
-  transform: translateY(-5px);
-  box-shadow: 0 16px 48px rgba(200,16,46,0.12), 0 4px 16px rgba(0,0,0,0.4);
-  background: var(--card-hover);
+.ig-post-img {
+  width: 100%; height: 100%;
+  object-fit: cover;
+  transition: transform 0.5s cubic-bezier(0.4,0,0.2,1);
+  display: block;
 }
-.car-card:hover::before { opacity: 1; }
-
-/* Image */
-.car-img-wrap { position: relative; overflow: hidden; }
-
-.car-img {
-  width: 100%; height: 210px;
-  object-fit: cover; display: block;
-  transition: transform 0.4s ease;
-}
-.car-card:hover .car-img { transform: scale(1.04); }
-
-.car-img-placeholder {
-  width: 100%; height: 210px;
-  background: linear-gradient(135deg, var(--bg3) 0%, var(--bg2) 100%);
+.ig-post-ph {
+  width: 100%; height: 100%;
   display: flex; align-items: center; justify-content: center;
   font-size: 52px;
+  background: linear-gradient(135deg, var(--bg3), var(--bg4));
 }
-
-.car-badges {
-  position: absolute; top: 12px; right: 12px;
-  display: flex; gap: 5px; flex-wrap: wrap; z-index: 2;
+/* Hover overlay */
+.ig-overlay {
+  position: absolute; inset: 0;
+  background: linear-gradient(180deg,
+    rgba(0,0,0,0) 0%,
+    rgba(0,0,0,0.2) 50%,
+    rgba(0,0,0,0.85) 100%
+  );
+  opacity: 0; transition: opacity 0.3s;
+  display: flex; align-items: flex-end;
+  padding: 16px;
 }
+.ig-post:hover .ig-overlay { opacity: 1; }
+.ig-post:hover .ig-post-img { transform: scale(1.06); }
+.ig-hover-info { width: 100%; }
+.ig-hover-price {
+  font-size: 22px; font-weight: 900; color: white; line-height: 1;
+  margin-bottom: 4px;
+}
+.ig-hover-name { font-size: 13px; color: rgba(255,255,255,0.8); font-weight: 600; }
+.ig-hover-stats {
+  display: flex; gap: 12px; margin-top: 8px;
+}
+.ig-hover-stat { font-size: 11px; color: rgba(255,255,255,0.6); }
 
-.badge {
+/* Always-visible price tag on mobile */
+.ig-price-tag {
+  position: absolute; bottom: 8px; right: 8px;
+  background: rgba(0,0,0,0.75); backdrop-filter: blur(6px);
+  border: 1px solid rgba(255,255,255,0.12);
+  padding: 5px 10px; border-radius: 8px;
+  font-size: 13px; font-weight: 800; color: white;
+}
+@media(min-width:769px) { .ig-price-tag { display: none; } }
+
+/* Package badge */
+.ig-pkg-badge {
+  position: absolute; top: 8px; right: 8px; z-index: 2;
   padding: 4px 10px; border-radius: 100px;
-  font-size: 10px; font-weight: 800; backdrop-filter: blur(8px);
+  font-size: 10px; font-weight: 900;
+  backdrop-filter: blur(8px);
 }
-.badge-new { background: rgba(74,222,128,0.18); color: #4ade80; border: 1px solid rgba(74,222,128,0.35); }
-.badge-featured { background: rgba(212,175,55,0.18); color: var(--gold); border: 1px solid rgba(212,175,55,0.35); }
-.badge-sold { background: rgba(239,68,68,0.18); color: #ef4444; border: 1px solid rgba(239,68,68,0.35); }
+.pkg-free { background: rgba(0,230,118,0.15); border: 1px solid rgba(0,230,118,0.3); color: var(--green); }
+.pkg-basic { display: none; }
+.pkg-vip { background: rgba(255,215,0,0.15); border: 1px solid rgba(255,215,0,0.35); color: var(--gold); }
 
-.car-img-count {
-  position: absolute; bottom: 10px; left: 10px; z-index: 2;
-  background: rgba(0,0,0,0.65); backdrop-filter: blur(8px);
-  padding: 3px 9px; border-radius: 7px;
-  font-size: 11px; color: var(--text2); font-weight: 700;
+/* New indicator */
+.ig-new-dot {
+  position: absolute; top: 8px; left: 8px; z-index: 2;
+  width: 8px; height: 8px; border-radius: 50%;
+  background: var(--red);
+  box-shadow: 0 0 8px var(--red);
+  animation: dotPulse 2s infinite;
 }
-
-/* Card body */
-.car-body { padding: 18px; }
-
-.car-title {
-  font-size: 18px; font-weight: 900;
-  margin-bottom: 4px; line-height: 1.25;
-  letter-spacing: -0.2px;
-}
-
-.car-sub { font-size: 13px; color: var(--text2); margin-bottom: 14px; }
-
-.car-price-row { display: flex; align-items: baseline; gap: 6px; margin-bottom: 14px; }
-.car-price { font-size: 24px; font-weight: 900; color: white; }
-.car-price-label { font-size: 12px; color: var(--text3); }
-
-.car-specs {
-  display: flex; gap: 7px; flex-wrap: wrap; margin-bottom: 14px;
-}
-
-.spec-tag {
-  background: var(--bg3); border: 1px solid var(--border);
-  padding: 5px 11px; border-radius: 9px;
-  font-size: 12px; color: var(--text2);
-  display: flex; align-items: center; gap: 4px; font-weight: 600;
-}
-
-.car-footer {
-  display: flex; align-items: center; justify-content: space-between;
-  padding-top: 13px; border-top: 1px solid var(--border);
-}
-
-.car-city {
-  font-size: 12px; color: var(--text3);
-  display: flex; align-items: center; gap: 4px; font-weight: 600;
-}
-
-.car-contact { display: flex; gap: 6px; }
-
-.wa-btn, .call-btn {
-  width: 34px; height: 34px; border-radius: 10px;
-  display: flex; align-items: center; justify-content: center;
-  text-decoration: none; font-size: 16px; transition: all 0.2s;
-}
-.wa-btn { background: rgba(37,211,102,0.1); border: 1px solid rgba(37,211,102,0.2); }
-.wa-btn:hover { background: rgba(37,211,102,0.22); transform: scale(1.08); }
-.call-btn { background: rgba(96,165,250,0.1); border: 1px solid rgba(96,165,250,0.2); }
-.call-btn:hover { background: rgba(96,165,250,0.22); transform: scale(1.08); }
-
-/* Pending bar */
-.status-pending-bar {
-  background: rgba(234,179,8,0.08);
-  border-bottom: 1px solid rgba(234,179,8,0.2);
-  padding: 7px 14px; font-size: 11px; color: #eab308; font-weight: 800;
-  display: flex; align-items: center; gap: 6px;
-}
+@keyframes dotPulse { 0%,100%{transform:scale(1)} 50%{transform:scale(1.4)} }
 
 /* ══════════════════════════════════
-   EMPTY / LOADING
+   DETAIL MODAL — Instagram style
 ══════════════════════════════════ */
-.empty-state {
-  text-align: center; padding: 90px 24px; color: var(--text2);
-  grid-column: 1 / -1;
-}
-.empty-icon { font-size: 70px; margin-bottom: 20px; }
-.empty-state h3 { font-size: 22px; font-weight: 800; color: white; margin-bottom: 10px; }
-
-.loading { text-align: center; padding: 80px; grid-column: 1 / -1; }
-.spinner {
-  width: 44px; height: 44px; border-radius: 50%;
-  border: 3px solid var(--border);
-  border-top-color: var(--red);
-  animation: spin 0.8s linear infinite;
-  margin: 0 auto 18px;
-}
-@keyframes spin { to { transform: rotate(360deg); } }
-
-/* ══════════════════════════════════
-   MODAL BASE
-══════════════════════════════════ */
-.modal-overlay {
-  position: fixed; inset: 0; z-index: 1000;
-  background: rgba(0,0,0,0.88); backdrop-filter: blur(16px);
+.modal-bg {
+  position: fixed; inset: 0; z-index: 500;
+  background: rgba(0,0,0,0.92);
+  backdrop-filter: blur(20px);
   display: flex; align-items: center; justify-content: center;
-  padding: 16px; opacity: 0; pointer-events: none;
-  transition: opacity 0.25s;
+  padding: 16px;
+  opacity: 0; pointer-events: none;
+  transition: opacity 0.3s;
 }
-.modal-overlay.open { opacity: 1; pointer-events: all; }
+.modal-bg.open { opacity: 1; pointer-events: all; }
 
-.modal {
-  background: var(--bg2); border: 1px solid var(--border);
-  border-radius: 24px; width: 100%; max-width: 660px;
-  max-height: 92vh; overflow-y: auto;
-  transform: scale(0.96) translateY(18px);
-  transition: transform 0.28s cubic-bezier(0.4,0,0.2,1);
+/* IG-style modal: image left, info right */
+.modal-inner {
+  display: flex;
+  background: var(--bg2);
+  border: 1px solid var(--border2);
+  border-radius: 24px;
+  overflow: hidden;
+  width: 100%; max-width: 900px;
+  max-height: 90vh;
+  transform: scale(0.94);
+  transition: transform 0.3s cubic-bezier(0.4,0,0.2,1);
 }
-.modal-overlay.open .modal { transform: scale(1) translateY(0); }
+.modal-bg.open .modal-inner { transform: scale(1); }
 
-.modal-header {
-  padding: 22px 24px 18px;
+.modal-img-side {
+  flex: 0 0 55%;
+  background: var(--bg3);
+  position: relative;
+  overflow: hidden;
+  min-height: 500px;
+}
+.modal-main-img {
+  width: 100%; height: 100%;
+  object-fit: cover;
+}
+.modal-img-ph {
+  width: 100%; height: 100%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 80px;
+}
+
+.modal-info-side {
+  flex: 1;
+  display: flex; flex-direction: column;
+  overflow-y: auto;
+  max-height: 90vh;
+}
+
+/* Modal header */
+.modal-head {
+  padding: 18px 20px 14px;
   border-bottom: 1px solid var(--border);
   display: flex; align-items: center; justify-content: space-between;
   position: sticky; top: 0; background: var(--bg2); z-index: 1;
 }
-.modal-title { font-size: 19px; font-weight: 900; }
-.modal-close {
-  width: 36px; height: 36px; border-radius: 10px;
+.modal-car-name { font-size: 17px; font-weight: 900; line-height: 1.2; }
+.modal-close-btn {
+  width: 34px; height: 34px; border-radius: 10px;
   background: var(--bg3); border: 1px solid var(--border);
   color: var(--text2); font-size: 18px; cursor: pointer;
   display: flex; align-items: center; justify-content: center;
   transition: all 0.2s;
 }
-.modal-close:hover { color: white; border-color: rgba(255,255,255,0.2); }
-.modal-body { padding: 24px; }
+.modal-close-btn:hover { color: white; background: rgba(255,255,255,0.08); }
 
-/* ══════════════════════════════════
-   FORM
-══════════════════════════════════ */
-.form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
-.form-group { display: flex; flex-direction: column; gap: 6px; }
-.form-group.full { grid-column: 1 / -1; }
-.form-label { font-size: 12px; font-weight: 800; color: var(--text2); text-transform: uppercase; letter-spacing: 0.06em; }
+.modal-body { padding: 18px 20px; flex: 1; }
 
-.form-input, .form-select, .form-textarea {
+/* Price */
+.modal-price {
+  font-size: 34px; font-weight: 900; color: white; margin-bottom: 4px;
+}
+.modal-location { font-size: 13px; color: var(--text2); margin-bottom: 18px; }
+
+/* Specs grid */
+.modal-specs {
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: 8px; margin-bottom: 18px;
+}
+.mspec {
   background: var(--bg3); border: 1px solid var(--border);
-  color: white; padding: 12px 15px; border-radius: 11px;
-  font-family: var(--font); font-size: 14px; outline: none;
-  transition: all 0.2s; width: 100%;
+  border-radius: 12px; padding: 10px 12px;
 }
-.form-input:focus, .form-select:focus, .form-textarea:focus {
-  border-color: var(--red);
-  box-shadow: 0 0 0 3px rgba(200,16,46,0.1);
-}
-.form-textarea { resize: vertical; min-height: 85px; }
+.mspec-k { font-size: 10px; color: var(--text3); font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 3px; }
+.mspec-v { font-size: 14px; font-weight: 800; color: white; }
 
-.section-divider {
-  font-size: 11px; font-weight: 900; color: var(--red);
-  text-transform: uppercase; letter-spacing: 0.18em;
-  margin: 22px 0 16px; padding-bottom: 9px;
-  border-bottom: 1px solid var(--border-red);
-  display: flex; align-items: center; gap: 8px;
-}
-
-/* Upload area */
-.upload-area {
-  border: 2px dashed rgba(255,255,255,0.1); border-radius: 14px;
-  padding: 30px; text-align: center; cursor: pointer;
-  transition: all 0.2s; background: rgba(255,255,255,0.02);
-}
-.upload-area:hover {
-  border-color: var(--red);
-  background: rgba(200,16,46,0.04);
-}
-.upload-icon { font-size: 38px; margin-bottom: 10px; }
-.upload-text { font-size: 14px; color: var(--text2); }
-.upload-text strong { color: var(--red); }
-
-.preview-grid { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 14px; }
-.preview-wrap { position: relative; }
-.preview-img { width: 82px; height: 82px; border-radius: 12px; object-fit: cover; }
-.preview-remove {
-  position: absolute; top: -5px; right: -5px;
-  width: 20px; height: 20px; border-radius: 50%;
-  background: var(--red); color: white; border: none;
-  font-size: 12px; cursor: pointer; display: flex;
-  align-items: center; justify-content: center; font-weight: 900;
-}
-
-.submit-btn {
-  width: 100%; padding: 16px; border-radius: 14px;
-  background: linear-gradient(135deg, var(--red), #e0162f);
-  color: white; border: none;
-  font-family: var(--font); font-size: 16px; font-weight: 900;
-  cursor: pointer; margin-top: 22px; transition: all 0.2s;
-  box-shadow: 0 6px 24px rgba(200,16,46,0.35);
-  letter-spacing: 0.02em;
-}
-.submit-btn:hover:not(:disabled) { transform: translateY(-1px); box-shadow: 0 8px 28px rgba(200,16,46,0.45); }
-.submit-btn:disabled { opacity: 0.45; cursor: not-allowed; transform: none; }
-
-.upload-progress {
-  margin-top: 12px; height: 4px; background: var(--bg3);
-  border-radius: 2px; overflow: hidden; display: none;
-}
-.upload-progress-bar {
-  height: 100%; background: linear-gradient(90deg, var(--red), #ff4060);
-  border-radius: 2px; transition: width 0.3s;
-}
-
-.success-msg { text-align: center; padding: 44px 24px; }
-.success-icon { font-size: 72px; margin-bottom: 18px; }
-.success-msg h3 { font-size: 24px; font-weight: 900; margin-bottom: 10px; }
-.success-msg p { color: var(--text2); font-size: 15px; line-height: 1.65; }
-
-/* ══════════════════════════════════
-   CAR DETAIL MODAL
-══════════════════════════════════ */
-.detail-gallery { position: relative; margin-bottom: 20px; }
-.detail-img-main {
-  width: 100%; height: 300px; object-fit: cover;
-  border-radius: 16px; display: block;
-}
-.detail-thumbs {
-  display: flex; gap: 8px; overflow-x: auto;
-  padding: 10px 0 4px; scrollbar-width: none;
-}
-.detail-thumbs::-webkit-scrollbar { display: none; }
-.detail-thumb {
-  width: 76px; height: 56px; object-fit: cover;
-  border-radius: 10px; cursor: pointer; flex-shrink: 0;
-  border: 2px solid transparent; transition: all 0.2s;
-}
-.detail-thumb.active { border-color: var(--red); }
-.detail-thumb:hover { border-color: var(--border-red); }
-
-.detail-header-row {
-  display: flex; align-items: flex-start;
-  justify-content: space-between; margin-bottom: 16px;
-}
-.detail-title-group {}
-.detail-car-name { font-size: 26px; font-weight: 900; line-height: 1.2; }
-.detail-car-sub { font-size: 14px; color: var(--text2); margin-top: 4px; }
-
-.detail-price { font-size: 30px; font-weight: 900; color: white; text-align: left; }
-.detail-price-label { font-size: 11px; color: var(--text3); text-align: left; font-weight: 600; }
-
-.detail-specs {
-  display: grid; grid-template-columns: repeat(3, 1fr);
-  gap: 10px; margin: 18px 0;
-}
-.detail-spec {
+/* Description */
+.modal-desc {
   background: var(--bg3); border: 1px solid var(--border);
-  padding: 13px 12px; border-radius: 13px; text-align: center;
-}
-.detail-spec-val { font-size: 15px; font-weight: 800; }
-.detail-spec-key { font-size: 11px; color: var(--text3); margin-top: 3px; font-weight: 600; }
-
-.detail-desc {
-  background: var(--bg3); border: 1px solid var(--border);
-  border-radius: 13px; padding: 16px; margin: 16px 0;
-  font-size: 14px; color: var(--text2); line-height: 1.7;
+  border-radius: 14px; padding: 14px;
+  font-size: 13px; color: var(--text2); line-height: 1.7;
+  margin-bottom: 16px;
 }
 
-.seller-card {
-  background: var(--bg3); border: 1px solid var(--border);
-  border-radius: 13px; padding: 16px; margin: 16px 0;
-  display: flex; align-items: center; gap: 14px;
+/* Expiry */
+.modal-expiry {
+  display: flex; align-items: center; gap: 7px;
+  padding: 10px 14px; border-radius: 11px;
+  background: rgba(255,215,0,0.06); border: 1px solid rgba(255,215,0,0.18);
+  font-size: 12px; color: rgba(255,215,0,0.8); font-weight: 700;
+  margin-bottom: 16px;
 }
-.seller-avatar {
-  width: 48px; height: 48px; border-radius: 14px;
-  background: linear-gradient(135deg, var(--red), #e0162f);
-  display: flex; align-items: center; justify-content: center;
-  font-size: 22px; flex-shrink: 0;
-}
-.seller-name { font-weight: 800; font-size: 15px; }
-.seller-city { font-size: 12px; color: var(--text2); margin-top: 2px; }
 
-.contact-bar {
-  display: flex; gap: 10px; margin-top: 20px;
-}
-.contact-bar a {
-  flex: 1; display: flex; align-items: center; justify-content: center;
-  gap: 8px; padding: 15px; border-radius: 14px;
-  font-family: var(--font); font-weight: 800; font-size: 15px;
-  text-decoration: none; transition: all 0.2s;
+/* Contact */
+.modal-contact {
+  display: flex; gap: 8px; flex-direction: column;
 }
 .contact-wa {
-  background: rgba(37,211,102,0.1); color: #25d366;
-  border: 1px solid rgba(37,211,102,0.25);
+  display: flex; align-items: center; justify-content: center; gap: 8px;
+  padding: 14px; border-radius: 14px;
+  background: rgba(0,230,118,0.1); border: 1px solid rgba(0,230,118,0.25);
+  color: var(--green); font-weight: 800; font-size: 15px;
+  text-decoration: none; transition: all 0.2s;
 }
-.contact-wa:hover { background: rgba(37,211,102,0.18); transform: translateY(-1px); }
+.contact-wa:hover { background: rgba(0,230,118,0.18); transform: scale(1.01); }
 .contact-call {
-  background: rgba(96,165,250,0.1); color: #60a5fa;
-  border: 1px solid rgba(96,165,250,0.25);
+  display: flex; align-items: center; justify-content: center; gap: 8px;
+  padding: 12px; border-radius: 14px;
+  background: rgba(100,149,237,0.1); border: 1px solid rgba(100,149,237,0.25);
+  color: #6495ed; font-weight: 700; font-size: 14px;
+  text-decoration: none; transition: all 0.2s;
 }
-.contact-call:hover { background: rgba(96,165,250,0.18); transform: translateY(-1px); }
+.contact-call:hover { background: rgba(100,149,237,0.18); }
+
+/* Modal footer */
+.modal-footer {
+  padding: 14px 20px;
+  border-top: 1px solid var(--border);
+  font-size: 11px; color: var(--text3); text-align: center;
+}
+
+/* Responsive modal */
+@media(max-width:700px) {
+  .modal-inner { flex-direction: column; max-height: 95vh; }
+  .modal-img-side { flex: 0 0 280px; min-height: 280px; }
+}
+
+/* ══════════════════════════════════
+   ADD CAR MODAL
+══════════════════════════════════ */
+.add-modal-bg {
+  position: fixed; inset: 0; z-index: 600;
+  background: rgba(0,0,0,0.9); backdrop-filter: blur(20px);
+  display: flex; align-items: center; justify-content: center;
+  padding: 16px;
+  opacity: 0; pointer-events: none; transition: opacity 0.3s;
+}
+.add-modal-bg.open { opacity: 1; pointer-events: all; }
+.add-modal {
+  background: var(--bg2); border: 1px solid var(--border2);
+  border-radius: 26px; width: 100%; max-width: 580px;
+  max-height: 92vh; overflow-y: auto;
+  transform: translateY(30px) scale(0.97);
+  transition: transform 0.3s cubic-bezier(0.4,0,0.2,1);
+}
+.add-modal-bg.open .add-modal { transform: translateY(0) scale(1); }
+
+.add-modal-head {
+  padding: 22px 24px 16px;
+  border-bottom: 1px solid var(--border);
+  display: flex; align-items: center; justify-content: space-between;
+  position: sticky; top: 0; background: var(--bg2); z-index: 1;
+  border-radius: 26px 26px 0 0;
+}
+.add-modal-title { font-size: 20px; font-weight: 900; }
+.add-modal-sub { font-size: 12px; color: var(--text2); margin-top: 2px; }
+
+.add-modal-body { padding: 22px 24px 28px; }
+
+/* Section label */
+.form-sec {
+  font-size: 11px; font-weight: 800; color: var(--red);
+  text-transform: uppercase; letter-spacing: 0.14em;
+  margin: 20px 0 12px; padding-bottom: 8px;
+  border-bottom: 1px solid rgba(232,17,45,0.2);
+}
+.form-sec:first-child { margin-top: 0; }
+
+.form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.fg { display: flex; flex-direction: column; gap: 6px; }
+.fg.full { grid-column: 1/-1; }
+.lbl { font-size: 12px; font-weight: 700; color: var(--text2); }
+
+.inp, .sel, .ta {
+  background: var(--bg3); border: 1px solid var(--border);
+  color: white; padding: 11px 14px; border-radius: 12px;
+  font-family: var(--font); font-size: 14px;
+  outline: none; transition: all 0.2s; width: 100%;
+}
+.inp:focus, .sel:focus, .ta:focus {
+  border-color: var(--red);
+  box-shadow: 0 0 0 3px rgba(232,17,45,0.1);
+}
+.inp::placeholder { color: var(--text3); }
+.ta { resize: vertical; min-height: 80px; }
+
+/* Upload */
+.upload-zone {
+  border: 2px dashed var(--border2);
+  border-radius: 16px; padding: 28px 16px;
+  text-align: center; cursor: pointer;
+  transition: all 0.25s; background: var(--bg3);
+}
+.upload-zone:hover {
+  border-color: var(--red);
+  background: rgba(232,17,45,0.04);
+}
+.upload-icon { font-size: 36px; margin-bottom: 8px; }
+.upload-text { font-size: 13px; color: var(--text2); }
+.upload-text strong { color: var(--red); }
+.upload-hint { font-size: 11px; color: var(--text3); margin-top: 6px; }
+.preview-row { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 12px; }
+.preview-thumb { width: 72px; height: 72px; border-radius: 10px; object-fit: cover; border: 2px solid var(--border); }
+.preview-thumb.main-thumb { border-color: var(--red); }
+
+/* Expiry note */
+.expiry-note {
+  display: flex; align-items: center; gap: 8px;
+  background: rgba(255,215,0,0.06); border: 1px solid rgba(255,215,0,0.18);
+  border-radius: 12px; padding: 12px 16px;
+  font-size: 13px; color: rgba(255,215,0,0.85); font-weight: 600;
+  margin: 16px 0 0;
+}
+
+/* Submit */
+.submit-btn {
+  width: 100%; padding: 16px;
+  border-radius: 16px;
+  background: linear-gradient(135deg, var(--red), var(--red2));
+  color: white; border: none;
+  font-family: var(--font); font-size: 16px; font-weight: 900;
+  cursor: pointer; margin-top: 20px;
+  transition: all 0.2s;
+  box-shadow: 0 6px 24px var(--red-glow);
+}
+.submit-btn:hover:not(:disabled) { transform: scale(1.01); box-shadow: 0 8px 32px var(--red-glow); }
+.submit-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+
+/* Success */
+.success-state { text-align: center; padding: 48px 24px; }
+.success-icon { font-size: 72px; margin-bottom: 16px; }
+.success-title { font-size: 24px; font-weight: 900; margin-bottom: 8px; }
+.success-sub { font-size: 15px; color: var(--text2); line-height: 1.6; }
+.close-success {
+  display: inline-block; margin-top: 24px;
+  padding: 12px 32px; border-radius: 14px;
+  background: var(--red); color: white;
+  font-weight: 800; font-size: 15px;
+  border: none; cursor: pointer; font-family: var(--font);
+}
+
+/* ══════════════════════════════════
+   EMPTY + LOADING
+══════════════════════════════════ */
+.empty { text-align: center; padding: 80px 20px; color: var(--text2); }
+.empty-icon { font-size: 60px; margin-bottom: 14px; }
+.empty h3 { font-size: 20px; font-weight: 800; color: white; margin-bottom: 6px; }
+
+.loading { text-align: center; padding: 60px; }
+.spinner {
+  width: 40px; height: 40px; border-radius: 50%;
+  border: 3px solid var(--border2);
+  border-top-color: var(--red);
+  animation: spin 0.8s linear infinite;
+  margin: 0 auto 16px;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
 
 /* ══════════════════════════════════
    TOAST
 ══════════════════════════════════ */
 .toast {
-  position: fixed; bottom: 26px; left: 50%;
-  transform: translateX(-50%) translateY(100px);
-  background: var(--bg2); border: 1px solid var(--border);
-  padding: 13px 26px; border-radius: 100px;
-  font-size: 14px; font-weight: 700;
-  z-index: 9999; transition: transform 0.35s cubic-bezier(0.4,0,0.2,1);
-  white-space: nowrap; pointer-events: none;
-  backdrop-filter: blur(12px);
+  position: fixed; bottom: 24px; left: 50%;
+  transform: translateX(-50%) translateY(70px);
+  background: var(--bg2); border: 1px solid var(--border2);
+  padding: 12px 24px; border-radius: 100px;
+  font-size: 14px; font-weight: 700; z-index: 9999;
+  transition: transform 0.35s cubic-bezier(0.4,0,0.2,1);
+  white-space: nowrap; backdrop-filter: blur(12px);
 }
 .toast.show { transform: translateX(-50%) translateY(0); }
-.toast.success { border-color: rgba(74,222,128,0.4); color: #4ade80; }
-.toast.error { border-color: rgba(239,68,68,0.4); color: #ef4444; }
-.toast.info { border-color: rgba(96,165,250,0.4); color: #60a5fa; }
+.toast.ok { border-color: rgba(0,230,118,0.4); color: var(--green); }
+.toast.err { border-color: rgba(232,17,45,0.4); color: var(--red); }
 
-/* ══════════════════════════════════
-   FEATURES STRIP
-══════════════════════════════════ */
-.features-strip {
-  padding: 22px 28px;
-  display: flex; justify-content: center; gap: 0;
-  background: var(--bg2); border-top: 1px solid var(--border);
-  border-bottom: 1px solid var(--border);
-  overflow-x: auto;
-}
-.feature-item {
-  display: flex; align-items: center; gap: 8px;
-  padding: 0 28px; font-size: 13px; font-weight: 700; color: var(--text2);
-  white-space: nowrap;
-}
-.feature-item:not(:last-child) { border-left: 1px solid var(--border); }
-.feature-item span.icon { font-size: 18px; }
-
-/* ══════════════════════════════════
-   FOOTER
-══════════════════════════════════ */
+/* FOOTER */
 footer {
-  text-align: center; padding: 36px 24px;
+  text-align: center; padding: 30px 24px;
   border-top: 1px solid var(--border);
-  color: var(--text3); font-size: 13px;
+  color: var(--text3); font-size: 12px;
 }
-footer strong { color: var(--red); }
-footer .footer-admin {
-  cursor: pointer; opacity: 0.2; transition: opacity 0.2s;
-  user-select: none;
-}
-footer .footer-admin:hover { opacity: 0.5; }
-
-/* ══════════════════════════════════
-   RESPONSIVE
-══════════════════════════════════ */
-@media (max-width: 640px) {
-  nav { padding: 0 16px; }
-  .nav-center { display: none; }
-  .hero { padding: 100px 16px 56px; }
-  .hero h1 { font-size: 2.1rem; }
-  .search-section { padding: 0 16px 40px; }
-  .main-container { padding: 0 16px 80px; }
-  .cars-grid { grid-template-columns: 1fr; }
-  .form-grid { grid-template-columns: 1fr; }
-  .detail-specs { grid-template-columns: repeat(2,1fr); }
-  .features-strip { justify-content: flex-start; }
-  .hero-stats { flex-direction: row; }
-  .contact-bar { flex-direction: column; }
-}
+footer em { color: var(--red); font-style: normal; }
 </style>
 </head>
 <body>
 
-<!-- ── NAV ── -->
+<!-- NAV -->
 <nav>
-  <a href="#" class="nav-logo" onclick="showHome()">
-    <div class="nav-logo-icon">🚗</div>
-    <span class="nav-logo-text"><span>YOUGO</span> CARS</span>
+  <a class="nav-logo" href="#" onclick="resetFilters()">
+    <div class="nav-logo-mark">YG</div>
+    <span class="nav-logo-text"><em>YOUGO</em> CARS</span>
   </a>
-  <div class="nav-center">
-    <button class="nav-link" onclick="scrollToListings()">מודעות</button>
-    <button class="nav-link" onclick="openAddModal()">פרסם רכב</button>
-  </div>
-  <div class="nav-actions">
-    <button class="lang-btn" onclick="cycleLang()" id="langBtn">🇦🇪 عربي</button>
-    <button class="btn btn-red" onclick="openAddModal()">+ <span>פרסם רכב</span></button>
+  <div class="nav-right">
+    <button class="nav-post-btn" onclick="openAddModal()">
+      ⚡ פרסם רכב חינם
+    </button>
+    <span class="nav-admin" onclick="goAdmin()">admin</span>
   </div>
 </nav>
 
-<!-- ── ADMIN BAR (hidden) ── -->
-<div id="adminBar" style="display:none;margin-top:66px" class="admin-bar">
-  <span class="admin-bar-title">🔑 Admin Mode</span>
-  <div class="admin-actions" id="adminActions"></div>
-</div>
-
-<!-- ── HERO ── -->
-<div class="hero" id="heroSection" style="margin-top:66px">
-  <div class="hero-bg"></div>
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-glow"></div>
   <div class="hero-grid"></div>
   <div class="hero-content">
-    <div class="hero-badge">
-      <div class="dot"></div>
-      <span id="heroBadgeText">YOUGO ISRAEL — הפלטפורמה המובילה</span>
-    </div>
-    <h1 id="heroTitle">שוק הרכבים <span class="red">הדיגיטלי</span><br>של ישראל</h1>
-    <p class="hero-sub" id="heroSub">קנה ומכור רכב בקלות ובמהירות. מודעות מאומתות עם אפשרות יצירת קשר מיידית.</p>
-    <div class="hero-btns">
-      <button class="btn btn-red" style="padding:15px 34px;font-size:16px" onclick="openAddModal()" id="heroAddBtn">🚗 פרסם רכב בחינם</button>
-      <button class="btn btn-ghost" style="padding:15px 34px;font-size:16px" onclick="scrollToListings()" id="heroBrowseBtn">🔍 חפש רכב</button>
-    </div>
-    <div class="hero-stats">
-      <div class="hero-stat">
-        <div class="hero-stat-val" id="statCars">0</div>
-        <div class="hero-stat-label" id="statCarsLabel">מודעות פעילות</div>
+
+    <!-- Trust bar -->
+    <div class="trust-bar">
+      <div class="trust-item">
+        <div class="trust-icon ti-green">✅</div>
+        <span>פרסום חינמי</span>
       </div>
-      <div class="hero-stat">
-        <div class="hero-stat-val">50K<span class="accent">+</span></div>
-        <div class="hero-stat-label" id="statFollowers">עוקבים</div>
+      <div class="trust-item">
+        <div class="trust-icon ti-red">⚡</div>
+        <span>פרסום מיידי</span>
       </div>
-      <div class="hero-stat">
-        <div class="hero-stat-val">100<span class="accent">%</span></div>
-        <div class="hero-stat-label" id="statFree">חינם לפרסם</div>
+      <div class="trust-item">
+        <div class="trust-icon ti-blue">💬</div>
+        <span>פניה ב-WhatsApp</span>
+      </div>
+      <div class="trust-item">
+        <div class="trust-icon ti-gold">🔒</div>
+        <span>מאובטח ובטוח</span>
       </div>
     </div>
+
+    <h1>מכור את הרכב שלך<br><span class="accent">מהר יותר מאי פעם</span></h1>
+    <p class="hero-sub">פרסם עכשיו בחינם — המודעה עולה מיד ומגיעה לאלפי קונים</p>
+
+    <!-- Stats -->
+    <div class="stats-row">
+      <div class="stat-item">
+        <div class="stat-num red" id="statCars">0</div>
+        <div class="stat-lbl">מודעות פעילות</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-num white">+50K</div>
+        <div class="stat-lbl">עוקבים</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-num green">100%</div>
+        <div class="stat-lbl">חינם לפרסם</div>
+      </div>
+    </div>
+
   </div>
 </div>
 
-<!-- ── FEATURES STRIP ── -->
-<div class="features-strip">
-  <div class="feature-item"><span class="icon">✅</span> פרסום חינמי</div>
-  <div class="feature-item"><span class="icon">⚡</span> פרסום מיידי</div>
-  <div class="feature-item"><span class="icon">📱</span> פנייה ב-WhatsApp</div>
-  <div class="feature-item"><span class="icon">🔒</span> מאובטח ובטוח</div>
-  <div class="feature-item"><span class="icon">🌐</span> עברית | عربية | English</div>
-</div>
-
-<!-- ── SEARCH ── -->
-<div class="search-section" style="padding-top:40px">
+<!-- SEARCH -->
+<div class="search-section" id="searchSection">
   <div class="search-box">
-    <div class="search-row">
-      <input class="search-input" id="searchText" placeholder="🔍 חפש לפי יצרן, דגם, עיר..." oninput="filterCars()">
-      <button class="search-btn" onclick="filterCars()" id="searchBtnEl">חפש</button>
+    <div class="search-top">
+      <input class="s-input" id="sText" placeholder="🔍 חפש לפי יצרן, דגם, עיר..." oninput="doFilter()">
+      <button class="search-go" onclick="doFilter()">חפש</button>
     </div>
-    <div class="filter-row">
-      <select class="filter-select" id="filterMake" onchange="filterCars()">
-        <option value="">כל היצרנים</option>
-      </select>
-      <select class="filter-select" id="filterYear" onchange="filterCars()">
-        <option value="">כל השנים</option>
-      </select>
-      <select class="filter-select" id="filterMaxPrice" onchange="filterCars()">
+    <div class="search-filters">
+      <select class="s-select" id="sMake" onchange="doFilter()"><option value="">כל היצרנים</option></select>
+      <select class="s-select" id="sYear" onchange="doFilter()"><option value="">כל השנים</option></select>
+      <select class="s-select" id="sPrice" onchange="doFilter()">
         <option value="">כל המחירים</option>
-        <option value="30000">עד ₪30,000</option>
-        <option value="50000">עד ₪50,000</option>
-        <option value="80000">עד ₪80,000</option>
-        <option value="100000">עד ₪100,000</option>
-        <option value="150000">עד ₪150,000</option>
-        <option value="200000">עד ₪200,000</option>
-        <option value="300000">עד ₪300,000</option>
+        <option value="50000">עד ₪50K</option>
+        <option value="100000">עד ₪100K</option>
+        <option value="150000">עד ₪150K</option>
+        <option value="200000">עד ₪200K</option>
+        <option value="300000">עד ₪300K</option>
       </select>
-      <select class="filter-select" id="filterCity" onchange="filterCars()">
-        <option value="">כל הערים</option>
-      </select>
-      <select class="filter-select" id="filterGear" onchange="filterCars()">
+      <select class="s-select" id="sGear" onchange="doFilter()">
         <option value="">כל הגירים</option>
         <option value="אוטומט">אוטומט</option>
         <option value="ידני">ידני</option>
-        <option value="CVT">CVT</option>
       </select>
-      <select class="filter-select" id="filterFuel" onchange="filterCars()">
-        <option value="">כל הדלקים</option>
-        <option value="בנזין">בנזין</option>
-        <option value="דיזל">דיזל</option>
-        <option value="היברידי">היברידי</option>
-        <option value="חשמלי">חשמלי</option>
-      </select>
+      <select class="s-select" id="sCity" onchange="doFilter()"><option value="">כל הערים</option></select>
     </div>
   </div>
 </div>
 
-<!-- ── LISTINGS ── -->
-<div class="main-container" id="listingsSection">
-  <div class="section-header">
-    <h2 class="section-title" id="sectionTitle">מודעות <span class="red">פעילות</span></h2>
-    <span class="count-badge" id="countBadge">טוען...</span>
+<!-- LISTINGS -->
+<div class="listings-section" id="listingsSection">
+  <div class="sec-header">
+    <h2 class="sec-title">רכבים <em>פעילים</em></h2>
+    <span class="sec-count" id="countEl">טוען...</span>
   </div>
-  <div class="sort-row">
-    <button class="sort-btn active" onclick="sortCars('newest',this)">🆕 החדשים ביותר</button>
-    <button class="sort-btn" onclick="sortCars('price_asc',this)">💰 מחיר: נמוך לגבוה</button>
-    <button class="sort-btn" onclick="sortCars('price_desc',this)">💎 מחיר: גבוה לנמוך</button>
-    <button class="sort-btn" onclick="sortCars('km_asc',this)">📏 ק"מ נמוך</button>
-  </div>
-  <div id="carsContainer">
-    <div class="loading" style="grid-column:1/-1">
-      <div class="spinner"></div>
-      <p style="color:var(--text2);font-weight:600">טוען מודעות...</p>
-    </div>
+  <div id="gridContainer">
+    <div class="loading"><div class="spinner"></div><p style="color:var(--text2)">טוען רכבים...</p></div>
   </div>
 </div>
 
-<!-- ── FOOTER ── -->
 <footer>
-  <p>© 2026 <strong>YOUGO CARS</strong> — כל הזכויות שמורות</p>
-  <p style="margin-top:6px">פרסם רכב בחינם ומכור מהר יותר עם YOUGO ISRAEL</p>
-  <p style="margin-top:12px">
-    <span class="footer-admin" onclick="adminLogin()">●</span>
-  </p>
+  <p>© 2026 <em>YOUGO CARS</em> — כל הזכויות שמורות</p>
+  <p style="margin-top:6px">פרסם את הרכב שלך ומכור מהר יותר עם YOUGO ISRAEL</p>
 </footer>
 
-<!-- ── ADD CAR MODAL ── -->
-<div class="modal-overlay" id="addModal" onclick="handleModalClick(event,'addModal')">
-  <div class="modal" onclick="event.stopPropagation()">
-    <div class="modal-header">
-      <h3 class="modal-title" id="addModalTitle">🚗 פרסם את הרכב שלך</h3>
-      <button class="modal-close" onclick="closeAddModal()">×</button>
+<!-- ═══ DETAIL MODAL ═══ -->
+<div class="modal-bg" id="detailBg" onclick="closeDetail()">
+  <div class="modal-inner" onclick="event.stopPropagation()">
+    <div class="modal-img-side" id="mImgSide">
+      <div class="modal-img-ph">🚗</div>
     </div>
-    <div class="modal-body" id="addModalBody">
-      <form id="addCarForm" onsubmit="submitCar(event)">
-        <div class="section-divider">🚗 פרטי הרכב</div>
-        <div class="form-grid">
-          <div class="form-group">
-            <label class="form-label">יצרן *</label>
-            <input class="form-input" id="f_make" placeholder="Toyota, BMW, Hyundai..." required>
-          </div>
-          <div class="form-group">
-            <label class="form-label">דגם *</label>
-            <input class="form-input" id="f_model" placeholder="Corolla, X5..." required>
-          </div>
-          <div class="form-group">
-            <label class="form-label">שנה *</label>
-            <input class="form-input" id="f_year" type="number" min="1990" max="2026" placeholder="2022" required>
-          </div>
-          <div class="form-group">
-            <label class="form-label">מחיר ₪ *</label>
-            <input class="form-input" id="f_price" type="number" placeholder="80000" required>
-          </div>
-          <div class="form-group">
-            <label class="form-label">קילומטראז'</label>
-            <input class="form-input" id="f_mileage" type="number" placeholder="50000">
-          </div>
-          <div class="form-group">
-            <label class="form-label">יד</label>
-            <select class="form-select" id="f_hand">
-              <option value="1">יד ראשונה</option>
-              <option value="2" selected>יד שנייה</option>
-              <option value="3">יד שלישית</option>
-              <option value="4">יד רביעית+</option>
-            </select>
-          </div>
-          <div class="form-group">
-            <label class="form-label">תיבת הילוכים</label>
-            <select class="form-select" id="f_gear">
-              <option value="אוטומט">אוטומטי</option>
-              <option value="ידני">ידני</option>
-              <option value="CVT">CVT</option>
-            </select>
-          </div>
-          <div class="form-group">
-            <label class="form-label">סוג דלק</label>
-            <select class="form-select" id="f_fuel">
-              <option value="בנזין">בנזין</option>
-              <option value="דיזל">דיזל</option>
-              <option value="היברידי">היברידי</option>
-              <option value="חשמלי">חשמלי</option>
-              <option value="גז">גז</option>
-            </select>
-          </div>
-          <div class="form-group">
-            <label class="form-label">צבע</label>
-            <input class="form-input" id="f_color" placeholder="לבן, שחור, כסוף...">
-          </div>
-          <div class="form-group">
-            <label class="form-label">נפח מנוע (ליטר)</label>
-            <input class="form-input" id="f_engine" type="number" step="0.1" placeholder="1.6">
-          </div>
+    <div class="modal-info-side">
+      <div class="modal-head">
+        <div>
+          <div class="modal-car-name" id="mCarName">—</div>
         </div>
-
-        <div class="section-divider" style="margin-top:20px">📝 תיאור</div>
-        <div class="form-group">
-          <label class="form-label">תיאור בעברית</label>
-          <textarea class="form-textarea" id="f_desc_he" placeholder="תאר את מצב הרכב, תוספות, היסטוריה..."></textarea>
-        </div>
-        <div class="form-group" style="margin-top:12px">
-          <label class="form-label">وصف بالعربية</label>
-          <textarea class="form-textarea" id="f_desc_ar" placeholder="اكتب وصف السيارة، الحالة، الإضافات..."></textarea>
-        </div>
-
-        <div class="section-divider" style="margin-top:20px">📷 תמונות</div>
-        <div class="upload-area" onclick="document.getElementById('imgInput').click()" id="uploadArea">
-          <div class="upload-icon">📷</div>
-          <div class="upload-text" id="uploadText">לחץ להוספת תמונות <strong>(עד 10)</strong></div>
-        </div>
-        <input type="file" id="imgInput" multiple accept="image/*" style="display:none" onchange="handleImages(this)">
-        <div class="upload-progress" id="uploadProgress">
-          <div class="upload-progress-bar" id="uploadProgressBar"></div>
-        </div>
-        <div class="preview-grid" id="previewGrid"></div>
-
-        <div class="section-divider" style="margin-top:20px">👤 פרטי המוכר</div>
-        <div class="form-grid">
-          <div class="form-group">
-            <label class="form-label">שם מלא *</label>
-            <input class="form-input" id="f_name" placeholder="ישראל ישראלי" required>
-          </div>
-          <div class="form-group">
-            <label class="form-label">טלפון *</label>
-            <input class="form-input" id="f_phone" placeholder="050-0000000" required>
-          </div>
-          <div class="form-group full">
-            <label class="form-label">עיר *</label>
-            <input class="form-input" id="f_city" placeholder="תל אביב, חיפה, ירושלים..." required>
-          </div>
-        </div>
-
-        <button type="submit" class="submit-btn" id="submitBtn">🚗 פרסם מודעה בחינם — מיידי!</button>
-      </form>
+        <button class="modal-close-btn" onclick="closeDetail()">×</button>
+      </div>
+      <div class="modal-body" id="mBody"></div>
+      <div class="modal-footer" id="mFooter"></div>
     </div>
   </div>
 </div>
 
-<!-- ── CAR DETAIL MODAL ── -->
-<div class="modal-overlay" id="detailModal" onclick="handleModalClick(event,'detailModal')">
-  <div class="modal" style="max-width:720px" onclick="event.stopPropagation()">
-    <div class="modal-header">
-      <h3 class="modal-title" id="detailTitle">פרטי הרכב</h3>
-      <button class="modal-close" onclick="closeDetailModal()">×</button>
+<!-- ═══ ADD CAR MODAL ═══ -->
+<div class="add-modal-bg" id="addBg" onclick="closeAdd()">
+  <div class="add-modal" onclick="event.stopPropagation()">
+    <div class="add-modal-head">
+      <div>
+        <div class="add-modal-title">⚡ פרסם את הרכב שלך</div>
+        <div class="add-modal-sub">המודעה עולה מיד ונשמרת ל-48 שעות</div>
+      </div>
+      <button class="modal-close-btn" onclick="closeAdd()">×</button>
     </div>
-    <div class="modal-body" id="detailBody"></div>
+    <div class="add-modal-body" id="addFormContainer">
+
+      <div class="form-sec">פרטי הרכב</div>
+      <div class="form-grid">
+        <div class="fg"><label class="lbl">יצרן *</label><input class="inp" id="f_make" placeholder="Toyota, BMW..."></div>
+        <div class="fg"><label class="lbl">דגם *</label><input class="inp" id="f_model" placeholder="Corolla, X5..."></div>
+        <div class="fg"><label class="lbl">שנה *</label><input class="inp" id="f_year" type="number" min="1990" max="2026" placeholder="2022"></div>
+        <div class="fg"><label class="lbl">מחיר ₪ *</label><input class="inp" id="f_price" type="number" placeholder="80000"></div>
+        <div class="fg"><label class="lbl">קילומטראז'</label><input class="inp" id="f_km" type="number" placeholder="50000"></div>
+        <div class="fg"><label class="lbl">יד</label>
+          <select class="sel" id="f_hand">
+            <option value="1">יד ראשונה</option>
+            <option value="2" selected>יד שנייה</option>
+            <option value="3">יד שלישית</option>
+            <option value="4">יד 4+</option>
+          </select>
+        </div>
+        <div class="fg"><label class="lbl">גיר</label>
+          <select class="sel" id="f_gear">
+            <option value="אוטומט">אוטומטי</option>
+            <option value="ידני">ידני</option>
+            <option value="CVT">CVT</option>
+          </select>
+        </div>
+        <div class="fg"><label class="lbl">דלק</label>
+          <select class="sel" id="f_fuel">
+            <option value="בנזין">בנזין</option>
+            <option value="דיזל">דיזל</option>
+            <option value="היברידי">היברידי</option>
+            <option value="חשמלי">חשמלי</option>
+          </select>
+        </div>
+        <div class="fg"><label class="lbl">צבע</label><input class="inp" id="f_color" placeholder="לבן, שחור..."></div>
+        <div class="fg"><label class="lbl">עיר *</label><input class="inp" id="f_city" placeholder="תל אביב..."></div>
+        <div class="fg full"><label class="lbl">תיאור</label><textarea class="ta" id="f_desc" placeholder="תאר את הרכב, תוספות, מצב..."></textarea></div>
+      </div>
+
+      <div class="form-sec">תמונות</div>
+      <div class="upload-zone" onclick="document.getElementById('imgIn').click()">
+        <div class="upload-icon">📷</div>
+        <div class="upload-text">לחץ להעלאת תמונות <strong>(עד 8)</strong></div>
+        <div class="upload-hint">התמונה הראשונה תהיה התמונה הראשית</div>
+      </div>
+      <input type="file" id="imgIn" multiple accept="image/*" style="display:none" onchange="handleImgs(this)">
+      <div class="preview-row" id="previewRow"></div>
+
+      <div class="form-sec">פרטי יצירת קשר</div>
+      <div class="form-grid">
+        <div class="fg"><label class="lbl">שם מלא *</label><input class="inp" id="f_name" placeholder="שם המוכר"></div>
+        <div class="fg"><label class="lbl">טלפון *</label><input class="inp" id="f_phone" placeholder="050-0000000"></div>
+      </div>
+
+      <div class="expiry-note">
+        ⏱️ המודעה תוצג למשך <strong>48 שעות</strong> ותמחק אוטומטית
+      </div>
+
+      <button class="submit-btn" id="submitBtn" onclick="submitCar()">
+        ⚡ פרסם עכשיו — בחינם
+      </button>
+
+    </div>
   </div>
 </div>
 
-<!-- ── TOAST ── -->
 <div class="toast" id="toast"></div>
 
 <script>
 // ══════════════════════════════════
-// SUPABASE CONFIG — החלף כאן!
+// CONFIG
 // ══════════════════════════════════
-const SUPABASE_URL = 'https://arsbodqhmmtmoqqhykep.supabase.co';
-const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImFyc2JvZHFobW10bW9xcWh5a2VwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzIxNTgxMTQsImV4cCI6MjA4NzczNDExNH0.mt_WpPshp5xdbIx23pMmcwq7MhktA0-vWPIstOy1_HM';
-const sb = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+const SB_URL = 'https://arsbodqhmmtmoqqhykep.supabase.co';
+const SB_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImFyc2JvZHFobW10bW9xcWh5a2VwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzIxNTgxMTQsImV4cCI6MjA4NzczNDExNH0.mt_WpPshp5xdbIx23pMmcwq7MhktA0-vWPIstOy1_HM';
+const sb = supabase.createClient(SB_URL, SB_KEY);
+const TWO_DAYS_MS = 48 * 60 * 60 * 1000;
+
+let all = [], filtered = [], imgs = [];
 
 // ══════════════════════════════════
-// CLOUDINARY CONFIG — הכנס את הפרטים שלך אחרי ההרשמה!
+// INIT
 // ══════════════════════════════════
-const CLOUDINARY_CLOUD_NAME = 'dbd2dgqti';
-const CLOUDINARY_UPLOAD_PRESET = 'htxdjln0';
-
-// ══════════════════════════════════
-// ADMIN CONFIG
-// ══════════════════════════════════
-const ADMIN_PASS = 'yougo2026';
-
-// ══════════════════════════════════
-// STATE
-// ══════════════════════════════════
-let allCars = [];
-let filteredCars = [];
-let uploadedImages = [];
-let isAdmin = false;
-let currentLang = 'he';
-let currentSort = 'newest';
-
-// ══════════════════════════════════
-// TRANSLATIONS
-// ══════════════════════════════════
-const T = {
-  he: {
-    heroBadge: 'YOUGO ISRAEL — הפלטפורמה המובילה',
-    heroTitle: 'שוק הרכבים <span class="red">הדיגיטלי</span><br>של ישראל',
-    heroSub: 'קנה ומכור רכב בקלות ובמהירות. מודעות מאומתות עם אפשרות יצירת קשר מיידית.',
-    heroAdd: '🚗 פרסם רכב בחינם',
-    heroBrowse: '🔍 חפש רכב',
-    statCarsLabel: 'מודעות פעילות',
-    statFollowers: 'עוקבים',
-    statFree: 'חינם לפרסם',
-    sectionTitle: 'מודעות <span class="red">פעילות</span>',
-    addModalTitle: '🚗 פרסם את הרכב שלך',
-    submitBtn: '🚗 פרסם מודעה בחינם — מיידי!',
-    uploadText: 'לחץ להוספת תמונות <strong>(עד 10)</strong>',
-    pendingMsg: '✅ המודעה פורסמה! היא זמינה כעת לכולם.',
-    allMakes: 'כל היצרנים', allYears: 'כל השנים',
-    allPrices: 'כל המחירים', allCities: 'כל הערים', allGears: 'כל הגירים',
-    noCars: 'אין מודעות תואמות', noCarsDesc: 'נסה לשנות את פרמטרי החיפוש',
-    sold: 'נמכר', featured: 'מומלץ', newBadge: '✨ חדש',
-    dir: 'rtl', lang: '🇦🇪 عربي', addCar: 'פרסם רכב',
-    km: 'ק"מ', contact: 'פרטי קשר', whatsapp: 'שלח WhatsApp', call: 'התקשר',
-    year: 'שנה', price: 'מחיר', hand: 'יד', gear: 'גיר', fuel: 'דלק', color: 'צבע',
-    seller: 'המוכר', city: 'עיר', description: 'תיאור',
-    searchBtn: 'חפש', mileage: 'ק"מ'
-  },
-  ar: {
-    heroBadge: 'YOUGO ISRAEL — المنصة الرائدة',
-    heroTitle: 'سوق السيارات <span class="red">الرقمي</span><br>في إسرائيل',
-    heroSub: 'اشترِ وبِع سيارتك بسهولة وسرعة. إعلانات موثقة مع تواصل فوري.',
-    heroAdd: '🚗 أعلن عن سيارتك مجاناً',
-    heroBrowse: '🔍 تصفح السيارات',
-    statCarsLabel: 'إعلان نشط',
-    statFollowers: 'متابع',
-    statFree: 'نشر مجاني',
-    sectionTitle: 'الإعلانات <span class="red">النشطة</span>',
-    addModalTitle: '🚗 أضف إعلانك',
-    submitBtn: '🚗 انشر الإعلان الآن — مجاناً!',
-    uploadText: 'انقر لإضافة صور <strong>(حتى 10)</strong>',
-    pendingMsg: '✅ تم نشر إعلانك! متاح الآن للجميع.',
-    allMakes: 'كل الماركات', allYears: 'كل السنوات',
-    allPrices: 'كل الأسعار', allCities: 'كل المدن', allGears: 'كل الناقلات',
-    noCars: 'لا توجد إعلانات', noCarsDesc: 'جرّب تغيير معايير البحث',
-    sold: 'مباع', featured: 'مميز', newBadge: '✨ جديد',
-    dir: 'rtl', lang: '🇮🇱 עברית', addCar: 'أعلن عن سيارتك',
-    km: 'كم', contact: 'تواصل', whatsapp: 'واتساب', call: 'اتصل',
-    year: 'سنة', price: 'سعر', hand: 'يد', gear: 'ناقل', fuel: 'وقود', color: 'لون',
-    seller: 'البائع', city: 'مدينة', description: 'وصف',
-    searchBtn: 'بحث', mileage: 'كم'
-  },
-  en: {
-    heroBadge: 'YOUGO ISRAEL — The Leading Platform',
-    heroTitle: 'Israel\'s <span class="red">Digital</span><br>Car Market',
-    heroSub: 'Buy and sell cars easily and fast. Verified listings with instant contact.',
-    heroAdd: '🚗 Post Your Car for Free',
-    heroBrowse: '🔍 Browse Cars',
-    statCarsLabel: 'Active Listings',
-    statFollowers: 'Followers',
-    statFree: 'Free to Post',
-    sectionTitle: '<span class="red">Active</span> Listings',
-    addModalTitle: '🚗 Post Your Car',
-    submitBtn: '🚗 Post Now — Instantly Free!',
-    uploadText: 'Click to add photos <strong>(up to 10)</strong>',
-    pendingMsg: '✅ Your listing is live! Everyone can see it now.',
-    allMakes: 'All Makes', allYears: 'All Years',
-    allPrices: 'All Prices', allCities: 'All Cities', allGears: 'All Transmissions',
-    noCars: 'No listings found', noCarsDesc: 'Try changing search filters',
-    sold: 'Sold', featured: 'Featured', newBadge: '✨ New',
-    dir: 'ltr', lang: '🇦🇪 عربي', addCar: 'Post Car',
-    km: 'km', contact: 'Contact', whatsapp: 'WhatsApp', call: 'Call',
-    year: 'Year', price: 'Price', hand: 'Hand', gear: 'Gear', fuel: 'Fuel', color: 'Color',
-    seller: 'Seller', city: 'City', description: 'Description',
-    searchBtn: 'Search', mileage: 'km'
-  }
-};
-
-function t(key) { return T[currentLang]?.[key] || T.he[key] || key; }
-
-// ══════════════════════════════════
-// LANGUAGE
-// ══════════════════════════════════
-function cycleLang() {
-  const langs = ['he','ar','en'];
-  const idx = langs.indexOf(currentLang);
-  currentLang = langs[(idx+1) % langs.length];
-  applyLang();
+async function init() {
+  await cleanExpired();
+  await loadCars();
 }
 
-function applyLang() {
-  const L = T[currentLang];
-  document.documentElement.lang = currentLang;
-  document.documentElement.dir = L.dir;
-  document.getElementById('langBtn').textContent = L.lang;
-  document.getElementById('heroBadgeText').textContent = L.heroBadge;
-  document.getElementById('heroTitle').innerHTML = L.heroTitle;
-  document.getElementById('heroSub').textContent = L.heroSub;
-  document.getElementById('heroAddBtn').textContent = L.heroAdd;
-  document.getElementById('heroBrowseBtn').textContent = L.heroBrowse;
-  document.getElementById('statCarsLabel').textContent = L.statCarsLabel;
-  document.getElementById('statFollowers').textContent = L.statFollowers;
-  document.getElementById('statFree').textContent = L.statFree;
-  document.getElementById('sectionTitle').innerHTML = L.sectionTitle;
-  document.getElementById('addModalTitle').textContent = L.addModalTitle;
-  document.getElementById('submitBtn').textContent = L.submitBtn;
-  document.getElementById('uploadText').innerHTML = L.uploadText;
-  document.getElementById('searchBtnEl').textContent = L.searchBtn;
-  document.getElementById('filterMake').options[0].text = L.allMakes;
-  document.getElementById('filterYear').options[0].text = L.allYears;
-  document.getElementById('filterMaxPrice').options[0].text = L.allPrices;
-  document.getElementById('filterCity').options[0].text = L.allCities;
-  document.getElementById('filterGear').options[0].text = L.allGears;
-  renderCars(filteredCars);
+// Delete expired listings (older than 48h with status 'active' — not admin-approved ones)
+async function cleanExpired() {
+  const cutoff = new Date(Date.now() - TWO_DAYS_MS).toISOString();
+  await sb.from('cars')
+    .delete()
+    .eq('status', 'active')
+    .eq('auto_expire', true)
+    .lt('created_at', cutoff)
+    .then(() => {});
 }
 
-// ══════════════════════════════════
-// LOAD CARS
-// ══════════════════════════════════
 async function loadCars() {
-  document.getElementById('carsContainer').innerHTML = `
-    <div class="loading">
-      <div class="spinner"></div>
-      <p style="color:var(--text2);font-weight:600">טוען מודעות...</p>
-    </div>`;
-
   try {
-    const query = isAdmin
-      ? sb.from('cars').select('*').order('created_at', { ascending: false })
-      : sb.from('cars').select('*').eq('status', 'active').order('created_at', { ascending: false });
+    const { data, error } = await sb
+      .from('cars')
+      .select('*')
+      .eq('status', 'active')
+      .order('created_at', { ascending: false });
 
-    const { data, error } = await query;
     if (error) throw error;
+    all = data || [];
 
-    allCars = data || [];
-    filteredCars = [...allCars];
     populateFilters();
-    sortCars(currentSort);
-    const activeCount = allCars.filter(c => c.status === 'active').length;
-    document.getElementById('statCars').textContent = activeCount;
-    document.getElementById('countBadge').textContent = filteredCars.length + ' מודעות';
+    doFilter();
+    document.getElementById('statCars').textContent = all.length;
   } catch(e) {
-    console.error(e);
-    document.getElementById('carsContainer').innerHTML = `
-      <div class="empty-state">
+    document.getElementById('gridContainer').innerHTML = `
+      <div class="empty">
         <div class="empty-icon">⚠️</div>
         <h3>שגיאה בטעינה</h3>
-        <p>${e.message}</p>
-        <button class="btn btn-red" style="margin-top:16px" onclick="loadCars()">נסה שוב</button>
+        <p style="font-size:13px;margin-top:6px">${e.message}</p>
       </div>`;
+    document.getElementById('countEl').textContent = '—';
   }
 }
 
 // ══════════════════════════════════
-// POPULATE FILTERS
+// FILTERS
 // ══════════════════════════════════
 function populateFilters() {
-  const makes = [...new Set(allCars.map(c => c.make).filter(Boolean))].sort();
-  const years = [...new Set(allCars.map(c => c.year).filter(Boolean))].sort((a,b)=>b-a);
-  const cities = [...new Set(allCars.map(c => c.seller_city).filter(Boolean))].sort();
+  const makes = [...new Set(all.map(c => c.make))].sort();
+  const years = [...new Set(all.map(c => c.year))].sort((a,b)=>b-a);
+  const cities = [...new Set(all.map(c => c.seller_city).filter(Boolean))].sort();
 
-  const makeEl = document.getElementById('filterMake');
-  const yearEl = document.getElementById('filterYear');
-  const cityEl = document.getElementById('filterCity');
+  const mkEl = document.getElementById('sMake');
+  const yrEl = document.getElementById('sYear');
+  const ctEl = document.getElementById('sCity');
 
-  // Save current values
-  const curMake = makeEl.value, curYear = yearEl.value, curCity = cityEl.value;
-
-  // Reset and repopulate
-  while(makeEl.options.length > 1) makeEl.remove(1);
-  while(yearEl.options.length > 1) yearEl.remove(1);
-  while(cityEl.options.length > 1) cityEl.remove(1);
-
-  makes.forEach(m => makeEl.add(new Option(m, m)));
-  years.forEach(y => yearEl.add(new Option(y, y)));
-  cities.forEach(c => cityEl.add(new Option(c, c)));
-
-  makeEl.value = curMake; yearEl.value = curYear; cityEl.value = curCity;
+  makes.forEach(m => mkEl.add(new Option(m,m)));
+  years.forEach(y => yrEl.add(new Option(y,y)));
+  cities.forEach(c => ctEl.add(new Option(c,c)));
 }
 
-// ══════════════════════════════════
-// FILTER & SORT
-// ══════════════════════════════════
-function filterCars() {
-  const text = document.getElementById('searchText').value.toLowerCase();
-  const make = document.getElementById('filterMake').value;
-  const year = document.getElementById('filterYear').value;
-  const maxPrice = document.getElementById('filterMaxPrice').value;
-  const city = document.getElementById('filterCity').value;
-  const gear = document.getElementById('filterGear').value;
-  const fuel = document.getElementById('filterFuel').value;
+function doFilter() {
+  const q = document.getElementById('sText').value.toLowerCase();
+  const make = document.getElementById('sMake').value;
+  const year = document.getElementById('sYear').value;
+  const maxP = parseInt(document.getElementById('sPrice').value) || Infinity;
+  const gear = document.getElementById('sGear').value;
+  const city = document.getElementById('sCity').value;
 
-  filteredCars = allCars.filter(car => {
-    if (text && !`${car.make} ${car.model} ${car.seller_city} ${car.color}`.toLowerCase().includes(text)) return false;
-    if (make && car.make !== make) return false;
-    if (year && car.year != year) return false;
-    if (maxPrice && car.price > parseInt(maxPrice)) return false;
-    if (city && car.seller_city !== city) return false;
-    if (gear && car.gear_type !== gear) return false;
-    if (fuel && car.fuel_type !== fuel) return false;
+  filtered = all.filter(c => {
+    if (q && !`${c.make} ${c.model} ${c.seller_city||''}`.toLowerCase().includes(q)) return false;
+    if (make && c.make !== make) return false;
+    if (year && c.year != year) return false;
+    if (c.price > maxP) return false;
+    if (gear && c.gear_type !== gear) return false;
+    if (city && c.seller_city !== city) return false;
     return true;
   });
 
-  sortCars(currentSort);
+  renderGrid();
 }
 
-function sortCars(type, btn) {
-  currentSort = type;
-
-  // Update button styles
-  if (btn) {
-    document.querySelectorAll('.sort-btn').forEach(b => b.classList.remove('active'));
-    btn.classList.add('active');
-  }
-
-  const sorted = [...filteredCars];
-  if (type === 'price_asc') sorted.sort((a,b) => a.price - b.price);
-  else if (type === 'price_desc') sorted.sort((a,b) => b.price - a.price);
-  else if (type === 'km_asc') sorted.sort((a,b) => (a.mileage||999999) - (b.mileage||999999));
-  else sorted.sort((a,b) => new Date(b.created_at) - new Date(a.created_at));
-
-  renderCars(sorted);
-  document.getElementById('countBadge').textContent = filteredCars.length + ' מודעות';
-}
+function resetFilters() { window.scrollTo({top:0,behavior:'smooth'}); }
 
 // ══════════════════════════════════
-// RENDER CARS
+// RENDER GRID (Instagram style)
 // ══════════════════════════════════
-function renderCars(cars) {
-  const container = document.getElementById('carsContainer');
+function renderGrid() {
+  document.getElementById('countEl').textContent = filtered.length + ' רכבים';
 
-  if (!cars.length) {
-    container.innerHTML = `
-      <div class="empty-state">
+  if (!filtered.length) {
+    document.getElementById('gridContainer').innerHTML = `
+      <div class="empty">
         <div class="empty-icon">🔍</div>
-        <h3>${t('noCars')}</h3>
-        <p>${t('noCarsDesc')}</p>
+        <h3>לא נמצאו רכבים</h3>
+        <p>נסה לשנות את החיפוש</p>
       </div>`;
     return;
   }
 
-  container.innerHTML = `<div class="cars-grid">${cars.map(car => carCard(car)).join('')}</div>`;
+  const html = filtered.map((car, i) => postCell(car, i)).join('');
+  document.getElementById('gridContainer').innerHTML = `<div class="ig-grid">${html}</div>`;
 }
 
-function carCard(car) {
-  const imgs = car.images || [];
-  const img = car.main_image || imgs[0];
-  const imgHtml = img
-    ? `<img class="car-img" src="${img}" alt="${car.make} ${car.model}" loading="lazy" onerror="this.style.display='none';this.parentElement.querySelector('.car-img-placeholder').style.display='flex'">`
-    : '';
-  const placeholderHtml = `<div class="car-img-placeholder" style="${img ? 'display:none' : ''}">🚗</div>`;
+function postCell(car, idx) {
+  const img = car.main_image || (car.images?.[0]);
+  const isFeatured = idx === 0 && filtered.length >= 5;
+  const isNew = Date.now() - new Date(car.created_at) < 3600000 * 6; // 6h
 
-  const badges = [];
-  if (car.featured) badges.push(`<span class="badge badge-featured">⭐ ${t('featured')}</span>`);
-  if (car.status === 'sold') badges.push(`<span class="badge badge-sold">✓ ${t('sold')}</span>`);
-  const isNew = (Date.now() - new Date(car.created_at)) < 86400000 * 3;
-  if (isNew && car.status !== 'sold') badges.push(`<span class="badge badge-new">${t('newBadge')}</span>`);
+  const imgContent = img
+    ? `<img class="ig-post-img" src="${img}" alt="${car.make} ${car.model}" loading="lazy">`
+    : `<div class="ig-post-ph">🚗</div>`;
 
-  const adminBtns = isAdmin ? `
-    <div style="padding:8px 14px;display:flex;gap:6px;border-top:1px solid var(--border)">
-      ${car.status==='pending' ? `<button onclick="approveCar('${car.id}');event.stopPropagation()" style="flex:1;padding:7px;background:rgba(74,222,128,0.12);border:1px solid rgba(74,222,128,0.3);color:#4ade80;border-radius:9px;cursor:pointer;font-size:12px;font-weight:800;font-family:var(--font)">✓ אשר פרסום</button>` : ''}
-      ${car.status==='active' ? `<button onclick="markSold('${car.id}');event.stopPropagation()" style="flex:1;padding:7px;background:rgba(212,175,55,0.12);border:1px solid rgba(212,175,55,0.3);color:var(--gold);border-radius:9px;cursor:pointer;font-size:12px;font-weight:800;font-family:var(--font)">נמכר</button>` : ''}
-      <button onclick="deleteCar('${car.id}');event.stopPropagation()" style="padding:7px 13px;background:rgba(239,68,68,0.12);border:1px solid rgba(239,68,68,0.3);color:#ef4444;border-radius:9px;cursor:pointer;font-size:12px;font-weight:800;font-family:var(--font)">✕</button>
-    </div>` : '';
-
-  const pendingBar = car.status === 'pending' && isAdmin
-    ? `<div class="status-pending-bar">⏳ ממתין לאישור</div>` : '';
-
-  const imgCountHtml = imgs.length > 1
-    ? `<div class="car-img-count">📷 ${imgs.length}</div>` : '';
+  const hoursLeft = Math.max(0, Math.round((new Date(car.created_at).getTime() + TWO_DAYS_MS - Date.now()) / 3600000));
+  const expiryText = hoursLeft <= 24 ? `⏱ נותרו ${hoursLeft} שע'` : '';
 
   return `
-    <div class="car-card" onclick="openDetail('${car.id}')">
-      <div class="car-img-wrap">
-        ${placeholderHtml}${imgHtml}
-        <div class="car-badges">${badges.join('')}</div>
-        ${imgCountHtml}
-      </div>
-      ${pendingBar}
-      <div class="car-body">
-        <div class="car-title">${car.make} ${car.model}</div>
-        <div class="car-sub">${car.year} • ${car.seller_city}</div>
-        <div class="car-price-row">
-          <div class="car-price">₪${Number(car.price).toLocaleString()}</div>
-        </div>
-        <div class="car-specs">
-          <span class="spec-tag">🔄 ${car.gear_type || 'אוטומט'}</span>
-          <span class="spec-tag">⛽ ${car.fuel_type || 'בנזין'}</span>
-          ${car.mileage ? `<span class="spec-tag">📏 ${Number(car.mileage).toLocaleString()} ${t('km')}</span>` : ''}
-          ${car.hand ? `<span class="spec-tag">✋ יד ${car.hand}</span>` : ''}
-        </div>
-        <div class="car-footer">
-          <span class="car-city">📍 ${car.seller_city}</span>
-          <div class="car-contact" onclick="event.stopPropagation()">
-            <a class="wa-btn" href="https://wa.me/972${(car.seller_phone||'').replace(/\D/g,'').replace(/^0/,'')}" target="_blank" title="WhatsApp">💬</a>
-            <a class="call-btn" href="tel:${car.seller_phone}" title="${t('call')}">📞</a>
+    <div class="ig-post${isFeatured?' featured':''}" onclick="openDetail('${car.id}')">
+      ${imgContent}
+      ${isNew ? '<div class="ig-new-dot"></div>' : ''}
+      ${car.auto_expire === false ? '<div class="ig-pkg-badge pkg-vip">👑 VIP</div>' : ''}
+      <div class="ig-overlay">
+        <div class="ig-hover-info">
+          <div class="ig-hover-price">₪${Number(car.price).toLocaleString()}</div>
+          <div class="ig-hover-name">${car.make} ${car.model} ${car.year}</div>
+          <div class="ig-hover-stats">
+            ${car.mileage ? `<span class="ig-hover-stat">📏 ${Number(car.mileage).toLocaleString()} ק"מ</span>` : ''}
+            ${car.seller_city ? `<span class="ig-hover-stat">📍 ${car.seller_city}</span>` : ''}
+            ${expiryText ? `<span class="ig-hover-stat" style="color:#ffd700">${expiryText}</span>` : ''}
           </div>
         </div>
       </div>
-      ${adminBtns}
+      <div class="ig-price-tag">₪${Number(car.price).toLocaleString()}</div>
     </div>`;
 }
 
 // ══════════════════════════════════
-// CAR DETAIL
+// DETAIL MODAL
 // ══════════════════════════════════
 function openDetail(id) {
-  const car = allCars.find(c => c.id === id);
+  const car = all.find(c => c.id === id);
   if (!car) return;
 
-  const imgs = car.images && car.images.length ? car.images : (car.main_image ? [car.main_image] : []);
-  const mainImg = imgs[0] || null;
+  const img = car.main_image || car.images?.[0];
+  const side = document.getElementById('mImgSide');
+  side.innerHTML = img
+    ? `<img class="modal-main-img" src="${img}" alt="${car.make} ${car.model}">`
+    : `<div class="modal-img-ph">🚗</div>`;
 
-  const galleryHtml = mainImg ? `
-    <div class="detail-gallery">
-      <img class="detail-img-main" id="mainDetailImg" src="${mainImg}" alt="${car.make} ${car.model}">
-      ${imgs.length > 1 ? `
-        <div class="detail-thumbs">
-          ${imgs.map((src, i) => `<img class="detail-thumb ${i===0?'active':''}" src="${src}" onclick="switchDetailImg('${src}',this)" loading="lazy">`).join('')}
-        </div>` : ''}
-    </div>` : '';
+  document.getElementById('mCarName').textContent = `${car.make} ${car.model} ${car.year}`;
 
-  const desc = car.description_he || car.description_ar || '';
-  const descHtml = desc ? `
-    <div class="detail-desc">${desc}</div>` : '';
+  const phone = car.seller_phone || '';
+  const waNum = phone.replace(/\D/g,'').replace(/^0/,'972');
+  const hoursLeft = Math.max(0, Math.round((new Date(car.created_at).getTime() + TWO_DAYS_MS - Date.now()) / 3600000));
+  const expiryShow = car.auto_expire !== false;
 
-  document.getElementById('detailTitle').textContent = `${car.make} ${car.model} ${car.year}`;
-  document.getElementById('detailBody').innerHTML = `
-    ${galleryHtml}
-    <div class="detail-header-row">
-      <div class="detail-title-group">
-        <div class="detail-car-name">${car.make} ${car.model}</div>
-        <div class="detail-car-sub">${car.year} • יד ${car.hand || '—'} • ${car.seller_city}</div>
-      </div>
-      <div>
-        <div class="detail-price">₪${Number(car.price).toLocaleString()}</div>
-        <div class="detail-price-label">מחיר מבוקש</div>
-      </div>
+  document.getElementById('mBody').innerHTML = `
+    <div class="modal-price">₪${Number(car.price).toLocaleString()}</div>
+    <div class="modal-location">📍 ${car.seller_city || 'ישראל'} • ${car.year}</div>
+    <div class="modal-specs">
+      <div class="mspec"><div class="mspec-k">קילומטראז'</div><div class="mspec-v">${car.mileage ? Number(car.mileage).toLocaleString()+' ק"מ' : '—'}</div></div>
+      <div class="mspec"><div class="mspec-k">גיר</div><div class="mspec-v">${car.gear_type||'—'}</div></div>
+      <div class="mspec"><div class="mspec-k">דלק</div><div class="mspec-v">${car.fuel_type||'—'}</div></div>
+      <div class="mspec"><div class="mspec-k">יד</div><div class="mspec-v">יד ${car.hand||'—'}</div></div>
+      <div class="mspec"><div class="mspec-k">צבע</div><div class="mspec-v">${car.color||'—'}</div></div>
+      <div class="mspec"><div class="mspec-k">שנה</div><div class="mspec-v">${car.year}</div></div>
     </div>
-    <div class="detail-specs">
-      ${car.mileage ? `<div class="detail-spec"><div class="detail-spec-val">📏 ${Number(car.mileage).toLocaleString()}</div><div class="detail-spec-key">${t('km')}</div></div>` : ''}
-      <div class="detail-spec"><div class="detail-spec-val">🔄 ${car.gear_type||'—'}</div><div class="detail-spec-key">${t('gear')}</div></div>
-      <div class="detail-spec"><div class="detail-spec-val">⛽ ${car.fuel_type||'—'}</div><div class="detail-spec-key">${t('fuel')}</div></div>
-      ${car.color ? `<div class="detail-spec"><div class="detail-spec-val">🎨 ${car.color}</div><div class="detail-spec-key">${t('color')}</div></div>` : ''}
-      ${car.engine_size ? `<div class="detail-spec"><div class="detail-spec-val">🔧 ${car.engine_size}L</div><div class="detail-spec-key">מנוע</div></div>` : ''}
-      <div class="detail-spec"><div class="detail-spec-val">✋ יד ${car.hand||'—'}</div><div class="detail-spec-key">${t('hand')}</div></div>
-    </div>
-    ${descHtml}
-    <div class="seller-card">
-      <div class="seller-avatar">👤</div>
-      <div>
-        <div class="seller-name">${car.seller_name || '—'}</div>
-        <div class="seller-city">📍 ${car.seller_city || '—'}</div>
-      </div>
-    </div>
-    <div class="contact-bar">
-      <a class="contact-wa" href="https://wa.me/972${(car.seller_phone||'').replace(/\D/g,'').replace(/^0/,'')}" target="_blank">
-        💬 ${t('whatsapp')}
-      </a>
-      <a class="contact-call" href="tel:${car.seller_phone}">
-        📞 ${t('call')} — ${car.seller_phone}
-      </a>
-    </div>
-    ${isAdmin ? `
-      <div style="display:flex;gap:8px;margin-top:12px">
-        ${car.status==='pending' ? `<button onclick="approveCar('${car.id}');closeDetailModal()" style="flex:1;padding:12px;background:rgba(74,222,128,0.12);border:1px solid rgba(74,222,128,0.3);color:#4ade80;border-radius:12px;cursor:pointer;font-size:14px;font-weight:800;font-family:var(--font)">✓ אשר פרסום</button>` : ''}
-        <button onclick="deleteCar('${car.id}');closeDetailModal()" style="flex:1;padding:12px;background:rgba(239,68,68,0.12);border:1px solid rgba(239,68,68,0.3);color:#ef4444;border-radius:12px;cursor:pointer;font-size:14px;font-weight:800;font-family:var(--font)">🗑 מחק מודעה</button>
-      </div>` : ''}`;
+    ${car.description_he ? `<div class="modal-desc">${car.description_he}</div>` : ''}
+    ${expiryShow ? `<div class="modal-expiry">⏱️ המודעה תפוג בעוד ${hoursLeft} שעות</div>` : ''}
+    <div class="modal-contact">
+      ${phone ? `<a class="contact-wa" href="https://wa.me/${waNum}?text=שלום, ראיתי את הרכב שלך ב-YOUGO CARS — ${car.make} ${car.model} ${car.year}" target="_blank">💬 שלח הודעה ב-WhatsApp</a>` : ''}
+      ${phone ? `<a class="contact-call" href="tel:${phone}">📞 ${phone}</a>` : ''}
+    </div>`;
 
-  document.getElementById('detailModal').classList.add('open');
+  document.getElementById('mFooter').textContent = `👤 ${car.seller_name||'מוכר פרטי'} • YOUGO CARS`;
+
+  document.getElementById('detailBg').classList.add('open');
+  sb.from('cars').update({ views: (car.views||0)+1 }).eq('id', id).then(()=>{});
 }
 
-function switchDetailImg(src, el) {
-  document.getElementById('mainDetailImg').src = src;
-  document.querySelectorAll('.detail-thumb').forEach(t => t.classList.remove('active'));
-  el.classList.add('active');
-}
-
-function closeDetailModal() {
-  document.getElementById('detailModal').classList.remove('open');
-}
+function closeDetail() { document.getElementById('detailBg').classList.remove('open'); }
 
 // ══════════════════════════════════
-// ADD CAR MODAL
+// ADD CAR
 // ══════════════════════════════════
 function openAddModal() {
-  document.getElementById('addModal').classList.add('open');
-  document.getElementById('addCarForm').reset();
-  document.getElementById('previewGrid').innerHTML = '';
-  uploadedImages = [];
+  document.getElementById('addBg').classList.add('open');
 }
+function closeAdd() { document.getElementById('addBg').classList.remove('open'); }
 
-function closeAddModal() {
-  document.getElementById('addModal').classList.remove('open');
-}
-
-function handleModalClick(e, id) {
-  if (e.target.id === id) {
-    if (id === 'addModal') closeAddModal();
-    if (id === 'detailModal') closeDetailModal();
-  }
-}
-
-// ══════════════════════════════════
-// IMAGE HANDLING
-// ══════════════════════════════════
-function handleImages(input) {
-  const files = [...input.files].slice(0, 10);
-  uploadedImages = files;
-  const preview = document.getElementById('previewGrid');
-  preview.innerHTML = '';
-  files.forEach((f, idx) => {
+let uploadedFiles = [];
+function handleImgs(input) {
+  uploadedFiles = [...input.files].slice(0,8);
+  const row = document.getElementById('previewRow');
+  row.innerHTML = '';
+  uploadedFiles.forEach((f, i) => {
     const reader = new FileReader();
     reader.onload = e => {
-      const wrap = document.createElement('div');
-      wrap.className = 'preview-wrap';
-      wrap.innerHTML = `
-        <img src="${e.target.result}" class="preview-img">
-        <button class="preview-remove" onclick="removeImage(${idx})" type="button">×</button>`;
-      preview.appendChild(wrap);
+      const img = document.createElement('img');
+      img.src = e.target.result;
+      img.className = 'preview-thumb' + (i===0?' main-thumb':'');
+      img.title = i===0 ? 'תמונה ראשית' : '';
+      row.appendChild(img);
     };
     reader.readAsDataURL(f);
   });
 }
 
-function removeImage(idx) {
-  uploadedImages.splice(idx, 1);
-  const newDt = new DataTransfer();
-  uploadedImages.forEach(f => newDt.items.add(f));
-  document.getElementById('imgInput').files = newDt.files;
-  handleImages(document.getElementById('imgInput'));
-}
+async function submitCar() {
+  const make = document.getElementById('f_make').value.trim();
+  const model = document.getElementById('f_model').value.trim();
+  const year = parseInt(document.getElementById('f_year').value);
+  const price = parseInt(document.getElementById('f_price').value);
+  const name = document.getElementById('f_name').value.trim();
+  const phone = document.getElementById('f_phone').value.trim();
+  const city = document.getElementById('f_city').value.trim();
 
-// ══════════════════════════════════
-// UPLOAD IMAGE TO CLOUDINARY
-// ══════════════════════════════════
-async function uploadToCloudinary(file, progressCallback) {
-  // אם Cloudinary לא מוגדר, השתמש ב-Supabase Storage
-  if (CLOUDINARY_CLOUD_NAME === 'YOUR_CLOUD_NAME') {
-    return await uploadToSupabase(file);
+  if (!make||!model||!year||!price||!name||!phone||!city) {
+    showToast('מלא את כל השדות החובה *', 'err'); return;
   }
 
-  const formData = new FormData();
-  formData.append('file', file);
-  formData.append('upload_preset', CLOUDINARY_UPLOAD_PRESET);
-  formData.append('folder', 'yougo-cars');
-
-  const res = await fetch(`https://api.cloudinary.com/v1_1/${CLOUDINARY_CLOUD_NAME}/image/upload`, {
-    method: 'POST',
-    body: formData
-  });
-
-  if (!res.ok) throw new Error('Cloudinary upload failed');
-  const data = await res.json();
-  return data.secure_url;
-}
-
-async function uploadToSupabase(file) {
-  const ext = file.name.split('.').pop();
-  const path = `${Date.now()}-${Math.random().toString(36).slice(2)}.${ext}`;
-  const { data, error } = await sb.storage.from('car-images').upload(path, file, {
-    cacheControl: '3600', upsert: false
-  });
-  if (error) throw error;
-  const { data: urlData } = sb.storage.from('car-images').getPublicUrl(path);
-  return urlData.publicUrl;
-}
-
-// ══════════════════════════════════
-// SUBMIT CAR — פרסום מיידי!
-// ══════════════════════════════════
-async function submitCar(e) {
-  e.preventDefault();
   const btn = document.getElementById('submitBtn');
-  const progressEl = document.getElementById('uploadProgress');
-  const progressBar = document.getElementById('uploadProgressBar');
-
-  btn.disabled = true;
-  btn.textContent = '⏳ מעלה תמונות...';
-
-  if (uploadedImages.length > 0) {
-    progressEl.style.display = 'block';
-  }
+  btn.disabled = true; btn.textContent = '⏳ מעלה...';
 
   try {
     // Upload images
     const imageUrls = [];
-    for (let i = 0; i < uploadedImages.length; i++) {
-      const file = uploadedImages[i];
-      btn.textContent = `⏳ מעלה תמונה ${i+1}/${uploadedImages.length}...`;
-      progressBar.style.width = `${((i+1)/uploadedImages.length)*100}%`;
-
-      const url = await uploadToCloudinary(file);
-      imageUrls.push(url);
+    for (const file of uploadedFiles) {
+      const ext = file.name.split('.').pop();
+      const path = `${Date.now()}-${Math.random().toString(36).slice(2)}.${ext}`;
+      const { error: upErr } = await sb.storage.from('car-images').upload(path, file);
+      if (!upErr) {
+        const { data: urlData } = sb.storage.from('car-images').getPublicUrl(path);
+        imageUrls.push(urlData.publicUrl);
+      }
     }
 
-    progressEl.style.display = 'none';
-    btn.textContent = '💾 שומר מודעה...';
-
-    // ⚡ פרסום מיידי — status: 'active'
-    const carData = {
-      make: document.getElementById('f_make').value.trim(),
-      model: document.getElementById('f_model').value.trim(),
-      year: parseInt(document.getElementById('f_year').value),
-      price: parseInt(document.getElementById('f_price').value),
-      mileage: parseInt(document.getElementById('f_mileage').value) || 0,
-      hand: parseInt(document.getElementById('f_hand').value),
+    const { error } = await sb.from('cars').insert({
+      make, model, year, price,
+      mileage: parseInt(document.getElementById('f_km').value)||null,
+      hand: parseInt(document.getElementById('f_hand').value)||2,
       gear_type: document.getElementById('f_gear').value,
       fuel_type: document.getElementById('f_fuel').value,
-      color: document.getElementById('f_color').value.trim(),
-      engine_size: parseFloat(document.getElementById('f_engine').value) || null,
-      description_he: document.getElementById('f_desc_he').value,
-      description_ar: document.getElementById('f_desc_ar').value,
-      seller_name: document.getElementById('f_name').value.trim(),
-      seller_phone: document.getElementById('f_phone').value.trim(),
-      seller_city: document.getElementById('f_city').value.trim(),
+      color: document.getElementById('f_color').value||null,
+      seller_city: city,
+      description_he: document.getElementById('f_desc').value||null,
+      seller_name: name,
+      seller_phone: phone,
       images: imageUrls,
-      main_image: imageUrls[0] || null,
-      status: 'active', // ← פרסום מיידי תמיד!
-    };
+      main_image: imageUrls[0]||null,
+      status: 'active',
+      auto_expire: true,  // ← יימחק אוטומטית אחרי 48 שעות
+      views: 0,
+    });
 
-    const { error } = await sb.from('cars').insert(carData);
     if (error) throw error;
 
-    // Reload cars to show the new listing
-    await loadCars();
-
     // Show success
-    document.getElementById('addModalBody').innerHTML = `
-      <div class="success-msg">
-        <div class="success-icon">🎉</div>
-        <h3>המודעה פורסמה!</h3>
-        <p>הרכב שלך זמין עכשיו לכולם לראות 🚗✨</p>
-        <button class="btn btn-red" style="margin-top:24px;padding:14px 36px;font-size:16px" onclick="closeAddModal();document.getElementById('addModalBody').innerHTML=''">
-          סגור
-        </button>
+    document.getElementById('addFormContainer').innerHTML = `
+      <div class="success-state">
+        <div class="success-icon">🚀</div>
+        <div class="success-title">המודעה עלתה!</div>
+        <div class="success-sub">הרכב שלך מוצג עכשיו ל-48 שעות.<br>קונים יוכלו לפנות אליך ישירות ב-WhatsApp.</div>
+        <button class="close-success" onclick="closeAdd();loadCars()">סגור</button>
       </div>`;
 
-    showToast('🚗 המודעה פורסמה בהצלחה!', 'success');
-
-  } catch(err) {
-    showToast('❌ שגיאה: ' + err.message, 'error');
-    btn.disabled = false;
-    btn.textContent = t('submitBtn');
-    progressEl.style.display = 'none';
+  } catch(e) {
+    showToast('שגיאה: ' + e.message, 'err');
+    btn.disabled = false; btn.textContent = '⚡ פרסם עכשיו — בחינם';
   }
-}
-
-// ══════════════════════════════════
-// ADMIN FUNCTIONS
-// ══════════════════════════════════
-function adminLogin() {
-  const pass = prompt('🔑 Admin Password:');
-  if (pass === null) return;
-
-  if (pass === ADMIN_PASS) {
-    isAdmin = true;
-    const bar = document.getElementById('adminBar');
-    bar.style.display = 'flex';
-    document.getElementById('heroSection').style.marginTop = '0';
-    document.getElementById('adminActions').innerHTML = `
-      <span style="color:var(--text2);font-size:13px;font-weight:600">מצב אדמין פעיל</span>
-      <button onclick="loadCars()" style="background:rgba(200,16,46,0.12);border:1px solid var(--border-red);color:var(--red);padding:7px 16px;border-radius:9px;cursor:pointer;font-size:13px;font-weight:800;font-family:var(--font)">🔄 רענן</button>
-      <a href="admin.html" style="background:rgba(59,130,246,0.12);border:1px solid rgba(59,130,246,0.3);color:#60a5fa;padding:7px 16px;border-radius:9px;cursor:pointer;font-size:13px;font-weight:800;font-family:var(--font);text-decoration:none">⚙️ לוח ניהול</a>
-      <button onclick="adminLogout()" style="background:var(--bg3);border:1px solid var(--border);color:var(--text2);padding:7px 16px;border-radius:9px;cursor:pointer;font-size:13px;font-family:var(--font);font-weight:700">יציאה</button>`;
-    loadCars();
-    showToast('✅ ברוך הבא, Admin!', 'success');
-  } else {
-    showToast('❌ סיסמה שגויה', 'error');
-  }
-}
-
-function adminLogout() {
-  isAdmin = false;
-  document.getElementById('adminBar').style.display = 'none';
-  document.getElementById('heroSection').style.marginTop = '';
-  loadCars();
-}
-
-async function approveCar(id) {
-  const { error } = await sb.from('cars').update({ status: 'active' }).eq('id', id);
-  if (!error) { showToast('✅ המודעה אושרה!', 'success'); loadCars(); }
-  else showToast('❌ שגיאה: ' + error.message, 'error');
-}
-
-async function markSold(id) {
-  const { error } = await sb.from('cars').update({ status: 'sold' }).eq('id', id);
-  if (!error) { showToast('✅ סומן כנמכר', 'success'); loadCars(); }
-}
-
-async function deleteCar(id) {
-  if (!confirm('למחוק מודעה זו לצמיתות?')) return;
-  const { error } = await sb.from('cars').delete().eq('id', id);
-  if (!error) { showToast('🗑️ המודעה נמחקה', 'success'); loadCars(); }
-  else showToast('❌ שגיאה: ' + error.message, 'error');
 }
 
 // ══════════════════════════════════
 // UTILS
 // ══════════════════════════════════
-function showToast(msg, type = 'success') {
+function goAdmin() { window.location.href = 'admin.html'; }
+
+function showToast(msg, type='ok') {
   const el = document.getElementById('toast');
-  el.textContent = msg;
-  el.className = `toast ${type} show`;
+  el.textContent = msg; el.className = `toast ${type} show`;
   setTimeout(() => el.classList.remove('show'), 3500);
 }
 
-function scrollToListings() {
-  document.getElementById('listingsSection').scrollIntoView({ behavior: 'smooth' });
-}
-
-function showHome() {
-  filteredCars = [...allCars];
-  sortCars(currentSort);
-  window.scrollTo({ top: 0, behavior: 'smooth' });
-}
-
-// ESC to close modals
 document.addEventListener('keydown', e => {
-  if (e.key === 'Escape') { closeDetailModal(); closeAddModal(); }
+  if (e.key === 'Escape') { closeDetail(); closeAdd(); }
 });
 
 // ══════════════════════════════════
-// INIT
+// START
 // ══════════════════════════════════
-loadCars();
+init();
 </script>
 </body>
 </html>
