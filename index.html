@@ -33,7 +33,6 @@ a{color:inherit;text-decoration:none}
 ::-webkit-scrollbar{width:3px}
 ::-webkit-scrollbar-thumb{background:var(--red);border-radius:2px}
 
-/* Subtle noise grain for depth */
 body::before{
   content:'';position:fixed;inset:0;z-index:0;pointer-events:none;
   background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.035'/%3E%3C/svg%3E");
@@ -48,11 +47,10 @@ body::before{
   background:rgba(7,7,14,.78);backdrop-filter:blur(28px) saturate(1.8);
   border-bottom:1px solid rgba(255,255,255,.055);
   transition:background .3s var(--ease),border-color .3s var(--ease);
-  overflow:hidden; /* מניעת גלישה */
+  overflow:hidden;
 }
 #nav.solid{background:rgba(7,7,14,.97);border-color:var(--b0)}
 
-/* ── LOGO ── */
 .logo{display:flex;align-items:center;gap:9px;cursor:pointer;flex-shrink:0;min-width:0}
 .logo-box{
   width:36px;height:36px;min-width:36px;border-radius:10px;flex-shrink:0;
@@ -60,28 +58,20 @@ body::before{
   display:flex;align-items:center;justify-content:center;
   box-shadow:0 4px 14px rgba(200,16,46,.45);
 }
-.logo-text{
-  font-size:17px;font-weight:900;letter-spacing:-.5px;
-  white-space:nowrap;line-height:1;color:#fff;
-}
+.logo-text{font-size:17px;font-weight:900;letter-spacing:-.5px;white-space:nowrap;line-height:1;color:#fff}
 .logo-text .r{color:#e8112e}
-.logo-cars{color:#ffffff}
 
 .nav-mid{display:flex;gap:2px;flex-shrink:0}
 .nav-a{padding:6px 11px;border-radius:9px;font-size:12.5px;font-weight:700;color:var(--t1);
   cursor:pointer;background:none;border:none;font-family:var(--font);transition:all .18s;white-space:nowrap}
 .nav-a:hover{color:var(--t0);background:rgba(255,255,255,.07)}
 
-/* nav-end — push to left edge, never shrink below content */
 .nav-end{display:flex;gap:6px;align-items:center;margin-right:auto;flex-shrink:0}
 
-/* זר اللغة */
 .btn-lang{
   display:inline-flex;align-items:center;gap:6px;
-  background:rgba(255,255,255,.06);
-  border:1px solid rgba(255,255,255,.12);
-  color:var(--t0);
-  padding:7px 12px;border-radius:10px;font-size:12px;cursor:pointer;
+  background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);
+  color:var(--t0);padding:7px 12px;border-radius:10px;font-size:12px;cursor:pointer;
   font-family:var(--font);transition:all .2s var(--ease);font-weight:700;
   letter-spacing:.02em;white-space:nowrap;flex-shrink:0;
 }
@@ -92,14 +82,13 @@ body::before{
   background:linear-gradient(135deg,var(--red),#e0162f);
   font-size:9px;font-weight:900;color:#fff;letter-spacing:0;flex-shrink:0;
 }
-/* زر חבילות في الـ nav */
+
 .btn-pkg-nav{
   display:inline-flex;align-items:center;gap:5px;
   padding:8px 12px;border-radius:10px;font-size:12px;font-weight:900;
   background:rgba(212,175,55,.1);border:1.5px solid rgba(212,175,55,.35);
   color:var(--gold);cursor:pointer;font-family:var(--font);
-  white-space:nowrap;text-decoration:none;flex-shrink:0;
-  transition:all .18s;
+  white-space:nowrap;text-decoration:none;flex-shrink:0;transition:all .18s;
 }
 .btn-pkg-nav:hover{background:rgba(212,175,55,.2);border-color:rgba(212,175,55,.6)}
 
@@ -119,8 +108,7 @@ body::before{
 .hero{
   position:relative;min-height:100svh;
   display:flex;align-items:center;justify-content:center;text-align:center;
-  padding:calc(var(--nav) + 56px) 22px 72px;
-  overflow:hidden;
+  padding:calc(var(--nav) + 56px) 22px 72px;overflow:hidden;
 }
 .hero-bg{
   position:absolute;inset:0;z-index:0;
@@ -128,14 +116,11 @@ body::before{
     radial-gradient(ellipse 120% 60% at 50% -5%,rgba(232,17,46,.42) 0%,transparent 58%),
     radial-gradient(ellipse 60% 50% at 2% 88%,rgba(232,17,46,.18) 0%,transparent 50%),
     radial-gradient(ellipse 55% 45% at 98% 85%,rgba(90,20,220,.12) 0%,transparent 50%),
-    radial-gradient(ellipse 80% 40% at 50% 50%,rgba(20,10,50,.6) 0%,transparent 80%),
-    var(--bg);
+    radial-gradient(ellipse 80% 40% at 50% 50%,rgba(20,10,50,.6) 0%,transparent 80%),var(--bg);
 }
 .hero-grid{
   position:absolute;inset:0;z-index:0;
-  background-image:
-    linear-gradient(rgba(255,255,255,.07) 1px,transparent 1px),
-    linear-gradient(90deg,rgba(255,255,255,.07) 1px,transparent 1px);
+  background-image:linear-gradient(rgba(255,255,255,.07) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.07) 1px,transparent 1px);
   background-size:52px 52px;
   -webkit-mask-image:radial-gradient(ellipse 96% 78% at 50% 32%,#000 28%,transparent 75%);
   mask-image:radial-gradient(ellipse 96% 78% at 50% 32%,#000 28%,transparent 75%);
@@ -148,23 +133,19 @@ body::before{
 }
 .hero-in{position:relative;z-index:2;max-width:840px;width:100%}
 
-/* Badge */
 .hero-badge{
   display:inline-flex;align-items:center;gap:8px;
   padding:8px 20px;border-radius:100px;margin-bottom:28px;
   background:rgba(232,17,46,.15);border:1px solid rgba(232,17,46,.45);
-  animation:fu .6s ease both;
-  box-shadow:0 0 24px rgba(232,17,46,.15);
+  animation:fu .6s ease both;box-shadow:0 0 24px rgba(232,17,46,.15);
 }
 .badge-dot{width:7px;height:7px;border-radius:50%;background:var(--red);
   animation:blink 2s infinite;box-shadow:0 0 10px var(--red)}
 @keyframes blink{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.4;transform:scale(.7)}}
-.hero-badge span{font-size:11.5px;font-weight:800;color:rgba(255,255,255,.88);
-  text-transform:uppercase;letter-spacing:.12em}
+.hero-badge span{font-size:11.5px;font-weight:800;color:rgba(255,255,255,.88);text-transform:uppercase;letter-spacing:.12em}
 
 @keyframes fu{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
 
-/* FIX 3: hero h1 — إزالة الخط الأحمر بين السطرين */
 .hero h1{
   font-size:clamp(2.6rem,8vw,5.6rem);font-weight:900;line-height:1.06;
   letter-spacing:-2px;margin-bottom:22px;animation:fu .6s .1s ease both;
@@ -177,642 +158,337 @@ body::before{
   text-decoration:none;border:none;display:inline;
   filter:drop-shadow(0 0 20px rgba(232,17,46,.55));
 }
-.hero h1 br{display:block;content:'';border:none;background:none}
-.hero h1 span{border:none !important;text-decoration:none !important;box-shadow:none !important}
 
 .hero-sub{
   font-size:clamp(1rem,2vw,1.16rem);color:rgba(255,255,255,.84);
   line-height:1.75;max-width:500px;margin:0 auto 36px;
-  animation:fu .6s .2s ease both;
-  text-shadow:0 1px 12px rgba(0,0,0,.6);
+  animation:fu .6s .2s ease both;text-shadow:0 1px 12px rgba(0,0,0,.6);
 }
 
-/* CTA row */
-.hero-ctas{
-  display:flex;gap:10px;justify-content:center;flex-wrap:wrap;
-  margin-bottom:48px;animation:fu .6s .3s ease both;
-}
+.hero-ctas{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-bottom:48px;animation:fu .6s .3s ease both}
 .hero-ctas .btn{padding:14px 30px;font-size:15px}
 
-/* ★ Packages button */
 .btn-pkg{
-  display:inline-flex;align-items:center;gap:9px;
-  padding:13px 26px;border-radius:14px;
+  display:inline-flex;align-items:center;gap:9px;padding:13px 26px;border-radius:14px;
   background:linear-gradient(135deg,rgba(212,175,55,.14),rgba(212,175,55,.06));
   border:1.5px solid rgba(212,175,55,.45);color:var(--gold);
-  font-weight:900;font-size:14px;cursor:pointer;
-  font-family:var(--font);transition:all .22s var(--ease);text-decoration:none;
+  font-weight:900;font-size:14px;cursor:pointer;font-family:var(--font);transition:all .22s var(--ease);text-decoration:none;
 }
-.btn-pkg:hover{
-  background:linear-gradient(135deg,rgba(212,175,55,.26),rgba(212,175,55,.12));
-  border-color:rgba(212,175,55,.75);transform:translateY(-2px);
-  box-shadow:0 8px 28px rgba(212,175,55,.22);
-}
-.btn-ghost{
-  background:rgba(255,255,255,.08);border:1px solid var(--b0);
-  color:var(--t1);font-size:15px;padding:14px 30px;
-}
+.btn-pkg:hover{background:linear-gradient(135deg,rgba(212,175,55,.26),rgba(212,175,55,.12));border-color:rgba(212,175,55,.75);transform:translateY(-2px);box-shadow:0 8px 28px rgba(212,175,55,.22)}
+.btn-ghost{background:rgba(255,255,255,.08);border:1px solid var(--b0);color:var(--t1);font-size:15px;padding:14px 30px}
 .btn-ghost:hover{background:rgba(255,255,255,.13);color:var(--t0);border-color:var(--b1)}
 
-/* Stats */
 .hero-stats{
   display:flex;max-width:500px;margin:0 auto;
   border:1px solid rgba(255,255,255,.14);border-radius:20px;
   background:rgba(255,255,255,.06);overflow:hidden;
   box-shadow:0 8px 32px rgba(0,0,0,.4),inset 0 1px 0 rgba(255,255,255,.08);
-  backdrop-filter:blur(12px);
-  animation:fu .6s .4s ease both;
+  backdrop-filter:blur(12px);animation:fu .6s .4s ease both;
 }
 .hs{flex:1;padding:20px 14px;text-align:center;position:relative}
-.hs:not(:last-child)::after{
-  content:'';position:absolute;right:0;top:20%;bottom:20%;
-  width:1px;background:rgba(255,255,255,.14);
-}
+.hs:not(:last-child)::after{content:'';position:absolute;right:0;top:20%;bottom:20%;width:1px;background:rgba(255,255,255,.14)}
 .hs-v{font-size:1.8rem;font-weight:900;color:#ffffff;text-shadow:0 2px 12px rgba(0,0,0,.5)}
 .hs-v .a{color:var(--red)}
-.hs-l{font-size:10px;color:rgba(255,255,255,.55);margin-top:3px;font-weight:700;
-  text-transform:uppercase;letter-spacing:.08em}
+.hs-l{font-size:10px;color:rgba(255,255,255,.55);margin-top:3px;font-weight:700;text-transform:uppercase;letter-spacing:.08em}
 
 /* ── TICKER ── */
-.ticker{
-  overflow:hidden;border-top:1px solid var(--b0);border-bottom:1px solid var(--b0);
-  background:rgba(255,255,255,.016);height:42px;display:flex;align-items:center;
-}
+.ticker{overflow:hidden;border-top:1px solid var(--b0);border-bottom:1px solid var(--b0);background:rgba(255,255,255,.016);height:42px;display:flex;align-items:center}
 .ticker-inner{display:flex;white-space:nowrap;animation:tick 26s linear infinite}
 @keyframes tick{from{transform:translateX(0)}to{transform:translateX(-50%)}}
-.ti{display:flex;align-items:center;gap:8px;padding:0 26px;height:42px;
-  font-size:12.5px;font-weight:700;color:rgba(255,255,255,.72);border-left:1px solid rgba(255,255,255,.08)}
+.ti{display:flex;align-items:center;gap:8px;padding:0 26px;height:42px;font-size:12.5px;font-weight:700;color:rgba(255,255,255,.72);border-left:1px solid rgba(255,255,255,.08)}
 .ti:first-child{border-left:none}
 
 /* ── SEARCH ── */
 .search-wrap{padding:52px 22px 0;max-width:980px;margin:0 auto}
-
-.search-eyebrow{
-  display:flex;align-items:center;gap:8px;margin-bottom:13px;
-}
+.search-eyebrow{display:flex;align-items:center;gap:8px;margin-bottom:13px}
 .search-eyebrow-line{width:28px;height:2px;border-radius:2px;background:var(--red)}
-.search-eyebrow-text{font-size:10.5px;font-weight:900;color:#ff4466;
-  text-transform:uppercase;letter-spacing:.14em}
+.search-eyebrow-text{font-size:10.5px;font-weight:900;color:#ff4466;text-transform:uppercase;letter-spacing:.14em}
 
 .search-card{
   background:linear-gradient(160deg,#181832,#0f0f1e);
-  border:1.5px solid rgba(255,255,255,.16);
-  border-radius:22px;overflow:hidden;
-  box-shadow:0 6px 40px rgba(0,0,0,.55),0 0 0 1px rgba(200,16,46,.07);
-  transition:border-color .22s,box-shadow .22s;
+  border:1.5px solid rgba(255,255,255,.16);border-radius:22px;overflow:hidden;
+  box-shadow:0 6px 40px rgba(0,0,0,.55),0 0 0 1px rgba(200,16,46,.07);transition:border-color .22s,box-shadow .22s;
 }
-.search-card:focus-within{
-  border-color:rgba(200,16,46,.48);
-  box-shadow:0 6px 40px rgba(0,0,0,.55),0 0 0 4px rgba(200,16,46,.07);
-}
+.search-card:focus-within{border-color:rgba(200,16,46,.48);box-shadow:0 6px 40px rgba(0,0,0,.55),0 0 0 4px rgba(200,16,46,.07)}
 
-.search-main{
-  display:flex;align-items:center;
-  padding:7px 7px 7px 18px;
-  border-bottom:1px solid rgba(255,255,255,.10);
-  gap:10px;
-}
+.search-main{display:flex;align-items:center;padding:7px 7px 7px 18px;border-bottom:1px solid rgba(255,255,255,.10);gap:10px}
 .search-ico{font-size:17px;color:var(--t2);flex-shrink:0}
-.search-input{
-  flex:1;background:none;border:none;outline:none;
-  font-size:15px;font-weight:600;color:var(--t0);
-  font-family:var(--font);padding:10px 4px;min-width:0;
-}
+.search-input{flex:1;background:none;border:none;outline:none;font-size:15px;font-weight:600;color:var(--t0);font-family:var(--font);padding:10px 4px;min-width:0}
 .search-input::placeholder{color:rgba(255,255,255,.38)}
-.search-go{
-  padding:11px 28px;border-radius:14px;border:none;
-  background:linear-gradient(135deg,var(--red),#e0162f);
-  color:#fff;font-family:var(--font);font-size:14px;font-weight:900;
-  cursor:pointer;transition:all .2s var(--ease);flex-shrink:0;
-  box-shadow:0 4px 14px rgba(200,16,46,.4);
-}
+.search-go{padding:11px 28px;border-radius:14px;border:none;background:linear-gradient(135deg,var(--red),#e0162f);color:#fff;font-family:var(--font);font-size:14px;font-weight:900;cursor:pointer;transition:all .2s var(--ease);flex-shrink:0;box-shadow:0 4px 14px rgba(200,16,46,.4)}
 .search-go:hover{transform:translateY(-1px);box-shadow:0 6px 22px rgba(200,16,46,.56)}
 
-.filter-strip{
-  display:flex;gap:4px;padding:6px 8px;
-  overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none;
-}
+.filter-strip{display:flex;gap:4px;padding:6px 8px;overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none}
 .filter-strip::-webkit-scrollbar{display:none}
 .fc{
-  display:flex;align-items:center;gap:5px;
-  padding:8px 14px;border-radius:10px;cursor:pointer;
+  display:flex;align-items:center;gap:5px;padding:8px 14px;border-radius:10px;cursor:pointer;
   background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);
-  color:rgba(255,255,255,.78);font-size:12.5px;font-weight:700;
-  white-space:nowrap;font-family:var(--font);
-  transition:all .18s;flex-shrink:0;
-  appearance:none;-webkit-appearance:none;outline:none;
+  color:rgba(255,255,255,.78);font-size:12.5px;font-weight:700;white-space:nowrap;font-family:var(--font);
+  transition:all .18s;flex-shrink:0;appearance:none;-webkit-appearance:none;outline:none;
 }
-.fc:hover,.fc:focus{
-  border-color:rgba(200,16,46,.38);color:var(--t0);
-  background:rgba(200,16,46,.07);
-}
+.fc:hover,.fc:focus{border-color:rgba(200,16,46,.38);color:var(--t0);background:rgba(200,16,46,.07)}
 .fc option{background:#101022}
 
 /* ── LISTINGS ── */
 .main{max-width:1240px;margin:0 auto;padding:42px 20px 100px}
-.main::before{
-  content:'';position:fixed;inset:0;z-index:-1;
-  background:radial-gradient(ellipse 70% 50% at 50% 0%,rgba(232,17,46,.06) 0%,transparent 60%),var(--bg);
-  pointer-events:none;
-}
 .list-head{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;margin-bottom:22px}
 .list-title{font-size:1.5rem;font-weight:900;color:#ffffff}
 .list-title .r{color:var(--red)}
-.cnt-badge{
-  padding:5px 14px;border-radius:100px;font-size:12px;font-weight:800;
-  background:rgba(200,16,46,.1);border:1px solid rgba(200,16,46,.2);color:var(--red);
-}
+.cnt-badge{padding:5px 14px;border-radius:100px;font-size:12px;font-weight:800;background:rgba(200,16,46,.1);border:1px solid rgba(200,16,46,.2);color:var(--red)}
 .sort-row{display:flex;gap:6px;margin-bottom:24px;flex-wrap:wrap}
-.sort-btn{
-  padding:7px 15px;border-radius:9px;border:1px solid rgba(255,255,255,.14);
-  background:rgba(255,255,255,.05);color:rgba(255,255,255,.75);font-family:var(--font);
-  font-size:12px;font-weight:700;cursor:pointer;transition:all .18s;white-space:nowrap;
-}
-.sort-btn:hover{color:var(--t0);border-color:var(--b1);background:rgba(255,255,255,.05)}
+.sort-btn{padding:7px 15px;border-radius:9px;border:1px solid rgba(255,255,255,.14);background:rgba(255,255,255,.05);color:rgba(255,255,255,.75);font-family:var(--font);font-size:12px;font-weight:700;cursor:pointer;transition:all .18s;white-space:nowrap}
+.sort-btn:hover{color:var(--t0);border-color:var(--b1)}
 .sort-btn.on{background:rgba(200,16,46,.1);border-color:var(--bred);color:var(--red)}
 
 /* ── CARS GRID ── */
-.cars-grid{
-  display:grid;
-  grid-template-columns:repeat(auto-fill,minmax(300px,1fr));
-  gap:20px;
-}
+.cars-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:20px}
 
-/* ── CAR CARD — Premium Redesign ── */
+/* ── CAR CARD ── */
 .car-card{
-  background:#0f0f1d;
-  border:1px solid rgba(255,255,255,.09);
-  border-radius:20px;overflow:hidden;cursor:pointer;
-  display:flex;flex-direction:column;position:relative;
-  transition:all .3s cubic-bezier(.25,.46,.45,.94);
-  box-shadow:0 2px 16px rgba(0,0,0,.5);
+  background:#0f0f1d;border:1px solid rgba(255,255,255,.09);border-radius:20px;
+  overflow:hidden;cursor:pointer;display:flex;flex-direction:column;position:relative;
+  transition:all .3s cubic-bezier(.25,.46,.45,.94);box-shadow:0 2px 16px rgba(0,0,0,.5);
 }
-.car-card::before{
-  content:'';position:absolute;inset:0;border-radius:20px;
-  background:linear-gradient(135deg,rgba(232,17,46,.04) 0%,transparent 60%);
-  opacity:0;transition:opacity .3s;pointer-events:none;z-index:1;
-}
-.car-card:hover{
-  transform:translateY(-6px) scale(1.01);
-  border-color:rgba(232,17,46,.5);
-  box-shadow:0 24px 60px rgba(0,0,0,.7),0 0 0 1px rgba(232,17,46,.2);
-}
+.car-card::before{content:'';position:absolute;inset:0;border-radius:20px;background:linear-gradient(135deg,rgba(232,17,46,.04) 0%,transparent 60%);opacity:0;transition:opacity .3s;pointer-events:none;z-index:1}
+.car-card:hover{transform:translateY(-6px) scale(1.01);border-color:rgba(232,17,46,.5);box-shadow:0 24px 60px rgba(0,0,0,.7),0 0 0 1px rgba(232,17,46,.2)}
 .car-card:hover::before{opacity:1}
 
-/* Image area */
-.car-img-wrap{
-  position:relative;overflow:hidden;
-  aspect-ratio:16/10;background:#0a0a18;flex-shrink:0;
-}
-.car-img{
-  width:100%;height:100%;object-fit:cover;display:block;
-  transition:transform .5s cubic-bezier(.25,.46,.45,.94);
-}
+.car-img-wrap{position:relative;overflow:hidden;aspect-ratio:16/10;background:#0a0a18;flex-shrink:0}
+.car-img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .5s cubic-bezier(.25,.46,.45,.94)}
 .car-card:hover .car-img{transform:scale(1.08)}
-.car-placeholder{
-  width:100%;height:100%;display:flex;flex-direction:column;align-items:center;
-  justify-content:center;gap:8px;
-  background:linear-gradient(135deg,#0f0f22,#0a0a18);
-}
-.car-placeholder svg{opacity:.2}
+.car-placeholder{width:100%;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;background:linear-gradient(135deg,#0f0f22,#0a0a18)}
 
-/* Gradient overlay on image bottom */
-.car-img-wrap::after{
-  content:'';position:absolute;bottom:0;left:0;right:0;height:50%;
-  background:linear-gradient(to top,rgba(10,10,24,.85),transparent);
-  pointer-events:none;z-index:1;
-}
+.car-img-wrap::after{content:'';position:absolute;bottom:0;left:0;right:0;height:50%;background:linear-gradient(to top,rgba(10,10,24,.85),transparent);pointer-events:none;z-index:1}
 
-/* Price floating on image */
-.car-price-float{
-  position:absolute;bottom:10px;right:12px;z-index:2;
-  font-size:20px;font-weight:900;color:#fff;
-  text-shadow:0 2px 8px rgba(0,0,0,.8);
-  letter-spacing:-.5px;
-}
+.car-price-float{position:absolute;bottom:10px;right:12px;z-index:2;font-size:20px;font-weight:900;color:#fff;text-shadow:0 2px 8px rgba(0,0,0,.8);letter-spacing:-.5px}
 .car-price-float small{font-size:11px;font-weight:700;color:rgba(255,255,255,.7);margin-right:2px}
 
 .car-badges{position:absolute;top:10px;right:10px;z-index:2;display:flex;flex-direction:column;gap:5px;align-items:flex-end}
-.cbadge{
-  padding:4px 10px;border-radius:100px;
-  font-size:9.5px;font-weight:900;
-  backdrop-filter:blur(12px);letter-spacing:.04em;
-}
+.cbadge{padding:4px 10px;border-radius:100px;font-size:9.5px;font-weight:900;backdrop-filter:blur(12px);letter-spacing:.04em}
 .cb-feat{background:rgba(240,200,74,.9);color:#000}
 .cb-sold{background:rgba(239,68,68,.9);color:#fff}
-.cb-new{
-  background:linear-gradient(135deg,#e8112e,#c8102e);
-  color:#fff;box-shadow:0 2px 10px rgba(232,17,46,.5);
-}
-.car-cnt{
-  position:absolute;bottom:10px;left:12px;z-index:2;
-  display:flex;align-items:center;gap:4px;
-  padding:4px 9px;border-radius:100px;
-  font-size:10px;font-weight:800;
-  background:rgba(0,0,0,.7);color:rgba(255,255,255,.9);
-  backdrop-filter:blur(8px);
-}
-.pend-bar{
-  background:linear-gradient(90deg,rgba(234,179,8,.15),rgba(234,179,8,.08));
-  border-bottom:1px solid rgba(234,179,8,.2);
-  color:#fbbf24;font-size:10.5px;font-weight:800;
-  padding:7px 14px;text-align:center;
-}
+.cb-new{background:linear-gradient(135deg,#e8112e,#c8102e);color:#fff;box-shadow:0 2px 10px rgba(232,17,46,.5)}
+.car-cnt{position:absolute;bottom:10px;left:12px;z-index:2;display:flex;align-items:center;gap:4px;padding:4px 9px;border-radius:100px;font-size:10px;font-weight:800;background:rgba(0,0,0,.7);color:rgba(255,255,255,.9);backdrop-filter:blur(8px)}
+.pend-bar{background:linear-gradient(90deg,rgba(234,179,8,.15),rgba(234,179,8,.08));border-bottom:1px solid rgba(234,179,8,.2);color:#fbbf24;font-size:10.5px;font-weight:800;padding:7px 14px;text-align:center}
 
-/* Card body */
-.car-body{
-  padding:14px 16px 12px;
-  display:flex;flex-direction:column;gap:8px;flex:1;
-}
-.car-name{
-  font-size:16px;font-weight:900;line-height:1.25;color:#fff;
-  letter-spacing:-.2px;
-}
-.car-meta{
-  font-size:11.5px;color:rgba(255,255,255,.55);font-weight:600;
-  display:flex;align-items:center;gap:6px;
-}
+.car-body{padding:14px 16px 12px;display:flex;flex-direction:column;gap:8px;flex:1}
+.car-name{font-size:16px;font-weight:900;line-height:1.25;color:#fff;letter-spacing:-.2px}
+.car-meta{font-size:11.5px;color:rgba(255,255,255,.55);font-weight:600;display:flex;align-items:center;gap:6px}
 .car-meta-dot{width:3px;height:3px;border-radius:50%;background:rgba(255,255,255,.3)}
 
-/* Spec pills */
 .specs{display:flex;flex-wrap:wrap;gap:5px}
-.spec{
-  padding:4px 10px;border-radius:8px;
-  background:rgba(255,255,255,.06);
-  border:1px solid rgba(255,255,255,.10);
-  font-size:10.5px;font-weight:700;
-  color:rgba(255,255,255,.75);
-  display:flex;align-items:center;gap:4px;
-}
+.spec{padding:4px 10px;border-radius:8px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.10);font-size:10.5px;font-weight:700;color:rgba(255,255,255,.75);display:flex;align-items:center;gap:4px}
 .spec-icon{font-size:11px;opacity:.7}
 
-/* Footer */
-.car-foot{
-  display:flex;align-items:center;justify-content:space-between;
-  padding:10px 16px 13px;
-  border-top:1px solid rgba(255,255,255,.07);
-}
-.car-loc{font-size:11px;color:rgba(255,255,255,.42);font-weight:600;
-  display:flex;align-items:center;gap:4px}
+.car-foot{display:flex;align-items:center;justify-content:space-between;padding:10px 16px 13px;border-top:1px solid rgba(255,255,255,.07)}
+.car-loc{font-size:11px;color:rgba(255,255,255,.42);font-weight:600;display:flex;align-items:center;gap:4px}
 .car-acts{display:flex;gap:6px}
-.act{
-  width:34px;height:34px;border-radius:9px;
-  display:flex;align-items:center;justify-content:center;
-  font-size:15px;transition:all .2s;
-  border:1px solid rgba(255,255,255,.1);text-decoration:none;
-}
+.act{width:34px;height:34px;border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:15px;transition:all .2s;border:1px solid rgba(255,255,255,.1);text-decoration:none}
 .act-wa{background:rgba(37,211,102,.08);color:#25d366}
 .act-wa:hover{background:rgba(37,211,102,.2);transform:scale(1.1);border-color:rgba(37,211,102,.3)}
 .act-call{background:rgba(59,130,246,.08);color:#60a5fa}
 .act-call:hover{background:rgba(59,130,246,.2);transform:scale(1.1);border-color:rgba(59,130,246,.3)}
 
-/* Admin row */
-.admin-row{padding:8px 12px;display:flex;gap:6px;border-top:1px solid rgba(255,255,255,.06)}
-.a-btn{flex:1;padding:7px;border-radius:8px;font-size:11.5px;font-weight:900;
-  cursor:pointer;border:none;font-family:var(--font);transition:all .15s}
-.a-approve{background:rgba(74,222,128,.1);border:1px solid rgba(74,222,128,.28);color:#4ade80}
-.a-sold{background:rgba(212,175,55,.1);border:1px solid rgba(212,175,55,.28);color:var(--gold)}
-.a-del{flex:0;padding:7px 11px;background:rgba(239,68,68,.1);border:1px solid rgba(239,68,68,.28);color:#ef4444}
-
 .admin-row{padding:8px 12px;display:flex;gap:6px;border-top:1px solid var(--b0)}
-.a-btn{flex:1;padding:7px;border-radius:8px;font-size:11.5px;font-weight:900;
-  cursor:pointer;border:none;font-family:var(--font);transition:all .15s}
+.a-btn{flex:1;padding:7px;border-radius:8px;font-size:11.5px;font-weight:900;cursor:pointer;border:none;font-family:var(--font);transition:all .15s}
 .a-approve{background:rgba(74,222,128,.1);border:1px solid rgba(74,222,128,.28);color:#4ade80}
 .a-sold{background:rgba(212,175,55,.1);border:1px solid rgba(212,175,55,.28);color:var(--gold)}
 .a-del{flex:0;padding:7px 11px;background:rgba(239,68,68,.1);border:1px solid rgba(239,68,68,.28);color:#ef4444}
 
 /* Loading / empty */
-.loading-box{grid-column:1/-1;padding:80px;display:flex;flex-direction:column;
-  align-items:center;gap:14px}
-.spin{width:36px;height:36px;border-radius:50%;
-  border:3px solid rgba(255,255,255,.07);border-top-color:var(--red);
-  animation:sp .75s linear infinite}
+.loading-box{grid-column:1/-1;padding:80px;display:flex;flex-direction:column;align-items:center;gap:14px}
+.spin{width:36px;height:36px;border-radius:50%;border:3px solid rgba(255,255,255,.07);border-top-color:var(--red);animation:sp .75s linear infinite}
 @keyframes sp{to{transform:rotate(360deg)}}
 .empty-box{grid-column:1/-1;padding:80px 20px;text-align:center}
 .empty-ico{font-size:52px;opacity:.24;margin-bottom:14px}
 .empty-box h3{font-size:1.3rem;font-weight:900;margin-bottom:8px}
 .empty-box p{color:var(--t1)}
 
+/* ── DB Error Banner ── */
+.db-error-banner{
+  grid-column:1/-1;
+  background:rgba(239,68,68,.08);
+  border:1px solid rgba(239,68,68,.3);
+  border-radius:16px;padding:24px 20px;text-align:center;
+}
+.db-error-banner h3{color:#ef4444;font-size:1.1rem;font-weight:900;margin-bottom:8px}
+.db-error-banner p{color:rgba(255,255,255,.7);font-size:13px;margin-bottom:6px;line-height:1.6}
+.db-error-banner code{display:inline-block;background:rgba(0,0,0,.4);color:#fbbf24;padding:2px 8px;border-radius:6px;font-size:11px;margin-top:6px}
+
+/* Empty state — better */
+.empty-state{
+  grid-column:1/-1;padding:60px 20px;text-align:center;
+}
+.empty-state-icon{font-size:56px;margin-bottom:16px;opacity:.35}
+.empty-state h3{font-size:1.25rem;font-weight:900;margin-bottom:10px;color:#fff}
+.empty-state p{color:rgba(255,255,255,.55);font-size:14px;margin-bottom:24px}
+
 /* ── FOOTER ── */
 footer{border-top:1px solid rgba(255,255,255,.12);padding:36px 20px;background:rgba(255,255,255,.02)}
-.foot-in{max-width:1200px;margin:0 auto;display:flex;
-  align-items:center;justify-content:space-between;flex-wrap:wrap;gap:16px}
+.foot-in{max-width:1200px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:16px}
 .foot-brand{display:flex;align-items:center;gap:9px}
-.foot-box{width:32px;height:32px;border-radius:9px;
-  background:linear-gradient(135deg,var(--red),var(--red2));
-  display:flex;align-items:center;justify-content:center}
+.foot-box{width:32px;height:32px;border-radius:9px;background:linear-gradient(135deg,var(--red),var(--red2));display:flex;align-items:center;justify-content:center}
 .foot-name{font-size:14px;font-weight:900}
 .foot-name .r{color:var(--red)}
 .foot-copy{font-size:11.5px;color:rgba(255,255,255,.52);font-weight:600}
 .foot-links{display:flex;gap:6px;align-items:center;flex-wrap:wrap}
-.foot-link{padding:5px 11px;border-radius:7px;font-size:11.5px;font-weight:700;
-  color:rgba(255,255,255,.6);background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);
-  transition:all .15s}
+.foot-link{padding:5px 11px;border-radius:7px;font-size:11.5px;font-weight:700;color:rgba(255,255,255,.6);background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);transition:all .15s}
 .foot-link:hover{color:#fff;border-color:rgba(255,255,255,.28)}
-.foot-dot{cursor:pointer;opacity:.1;transition:opacity .2s;font-size:16px;
-  color:var(--red);user-select:none}
+.foot-dot{cursor:pointer;opacity:.1;transition:opacity .2s;font-size:16px;color:var(--red);user-select:none}
 .foot-dot:hover{opacity:.4}
 
 /* ── MODALS ── */
-.overlay{
-  position:fixed;inset:0;z-index:600;
-  background:rgba(0,0,0,0);backdrop-filter:blur(0);
-  display:flex;align-items:flex-end;justify-content:center;
-  pointer-events:none;transition:all .3s var(--ease);
-}
-.overlay.open{background:rgba(0,0,0,.86);backdrop-filter:blur(20px);
-  pointer-events:all;align-items:center}
-.modal{
-  background:var(--bg2);border:1px solid var(--b0);
-  border-radius:var(--r3);width:100%;max-width:680px;max-height:92svh;
-  overflow:hidden;display:flex;flex-direction:column;
-  transform:translateY(30px) scale(.97);opacity:0;
-  transition:all .3s var(--ease);
-}
+.overlay{position:fixed;inset:0;z-index:600;background:rgba(0,0,0,0);backdrop-filter:blur(0);display:flex;align-items:flex-end;justify-content:center;pointer-events:none;transition:all .3s var(--ease)}
+.overlay.open{background:rgba(0,0,0,.86);backdrop-filter:blur(20px);pointer-events:all;align-items:center}
+.modal{background:var(--bg2);border:1px solid var(--b0);border-radius:var(--r3);width:100%;max-width:680px;max-height:92svh;overflow:hidden;display:flex;flex-direction:column;transform:translateY(30px) scale(.97);opacity:0;transition:all .3s var(--ease)}
 .overlay.open .modal{transform:translateY(0) scale(1);opacity:1}
-.modal-head{
-  display:flex;align-items:center;justify-content:space-between;
-  padding:16px 20px;border-bottom:1px solid var(--b0);
-  background:rgba(7,7,14,.9);backdrop-filter:blur(12px);
-  flex-shrink:0;position:sticky;top:0;z-index:2;
-}
+.modal-head{display:flex;align-items:center;justify-content:space-between;padding:16px 20px;border-bottom:1px solid var(--b0);background:rgba(7,7,14,.9);backdrop-filter:blur(12px);flex-shrink:0;position:sticky;top:0;z-index:2}
 .modal-title{font-size:15px;font-weight:900}
-.modal-x{
-  width:30px;height:30px;border-radius:8px;display:flex;
-  align-items:center;justify-content:center;
-  background:rgba(255,255,255,.07);border:1px solid var(--b0);
-  color:var(--t1);cursor:pointer;font-size:18px;line-height:1;
-  transition:all .15s;
-}
+.modal-x{width:30px;height:30px;border-radius:8px;display:flex;align-items:center;justify-content:center;background:rgba(255,255,255,.07);border:1px solid var(--b0);color:var(--t1);cursor:pointer;font-size:18px;line-height:1;transition:all .15s}
 .modal-x:hover{background:rgba(239,68,68,.12);color:#ef4444;border-color:rgba(239,68,46,.3)}
 .modal-body{padding:20px;overflow-y:auto;flex:1;-webkit-overflow-scrolling:touch}
 .modal-body::-webkit-scrollbar{width:2px}
 .modal-body::-webkit-scrollbar-thumb{background:var(--red)}
 
-/* ══════════════════════════════
-   DETAIL MODAL — Cinematic
-══════════════════════════════ */
-/* Fullscreen-style overlay */
+/* ── DETAIL MODAL ── */
 #detailOvl.open{align-items:flex-end}
 @media(min-width:640px){#detailOvl.open{align-items:center}}
 
 .detail-modal{
-  background:#08080f;
-  border:1px solid rgba(255,255,255,.10);
-  border-radius:28px 28px 0 0;
-  width:100%;max-width:780px;
-  max-height:94svh;
+  background:#08080f;border:1px solid rgba(255,255,255,.10);
+  border-radius:28px 28px 0 0;width:100%;max-width:780px;max-height:94svh;
   overflow:hidden;display:flex;flex-direction:column;
   transform:translateY(60px);opacity:0;
   transition:all .35s cubic-bezier(.25,.46,.45,.94);
   box-shadow:0 -8px 60px rgba(0,0,0,.8);
 }
-@media(min-width:640px){
-  .detail-modal{border-radius:24px;max-height:90svh;transform:translateY(30px) scale(.97)}
-}
+@media(min-width:640px){.detail-modal{border-radius:24px;max-height:90svh;transform:translateY(30px) scale(.97)}}
 .overlay.open .detail-modal{transform:translateY(0) scale(1);opacity:1}
 
-/* ── Gallery ── */
 .d-gallery{position:relative;background:#000;flex-shrink:0}
-.d-main-wrap{
-  position:relative;overflow:hidden;
-  aspect-ratio:16/9;background:#050510;
-}
-.d-main-img{
-  width:100%;height:100%;object-fit:cover;display:block;
-  transition:opacity .2s ease;
-}
+.d-main-wrap{position:relative;overflow:hidden;aspect-ratio:16/9;background:#050510}
+.d-main-img{width:100%;height:100%;object-fit:cover;display:block;transition:opacity .2s ease}
 
-/* Navigation arrows */
-.d-arrow{
-  position:absolute;top:50%;transform:translateY(-50%);
-  width:40px;height:40px;border-radius:50%;
-  background:rgba(0,0,0,.6);backdrop-filter:blur(10px);
-  border:1px solid rgba(255,255,255,.15);
-  color:#fff;font-size:18px;cursor:pointer;
-  display:flex;align-items:center;justify-content:center;
-  z-index:10;transition:all .2s;
-  -webkit-tap-highlight-color:transparent;
-}
+.d-arrow{position:absolute;top:50%;transform:translateY(-50%);width:40px;height:40px;border-radius:50%;background:rgba(0,0,0,.6);backdrop-filter:blur(10px);border:1px solid rgba(255,255,255,.15);color:#fff;font-size:18px;cursor:pointer;display:flex;align-items:center;justify-content:center;z-index:10;transition:all .2s;-webkit-tap-highlight-color:transparent}
 .d-arrow:hover{background:rgba(232,17,46,.7);border-color:rgba(232,17,46,.5)}
 .d-arrow-prev{left:10px}
 .d-arrow-next{right:10px}
 .d-arrow.hidden{display:none}
 
-/* Image counter */
-.d-img-counter{
-  position:absolute;top:12px;left:12px;z-index:10;
-  padding:4px 10px;border-radius:100px;
-  background:rgba(0,0,0,.65);backdrop-filter:blur(8px);
-  font-size:11px;font-weight:800;color:rgba(255,255,255,.85);
-}
+.d-img-counter{position:absolute;top:12px;left:12px;z-index:10;padding:4px 10px;border-radius:100px;background:rgba(0,0,0,.65);backdrop-filter:blur(8px);font-size:11px;font-weight:800;color:rgba(255,255,255,.85)}
 
-/* Thumbnails row */
-.d-thumbs{
-  display:flex;gap:6px;padding:10px 14px;
-  overflow-x:auto;background:#050510;
-  -webkit-overflow-scrolling:touch;scrollbar-width:none;
-}
+.d-thumbs{display:flex;gap:6px;padding:10px 14px;overflow-x:auto;background:#050510;-webkit-overflow-scrolling:touch;scrollbar-width:none}
 .d-thumbs::-webkit-scrollbar{display:none}
-.d-thumb{
-  width:72px;height:50px;object-fit:cover;
-  border-radius:8px;cursor:pointer;flex-shrink:0;
-  border:2px solid transparent;opacity:.55;
-  transition:all .2s;
-}
+.d-thumb{width:72px;height:50px;object-fit:cover;border-radius:8px;cursor:pointer;flex-shrink:0;border:2px solid transparent;opacity:.55;transition:all .2s}
 .d-thumb.on{border-color:#e8112e;opacity:1}
 .d-thumb:hover{opacity:.85}
 
-/* ── Info panel ── */
-.d-info{
-  overflow-y:auto;flex:1;
-  -webkit-overflow-scrolling:touch;
-  padding:0;
-}
+.d-info{overflow-y:auto;flex:1;-webkit-overflow-scrolling:touch;padding:0}
 .d-info::-webkit-scrollbar{width:2px}
 .d-info::-webkit-scrollbar-thumb{background:rgba(232,17,46,.4)}
 
-/* Header strip */
-.d-header{
-  padding:18px 20px 14px;
-  border-bottom:1px solid rgba(255,255,255,.07);
-  display:flex;align-items:flex-start;justify-content:space-between;gap:12px;
-}
-.d-title-block{}
+.d-header{padding:18px 20px 14px;border-bottom:1px solid rgba(255,255,255,.07);display:flex;align-items:flex-start;justify-content:space-between;gap:12px}
 .d-name{font-size:1.4rem;font-weight:900;color:#fff;letter-spacing:-.4px;line-height:1.2}
-.d-sub{font-size:12px;color:rgba(255,255,255,.5);font-weight:600;margin-top:4px;
-  display:flex;align-items:center;gap:6px}
+.d-sub{font-size:12px;color:rgba(255,255,255,.5);font-weight:600;margin-top:4px;display:flex;align-items:center;gap:6px}
 .d-sub-dot{width:3px;height:3px;border-radius:50%;background:rgba(255,255,255,.3)}
 .d-price-block{text-align:left;flex-shrink:0}
-.d-price{
-  font-size:1.6rem;font-weight:900;
-  background:linear-gradient(130deg,#ff4466,#e8112e);
-  -webkit-background-clip:text;background-clip:text;color:transparent;
-  letter-spacing:-.5px;line-height:1;
-}
-.d-price-lbl{font-size:10px;color:rgba(255,255,255,.4);font-weight:700;
-  text-transform:uppercase;letter-spacing:.08em;margin-top:3px;text-align:left}
+.d-price{font-size:1.6rem;font-weight:900;background:linear-gradient(130deg,#ff4466,#e8112e);-webkit-background-clip:text;background-clip:text;color:transparent;letter-spacing:-.5px;line-height:1}
+.d-price-lbl{font-size:10px;color:rgba(255,255,255,.4);font-weight:700;text-transform:uppercase;letter-spacing:.08em;margin-top:3px;text-align:left}
 
-/* Close button floating */
-.d-close{
-  position:absolute;top:12px;right:12px;z-index:20;
-  width:36px;height:36px;border-radius:50%;
-  background:rgba(0,0,0,.65);backdrop-filter:blur(10px);
-  border:1px solid rgba(255,255,255,.2);
-  color:#fff;font-size:20px;line-height:1;
-  cursor:pointer;display:flex;align-items:center;justify-content:center;
-  transition:all .2s;
-}
+.d-close{position:absolute;top:12px;right:12px;z-index:20;width:36px;height:36px;border-radius:50%;background:rgba(0,0,0,.65);backdrop-filter:blur(10px);border:1px solid rgba(255,255,255,.2);color:#fff;font-size:20px;line-height:1;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .2s}
 .d-close:hover{background:rgba(239,68,68,.7);border-color:transparent}
 
-/* Specs grid */
 .d-specs-wrap{padding:14px 20px}
-.d-specs-title{font-size:10px;font-weight:900;color:rgba(255,255,255,.35);
-  text-transform:uppercase;letter-spacing:.14em;margin-bottom:10px}
+.d-specs-title{font-size:10px;font-weight:900;color:rgba(255,255,255,.35);text-transform:uppercase;letter-spacing:.14em;margin-bottom:10px}
 .d-specs{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
-.d-spec{
-  background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);
-  border-radius:12px;padding:12px 10px;text-align:center;
-  transition:border-color .2s;
-}
+.d-spec{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:12px;padding:12px 10px;text-align:center;transition:border-color .2s}
 .d-spec:hover{border-color:rgba(232,17,46,.3)}
 .d-spec-icon{font-size:16px;margin-bottom:4px}
 .d-spec-v{font-size:13px;font-weight:800;color:#fff;margin-bottom:2px}
-.d-spec-k{font-size:9px;color:rgba(255,255,255,.4);font-weight:700;
-  text-transform:uppercase;letter-spacing:.06em}
+.d-spec-k{font-size:9px;color:rgba(255,255,255,.4);font-weight:700;text-transform:uppercase;letter-spacing:.06em}
 
-/* Description */
-.d-desc{
-  margin:0 20px 14px;
-  background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.07);
-  border-radius:14px;padding:14px 16px;
-  font-size:13.5px;color:rgba(255,255,255,.75);line-height:1.75;
-}
+.d-desc{margin:0 20px 14px;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.07);border-radius:14px;padding:14px 16px;font-size:13.5px;color:rgba(255,255,255,.75);line-height:1.75}
 
-/* Seller */
-.d-seller{
-  margin:0 20px 14px;
-  background:linear-gradient(135deg,rgba(232,17,46,.07),rgba(232,17,46,.03));
-  border:1px solid rgba(232,17,46,.2);
-  border-radius:14px;padding:14px 16px;
-  display:flex;align-items:center;gap:14px;
-}
-.d-seller-av{
-  width:46px;height:46px;border-radius:50%;flex-shrink:0;
-  background:linear-gradient(135deg,rgba(232,17,46,.3),rgba(200,16,46,.15));
-  border:2px solid rgba(232,17,46,.35);
-  display:flex;align-items:center;justify-content:center;
-  font-size:20px;
-}
+.d-seller{margin:0 20px 14px;background:linear-gradient(135deg,rgba(232,17,46,.07),rgba(232,17,46,.03));border:1px solid rgba(232,17,46,.2);border-radius:14px;padding:14px 16px;display:flex;align-items:center;gap:14px}
+.d-seller-av{width:46px;height:46px;border-radius:50%;flex-shrink:0;background:linear-gradient(135deg,rgba(232,17,46,.3),rgba(200,16,46,.15));border:2px solid rgba(232,17,46,.35);display:flex;align-items:center;justify-content:center;font-size:20px}
 .d-seller-name{font-weight:900;font-size:15px;color:#fff;margin-bottom:3px}
 .d-seller-city{font-size:11.5px;color:rgba(255,255,255,.5);font-weight:600}
 
-/* CTA buttons */
-.d-ctas{
-  padding:0 20px 20px;
-  display:flex;gap:10px;
-}
-.cta-wa{
-  flex:1;padding:14px 16px;border-radius:14px;
-  display:flex;align-items:center;justify-content:center;gap:8px;
-  font-size:14px;font-weight:900;transition:all .22s;text-decoration:none;
-  background:linear-gradient(135deg,rgba(37,211,102,.15),rgba(37,211,102,.08));
-  border:1.5px solid rgba(37,211,102,.35);color:#4ade80;
-}
-.cta-wa:hover{background:linear-gradient(135deg,rgba(37,211,102,.28),rgba(37,211,102,.15));
-  transform:translateY(-2px);box-shadow:0 8px 24px rgba(37,211,102,.2)}
-.cta-call{
-  flex:1;padding:14px 16px;border-radius:14px;
-  display:flex;align-items:center;justify-content:center;gap:8px;
-  font-size:14px;font-weight:900;transition:all .22s;text-decoration:none;
-  background:linear-gradient(135deg,rgba(59,130,246,.15),rgba(59,130,246,.08));
-  border:1.5px solid rgba(59,130,246,.35);color:#60a5fa;
-}
-.cta-call:hover{background:linear-gradient(135deg,rgba(59,130,246,.28),rgba(59,130,246,.15));
-  transform:translateY(-2px);box-shadow:0 8px 24px rgba(59,130,246,.2)}
+.d-ctas{padding:0 20px 20px;display:flex;gap:10px}
+.cta-wa{flex:1;padding:14px 16px;border-radius:14px;display:flex;align-items:center;justify-content:center;gap:8px;font-size:14px;font-weight:900;transition:all .22s;text-decoration:none;background:linear-gradient(135deg,rgba(37,211,102,.15),rgba(37,211,102,.08));border:1.5px solid rgba(37,211,102,.35);color:#4ade80}
+.cta-wa:hover{background:linear-gradient(135deg,rgba(37,211,102,.28),rgba(37,211,102,.15));transform:translateY(-2px);box-shadow:0 8px 24px rgba(37,211,102,.2)}
+.cta-call{flex:1;padding:14px 16px;border-radius:14px;display:flex;align-items:center;justify-content:center;gap:8px;font-size:14px;font-weight:900;transition:all .22s;text-decoration:none;background:linear-gradient(135deg,rgba(59,130,246,.15),rgba(59,130,246,.08));border:1.5px solid rgba(59,130,246,.35);color:#60a5fa}
+.cta-call:hover{background:linear-gradient(135deg,rgba(59,130,246,.28),rgba(59,130,246,.15));transform:translateY(-2px);box-shadow:0 8px 24px rgba(59,130,246,.2)}
 
-/* Mobile tweaks */
-@media(max-width:600px){
-  .d-specs{grid-template-columns:repeat(3,1fr)}
-  .d-name{font-size:1.2rem}
-  .d-price{font-size:1.35rem}
-  .d-ctas{flex-direction:column}
-  .d-arrow{width:34px;height:34px;font-size:16px}
+/* ── ADD MODAL ── */
+.add-modal{
+  max-width:620px !important;border-radius:24px !important;
+  overflow:hidden;display:flex;flex-direction:column;
+  background:linear-gradient(160deg,#1a0008 0%,#0e0008 100%) !important;
+  border:1px solid rgba(200,16,46,.3) !important;
+  box-shadow:0 24px 80px rgba(200,16,46,.25),0 0 0 1px rgba(200,16,46,.15) !important;
 }
 
-/* Form */
-.fg{display:grid;grid-template-columns:1fr 1fr;gap:11px}
+.add-modal-head{display:flex;align-items:center;justify-content:space-between;padding:18px 20px;flex-shrink:0;background:linear-gradient(135deg,#c8102e 0%,#a00d24 40%,#7a0818 100%);position:relative;overflow:hidden}
+.add-modal-head::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 80% 120% at 30% -20%,rgba(255,100,100,.25) 0%,transparent 60%);pointer-events:none}
+.add-head-logo{display:flex;align-items:center;gap:12px;position:relative;z-index:1}
+.add-head-title{font-size:16px;font-weight:900;color:#fff;line-height:1.2;text-shadow:0 1px 6px rgba(0,0,0,.3)}
+.add-head-sub{font-size:10.5px;font-weight:700;color:rgba(255,255,255,.65);text-transform:uppercase;letter-spacing:.1em;margin-top:2px}
+.add-modal-head .modal-x{position:relative;z-index:1;background:rgba(255,255,255,.15);border-color:rgba(255,255,255,.25);color:#fff}
+.add-modal-head .modal-x:hover{background:rgba(0,0,0,.25);border-color:rgba(255,255,255,.3)}
+
+.add-upload-zone{flex-shrink:0;background:linear-gradient(160deg,rgba(200,16,46,.28) 0%,rgba(140,8,30,.22) 100%);border-bottom:1px solid rgba(200,16,46,.4);padding:14px 16px;cursor:pointer;transition:background .2s}
+.add-upload-zone:hover{background:linear-gradient(160deg,rgba(200,16,46,.38) 0%,rgba(140,8,30,.30) 100%)}
+.add-upload-inner{display:flex;align-items:center;gap:12px;padding:10px 0}
+.add-up-icon{width:46px;height:46px;border-radius:12px;flex-shrink:0;background:rgba(200,16,46,.2);border:1.5px dashed rgba(200,16,46,.5);display:flex;align-items:center;justify-content:center}
+.add-up-txt{font-size:14px;font-weight:800;color:#fff}
+.add-up-txt span{color:rgba(255,255,255,.6);font-weight:600}
+.add-up-hint{font-size:11px;color:rgba(255,255,255,.42);margin-top:3px}
+.add-upload-zone .prev-grid{margin-top:6px;display:flex;flex-wrap:wrap;gap:7px}
+.add-upload-zone .prog{margin:8px 0 2px;display:none;background:rgba(255,255,255,.12);border-radius:100px;height:3px}
+
+.add-body-scroll{padding:0 !important;overflow-y:auto;flex:1;background:linear-gradient(180deg,#1a0008 0%,#12000a 40%,#0e000a 100%)}
+.add-body-scroll form{padding:16px 18px 20px}
+
+.add-section{margin-bottom:14px;padding:16px;border-radius:16px;background:rgba(200,16,46,.07);border:1px solid rgba(200,16,46,.22)}
+.add-section-seller{background:rgba(200,16,46,.12);border-color:rgba(200,16,46,.35)}
+.add-section-title{display:flex;align-items:center;gap:8px;font-size:11px;font-weight:900;color:rgba(255,180,180,.8);text-transform:uppercase;letter-spacing:.12em;margin-bottom:14px}
+.add-section-dot{width:6px;height:6px;border-radius:50%;background:var(--red);box-shadow:0 0 8px var(--red);flex-shrink:0}
+
+.add-row2{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px}
+.add-row3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-bottom:10px}
+
 .fg-item{display:flex;flex-direction:column;gap:5px}
-.fg-item.full{grid-column:1/-1}
-.fg-label{font-size:10.5px;font-weight:800;color:var(--t1);
-  text-transform:uppercase;letter-spacing:.08em}
-.fg-input,.fg-sel,.fg-ta{
-  background:var(--bg3);border:1px solid var(--b0);color:#fff;
-  padding:10px 13px;border-radius:10px;outline:none;
-  transition:all .18s;width:100%;font-size:13.5px;font-family:var(--font);
-}
-.fg-input:focus,.fg-sel:focus,.fg-ta:focus{
-  border-color:rgba(200,16,46,.5);box-shadow:0 0 0 3px rgba(200,16,46,.07)}
-.fg-input::placeholder{color:var(--t2)}
-.fg-sel option{background:#101022}
-.fg-ta{resize:vertical;min-height:80px}
-.form-divider{font-size:12px;font-weight:800;color:var(--t1);
-  padding:14px 0 8px;border-top:1px solid var(--b0);grid-column:1/-1;margin-top:2px}
-.form-divider:first-child{border-top:none;padding-top:0}
+.fg-label{font-size:10px;font-weight:900;color:rgba(255,255,255,.6);text-transform:uppercase;letter-spacing:.1em}
+.fg-input,.fg-sel,.fg-ta{background:rgba(0,0,0,.35);border:1.5px solid rgba(200,16,46,.3);color:#fff;padding:10px 13px;border-radius:11px;outline:none;transition:all .18s;width:100%;font-size:13.5px;font-family:var(--font)}
+.fg-input:focus,.fg-sel:focus,.fg-ta:focus{border-color:rgba(200,16,46,.8);background:rgba(0,0,0,.45);box-shadow:0 0 0 3px rgba(200,16,46,.18)}
+.fg-input::placeholder,.fg-ta::placeholder{color:rgba(255,255,255,.3)}
+.fg-sel{appearance:none;-webkit-appearance:none}
+.fg-sel option{background:#121224;color:#fff}
+.fg-ta{resize:vertical;min-height:72px}
 
-.up-zone{border:2px dashed var(--b0);border-radius:var(--r);
-  padding:24px;text-align:center;cursor:pointer;transition:all .2s;position:relative}
-.up-zone:hover{border-color:var(--bred);background:rgba(200,16,46,.04)}
-.up-zone input{position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%}
-.up-ico{font-size:28px;margin-bottom:7px;opacity:.4}
-.up-txt{font-size:12.5px;color:var(--t1);font-weight:600}
-.prev-grid{display:flex;flex-wrap:wrap;gap:7px;margin-top:8px}
-.prev-wrap{position:relative;width:68px;height:50px;border-radius:8px;overflow:hidden}
-.prev-img{width:100%;height:100%;object-fit:cover}
-.prev-rm{position:absolute;top:2px;right:2px;width:17px;height:17px;border-radius:50%;
-  background:rgba(239,68,68,.9);color:#fff;border:none;cursor:pointer;
-  font-size:10px;display:flex;align-items:center;justify-content:center;font-weight:900}
-.prog{margin:6px 0;display:none;background:var(--bg3);border-radius:100px;height:4px;overflow:hidden}
-.prog-bar{height:100%;background:linear-gradient(90deg,var(--red),#e0162f);
-  border-radius:100px;width:0%;transition:width .3s}
-.submit-btn{width:100%;padding:14px;border-radius:12px;margin-top:8px;
-  background:linear-gradient(135deg,var(--red),#e0162f);color:#fff;border:none;
-  font-size:15px;font-weight:900;cursor:pointer;
-  box-shadow:0 5px 20px rgba(200,16,46,.38);transition:all .2s;font-family:var(--font)}
-.submit-btn:hover:not(:disabled){transform:translateY(-1px);box-shadow:0 7px 26px rgba(200,16,46,.5)}
+.submit-btn{width:100%;padding:15px;border-radius:14px;margin-top:14px;background:linear-gradient(135deg,#e8112e,#c8102e,#a00d22);color:#fff;border:none;font-size:15px;font-weight:900;cursor:pointer;box-shadow:0 6px 24px rgba(200,16,46,.45),inset 0 1px 0 rgba(255,255,255,.15);transition:all .2s;font-family:var(--font);display:flex;align-items:center;justify-content:center;gap:9px;letter-spacing:.02em}
+.submit-btn:hover:not(:disabled){transform:translateY(-2px);box-shadow:0 10px 32px rgba(200,16,46,.58),inset 0 1px 0 rgba(255,255,255,.2)}
 .submit-btn:disabled{opacity:.6;cursor:not-allowed;transform:none}
-.success-wrap{text-align:center;padding:36px 20px}
-.suc-ico{font-size:52px;margin-bottom:14px}
+.sub-icon{font-size:18px}
 
 /* Toast */
-#toast{
-  position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(70px);
-  padding:12px 22px;border-radius:12px;font-size:13.5px;font-weight:800;
-  z-index:9999;pointer-events:none;transition:all .28s var(--ease);
-  background:rgba(10,10,20,.98);border:1px solid var(--b0);
-  box-shadow:0 8px 28px rgba(0,0,0,.55);white-space:nowrap;
-}
+#toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(70px);padding:12px 22px;border-radius:12px;font-size:13.5px;font-weight:800;z-index:9999;pointer-events:none;transition:all .28s var(--ease);background:rgba(10,10,20,.98);border:1px solid var(--b0);box-shadow:0 8px 28px rgba(0,0,0,.55);white-space:nowrap}
 #toast.show{transform:translateX(-50%) translateY(0)}
 #toast.ok{border-color:rgba(74,222,128,.4);color:#4ade80}
 #toast.err{border-color:rgba(239,68,68,.4);color:#ef4444}
 
 /* ── RESPONSIVE ── */
 @media(max-width:900px){.nav-mid{display:none}}
-
-/* Mobile: logo box + lang icon only + small post btn */
 @media(max-width:600px){
   :root{--nav:54px}
   #nav{padding:0 12px;height:54px;gap:7px}
-  /* חבילות — נסתר במובייל */
   .btn-pkg-nav{display:none !important}
-  /* לוגו — הסתר "ISRAEL", הצג רק "YOUGO" */
   .logo-israel{display:none}
   .logo-text{font-size:14px}
-  /* שפה — הסתר טקסט, הצג רק מרובע */
   #langTxt{display:none}
   .btn-lang{padding:6px 7px;gap:0}
   .btn-lang .lang-icon{width:28px;height:28px;border-radius:7px;font-size:10px}
-  /* כפתור פרסם — קומפקטי */
   .btn-nav-post{padding:8px 13px !important;font-size:12px !important}
   .btn{padding:7px 12px;font-size:12px}
   .hero{padding:calc(54px + 44px) 16px 60px}
@@ -827,7 +503,6 @@ footer{border-top:1px solid rgba(255,255,255,.12);padding:36px 20px;background:r
   .car-body{padding:10px;gap:7px}
   .car-name{font-size:12.5px}
   .car-meta{font-size:10px}
-  .car-price{font-size:14px}
   .specs{gap:3px}
   .spec{font-size:9px;padding:2px 6px}
   .car-loc{font-size:9.5px}
@@ -836,152 +511,18 @@ footer{border-top:1px solid rgba(255,255,255,.12);padding:36px 20px;background:r
   .car-cnt{font-size:9px;padding:2px 5px}
   .modal{border-radius:20px 20px 0 0;max-height:94svh}
   .d-specs{grid-template-columns:repeat(2,1fr)}
-  .cta-row{flex-direction:column}
-  .d-hrow{flex-direction:column}
+  .d-ctas{flex-direction:column}
   .fg{grid-template-columns:1fr}
   .foot-in{flex-direction:column;gap:12px;text-align:center}
-}
-@media(max-width:380px){
-  .hero h1{font-size:1.9rem}
-}
-
-/* ═══════════════════════════════════════
-   ADD MODAL — REDESIGNED
-═══════════════════════════════════════ */
-.add-modal{
-  max-width:620px !important;border-radius:24px !important;
-  overflow:hidden;display:flex;flex-direction:column;
-  background:linear-gradient(160deg,#1a0008 0%,#0e0008 100%) !important;
-  border:1px solid rgba(200,16,46,.3) !important;
-  box-shadow:0 24px 80px rgba(200,16,46,.25),0 0 0 1px rgba(200,16,46,.15) !important;
-}
-
-/* Red gradient header */
-.add-modal-head{
-  display:flex;align-items:center;justify-content:space-between;
-  padding:18px 20px;flex-shrink:0;
-  background:linear-gradient(135deg,#c8102e 0%,#a00d24 40%,#7a0818 100%);
-  position:relative;overflow:hidden;
-}
-.add-modal-head::before{
-  content:'';position:absolute;inset:0;
-  background:radial-gradient(ellipse 80% 120% at 30% -20%,rgba(255,100,100,.25) 0%,transparent 60%),
-    url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.06'/%3E%3C/svg%3E");
-  pointer-events:none;
-}
-.add-head-logo{display:flex;align-items:center;gap:12px;position:relative;z-index:1}
-.add-head-logo svg{flex-shrink:0;filter:drop-shadow(0 2px 8px rgba(0,0,0,.3))}
-.add-head-title{font-size:16px;font-weight:900;color:#fff;line-height:1.2;
-  text-shadow:0 1px 6px rgba(0,0,0,.3)}
-.add-head-sub{font-size:10.5px;font-weight:700;color:rgba(255,255,255,.65);
-  text-transform:uppercase;letter-spacing:.1em;margin-top:2px}
-.add-modal-head .modal-x{
-  position:relative;z-index:1;
-  background:rgba(255,255,255,.15);border-color:rgba(255,255,255,.25);color:#fff;
-}
-.add-modal-head .modal-x:hover{background:rgba(0,0,0,.25);border-color:rgba(255,255,255,.3)}
-
-/* Upload zone */
-.add-upload-zone{
-  flex-shrink:0;
-  background:linear-gradient(160deg,rgba(200,16,46,.28) 0%,rgba(140,8,30,.22) 100%);
-  border-bottom:1px solid rgba(200,16,46,.4);
-  padding:14px 16px;cursor:pointer;
-  transition:background .2s;
-}
-.add-upload-zone:hover{background:linear-gradient(160deg,rgba(200,16,46,.38) 0%,rgba(140,8,30,.30) 100%)}
-.add-upload-inner{display:flex;align-items:center;gap:12px;padding:10px 0}
-.add-up-icon{
-  width:46px;height:46px;border-radius:12px;flex-shrink:0;
-  background:rgba(200,16,46,.2);border:1.5px dashed rgba(200,16,46,.5);
-  display:flex;align-items:center;justify-content:center;
-}
-.add-up-txt{font-size:14px;font-weight:800;color:#fff}
-.add-up-txt span{color:rgba(255,255,255,.6);font-weight:600}
-.add-up-hint{font-size:11px;color:rgba(255,255,255,.42);margin-top:3px}
-.add-upload-zone .prev-grid{margin-top:6px;display:flex;flex-wrap:wrap;gap:7px}
-.add-upload-zone .prog{margin:8px 0 2px;display:none;background:rgba(255,255,255,.12);border-radius:100px;height:3px}
-
-/* Scrollable body */
-.add-body-scroll{padding:0 !important;overflow-y:auto;flex:1;
-  background:linear-gradient(180deg,#1a0008 0%,#12000a 40%,#0e000a 100%);}
-.add-body-scroll form{padding:16px 18px 20px}
-
-/* Sections — all red-tinted */
-.add-section{
-  margin-bottom:14px;padding:16px;border-radius:16px;
-  background:rgba(200,16,46,.07);
-  border:1px solid rgba(200,16,46,.22);
-}
-.add-section-seller{
-  background:rgba(200,16,46,.12);
-  border-color:rgba(200,16,46,.35);
-}
-.add-section-title{
-  display:flex;align-items:center;gap:8px;
-  font-size:11px;font-weight:900;color:rgba(255,180,180,.8);
-  text-transform:uppercase;letter-spacing:.12em;margin-bottom:14px;
-}
-.add-section-dot{
-  width:6px;height:6px;border-radius:50%;background:var(--red);
-  box-shadow:0 0 8px var(--red);flex-shrink:0;
-}
-
-/* Row layouts */
-.add-row2{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px}
-.add-row3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-bottom:10px}
-
-/* Input styles — brighter on dark */
-.fg-item{display:flex;flex-direction:column;gap:5px}
-.fg-label{font-size:10px;font-weight:900;color:rgba(255,255,255,.6);
-  text-transform:uppercase;letter-spacing:.1em}
-.fg-input,.fg-sel,.fg-ta{
-  background:rgba(0,0,0,.35);
-  border:1.5px solid rgba(200,16,46,.3);
-  color:#fff;
-  padding:10px 13px;border-radius:11px;outline:none;
-  transition:all .18s;width:100%;font-size:13.5px;font-family:var(--font);
-}
-.fg-input:focus,.fg-sel:focus,.fg-ta:focus{
-  border-color:rgba(200,16,46,.8);
-  background:rgba(0,0,0,.45);
-  box-shadow:0 0 0 3px rgba(200,16,46,.18);
-}
-.fg-input::placeholder{color:rgba(255,255,255,.3)}
-.fg-ta::placeholder{color:rgba(255,255,255,.3)}
-.fg-sel{appearance:none;-webkit-appearance:none}
-.fg-sel option{background:#121224;color:#fff}
-.fg-ta{resize:vertical;min-height:72px}
-
-/* Submit button */
-.submit-btn{
-  width:100%;padding:15px;border-radius:14px;margin-top:14px;
-  background:linear-gradient(135deg,#e8112e,#c8102e,#a00d22);
-  color:#fff;border:none;
-  font-size:15px;font-weight:900;cursor:pointer;
-  box-shadow:0 6px 24px rgba(200,16,46,.45),inset 0 1px 0 rgba(255,255,255,.15);
-  transition:all .2s;font-family:var(--font);
-  display:flex;align-items:center;justify-content:center;gap:9px;
-  letter-spacing:.02em;
-}
-.submit-btn:hover:not(:disabled){
-  transform:translateY(-2px);
-  box-shadow:0 10px 32px rgba(200,16,46,.58),inset 0 1px 0 rgba(255,255,255,.2);
-}
-.submit-btn:disabled{opacity:.6;cursor:not-allowed;transform:none}
-.sub-icon{font-size:18px}
-
-/* Mobile */
-@media(max-width:600px){
   .add-row2{grid-template-columns:1fr 1fr}
   .add-row3{grid-template-columns:1fr 1fr}
   .add-section{padding:12px}
   .add-body-scroll form{padding:12px 14px 16px}
 }
 @media(max-width:400px){
+  .hero h1{font-size:1.9rem}
   .add-row2,.add-row3{grid-template-columns:1fr}
 }
-
 </style>
 </head>
 <body>
@@ -990,7 +531,6 @@ footer{border-top:1px solid rgba(255,255,255,.12);padding:36px 20px;background:r
 <nav id="nav">
   <div class="logo" onclick="showHome()">
     <div class="logo-box">
-      <!-- Lucide Car — stroke only, clean -->
       <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"
            fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
         <path d="M5 17H3a2 2 0 0 1-2-2V9a2 2 0 0 1 2-2h13l4 4v4a2 2 0 0 1-2 2h-1"/>
@@ -1032,7 +572,6 @@ footer{border-top:1px solid rgba(255,255,255,.12);padding:36px 20px;background:r
       <div class="badge-dot"></div>
       <span id="heroBadge">YOUGO ISRAEL — הפלטפורמה המובילה</span>
     </div>
-    <!-- FIX 3: h1 بدون خط أحمر — استخدام <span> بدلاً من <br> داخل النص الملون -->
     <h1 id="heroH">שוק הרכבים <span class="r">הדיגיטלי</span><br><span style="color:var(--t0)">של ישראל</span></h1>
     <p class="hero-sub" id="heroSub">קנה ומכור רכב בקלות ובמהירות. מודעות מאומתות עם אפשרות יצירת קשר מיידית.</p>
     <div class="hero-ctas">
@@ -1045,7 +584,7 @@ footer{border-top:1px solid rgba(255,255,255,.12);padding:36px 20px;background:r
       </a>
     </div>
     <div class="hero-stats">
-      <div class="hs"><div class="hs-v" id="statCars">0</div><div class="hs-l" id="statCL">מודעות פעילות</div></div>
+      <div class="hs"><div class="hs-v" id="statCars">—</div><div class="hs-l" id="statCL">מודעות פעילות</div></div>
       <div class="hs"><div class="hs-v">50K<span class="a">+</span></div><div class="hs-l" id="statFL">עוקבים</div></div>
       <div class="hs"><div class="hs-v">100<span class="a">%</span></div><div class="hs-l" id="statFrL">חינם לפרסם</div></div>
     </div>
@@ -1127,7 +666,7 @@ footer{border-top:1px solid rgba(255,255,255,.12);padding:36px 20px;background:r
     <button class="sort-btn" onclick="doSort('km_asc',this)">📏 ק"מ נמוך</button>
   </div>
   <div id="carsBox">
-    <div class="loading-box"><div class="spin"></div><p style="color:var(--t1);font-weight:600">טוען מודעות...</p></div>
+    <div class="loading-box"><div class="spin"></div><p style="color:var(--t1);font-weight:600">מתחבר למסד נתונים...</p></div>
   </div>
 </div>
 
@@ -1136,8 +675,7 @@ footer{border-top:1px solid rgba(255,255,255,.12);padding:36px 20px;background:r
   <div class="foot-in">
     <div class="foot-brand">
       <div class="foot-box">
-        <svg width="17" height="17" viewBox="0 0 24 24" fill="none"
-             stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
           <path d="M6 8l-1.8 2.35A4 4 0 0 0 3.2 12.87V16H5"/>
           <path d="M18 8H6L4 14h16l-2-6z" fill="rgba(255,255,255,.2)" stroke="#fff" stroke-width="1.6"/>
           <circle cx="7.5" cy="16.5" r="1.5" fill="#fff" stroke="none"/>
@@ -1155,11 +693,9 @@ footer{border-top:1px solid rgba(255,255,255,.12);padding:36px 20px;background:r
   </div>
 </footer>
 
-<!-- DETAIL MODAL — Cinematic -->
+<!-- DETAIL MODAL -->
 <div class="overlay" id="detailOvl" onclick="if(event.target.id==='detailOvl')closeDetail()">
   <div class="detail-modal" onclick="event.stopPropagation()">
-
-    <!-- Gallery -->
     <div class="d-gallery" id="dGallery">
       <div class="d-main-wrap">
         <img class="d-main-img" id="dmImg" src="" alt="">
@@ -1170,20 +706,13 @@ footer{border-top:1px solid rgba(255,255,255,.12);padding:36px 20px;background:r
       </div>
       <div class="d-thumbs" id="dThumbs"></div>
     </div>
-
-    <!-- Info scroll area -->
-    <div class="d-info" id="detailBody">
-      <!-- filled by JS -->
-    </div>
-
+    <div class="d-info" id="detailBody"></div>
   </div>
 </div>
 
-<!-- ADD MODAL — redesigned -->
+<!-- ADD MODAL -->
 <div class="overlay" id="addOvl" onclick="if(event.target.id==='addOvl')closeAdd()">
   <div class="modal add-modal" onclick="event.stopPropagation()">
-
-    <!-- Header with red gradient -->
     <div class="add-modal-head">
       <div class="add-head-logo">
         <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
@@ -1201,7 +730,6 @@ footer{border-top:1px solid rgba(255,255,255,.12);padding:36px 20px;background:r
       <button class="modal-x" onclick="closeAdd()">×</button>
     </div>
 
-    <!-- Upload zone — prominent at top -->
     <div class="add-upload-zone" onclick="document.getElementById('imgIn').click()">
       <input type="file" id="imgIn" multiple accept="image/*" onchange="handleImgs(this)" style="display:none">
       <div class="add-upload-inner" id="uploadInner">
@@ -1210,8 +738,10 @@ footer{border-top:1px solid rgba(255,255,255,.12);padding:36px 20px;background:r
             <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/>
           </svg>
         </div>
-        <div class="add-up-txt" id="upTxt">העלה תמונות הרכב <span>(עד 10)</span></div>
-        <div class="add-up-hint">לחץ לבחירה · גרור לכאן</div>
+        <div>
+          <div class="add-up-txt" id="upTxt">העלה תמונות הרכב <span>(עד 10)</span></div>
+          <div class="add-up-hint">לחץ לבחירה · גרור לכאן</div>
+        </div>
       </div>
       <div class="prev-grid" id="prevGrid"></div>
       <div class="prog" id="prog"><div class="prog-bar" id="progBar"></div></div>
@@ -1220,117 +750,69 @@ footer{border-top:1px solid rgba(255,255,255,.12);padding:36px 20px;background:r
     <div class="modal-body add-body-scroll" id="addBody">
       <form id="addForm" onsubmit="submitCar(event)">
 
-        <!-- Config tip — shown if upload failed before -->
         <div id="cfgTip" style="display:none;background:rgba(234,179,8,.1);border:1px solid rgba(234,179,8,.35);border-radius:12px;padding:12px 14px;margin-bottom:14px;font-size:12px;color:#fbbf24;line-height:1.6">
           ⚙️ <strong>הגדרת Cloudinary:</strong><br>
-          1. כנס ל <strong>cloudinary.com → Dashboard</strong> — העתק את <strong>Cloud name</strong><br>
-          2. כנס ל <strong>Settings → Upload → Add preset</strong> — בחר <strong>Unsigned</strong> — העתק את השם<br>
-          3. עדכן בקוד: <code style="background:rgba(0,0,0,.4);padding:1px 5px;border-radius:4px">CL_NAME</code> ו <code style="background:rgba(0,0,0,.4);padding:1px 5px;border-radius:4px">CL_PRESET</code>
+          בדוק: Cloud name ו-Upload Preset ב-Cloudinary Dashboard
         </div>
 
-        <!-- Section: Car details -->
         <div class="add-section">
-          <div class="add-section-title">
-            <span class="add-section-dot"></span> פרטי הרכב
-          </div>
+          <div class="add-section-title"><span class="add-section-dot"></span> פרטי הרכב</div>
           <div class="add-row2">
-            <div class="fg-item">
-              <label class="fg-label">יצרן *</label>
-              <input class="fg-input" id="f_make" placeholder="Toyota, BMW, Hyundai..." required>
-            </div>
-            <div class="fg-item">
-              <label class="fg-label">דגם *</label>
-              <input class="fg-input" id="f_model" placeholder="Corolla, X5, i30..." required>
-            </div>
+            <div class="fg-item"><label class="fg-label">יצרן *</label><input class="fg-input" id="f_make" placeholder="Toyota, BMW..." required></div>
+            <div class="fg-item"><label class="fg-label">דגם *</label><input class="fg-input" id="f_model" placeholder="Corolla, X5..." required></div>
           </div>
           <div class="add-row3">
-            <div class="fg-item">
-              <label class="fg-label">שנה *</label>
-              <input class="fg-input" id="f_year" type="number" min="1990" max="2026" placeholder="2021" required>
-            </div>
-            <div class="fg-item">
-              <label class="fg-label">מחיר ₪ *</label>
-              <input class="fg-input" id="f_price" type="number" placeholder="75,000" required>
-            </div>
-            <div class="fg-item">
-              <label class="fg-label">ק"מ</label>
-              <input class="fg-input" id="f_mileage" type="number" placeholder="80,000">
-            </div>
+            <div class="fg-item"><label class="fg-label">שנה *</label><input class="fg-input" id="f_year" type="number" min="1990" max="2026" placeholder="2021" required></div>
+            <div class="fg-item"><label class="fg-label">מחיר ₪ *</label><input class="fg-input" id="f_price" type="number" placeholder="75,000" required></div>
+            <div class="fg-item"><label class="fg-label">ק"מ</label><input class="fg-input" id="f_mileage" type="number" placeholder="80,000"></div>
           </div>
           <div class="add-row3">
             <div class="fg-item">
               <label class="fg-label">יד</label>
               <select class="fg-sel" id="f_hand">
-                <option value="1">יד 1</option>
-                <option value="2" selected>יד 2</option>
-                <option value="3">יד 3</option>
-                <option value="4">יד 4+</option>
+                <option value="1">יד 1</option><option value="2" selected>יד 2</option>
+                <option value="3">יד 3</option><option value="4">יד 4+</option>
               </select>
             </div>
             <div class="fg-item">
               <label class="fg-label">גיר</label>
               <select class="fg-sel" id="f_gear">
-                <option value="אוטומט">אוטומטי</option>
-                <option value="ידני">ידני</option>
-                <option value="CVT">CVT</option>
+                <option value="אוטומט">אוטומטי</option><option value="ידני">ידני</option><option value="CVT">CVT</option>
               </select>
             </div>
             <div class="fg-item">
               <label class="fg-label">דלק</label>
               <select class="fg-sel" id="f_fuel">
-                <option value="בנזין">בנזין</option>
-                <option value="דיזל">דיזל</option>
-                <option value="היברידי">היברידי</option>
-                <option value="חשמלי">חשמלי</option>
+                <option value="בנזין">בנזין</option><option value="דיזל">דיזל</option>
+                <option value="היברידי">היברידי</option><option value="חשמלי">חשמלי</option>
               </select>
             </div>
           </div>
           <div class="add-row2">
-            <div class="fg-item">
-              <label class="fg-label">צבע</label>
-              <input class="fg-input" id="f_color" placeholder="לבן / שחור / כסוף...">
-            </div>
-            <div class="fg-item">
-              <label class="fg-label">מנוע (L)</label>
-              <input class="fg-input" id="f_engine" type="number" step="0.1" placeholder="1.6">
-            </div>
+            <div class="fg-item"><label class="fg-label">צבע</label><input class="fg-input" id="f_color" placeholder="לבן / שחור..."></div>
+            <div class="fg-item"><label class="fg-label">מנוע (L)</label><input class="fg-input" id="f_engine" type="number" step="0.1" placeholder="1.6"></div>
           </div>
         </div>
 
-        <!-- Section: Description -->
         <div class="add-section">
-          <div class="add-section-title">
-            <span class="add-section-dot"></span> תיאור הרכב
-          </div>
+          <div class="add-section-title"><span class="add-section-dot"></span> תיאור הרכב</div>
           <div class="fg-item">
             <label class="fg-label">תיאור בעברית</label>
-            <textarea class="fg-ta" id="f_desc_he" placeholder="מצב הרכב, תוספות, היסטוריית תחזוקה..." style="min-height:70px"></textarea>
+            <textarea class="fg-ta" id="f_desc_he" placeholder="מצב הרכב, תוספות..." style="min-height:70px"></textarea>
           </div>
           <div class="fg-item" style="margin-top:8px">
             <label class="fg-label">وصف بالعربية</label>
-            <textarea class="fg-ta" id="f_desc_ar" placeholder="وصف السيارة، الإضافات، الصيانة..." style="min-height:70px"></textarea>
+            <textarea class="fg-ta" id="f_desc_ar" placeholder="وصف السيارة..." style="min-height:70px"></textarea>
           </div>
         </div>
 
-        <!-- Section: Seller -->
         <div class="add-section add-section-seller">
-          <div class="add-section-title">
-            <span class="add-section-dot"></span> פרטי המוכר
-          </div>
+          <div class="add-section-title"><span class="add-section-dot"></span> פרטי המוכר</div>
           <div class="add-row2">
-            <div class="fg-item">
-              <label class="fg-label">שם מלא *</label>
-              <input class="fg-input" id="f_name" placeholder="ישראל ישראלי" required>
-            </div>
-            <div class="fg-item">
-              <label class="fg-label">טלפון *</label>
-              <input class="fg-input" id="f_phone" type="tel" placeholder="050-000-0000" required>
-            </div>
+            <div class="fg-item"><label class="fg-label">שם מלא *</label><input class="fg-input" id="f_name" placeholder="ישראל ישראלי" required></div>
+            <div class="fg-item"><label class="fg-label">טלפון *</label><input class="fg-input" id="f_phone" type="tel" placeholder="050-000-0000" required></div>
           </div>
-          <div class="fg-item">
-            <label class="fg-label">עיר *</label>
-            <input class="fg-input" id="f_city" placeholder="תל אביב, חיפה, ירושלים..." required>
-          </div>
+          <div class="fg-item"><label class="fg-label">עיר *</label><input class="fg-input" id="f_city" placeholder="תל אביב, חיפה..." required></div>
         </div>
 
         <button type="submit" class="submit-btn" id="subBtn">
@@ -1346,31 +828,24 @@ footer{border-top:1px solid rgba(255,255,255,.12);padding:36px 20px;background:r
 <div id="toast"></div>
 
 <script>
-// CONFIG
+// ── CONFIG ──
 const SB_URL='https://arsbodqhmmtmoqqhykep.supabase.co';
 const SB_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImFyc2JvZHFobW10bW9xcWh5a2VwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzIxNTgxMTQsImV4cCI6MjA4NzczNDExNH0.mt_WpPshp5xdbIx23pMmcwq7MhktA0-vWPIstOy1_HM';
 const sb=supabase.createClient(SB_URL,SB_KEY);
-// ⚙️ CLOUDINARY CONFIG — עדכן כאן אם יש שגיאת API key
-// כנס ל: cloudinary.com → Dashboard → Cloud name
-// Upload preset: Settings → Upload → Add upload preset (Unsigned)
-const CL_NAME='dbd2dgqtl';    // ← Cloud Name שלך
-const CL_PRESET='htxdjln0';   // ← Upload Preset (Unsigned)
+const CL_NAME='dbd2dgqtl';
+const CL_PRESET='htxdjln0';
 const ADMIN_PW='yougo2026';
+const TABLE='cars'; // ← שם הטבלה ב-Supabase
 
-// STATE
+// ── STATE ──
 let all=[],filtered=[],imgs=[],isAdmin=false,lang='he',sort='newest';
 
-// NAV SCROLL
+// ── NAV SCROLL ──
 window.addEventListener('scroll',()=>document.getElementById('nav').classList.toggle('solid',scrollY>40),{passive:true});
 function scrollTo2(id){document.getElementById(id)?.scrollIntoView({behavior:'smooth'})}
 
-// TRANSLATIONS — FIX 4: أسماء اللغات بدون أعلام
-const LANG_META={
-  he:{code:'HE',label:'עברית'},
-  ar:{code:'AR',label:'عربي'},
-  en:{code:'EN',label:'English'}
-};
-
+// ── LANG ──
+const LANG_META={he:{code:'HE',label:'עברית'},ar:{code:'AR',label:'عربي'},en:{code:'EN',label:'English'}};
 const T={
   he:{badge:'YOUGO ISRAEL — הפלטפורמה המובילה',
     h1:'שוק הרכבים <span class="r">הדיגיטלי</span><br><span style="color:var(--t0)">של ישראל</span>',
@@ -1418,11 +893,9 @@ const T={
 const t=k=>T[lang]?.[k]||T.he[k]||k;
 
 function cycleLang(){const l=['he','ar','en'];lang=l[(l.indexOf(lang)+1)%3];applyLang()}
-
 function applyLang(){
   const L=T[lang],M=LANG_META[lang];
   document.documentElement.lang=lang;document.documentElement.dir=L.dir;
-  // FIX 4: تحديث زر اللغة بدون أعلام
   document.getElementById('langIco').textContent=M.code;
   document.getElementById('langTxt').textContent=M.label;
   document.getElementById('heroBadge').textContent=L.badge;
@@ -1437,7 +910,7 @@ function applyLang(){
   document.getElementById('statFrL').textContent=L.frL;
   document.getElementById('listTitle').innerHTML=L.lT;
   document.getElementById('addTitle').textContent=L.aT;
-  const sb2El=document.getElementById('subBtnTxt');if(sb2El)sb2El.textContent=L.sub2;
+  const s=document.getElementById('subBtnTxt');if(s)s.textContent=L.sub2;
   document.getElementById('upTxt').innerHTML=L.upT;
   document.getElementById('sBtn').textContent=L.sb2;
   document.getElementById('fMake').options[0].text=L.mk;
@@ -1448,19 +921,72 @@ function applyLang(){
   renderCars(filtered);
 }
 
-// LOAD
+// ── LOAD CARS — FIX: better error handling + empty state ──
 async function loadCars(){
-  document.getElementById('carsBox').innerHTML='<div class="loading-box"><div class="spin"></div><p style="color:var(--t1);font-weight:600">טוען מודעות...</p></div>';
+  const box=document.getElementById('carsBox');
+  box.innerHTML='<div class="loading-box"><div class="spin"></div><p style="color:var(--t1);font-weight:600">מתחבר למסד נתונים...</p></div>';
+
   try{
+    // Test connection first with a simple query
     const q=isAdmin
-      ?sb.from('cars').select('*').order('created_at',{ascending:false})
-      :sb.from('cars').select('*').eq('status','active').order('created_at',{ascending:false});
-    const{data,error}=await q;if(error)throw error;
-    all=data||[];filtered=[...all];
-    buildFilters();doSort(sort);
+      ? sb.from(TABLE).select('*').order('created_at',{ascending:false})
+      : sb.from(TABLE).select('*').eq('status','active').order('created_at',{ascending:false});
+
+    const{data,error}=await q;
+
+    console.log('[YOUGO] DB Response:', {data, error, count: data?.length});
+
+    if(error){
+      // Handle specific Supabase errors
+      let msg=error.message||'שגיאת מסד נתונים';
+      let hint='';
+
+      if(error.code==='PGRST301'||msg.includes('JWT')){
+        hint='בעיית הרשאות — ייתכן שה-Row Level Security (RLS) מסורג. כנס ל-Supabase → Authentication → Policies';
+      } else if(error.code==='42P01'||msg.includes('relation')||msg.includes('does not exist')){
+        hint=`הטבלה "${TABLE}" לא קיימת — צור אותה ב-Supabase SQL Editor`;
+      } else if(msg.includes('Failed to fetch')||msg.includes('NetworkError')){
+        hint='בעיית רשת — בדוק חיבור אינטרנט';
+      } else {
+        hint='קוד שגיאה: '+error.code+' | '+error.details;
+      }
+
+      box.innerHTML=`
+        <div class="db-error-banner">
+          <h3>⚠️ שגיאת חיבור למסד הנתונים</h3>
+          <p><strong>${msg}</strong></p>
+          ${hint?`<p style="color:rgba(255,200,200,.7);margin-top:6px">${hint}</p>`:''}
+          <code>${error.code||'UNKNOWN'}</code>
+          <div style="margin-top:16px;display:flex;gap:8px;justify-content:center;flex-wrap:wrap">
+            <button class="btn btn-red" style="padding:10px 24px" onclick="loadCars()">🔄 נסה שוב</button>
+            <button class="btn" style="background:rgba(255,255,255,.08);color:var(--t1);padding:10px 24px" onclick="openAdd()">+ פרסם רכב</button>
+          </div>
+        </div>`;
+      document.getElementById('cntBadge').textContent='שגיאה';
+      return;
+    }
+
+    all=data||[];
+    filtered=[...all];
+    buildFilters();
+    doSort(sort);
     document.getElementById('statCars').textContent=all.filter(c=>c.status==='active').length;
+
   }catch(e){
-    document.getElementById('carsBox').innerHTML=`<div class="empty-box"><div class="empty-ico">⚠️</div><h3>שגיאה</h3><p>${e.message}</p><button class="btn btn-red" style="margin-top:14px" onclick="loadCars()">נסה שוב</button></div>`;
+    console.error('[YOUGO] loadCars catch:', e);
+    let errMsg=e.message||'שגיאה לא ידועה';
+    let isNetwork=errMsg.includes('fetch')||errMsg.includes('network')||errMsg.includes('Network');
+
+    box.innerHTML=`
+      <div class="db-error-banner">
+        <h3>${isNetwork?'📡 בעיית חיבור רשת':'⚠️ שגיאה'}</h3>
+        <p>${errMsg}</p>
+        ${isNetwork?'<p style="color:rgba(255,200,200,.7);margin-top:6px">בדוק חיבור אינטרנט ונסה שוב</p>':''}
+        <div style="margin-top:16px;display:flex;gap:8px;justify-content:center">
+          <button class="btn btn-red" style="padding:10px 24px" onclick="loadCars()">🔄 נסה שוב</button>
+        </div>
+      </div>`;
+    document.getElementById('cntBadge').textContent='שגיאה';
   }
 }
 
@@ -1509,13 +1035,51 @@ function doSort(type,btn){
   document.getElementById('cntBadge').textContent=filtered.length+' מודעות';
 }
 
+// ── RENDER CARS — FIX: better empty state ──
 function renderCars(cars){
   const c=document.getElementById('carsBox');
   if(!cars.length){
-    c.innerHTML=`<div class="empty-box"><div class="empty-ico">🔍</div><h3>${t('nc')}</h3><p>${t('ncd')}</p></div>`;
+    // Check if DB is empty or filter returned nothing
+    const isFiltered=document.getElementById('sTxt').value||
+      document.getElementById('fMake').value||document.getElementById('fYear').value||
+      document.getElementById('fPrice').value||document.getElementById('fCity').value;
+
+    if(!isFiltered && all.length===0){
+      // DB is actually empty
+      c.innerHTML=`
+        <div class="empty-state">
+          <div class="empty-state-icon">🚗</div>
+          <h3>עדיין אין מודעות</h3>
+          <p>היה הראשון לפרסם רכב ב-YOUGO CARS!</p>
+          <button class="btn btn-red" style="padding:14px 32px;font-size:14px" onclick="openAdd()">
+            🚗 פרסם רכב בחינם
+          </button>
+        </div>`;
+    } else {
+      c.innerHTML=`
+        <div class="empty-state">
+          <div class="empty-state-icon">🔍</div>
+          <h3>${t('nc')}</h3>
+          <p>${t('ncd')}</p>
+          <button class="btn" style="background:rgba(255,255,255,.08);color:var(--t1);padding:10px 22px;margin-top:4px" onclick="clearFilters()">
+            ✕ נקה פילטרים
+          </button>
+        </div>`;
+    }
     return;
   }
   c.innerHTML=`<div class="cars-grid">${cars.map(carCard).join('')}</div>`;
+}
+
+function clearFilters(){
+  document.getElementById('sTxt').value='';
+  document.getElementById('fMake').value='';
+  document.getElementById('fYear').value='';
+  document.getElementById('fPrice').value='';
+  document.getElementById('fCity').value='';
+  document.getElementById('fGear').value='';
+  document.getElementById('fFuel').value='';
+  doFilter();
 }
 
 function carCard(car){
@@ -1542,7 +1106,7 @@ function carCard(car){
           </svg>
         </div>`}
       <div class="car-badges">${badges.join('')}</div>
-      ${is.length>1?`<div class="car-cnt"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg> ${is.length}</div>`:''}
+      ${is.length>1?`<div class="car-cnt">📷 ${is.length}</div>`:''}
       <div class="car-price-float"><small>₪</small>${Number(car.price).toLocaleString()}</div>
     </div>
     ${car.status==='pending'&&isAdmin?'<div class="pend-bar">⏳ ממתין לאישור</div>':''}
@@ -1560,10 +1124,7 @@ function carCard(car){
       </div>
     </div>
     <div class="car-foot">
-      <span class="car-loc">
-        <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
-        ${car.seller_city}
-      </span>
+      <span class="car-loc">📍 ${car.seller_city||'—'}</span>
       <div class="car-acts" onclick="event.stopPropagation()">
         <a class="act act-wa" href="https://wa.me/972${ph2}" target="_blank" title="WhatsApp">
           <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.127.558 4.122 1.532 5.856L.057 23.49a.5.5 0 0 0 .617.608l5.76-1.504A11.943 11.943 0 0 0 12 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 22c-1.99 0-3.85-.552-5.44-1.51l-.39-.23-4.04 1.056 1.072-3.924-.253-.404A10 10 0 0 1 2 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10z"/></svg>
@@ -1577,7 +1138,7 @@ function carCard(car){
   </div>`;
 }
 
-// ── DETAIL — cinematic gallery ──
+// ── DETAIL MODAL ──
 let _dImgs=[],_dIdx=0;
 
 function openDetail(id){
@@ -1585,7 +1146,6 @@ function openDetail(id){
   _dImgs=car.images?.length?car.images:(car.main_image?[car.main_image]:[]);
   _dIdx=0;
   const ph2=(car.seller_phone||'').replace(/\D/g,'').replace(/^0/,'');
-
   const gallery=document.getElementById('dGallery');
   const dmImg=document.getElementById('dmImg');
   const dThumbs=document.getElementById('dThumbs');
@@ -1601,14 +1161,12 @@ function openDetail(id){
       dThumbs.innerHTML=_dImgs.map((s,i)=>'<img class="d-thumb '+(i===0?'on':'')+'" src="'+s+'" onclick="dGoTo('+i+')" loading="lazy">').join('');
       document.getElementById('dPrev').classList.remove('hidden');
       document.getElementById('dNext').classList.remove('hidden');
-    } else {
+    }else{
       dThumbs.style.display='none';dThumbs.innerHTML='';
       document.getElementById('dPrev').classList.add('hidden');
       document.getElementById('dNext').classList.add('hidden');
     }
-  } else {
-    gallery.style.display='none';
-  }
+  }else{gallery.style.display='none'}
 
   const specs=[
     car.mileage?{icon:'◎',v:Number(car.mileage).toLocaleString(),k:t('km')}:null,
@@ -1638,38 +1196,26 @@ function openDetail(id){
     '</div>'+
     '<div class="d-specs-wrap">'+
       '<div class="d-specs-title">מפרט טכני</div>'+
-      '<div class="d-specs">'+
-        specs.map(function(s){return(
-          '<div class="d-spec">'+
-            '<div class="d-spec-icon">'+s.icon+'</div>'+
-            '<div class="d-spec-v">'+s.v+'</div>'+
-            '<div class="d-spec-k">'+s.k+'</div>'+
-          '</div>'
-        )}).join('')+
-      '</div>'+
+      '<div class="d-specs">'+specs.map(s=>'<div class="d-spec"><div class="d-spec-icon">'+s.icon+'</div><div class="d-spec-v">'+s.v+'</div><div class="d-spec-k">'+s.k+'</div></div>').join('')+'</div>'+
     '</div>'+
     (car.description_he?'<div class="d-desc">'+car.description_he+'</div>':'')+
     '<div class="d-seller">'+
       '<div class="d-seller-av">👤</div>'+
-      '<div>'+
-        '<div class="d-seller-name">'+(car.seller_name||'—')+'</div>'+
-        '<div class="d-seller-city">📍 '+(car.seller_city||'—')+'</div>'+
-      '</div>'+
+      '<div><div class="d-seller-name">'+(car.seller_name||'—')+'</div>'+
+      '<div class="d-seller-city">📍 '+(car.seller_city||'—')+'</div></div>'+
     '</div>'+
     '<div class="d-ctas">'+
       '<a class="cta-wa" href="https://wa.me/972'+ph2+'?text='+waMsg+'" target="_blank">'+
         '<svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.127.558 4.122 1.532 5.856L.057 23.49a.5.5 0 0 0 .617.608l5.76-1.504A11.943 11.943 0 0 0 12 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 22c-1.99 0-3.85-.552-5.44-1.51l-.39-.23-4.04 1.056 1.072-3.924-.253-.404A10 10 0 0 1 2 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10z"/></svg>'+
-        'WhatsApp'+
-      '</a>'+
+        'WhatsApp</a>'+
       '<a class="cta-call" href="tel:'+car.seller_phone+'">'+
         '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12 19.79 19.79 0 0 1 1.61 3.41 2 2 0 0 1 3.6 1.21h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L7.91 9a16 16 0 0 0 6 6l.92-.92a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 21.73 16.92z"/></svg>'+
-        car.seller_phone+
-      '</a>'+
+        car.seller_phone+'</a>'+
     '</div>'+
     (isAdmin?
       '<div style="display:flex;gap:8px;margin:0 20px 20px">'+
-        (car.status==='pending'?'<button onclick="approve(''+car.id+'');closeDetail()" style="flex:1;padding:13px;background:rgba(74,222,128,.1);border:1px solid rgba(74,222,128,.3);color:#4ade80;border-radius:12px;cursor:pointer;font-size:13px;font-weight:900;font-family:var(--font)">✓ אשר מודעה</button>':'')+
-        '<button onclick="delCar(''+car.id+'');closeDetail()" style="flex:1;padding:13px;background:rgba(239,68,68,.1);border:1px solid rgba(239,68,68,.3);color:#ef4444;border-radius:12px;cursor:pointer;font-size:13px;font-weight:900;font-family:var(--font)">🗑 מחק</button>'+
+        (car.status==='pending'?`<button onclick="approve('${car.id}');closeDetail()" style="flex:1;padding:13px;background:rgba(74,222,128,.1);border:1px solid rgba(74,222,128,.3);color:#4ade80;border-radius:12px;cursor:pointer;font-size:13px;font-weight:900;font-family:var(--font)">✓ אשר מודעה</button>`:'') +
+        `<button onclick="delCar('${car.id}');closeDetail()" style="flex:1;padding:13px;background:rgba(239,68,68,.1);border:1px solid rgba(239,68,68,.3);color:#ef4444;border-radius:12px;cursor:pointer;font-size:13px;font-weight:900;font-family:var(--font)">🗑 מחק</button>`+
       '</div>'
     :'');
 
@@ -1682,21 +1228,14 @@ function dGoTo(i){
   _dIdx=i;
   const img=document.getElementById('dmImg');
   img.style.opacity='0';
-  setTimeout(function(){
-    img.src=_dImgs[i];
-    img.style.opacity='1';
-  },200);
+  setTimeout(()=>{img.src=_dImgs[i];img.style.opacity='1'},200);
   document.getElementById('dCounter').textContent=(i+1)+' / '+_dImgs.length;
-  document.querySelectorAll('.d-thumb').forEach(function(th,j){th.classList.toggle('on',j===i)});
+  document.querySelectorAll('.d-thumb').forEach((th,j)=>th.classList.toggle('on',j===i));
 }
 function dNav(dir){dGoTo(_dIdx+dir)}
+function closeDetail(){document.getElementById('detailOvl').classList.remove('open');document.body.style.overflow=''}
 
-function closeDetail(){
-  document.getElementById('detailOvl').classList.remove('open');
-  document.body.style.overflow='';
-}
-
-// ADD
+// ── ADD MODAL ──
 function openAdd(){
   document.getElementById('addOvl').classList.add('open');
   document.getElementById('addForm').reset();
@@ -1706,16 +1245,14 @@ function openAdd(){
   if(inner)inner.style.display='flex';
   const errBox=document.getElementById('formErrBox');
   if(errBox)errBox.remove();
-  // Keep cfg tip if it was shown before
 }
 function closeAdd(){document.getElementById('addOvl').classList.remove('open')}
 
 function handleImgs(input){
   const files=[...input.files].slice(0,10);imgs=files;
   const pg=document.getElementById('prevGrid');pg.innerHTML='';
-  // Update upload zone appearance
   const inner=document.getElementById('uploadInner');
-  if(inner) inner.style.display=files.length>0?'none':'flex';
+  if(inner)inner.style.display=files.length>0?'none':'flex';
   files.forEach((f,i)=>{
     const r=new FileReader();
     r.onload=e=>{
@@ -1727,41 +1264,39 @@ function handleImgs(input){
     r.readAsDataURL(f);
   });
 }
-function rmImg(i){imgs.splice(i,1);const dt=new DataTransfer();imgs.forEach(f=>dt.items.add(f));document.getElementById('imgIn').files=dt.files;handleImgs(document.getElementById('imgIn'))}
+function rmImg(i){
+  imgs.splice(i,1);
+  const dt=new DataTransfer();
+  imgs.forEach(f=>dt.items.add(f));
+  document.getElementById('imgIn').files=dt.files;
+  handleImgs(document.getElementById('imgIn'));
+}
 
 async function uploadImg(file){
-  try{
-    const fd=new FormData();
-    fd.append('file',file);
-    fd.append('upload_preset',CL_PRESET);
-    fd.append('folder','yougo-cars');
-    const r=await fetch(`https://api.cloudinary.com/v1_1/${CL_NAME}/image/upload`,{method:'POST',body:fd});
-    const json=await r.json();
-    if(!r.ok||json.error){
-      const msg=json.error?.message||'HTTP '+r.status;
-      // Show config hint
-      if(msg.toLowerCase().includes('unknown api key')||msg.toLowerCase().includes('invalid')){
-        const tip=document.getElementById('cfgTip');if(tip)tip.style.display='block';
-        throw new Error(`Cloudinary config שגוי — בדוק Cloud Name ו-Upload Preset`);
-      }
-      throw new Error('העלאת תמונה נכשלה: '+msg);
+  const fd=new FormData();
+  fd.append('file',file);
+  fd.append('upload_preset',CL_PRESET);
+  fd.append('folder','yougo-cars');
+  const r=await fetch(`https://api.cloudinary.com/v1_1/${CL_NAME}/image/upload`,{method:'POST',body:fd});
+  const json=await r.json();
+  if(!r.ok||json.error){
+    const msg=json.error?.message||'HTTP '+r.status;
+    if(msg.toLowerCase().includes('unknown api key')||msg.toLowerCase().includes('invalid')){
+      const tip=document.getElementById('cfgTip');if(tip)tip.style.display='block';
+      throw new Error('Cloudinary config שגוי — בדוק Cloud Name ו-Upload Preset');
     }
-    return json.secure_url;
-  }catch(e){
-    if(e.message.startsWith('Cloudinary')||e.message.startsWith('העלאת')) throw e;
-    throw new Error('שגיאת רשת בהעלאת תמונה');
+    throw new Error('העלאת תמונה נכשלה: '+msg);
   }
+  return json.secure_url;
 }
 
 function getErrMsg(err){
-  if(!err) return 'שגיאה לא ידועה';
-  if(typeof err==='string') return err;
-  // Supabase error object
-  if(err.message) return err.message;
-  if(err.details) return err.details;
-  if(err.hint) return err.hint;
-  if(err.code) return 'קוד: '+err.code;
-  try{ return JSON.stringify(err); }catch(e){ return 'שגיאה לא ידועה'; }
+  if(!err)return 'שגיאה לא ידועה';
+  if(typeof err==='string')return err;
+  if(err.message)return err.message;
+  if(err.details)return err.details;
+  if(err.code)return 'קוד: '+err.code;
+  try{return JSON.stringify(err)}catch(e){return 'שגיאה לא ידועה'}
 }
 
 function showErrInForm(msg){
@@ -1779,31 +1314,20 @@ function showErrInForm(msg){
 async function submitCar(e){
   e.preventDefault();
   const btn=document.getElementById('subBtn'),pg=document.getElementById('prog'),pb=document.getElementById('progBar');
-  // Clear previous error
   const prevErr=document.getElementById('formErrBox');if(prevErr)prevErr.remove();
-  btn.disabled=true;btn.textContent='⏳ מעלה...';
+  btn.disabled=true;btn.innerHTML='<span>⏳</span> <span>מעלה...</span>';
   if(imgs.length)pg.style.display='block';
   try{
-    // STEP 1: Upload images (optional — saves without images if upload fails)
     const urls=[];
     if(imgs.length>0){
       for(let i=0;i<imgs.length;i++){
-        btn.textContent=`📷 מעלה תמונה ${i+1} מתוך ${imgs.length}...`;
+        btn.innerHTML=`<span>📷</span> <span>מעלה תמונה ${i+1}/${imgs.length}...</span>`;
         pb.style.width=`${Math.round(((i+1)/imgs.length)*100)}%`;
-        try{
-          urls.push(await uploadImg(imgs[i]));
-        }catch(imgErr){
-          // If ALL images fail show error, else continue with uploaded ones
-          if(i===0&&imgs.length>0){
-            throw imgErr; // First image failed = config problem, stop
-          }
-          console.warn('[YOUGO] Image',i,'failed:',imgErr.message);
-        }
+        try{urls.push(await uploadImg(imgs[i]))}catch(imgErr){if(i===0)throw imgErr;console.warn('[YOUGO] Image',i,'failed:',imgErr.message)}
       }
     }
     pg.style.display='none';
 
-    // STEP 2: Validate required fields
     const make=document.getElementById('f_make').value.trim();
     const model=document.getElementById('f_model').value.trim();
     const year=parseInt(document.getElementById('f_year').value);
@@ -1815,9 +1339,8 @@ async function submitCar(e){
       throw new Error('אנא מלא את כל שדות החובה (*)');
     }
 
-    btn.textContent='💾 שומר במסד נתונים...';
+    btn.innerHTML='<span>💾</span> <span>שומר...</span>';
 
-    // STEP 3: Insert to Supabase
     const payload={
       make,model,year,price,
       mileage:parseInt(document.getElementById('f_mileage').value)||0,
@@ -1837,22 +1360,18 @@ async function submitCar(e){
     };
 
     console.log('[YOUGO] Inserting:', payload);
-    const{data,error}=await sb.from('cars').insert(payload).select();
-    console.log('[YOUGO] Result:', {data,error});
+    const{data,error}=await sb.from(TABLE).insert(payload).select();
+    console.log('[YOUGO] Insert result:', {data,error});
 
-    if(error){
-      throw new Error(getErrMsg(error));
-    }
+    if(error)throw new Error(getErrMsg(error));
 
-    // SUCCESS
     await loadCars();
     document.getElementById('addBody').innerHTML=`
-      <div class="success-wrap" style="text-align:center;padding:40px 20px">
-        <div style="font-size:56px;margin-bottom:16px">🎉</div>
+      <div style="text-align:center;padding:48px 20px">
+        <div style="font-size:60px;margin-bottom:18px">🎉</div>
         <h3 style="font-size:1.5rem;font-weight:900;margin-bottom:10px;color:#fff">המודעה פורסמה!</h3>
         <p style="color:rgba(255,255,255,.7);font-size:14px;margin-bottom:24px">הרכב שלך זמין עכשיו לכולם 🚗✨</p>
-        <button class="btn btn-red" style="padding:14px 36px;font-size:15px"
-          onclick="closeAdd();document.getElementById('addBody').innerHTML=''">סגור</button>
+        <button class="btn btn-red" style="padding:14px 36px;font-size:15px" onclick="closeAdd();document.getElementById('addBody').innerHTML=''">סגור</button>
       </div>`;
     showToast('🚗 המודעה פורסמה בהצלחה!','ok');
 
@@ -1862,19 +1381,18 @@ async function submitCar(e){
     showErrInForm(msg);
     showToast('❌ '+msg.slice(0,60),'err');
     btn.disabled=false;
-    btn.textContent='🚗 פרסם מודעה בחינם — מיידי!';
+    btn.innerHTML='<span class="sub-icon">🚗</span><span id="subBtnTxt">פרסם מודעה בחינם — מיידי!</span>';
     pg.style.display='none';
     pb.style.width='0%';
   }
 }
 
-// ADMIN
+// ── ADMIN ──
 function adminLogin(){
   const p=prompt('🔑 Admin Password:');if(p===null)return;
   if(p===ADMIN_PW){
     isAdmin=true;
     document.getElementById('adminBar').classList.add('show');
-    document.getElementById('heroSec').style.marginTop='0';
     document.getElementById('adminActs').innerHTML=`
       <span style="color:var(--t1);font-size:12.5px;font-weight:600">Admin Mode</span>
       <button onclick="loadCars()" style="background:rgba(200,16,46,.12);border:1px solid var(--bred);color:var(--red);padding:6px 14px;border-radius:8px;cursor:pointer;font-size:12px;font-weight:900;font-family:var(--font)">🔄 רענן</button>
@@ -1883,15 +1401,17 @@ function adminLogin(){
     loadCars();showToast('✅ Admin Mode','ok');
   }else showToast('❌ סיסמה שגויה','err');
 }
-function adminOut(){isAdmin=false;document.getElementById('adminBar').classList.remove('show');document.getElementById('heroSec').style.marginTop='';loadCars()}
-async function approve(id){const{error}=await sb.from('cars').update({status:'active'}).eq('id',id);if(!error){showToast('✅ אושרה','ok');loadCars()}else showToast('❌ '+error.message,'err')}
-async function markSold(id){const{error}=await sb.from('cars').update({status:'sold'}).eq('id',id);if(!error){showToast('✅ נמכר','ok');loadCars()}}
-async function delCar(id){if(!confirm('למחוק לצמיתות?'))return;const{error}=await sb.from('cars').delete().eq('id',id);if(!error){showToast('🗑️ נמחקה','ok');loadCars()}else showToast('❌ '+error.message,'err')}
+function adminOut(){isAdmin=false;document.getElementById('adminBar').classList.remove('show');loadCars()}
+async function approve(id){const{error}=await sb.from(TABLE).update({status:'active'}).eq('id',id);if(!error){showToast('✅ אושרה','ok');loadCars()}else showToast('❌ '+error.message,'err')}
+async function markSold(id){const{error}=await sb.from(TABLE).update({status:'sold'}).eq('id',id);if(!error){showToast('✅ נמכר','ok');loadCars()}}
+async function delCar(id){if(!confirm('למחוק לצמיתות?'))return;const{error}=await sb.from(TABLE).delete().eq('id',id);if(!error){showToast('🗑️ נמחקה','ok');loadCars()}else showToast('❌ '+error.message,'err')}
 
 function showToast(msg,type='ok'){const el=document.getElementById('toast');el.textContent=msg;el.className=`show ${type}`;clearTimeout(el._t);el._t=setTimeout(()=>el.className='',3400)}
 function showHome(){filtered=[...all];doSort(sort);window.scrollTo({top:0,behavior:'smooth'})}
 
 document.addEventListener('keydown',e=>{if(e.key==='Escape'){closeDetail();closeAdd()}});
+
+// ── INIT ──
 loadCars();
 </script>
 </body>
