@@ -11,13 +11,15 @@
 <style>
 /* ── TOKENS ── */
 :root{
-  --red:#c8102e; --red2:#9b0d22;
-  --bg:#07070e; --bg2:#0c0c18; --bg3:#101022;
-  --card:#0e0e1c; --card2:#131328;
-  --b0:rgba(255,255,255,.07); --b1:rgba(255,255,255,.13);
-  --bred:rgba(200,16,46,.32); --bred2:rgba(200,16,46,.55);
-  --t0:#eeeef5; --t1:rgba(238,238,245,.52); --t2:rgba(238,238,245,.26);
-  --gold:#d4af37;
+  --red:#e8112e; --red2:#b50d24;
+  --bg:#0a0a12; --bg2:#0f0f1e; --bg3:#141428;
+  --card:#121224; --card2:#181832;
+  --b0:rgba(255,255,255,.10); --b1:rgba(255,255,255,.20);
+  --bred:rgba(232,17,46,.35); --bred2:rgba(232,17,46,.6);
+  --t0:#ffffff;
+  --t1:rgba(255,255,255,.78);
+  --t2:rgba(255,255,255,.48);
+  --gold:#f0c84a;
   --r:16px; --r2:22px; --r3:28px;
   --nav:62px;
   --ease:cubic-bezier(.4,0,.2,1);
@@ -25,46 +27,80 @@
 }
 *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
 html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
-body{font-family:var(--font);background:var(--bg);color:var(--t0);overflow-x:hidden;-webkit-font-smoothing:antialiased}
+body{font-family:var(--font);background:var(--bg);color:#ffffff;overflow-x:hidden;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale}
 img{display:block;max-width:100%}
 a{color:inherit;text-decoration:none}
 ::-webkit-scrollbar{width:3px}
 ::-webkit-scrollbar-thumb{background:var(--red);border-radius:2px}
 
+/* Subtle noise grain for depth */
+body::before{
+  content:'';position:fixed;inset:0;z-index:0;pointer-events:none;
+  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.035'/%3E%3C/svg%3E");
+  background-repeat:repeat;background-size:200px 200px;opacity:.4;mix-blend-mode:overlay;
+}
+
 /* ── NAV ── */
 #nav{
   position:fixed;top:0;left:0;right:0;z-index:500;height:var(--nav);
-  padding:0 22px;display:flex;align-items:center;gap:10px;
+  padding:0 14px;
+  display:flex;align-items:center;gap:8px;
   background:rgba(7,7,14,.78);backdrop-filter:blur(28px) saturate(1.8);
   border-bottom:1px solid rgba(255,255,255,.055);
   transition:background .3s var(--ease),border-color .3s var(--ease);
+  overflow:hidden; /* מניעת גלישה */
 }
 #nav.solid{background:rgba(7,7,14,.97);border-color:var(--b0)}
 
-/* LOGO — same as main site */
-.logo{display:flex;align-items:center;gap:9px;cursor:pointer;flex-shrink:0}
+/* LOGO */
+.logo{display:flex;align-items:center;gap:8px;cursor:pointer;flex-shrink:0;min-width:0}
 .logo-box{
-  width:36px;height:36px;border-radius:10px;flex-shrink:0;
-  background:linear-gradient(135deg,#c8102e,#9b0d24);
+  width:36px;height:36px;min-width:36px;border-radius:10px;flex-shrink:0;
+  background:linear-gradient(135deg,#c8102e 0%,#9b0d24 100%);
   display:flex;align-items:center;justify-content:center;
-  box-shadow:0 4px 14px rgba(200,16,46,.48);
+  box-shadow:0 4px 16px rgba(200,16,46,.55), inset 0 1px 0 rgba(255,255,255,.15);
+  border:1px solid rgba(200,16,46,.6);
 }
-.logo-text{font-size:17px;font-weight:900;letter-spacing:-.4px;white-space:nowrap;line-height:1}
+.logo-text{font-size:17px;font-weight:900;letter-spacing:-.4px;white-space:nowrap;line-height:1;color:#ffffff}
 .logo-text .r{color:var(--red)}
 
-.nav-mid{display:flex;gap:2px}
-.nav-a{padding:6px 13px;border-radius:9px;font-size:13px;font-weight:700;color:var(--t1);
+.nav-mid{display:flex;gap:2px;flex-shrink:0}
+.nav-a{padding:6px 11px;border-radius:9px;font-size:12.5px;font-weight:700;color:var(--t1);
   cursor:pointer;background:none;border:none;font-family:var(--font);transition:all .18s;white-space:nowrap}
 .nav-a:hover{color:var(--t0);background:rgba(255,255,255,.07)}
 
-.nav-end{display:flex;gap:7px;align-items:center;margin-right:auto}
+/* nav-end — push to left edge, never shrink below content */
+.nav-end{display:flex;gap:6px;align-items:center;margin-right:auto;flex-shrink:0}
 
-.btn-lang{background:var(--bg3);border:1px solid var(--b0);color:var(--t1);
-  padding:7px 12px;border-radius:9px;font-size:12px;cursor:pointer;
-  font-family:var(--font);transition:all .18s;font-weight:600}
-.btn-lang:hover{border-color:var(--bred);color:var(--t0)}
+/* זר اللغة */
+.btn-lang{
+  display:inline-flex;align-items:center;gap:6px;
+  background:rgba(255,255,255,.06);
+  border:1px solid rgba(255,255,255,.12);
+  color:var(--t0);
+  padding:7px 12px;border-radius:10px;font-size:12px;cursor:pointer;
+  font-family:var(--font);transition:all .2s var(--ease);font-weight:700;
+  letter-spacing:.02em;white-space:nowrap;flex-shrink:0;
+}
+.btn-lang:hover{border-color:rgba(200,16,46,.5);background:rgba(200,16,46,.08);color:#fff}
+.btn-lang .lang-icon{
+  width:18px;height:18px;border-radius:4px;
+  display:flex;align-items:center;justify-content:center;
+  background:linear-gradient(135deg,var(--red),#e0162f);
+  font-size:9px;font-weight:900;color:#fff;letter-spacing:0;flex-shrink:0;
+}
+/* زر חבילות في الـ nav */
+.btn-pkg-nav{
+  display:inline-flex;align-items:center;gap:5px;
+  padding:8px 12px;border-radius:10px;font-size:12px;font-weight:900;
+  background:rgba(212,175,55,.1);border:1.5px solid rgba(212,175,55,.35);
+  color:var(--gold);cursor:pointer;font-family:var(--font);
+  white-space:nowrap;text-decoration:none;flex-shrink:0;
+  transition:all .18s;
+}
+.btn-pkg-nav:hover{background:rgba(212,175,55,.2);border-color:rgba(212,175,55,.6)}
 
-.btn{display:inline-flex;align-items:center;gap:6px;padding:9px 18px;
+.btn{display:inline-flex;align-items:center;gap:6px;padding:9px 16px;
   border-radius:11px;font-family:var(--font);font-weight:900;font-size:13px;
   cursor:pointer;border:none;transition:all .2s var(--ease);white-space:nowrap;text-decoration:none}
 .btn-red{background:linear-gradient(135deg,var(--red),#e0162f);color:#fff;
@@ -83,60 +119,69 @@ a{color:inherit;text-decoration:none}
   padding:calc(var(--nav) + 56px) 22px 72px;
   overflow:hidden;
 }
-/* Vivid, clear background */
 .hero-bg{
   position:absolute;inset:0;z-index:0;
   background:
-    radial-gradient(ellipse 110% 55% at 50% -8%,rgba(200,16,46,.32) 0%,transparent 62%),
-    radial-gradient(ellipse 55% 45% at 4% 90%,rgba(200,16,46,.12) 0%,transparent 52%),
-    radial-gradient(ellipse 50% 40% at 96% 88%,rgba(80,16,200,.07) 0%,transparent 52%),
+    radial-gradient(ellipse 120% 60% at 50% -5%,rgba(232,17,46,.42) 0%,transparent 58%),
+    radial-gradient(ellipse 60% 50% at 2% 88%,rgba(232,17,46,.18) 0%,transparent 50%),
+    radial-gradient(ellipse 55% 45% at 98% 85%,rgba(90,20,220,.12) 0%,transparent 50%),
+    radial-gradient(ellipse 80% 40% at 50% 50%,rgba(20,10,50,.6) 0%,transparent 80%),
     var(--bg);
 }
 .hero-grid{
   position:absolute;inset:0;z-index:0;
   background-image:
-    linear-gradient(rgba(255,255,255,.05) 1px,transparent 1px),
-    linear-gradient(90deg,rgba(255,255,255,.05) 1px,transparent 1px);
+    linear-gradient(rgba(255,255,255,.07) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(255,255,255,.07) 1px,transparent 1px);
   background-size:52px 52px;
-  -webkit-mask-image:radial-gradient(ellipse 92% 72% at 50% 28%,#000 22%,transparent 78%);
-  mask-image:radial-gradient(ellipse 92% 72% at 50% 28%,#000 22%,transparent 78%);
+  -webkit-mask-image:radial-gradient(ellipse 96% 78% at 50% 32%,#000 28%,transparent 75%);
+  mask-image:radial-gradient(ellipse 96% 78% at 50% 32%,#000 28%,transparent 75%);
 }
 .hero-glow{
-  position:absolute;top:-100px;left:50%;transform:translateX(-50%);
-  width:700px;height:420px;
-  background:radial-gradient(ellipse,rgba(200,16,46,.22) 0%,transparent 68%);
-  filter:blur(48px);z-index:0;pointer-events:none;
+  position:absolute;top:-80px;left:50%;transform:translateX(-50%);
+  width:800px;height:500px;
+  background:radial-gradient(ellipse,rgba(232,17,46,.28) 0%,transparent 65%);
+  filter:blur(60px);z-index:0;pointer-events:none;
 }
 .hero-in{position:relative;z-index:2;max-width:840px;width:100%}
 
 /* Badge */
 .hero-badge{
   display:inline-flex;align-items:center;gap:8px;
-  padding:7px 18px;border-radius:100px;margin-bottom:28px;
-  background:rgba(200,16,46,.11);border:1px solid rgba(200,16,46,.3);
+  padding:8px 20px;border-radius:100px;margin-bottom:28px;
+  background:rgba(232,17,46,.15);border:1px solid rgba(232,17,46,.45);
   animation:fu .6s ease both;
+  box-shadow:0 0 24px rgba(232,17,46,.15);
 }
 .badge-dot{width:7px;height:7px;border-radius:50%;background:var(--red);
-  animation:blink 2s infinite;box-shadow:0 0 8px var(--red)}
-@keyframes blink{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.5;transform:scale(.8)}}
-.hero-badge span{font-size:11px;font-weight:800;color:rgba(255,255,255,.7);
-  text-transform:uppercase;letter-spacing:.1em}
+  animation:blink 2s infinite;box-shadow:0 0 10px var(--red)}
+@keyframes blink{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.4;transform:scale(.7)}}
+.hero-badge span{font-size:11.5px;font-weight:800;color:rgba(255,255,255,.88);
+  text-transform:uppercase;letter-spacing:.12em}
 
 @keyframes fu{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
 
+/* FIX 3: hero h1 — إزالة الخط الأحمر بين السطرين */
 .hero h1{
-  font-size:clamp(2.5rem,8vw,5.4rem);font-weight:900;line-height:1.07;
-  letter-spacing:-2px;margin-bottom:20px;animation:fu .6s .1s ease both;
+  font-size:clamp(2.6rem,8vw,5.6rem);font-weight:900;line-height:1.06;
+  letter-spacing:-2px;margin-bottom:22px;animation:fu .6s .1s ease both;
+  color:#ffffff;text-shadow:0 2px 40px rgba(0,0,0,.9);
 }
 .hero h1 .r{
   color:transparent;
-  background:linear-gradient(130deg,#ff4060,var(--red));
+  background:linear-gradient(125deg,#ff5878 0%,#e8112e 55%,#ff2040 100%);
   -webkit-background-clip:text;background-clip:text;
+  text-decoration:none;border:none;display:inline;
+  filter:drop-shadow(0 0 20px rgba(232,17,46,.55));
 }
+.hero h1 br{display:block;content:'';border:none;background:none}
+.hero h1 span{border:none !important;text-decoration:none !important;box-shadow:none !important}
+
 .hero-sub{
-  font-size:clamp(.98rem,2vw,1.12rem);color:var(--t1);
+  font-size:clamp(1rem,2vw,1.16rem);color:rgba(255,255,255,.84);
   line-height:1.75;max-width:500px;margin:0 auto 36px;
   animation:fu .6s .2s ease both;
+  text-shadow:0 1px 12px rgba(0,0,0,.6);
 }
 
 /* CTA row */
@@ -146,7 +191,7 @@ a{color:inherit;text-decoration:none}
 }
 .hero-ctas .btn{padding:14px 30px;font-size:15px}
 
-/* ★ Packages button — golden, prominent */
+/* ★ Packages button */
 .btn-pkg{
   display:inline-flex;align-items:center;gap:9px;
   padding:13px 26px;border-radius:14px;
@@ -169,18 +214,20 @@ a{color:inherit;text-decoration:none}
 /* Stats */
 .hero-stats{
   display:flex;max-width:500px;margin:0 auto;
-  border:1px solid var(--b0);border-radius:20px;
-  background:rgba(255,255,255,.024);overflow:hidden;
+  border:1px solid rgba(255,255,255,.14);border-radius:20px;
+  background:rgba(255,255,255,.06);overflow:hidden;
+  box-shadow:0 8px 32px rgba(0,0,0,.4),inset 0 1px 0 rgba(255,255,255,.08);
+  backdrop-filter:blur(12px);
   animation:fu .6s .4s ease both;
 }
 .hs{flex:1;padding:20px 14px;text-align:center;position:relative}
 .hs:not(:last-child)::after{
   content:'';position:absolute;right:0;top:20%;bottom:20%;
-  width:1px;background:var(--b0);
+  width:1px;background:rgba(255,255,255,.14);
 }
-.hs-v{font-size:1.75rem;font-weight:900;color:#fff}
+.hs-v{font-size:1.8rem;font-weight:900;color:#ffffff;text-shadow:0 2px 12px rgba(0,0,0,.5)}
 .hs-v .a{color:var(--red)}
-.hs-l{font-size:10px;color:var(--t2);margin-top:3px;font-weight:700;
+.hs-l{font-size:10px;color:rgba(255,255,255,.55);margin-top:3px;font-weight:700;
   text-transform:uppercase;letter-spacing:.08em}
 
 /* ── TICKER ── */
@@ -191,7 +238,7 @@ a{color:inherit;text-decoration:none}
 .ticker-inner{display:flex;white-space:nowrap;animation:tick 26s linear infinite}
 @keyframes tick{from{transform:translateX(0)}to{transform:translateX(-50%)}}
 .ti{display:flex;align-items:center;gap:8px;padding:0 26px;height:42px;
-  font-size:12.5px;font-weight:700;color:var(--t1);border-left:1px solid var(--b0)}
+  font-size:12.5px;font-weight:700;color:rgba(255,255,255,.72);border-left:1px solid rgba(255,255,255,.08)}
 .ti:first-child{border-left:none}
 
 /* ── SEARCH ── */
@@ -201,12 +248,12 @@ a{color:inherit;text-decoration:none}
   display:flex;align-items:center;gap:8px;margin-bottom:13px;
 }
 .search-eyebrow-line{width:28px;height:2px;border-radius:2px;background:var(--red)}
-.search-eyebrow-text{font-size:10.5px;font-weight:900;color:var(--red);
+.search-eyebrow-text{font-size:10.5px;font-weight:900;color:#ff4466;
   text-transform:uppercase;letter-spacing:.14em}
 
 .search-card{
-  background:var(--bg2);
-  border:1.5px solid rgba(255,255,255,.11);
+  background:linear-gradient(160deg,#181832,#0f0f1e);
+  border:1.5px solid rgba(255,255,255,.16);
   border-radius:22px;overflow:hidden;
   box-shadow:0 6px 40px rgba(0,0,0,.55),0 0 0 1px rgba(200,16,46,.07);
   transition:border-color .22s,box-shadow .22s;
@@ -216,11 +263,10 @@ a{color:inherit;text-decoration:none}
   box-shadow:0 6px 40px rgba(0,0,0,.55),0 0 0 4px rgba(200,16,46,.07);
 }
 
-/* Main row */
 .search-main{
   display:flex;align-items:center;
   padding:7px 7px 7px 18px;
-  border-bottom:1px solid rgba(255,255,255,.07);
+  border-bottom:1px solid rgba(255,255,255,.10);
   gap:10px;
 }
 .search-ico{font-size:17px;color:var(--t2);flex-shrink:0}
@@ -229,7 +275,7 @@ a{color:inherit;text-decoration:none}
   font-size:15px;font-weight:600;color:var(--t0);
   font-family:var(--font);padding:10px 4px;min-width:0;
 }
-.search-input::placeholder{color:var(--t2)}
+.search-input::placeholder{color:rgba(255,255,255,.38)}
 .search-go{
   padding:11px 28px;border-radius:14px;border:none;
   background:linear-gradient(135deg,var(--red),#e0162f);
@@ -239,7 +285,6 @@ a{color:inherit;text-decoration:none}
 }
 .search-go:hover{transform:translateY(-1px);box-shadow:0 6px 22px rgba(200,16,46,.56)}
 
-/* Filters strip */
 .filter-strip{
   display:flex;gap:4px;padding:6px 8px;
   overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none;
@@ -249,7 +294,7 @@ a{color:inherit;text-decoration:none}
   display:flex;align-items:center;gap:5px;
   padding:8px 14px;border-radius:10px;cursor:pointer;
   background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);
-  color:var(--t1);font-size:12.5px;font-weight:700;
+  color:rgba(255,255,255,.78);font-size:12.5px;font-weight:700;
   white-space:nowrap;font-family:var(--font);
   transition:all .18s;flex-shrink:0;
   appearance:none;-webkit-appearance:none;outline:none;
@@ -262,8 +307,13 @@ a{color:inherit;text-decoration:none}
 
 /* ── LISTINGS ── */
 .main{max-width:1240px;margin:0 auto;padding:42px 20px 100px}
+.main::before{
+  content:'';position:fixed;inset:0;z-index:-1;
+  background:radial-gradient(ellipse 70% 50% at 50% 0%,rgba(232,17,46,.06) 0%,transparent 60%),var(--bg);
+  pointer-events:none;
+}
 .list-head{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;margin-bottom:22px}
-.list-title{font-size:1.4rem;font-weight:900}
+.list-title{font-size:1.5rem;font-weight:900;color:#ffffff}
 .list-title .r{color:var(--red)}
 .cnt-badge{
   padding:5px 14px;border-radius:100px;font-size:12px;font-weight:800;
@@ -271,8 +321,8 @@ a{color:inherit;text-decoration:none}
 }
 .sort-row{display:flex;gap:6px;margin-bottom:24px;flex-wrap:wrap}
 .sort-btn{
-  padding:7px 15px;border-radius:9px;border:1px solid var(--b0);
-  background:none;color:var(--t1);font-family:var(--font);
+  padding:7px 15px;border-radius:9px;border:1px solid rgba(255,255,255,.14);
+  background:rgba(255,255,255,.05);color:rgba(255,255,255,.75);font-family:var(--font);
   font-size:12px;font-weight:700;cursor:pointer;transition:all .18s;white-space:nowrap;
 }
 .sort-btn:hover{color:var(--t0);border-color:var(--b1);background:rgba(255,255,255,.05)}
@@ -287,22 +337,24 @@ a{color:inherit;text-decoration:none}
 
 /* ── CAR CARD ── */
 .car-card{
-  background:var(--card);border:1px solid var(--b0);
+  background:linear-gradient(160deg,#181832 0%,#121224 100%);
+  border:1px solid rgba(255,255,255,.12);
   border-radius:var(--r2);overflow:hidden;cursor:pointer;
   display:flex;flex-direction:column;position:relative;
   transition:transform .24s var(--ease),border-color .24s,box-shadow .24s;
+  box-shadow:0 4px 24px rgba(0,0,0,.5);
 }
 .car-card:hover{
   transform:translateY(-5px);
-  border-color:rgba(200,16,46,.3);
-  box-shadow:0 16px 50px rgba(0,0,0,.6),0 0 0 1px rgba(200,16,46,.1);
+  border-color:rgba(232,17,46,.45);
+  box-shadow:0 20px 56px rgba(0,0,0,.7),0 0 0 1px rgba(232,17,46,.15),inset 0 1px 0 rgba(255,255,255,.06);
 }
 
 .car-img-wrap{position:relative;overflow:hidden;aspect-ratio:16/10;background:var(--bg3);flex-shrink:0}
 .car-img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .4s ease}
 .car-card:hover .car-img{transform:scale(1.05)}
 .car-placeholder{width:100%;height:100%;display:flex;align-items:center;
-  justify-content:center;font-size:46px;opacity:.18}
+  justify-content:center;font-size:46px;opacity:.35;background:linear-gradient(135deg,#1a1a36,#141428)}
 
 .car-badges{position:absolute;top:9px;right:9px;display:flex;flex-direction:column;gap:4px;align-items:flex-end}
 .cbadge{padding:3px 9px;border-radius:100px;font-size:9.5px;font-weight:900;backdrop-filter:blur(8px)}
@@ -312,22 +364,22 @@ a{color:inherit;text-decoration:none}
 .car-cnt{position:absolute;bottom:8px;left:8px;padding:2px 8px;border-radius:100px;
   font-size:9.5px;font-weight:800;background:rgba(0,0,0,.65);
   color:rgba(255,255,255,.82);backdrop-filter:blur(6px)}
-.pend-bar{background:rgba(234,179,8,.1);border-bottom:1px solid rgba(234,179,8,.18);
-  color:#eab308;font-size:10.5px;font-weight:800;padding:6px 14px;text-align:center}
+.pend-bar{background:rgba(234,179,8,.14);border-bottom:1px solid rgba(234,179,8,.28);
+  color:#fbbf24;font-size:10.5px;font-weight:800;padding:6px 14px;text-align:center}
 
-.car-body{padding:14px;display:flex;flex-direction:column;gap:9px;flex:1}
-.car-name{font-size:15.5px;font-weight:900;line-height:1.3}
-.car-meta{font-size:11.5px;color:var(--t1);font-weight:600}
-.car-price{font-size:21px;font-weight:900;color:var(--red);letter-spacing:-.5px}
+.car-body{padding:14px;display:flex;flex-direction:column;gap:9px;flex:1;background:transparent}
+.car-name{font-size:15.5px;font-weight:900;line-height:1.3;color:#ffffff}
+.car-meta{font-size:11.5px;color:rgba(255,255,255,.7);font-weight:600}
+.car-price{font-size:22px;font-weight:900;color:#ff3355;letter-spacing:-.5px;text-shadow:0 0 20px rgba(232,17,46,.35)}
 .specs{display:flex;flex-wrap:wrap;gap:4px}
-.spec{padding:3px 9px;border-radius:7px;background:rgba(255,255,255,.05);
-  border:1px solid var(--b0);font-size:10.5px;font-weight:700;color:var(--t1);
+.spec{padding:3px 9px;border-radius:7px;background:rgba(255,255,255,.08);
+  border:1px solid rgba(255,255,255,.14);font-size:10.5px;font-weight:700;color:rgba(255,255,255,.82);
   transition:border-color .2s}
 .car-card:hover .spec{border-color:rgba(255,255,255,.12)}
 
 .car-foot{display:flex;align-items:center;justify-content:space-between;
-  padding-top:9px;border-top:1px solid var(--b0);margin-top:auto}
-.car-loc{font-size:11px;color:var(--t2);font-weight:600}
+  padding-top:9px;border-top:1px solid rgba(255,255,255,.10);margin-top:auto}
+.car-loc{font-size:11px;color:rgba(255,255,255,.58);font-weight:600}
 .car-acts{display:flex;gap:5px}
 .act{width:32px;height:32px;border-radius:8px;display:flex;align-items:center;
   justify-content:center;font-size:14px;transition:all .18s;border:1px solid var(--b0);
@@ -357,7 +409,7 @@ a{color:inherit;text-decoration:none}
 .empty-box p{color:var(--t1)}
 
 /* ── FOOTER ── */
-footer{border-top:1px solid var(--b0);padding:36px 20px}
+footer{border-top:1px solid rgba(255,255,255,.12);padding:36px 20px;background:rgba(255,255,255,.02)}
 .foot-in{max-width:1200px;margin:0 auto;display:flex;
   align-items:center;justify-content:space-between;flex-wrap:wrap;gap:16px}
 .foot-brand{display:flex;align-items:center;gap:9px}
@@ -366,12 +418,12 @@ footer{border-top:1px solid var(--b0);padding:36px 20px}
   display:flex;align-items:center;justify-content:center}
 .foot-name{font-size:14px;font-weight:900}
 .foot-name .r{color:var(--red)}
-.foot-copy{font-size:11.5px;color:var(--t2);font-weight:600}
+.foot-copy{font-size:11.5px;color:rgba(255,255,255,.52);font-weight:600}
 .foot-links{display:flex;gap:6px;align-items:center;flex-wrap:wrap}
 .foot-link{padding:5px 11px;border-radius:7px;font-size:11.5px;font-weight:700;
-  color:var(--t2);background:rgba(255,255,255,.04);border:1px solid var(--b0);
+  color:rgba(255,255,255,.6);background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);
   transition:all .15s}
-.foot-link:hover{color:#fff;border-color:var(--b1)}
+.foot-link:hover{color:#fff;border-color:rgba(255,255,255,.28)}
 .foot-dot{cursor:pointer;opacity:.1;transition:opacity .2s;font-size:16px;
   color:var(--red);padding:4px;user-select:none}
 .foot-dot:hover{opacity:.4}
@@ -407,7 +459,7 @@ footer{border-top:1px solid var(--b0);padding:36px 20px}
   color:var(--t1);cursor:pointer;font-size:18px;line-height:1;
   transition:all .15s;
 }
-.modal-x:hover{background:rgba(239,68,68,.12);color:#ef4444;border-color:rgba(239,68,68,.3)}
+.modal-x:hover{background:rgba(239,68,68,.12);color:#ef4444;border-color:rgba(239,68,46,.3)}
 .modal-body{padding:20px;overflow-y:auto;flex:1;-webkit-overflow-scrolling:touch}
 .modal-body::-webkit-scrollbar{width:2px}
 .modal-body::-webkit-scrollbar-thumb{background:var(--red)}
@@ -495,8 +547,6 @@ footer{border-top:1px solid var(--b0);padding:36px 20px}
 .submit-btn:disabled{opacity:.6;cursor:not-allowed;transform:none}
 .success-wrap{text-align:center;padding:36px 20px}
 .suc-ico{font-size:52px;margin-bottom:14px}
-.suc-wrap h3{font-size:1.4rem;font-weight:900;margin-bottom:8px}
-.suc-wrap p{color:var(--t1);font-size:13.5px}
 
 /* Toast */
 #toast{
@@ -511,13 +561,24 @@ footer{border-top:1px solid var(--b0);padding:36px 20px}
 #toast.err{border-color:rgba(239,68,68,.4);color:#ef4444}
 
 /* ── RESPONSIVE ── */
-@media(max-width:768px){.nav-mid{display:none}}
-@media(max-width:640px){
-  #nav{padding:0 14px;height:54px}
-  --nav:54px;
-  .logo-text{font-size:15px}
-  .btn-lang{font-size:11px;padding:6px 10px}
-  .btn{padding:8px 14px;font-size:12.5px}
+@media(max-width:900px){.nav-mid{display:none}}
+
+/* Mobile: logo box + lang icon only + small post btn */
+@media(max-width:600px){
+  :root{--nav:54px}
+  #nav{padding:0 12px;height:54px;gap:7px}
+  /* חבילות — נסתר במובייל */
+  .btn-pkg-nav{display:none !important}
+  /* לוגו — הסתר "ISRAEL", הצג רק "YOUGO" */
+  .logo-israel{display:none}
+  .logo-text{font-size:14px}
+  /* שפה — הסתר טקסט, הצג רק מרובע */
+  #langTxt{display:none}
+  .btn-lang{padding:6px 7px;gap:0}
+  .btn-lang .lang-icon{width:28px;height:28px;border-radius:7px;font-size:10px}
+  /* כפתור פרסם — קומפקטי */
+  .btn-nav-post{padding:8px 13px !important;font-size:12px !important}
+  .btn{padding:7px 12px;font-size:12px}
   .hero{padding:calc(54px + 44px) 16px 60px}
   .hero h1{font-size:2.2rem;letter-spacing:-1px}
   .hero-sub{font-size:.95rem}
@@ -526,7 +587,6 @@ footer{border-top:1px solid var(--b0);padding:36px 20px}
   .btn-pkg{padding:12px 18px;font-size:13px}
   .search-wrap{padding:36px 14px 0}
   .main{padding:28px 14px 80px}
-  /* 2 columns mobile */
   .cars-grid{grid-template-columns:repeat(2,1fr);gap:9px}
   .car-body{padding:10px;gap:7px}
   .car-name{font-size:12.5px}
@@ -538,13 +598,11 @@ footer{border-top:1px solid var(--b0);padding:36px 20px}
   .act{width:28px;height:28px;font-size:13px}
   .car-img-wrap{aspect-ratio:4/3}
   .car-cnt{font-size:9px;padding:2px 5px}
-  /* Modal */
   .modal{border-radius:20px 20px 0 0;max-height:94svh}
   .d-specs{grid-template-columns:repeat(2,1fr)}
   .cta-row{flex-direction:column}
   .d-hrow{flex-direction:column}
   .fg{grid-template-columns:1fr}
-  /* Footer */
   .foot-in{flex-direction:column;gap:12px;text-align:center}
 }
 @media(max-width:380px){
@@ -556,18 +614,18 @@ footer{border-top:1px solid var(--b0);padding:36px 20px}
 
 <!-- NAV -->
 <nav id="nav">
-  <!-- Logo — identical to main site: red box + car SVG + YOUGO red + ISRAEL white -->
   <div class="logo" onclick="showHome()">
     <div class="logo-box">
-      <svg width="20" height="20" viewBox="0 0 24 24" fill="none"
-           stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-        <path d="M5 17H3a2 2 0 0 1-2-2V9a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v6a2 2 0 0 1-2 2h-2"/>
-        <polygon points="7 17 5 17 3 17 5 11 19 11 21 17 19 17 7 17"/>
-        <circle cx="7.5" cy="17.5" r="2.5"/>
-        <circle cx="16.5" cy="17.5" r="2.5"/>
+      <svg width="21" height="21" viewBox="0 0 24 24" fill="none"
+           stroke="#ffffff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M6 8l-1.8 2.35A4 4 0 0 0 3.2 12.87V16H5"/>
+        <path d="M18 8H6L4 14h16l-2-6z" fill="rgba(255,255,255,.15)" stroke="#ffffff" stroke-width="1.8"/>
+        <circle cx="7.5" cy="16.5" r="1.5" fill="#ffffff" stroke="none"/>
+        <circle cx="16.5" cy="16.5" r="1.5" fill="#ffffff" stroke="none"/>
+        <path d="M3 14h18" stroke="#ffffff" stroke-width="1.6"/>
       </svg>
     </div>
-    <span class="logo-text"><span class="r">YOUGO</span> ISRAEL</span>
+    <span class="logo-text"><span class="r">YOUGO</span><span class="logo-israel"> ISRAEL</span></span>
   </div>
 
   <div class="nav-mid">
@@ -577,10 +635,12 @@ footer{border-top:1px solid var(--b0);padding:36px 20px}
   </div>
 
   <div class="nav-end">
-    <button class="btn-lang" onclick="cycleLang()" id="langBtn">🇦🇪 عربي</button>
-    <a class="btn" style="background:rgba(212,175,55,.12);border:1.5px solid rgba(212,175,55,.38);color:var(--gold);font-size:12.5px;padding:8px 14px"
-       href="https://yougo-roan.vercel.app" target="_blank">💼 חבילות</a>
-    <button class="btn btn-red" onclick="openAdd()">+ <span id="navTxt">פרסם רכב</span></button>
+    <button class="btn-lang" onclick="cycleLang()" id="langBtn">
+      <span class="lang-icon" id="langIco">HE</span>
+      <span id="langTxt">עברית</span>
+    </button>
+    <a class="btn-pkg-nav" href="https://yougo-roan.vercel.app" target="_blank">💼 חבילות</a>
+    <button class="btn btn-red btn-nav-post" onclick="openAdd()">+ <span id="navTxt">פרסם רכב</span></button>
   </div>
 </nav>
 
@@ -600,12 +660,12 @@ footer{border-top:1px solid var(--b0);padding:36px 20px}
       <div class="badge-dot"></div>
       <span id="heroBadge">YOUGO ISRAEL — הפלטפורמה המובילה</span>
     </div>
-    <h1 id="heroH">שוק הרכבים <span class="r">הדיגיטלי</span><br>של ישראל</h1>
+    <!-- FIX 3: h1 بدون خط أحمر — استخدام <span> بدلاً من <br> داخل النص الملون -->
+    <h1 id="heroH">שוק הרכבים <span class="r">הדיגיטלי</span><br><span style="color:var(--t0)">של ישראל</span></h1>
     <p class="hero-sub" id="heroSub">קנה ומכור רכב בקלות ובמהירות. מודעות מאומתות עם אפשרות יצירת קשר מיידית.</p>
     <div class="hero-ctas">
       <button class="btn btn-red" onclick="openAdd()" id="hBtn1">🚗 פרסם רכב בחינם</button>
       <button class="btn btn-ghost" onclick="scrollTo2('listSec')" id="hBtn2">🔍 חפש רכב</button>
-      <!-- ★ Packages — golden prominent button -->
       <a class="btn-pkg" href="https://yougo-roan.vercel.app" target="_blank">
         <span>💼</span>
         <span id="hBtn3">חבילות פרסום מקצועיות</span>
@@ -705,11 +765,11 @@ footer{border-top:1px solid var(--b0);padding:36px 20px}
     <div class="foot-brand">
       <div class="foot-box">
         <svg width="17" height="17" viewBox="0 0 24 24" fill="none"
-             stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-          <path d="M5 17H3a2 2 0 0 1-2-2V9a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v6a2 2 0 0 1-2 2h-2"/>
-          <polygon points="7 17 5 17 3 17 5 11 19 11 21 17 19 17 7 17"/>
-          <circle cx="7.5" cy="17.5" r="2.5"/>
-          <circle cx="16.5" cy="17.5" r="2.5"/>
+             stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M6 8l-1.8 2.35A4 4 0 0 0 3.2 12.87V16H5"/>
+          <path d="M18 8H6L4 14h16l-2-6z" fill="rgba(255,255,255,.2)" stroke="#fff" stroke-width="1.6"/>
+          <circle cx="7.5" cy="16.5" r="1.5" fill="#fff" stroke="none"/>
+          <circle cx="16.5" cy="16.5" r="1.5" fill="#fff" stroke="none"/>
         </svg>
       </div>
       <span class="foot-name"><span class="r">YOUGO</span> ISRAEL</span>
@@ -801,10 +861,16 @@ let all=[],filtered=[],imgs=[],isAdmin=false,lang='he',sort='newest';
 window.addEventListener('scroll',()=>document.getElementById('nav').classList.toggle('solid',scrollY>40),{passive:true});
 function scrollTo2(id){document.getElementById(id)?.scrollIntoView({behavior:'smooth'})}
 
-// TRANSLATIONS
+// TRANSLATIONS — FIX 4: أسماء اللغات بدون أعلام
+const LANG_META={
+  he:{code:'HE',label:'עברית'},
+  ar:{code:'AR',label:'عربي'},
+  en:{code:'EN',label:'English'}
+};
+
 const T={
   he:{badge:'YOUGO ISRAEL — הפלטפורמה המובילה',
-    h1:'שוק הרכבים <span class="r">הדיגיטלי</span><br>של ישראל',
+    h1:'שוק הרכבים <span class="r">הדיגיטלי</span><br><span style="color:var(--t0)">של ישראל</span>',
     sub:'קנה ומכור רכב בקלות ובמהירות. מודעות מאומתות עם אפשרות יצירת קשר מיידית.',
     b1:'🚗 פרסם רכב בחינם',b2:'🔍 חפש רכב',b3:'חבילות פרסום מקצועיות',
     cL:'מודעות פעילות',fL:'עוקבים',frL:'חינם לפרסם',
@@ -815,10 +881,10 @@ const T={
     ct:'📍 כל הערים',gr:'🔄 כל הגירים',
     nc:'אין מודעות תואמות',ncd:'נסה לשנות פרמטרי חיפוש',
     sold:'נמכר',feat:'מומלץ',nw:'✨ חדש',
-    la:'🇦🇪 عربي',na:'פרסם רכב',km:'ק"מ',wa:'שלח WhatsApp',cl:'התקשר',
+    na:'פרסם רכב',km:'ק"מ',wa:'שלח WhatsApp',cl:'התקשר',
     ge:'גיר',fu:'דלק',sb2:'חפש',dir:'rtl'},
   ar:{badge:'YOUGO ISRAEL — المنصة الرائدة',
-    h1:'سوق السيارات <span class="r">الرقمي</span><br>في إسرائيل',
+    h1:'سوق السيارات <span class="r">الرقمي</span><br><span style="color:var(--t0)">في إسرائيل</span>',
     sub:'اشترِ وبِع سيارتك بسهولة وسرعة. إعلانات موثقة مع تواصل فوري.',
     b1:'🚗 أعلن مجاناً',b2:'🔍 تصفح',b3:'باقات الإعلان',
     cL:'إعلان نشط',fL:'متابع',frL:'نشر مجاني',
@@ -829,12 +895,12 @@ const T={
     ct:'📍 كل المدن',gr:'🔄 كل الناقلات',
     nc:'لا توجد إعلانات',ncd:'جرّب تغيير المعايير',
     sold:'مباع',feat:'مميز',nw:'✨ جديد',
-    la:'🇮🇱 עברית',na:'أعلن عن سيارتك',km:'كم',wa:'واتساب',cl:'اتصل',
+    na:'أعلن عن سيارتك',km:'كم',wa:'واتساب',cl:'اتصل',
     ge:'ناقل',fu:'وقود',sb2:'بحث',dir:'rtl'},
   en:{badge:'YOUGO ISRAEL — The Leading Platform',
-    h1:'Israel\'s <span class="r">Digital</span><br>Car Market',
+    h1:'Israel\'s <span class="r">Digital</span><br><span style="color:var(--t0)">Car Market</span>',
     sub:'Buy and sell cars easily. Verified listings with instant contact.',
-    b1:'🚗 Post Free',b2:'🔍 Browse',b3:'Professional Ad Packages',
+    b1:'🚗 Post Free',b2:'🔍 Browse',b3:'Professional Packages',
     cL:'Active Listings',fL:'Followers',frL:'Free to Post',
     lT:'<span class="r">Active</span> Listings',
     aT:'🚗 Post Your Car',sub2:'🚗 Post Now — Free!',
@@ -843,16 +909,19 @@ const T={
     ct:'📍 All Cities',gr:'🔄 All Gears',
     nc:'No listings found',ncd:'Try changing filters',
     sold:'Sold',feat:'Featured',nw:'✨ New',
-    la:'🇦🇪 عربي',na:'Post Car',km:'km',wa:'WhatsApp',cl:'Call',
+    na:'Post Car',km:'km',wa:'WhatsApp',cl:'Call',
     ge:'Gear',fu:'Fuel',sb2:'Search',dir:'ltr'}
 };
 const t=k=>T[lang]?.[k]||T.he[k]||k;
 
 function cycleLang(){const l=['he','ar','en'];lang=l[(l.indexOf(lang)+1)%3];applyLang()}
+
 function applyLang(){
-  const L=T[lang];
+  const L=T[lang],M=LANG_META[lang];
   document.documentElement.lang=lang;document.documentElement.dir=L.dir;
-  document.getElementById('langBtn').textContent=L.la;
+  // FIX 4: تحديث زر اللغة بدون أعلام
+  document.getElementById('langIco').textContent=M.code;
+  document.getElementById('langTxt').textContent=M.label;
   document.getElementById('heroBadge').textContent=L.badge;
   document.getElementById('heroH').innerHTML=L.h1;
   document.getElementById('heroSub').textContent=L.sub;
