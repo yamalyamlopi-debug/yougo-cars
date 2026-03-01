@@ -54,15 +54,7 @@ body::before{
 
 /* LOGO */
 .logo{display:flex;align-items:center;gap:8px;cursor:pointer;flex-shrink:0;min-width:0}
-.logo-box{
-  width:36px;height:36px;min-width:36px;border-radius:10px;flex-shrink:0;
-  background:linear-gradient(135deg,#c8102e 0%,#9b0d24 100%);
-  display:flex;align-items:center;justify-content:center;
-  box-shadow:0 4px 16px rgba(200,16,46,.55), inset 0 1px 0 rgba(255,255,255,.15);
-  border:1px solid rgba(200,16,46,.6);
-}
-.logo-text{font-size:17px;font-weight:900;letter-spacing:-.4px;white-space:nowrap;line-height:1;color:#ffffff}
-.logo-text .r{color:var(--red)}
+/* Logo box = exact App.tsx: w-9 h-9 rounded-xl */
 
 .nav-mid{display:flex;gap:2px;flex-shrink:0}
 .nav-a{padding:6px 11px;border-radius:9px;font-size:12.5px;font-weight:700;color:var(--t1);
@@ -425,7 +417,7 @@ footer{border-top:1px solid rgba(255,255,255,.12);padding:36px 20px;background:r
   transition:all .15s}
 .foot-link:hover{color:#fff;border-color:rgba(255,255,255,.28)}
 .foot-dot{cursor:pointer;opacity:.1;transition:opacity .2s;font-size:16px;
-  color:var(--red);padding:4px;user-select:none}
+  color:var(--red);user-select:none}
 .foot-dot:hover{opacity:.4}
 
 /* ── MODALS ── */
@@ -608,6 +600,144 @@ footer{border-top:1px solid rgba(255,255,255,.12);padding:36px 20px;background:r
 @media(max-width:380px){
   .hero h1{font-size:1.9rem}
 }
+
+/* ═══════════════════════════════════════
+   ADD MODAL — REDESIGNED
+═══════════════════════════════════════ */
+.add-modal{
+  max-width:620px !important;border-radius:24px !important;
+  overflow:hidden;display:flex;flex-direction:column;
+  background:linear-gradient(160deg,#1a0008 0%,#0e0008 100%) !important;
+  border:1px solid rgba(200,16,46,.3) !important;
+  box-shadow:0 24px 80px rgba(200,16,46,.25),0 0 0 1px rgba(200,16,46,.15) !important;
+}
+
+/* Red gradient header */
+.add-modal-head{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:18px 20px;flex-shrink:0;
+  background:linear-gradient(135deg,#c8102e 0%,#a00d24 40%,#7a0818 100%);
+  position:relative;overflow:hidden;
+}
+.add-modal-head::before{
+  content:'';position:absolute;inset:0;
+  background:radial-gradient(ellipse 80% 120% at 30% -20%,rgba(255,100,100,.25) 0%,transparent 60%),
+    url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.06'/%3E%3C/svg%3E");
+  pointer-events:none;
+}
+.add-head-logo{display:flex;align-items:center;gap:12px;position:relative;z-index:1}
+.add-head-logo svg{flex-shrink:0;filter:drop-shadow(0 2px 8px rgba(0,0,0,.3))}
+.add-head-title{font-size:16px;font-weight:900;color:#fff;line-height:1.2;
+  text-shadow:0 1px 6px rgba(0,0,0,.3)}
+.add-head-sub{font-size:10.5px;font-weight:700;color:rgba(255,255,255,.65);
+  text-transform:uppercase;letter-spacing:.1em;margin-top:2px}
+.add-modal-head .modal-x{
+  position:relative;z-index:1;
+  background:rgba(255,255,255,.15);border-color:rgba(255,255,255,.25);color:#fff;
+}
+.add-modal-head .modal-x:hover{background:rgba(0,0,0,.25);border-color:rgba(255,255,255,.3)}
+
+/* Upload zone */
+.add-upload-zone{
+  flex-shrink:0;
+  background:linear-gradient(160deg,rgba(200,16,46,.28) 0%,rgba(140,8,30,.22) 100%);
+  border-bottom:1px solid rgba(200,16,46,.4);
+  padding:14px 16px;cursor:pointer;
+  transition:background .2s;
+}
+.add-upload-zone:hover{background:linear-gradient(160deg,rgba(200,16,46,.38) 0%,rgba(140,8,30,.30) 100%)}
+.add-upload-inner{display:flex;align-items:center;gap:12px;padding:10px 0}
+.add-up-icon{
+  width:46px;height:46px;border-radius:12px;flex-shrink:0;
+  background:rgba(200,16,46,.2);border:1.5px dashed rgba(200,16,46,.5);
+  display:flex;align-items:center;justify-content:center;
+}
+.add-up-txt{font-size:14px;font-weight:800;color:#fff}
+.add-up-txt span{color:rgba(255,255,255,.6);font-weight:600}
+.add-up-hint{font-size:11px;color:rgba(255,255,255,.42);margin-top:3px}
+.add-upload-zone .prev-grid{margin-top:6px;display:flex;flex-wrap:wrap;gap:7px}
+.add-upload-zone .prog{margin:8px 0 2px;display:none;background:rgba(255,255,255,.12);border-radius:100px;height:3px}
+
+/* Scrollable body */
+.add-body-scroll{padding:0 !important;overflow-y:auto;flex:1;
+  background:linear-gradient(180deg,#1a0008 0%,#12000a 40%,#0e000a 100%);}
+.add-body-scroll form{padding:16px 18px 20px}
+
+/* Sections — all red-tinted */
+.add-section{
+  margin-bottom:14px;padding:16px;border-radius:16px;
+  background:rgba(200,16,46,.07);
+  border:1px solid rgba(200,16,46,.22);
+}
+.add-section-seller{
+  background:rgba(200,16,46,.12);
+  border-color:rgba(200,16,46,.35);
+}
+.add-section-title{
+  display:flex;align-items:center;gap:8px;
+  font-size:11px;font-weight:900;color:rgba(255,180,180,.8);
+  text-transform:uppercase;letter-spacing:.12em;margin-bottom:14px;
+}
+.add-section-dot{
+  width:6px;height:6px;border-radius:50%;background:var(--red);
+  box-shadow:0 0 8px var(--red);flex-shrink:0;
+}
+
+/* Row layouts */
+.add-row2{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px}
+.add-row3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-bottom:10px}
+
+/* Input styles — brighter on dark */
+.fg-item{display:flex;flex-direction:column;gap:5px}
+.fg-label{font-size:10px;font-weight:900;color:rgba(255,255,255,.6);
+  text-transform:uppercase;letter-spacing:.1em}
+.fg-input,.fg-sel,.fg-ta{
+  background:rgba(0,0,0,.35);
+  border:1.5px solid rgba(200,16,46,.3);
+  color:#fff;
+  padding:10px 13px;border-radius:11px;outline:none;
+  transition:all .18s;width:100%;font-size:13.5px;font-family:var(--font);
+}
+.fg-input:focus,.fg-sel:focus,.fg-ta:focus{
+  border-color:rgba(200,16,46,.8);
+  background:rgba(0,0,0,.45);
+  box-shadow:0 0 0 3px rgba(200,16,46,.18);
+}
+.fg-input::placeholder{color:rgba(255,255,255,.3)}
+.fg-ta::placeholder{color:rgba(255,255,255,.3)}
+.fg-sel{appearance:none;-webkit-appearance:none}
+.fg-sel option{background:#121224;color:#fff}
+.fg-ta{resize:vertical;min-height:72px}
+
+/* Submit button */
+.submit-btn{
+  width:100%;padding:15px;border-radius:14px;margin-top:14px;
+  background:linear-gradient(135deg,#e8112e,#c8102e,#a00d22);
+  color:#fff;border:none;
+  font-size:15px;font-weight:900;cursor:pointer;
+  box-shadow:0 6px 24px rgba(200,16,46,.45),inset 0 1px 0 rgba(255,255,255,.15);
+  transition:all .2s;font-family:var(--font);
+  display:flex;align-items:center;justify-content:center;gap:9px;
+  letter-spacing:.02em;
+}
+.submit-btn:hover:not(:disabled){
+  transform:translateY(-2px);
+  box-shadow:0 10px 32px rgba(200,16,46,.58),inset 0 1px 0 rgba(255,255,255,.2);
+}
+.submit-btn:disabled{opacity:.6;cursor:not-allowed;transform:none}
+.sub-icon{font-size:18px}
+
+/* Mobile */
+@media(max-width:600px){
+  .add-row2{grid-template-columns:1fr 1fr}
+  .add-row3{grid-template-columns:1fr 1fr}
+  .add-section{padding:12px}
+  .add-body-scroll form{padding:12px 14px 16px}
+}
+@media(max-width:400px){
+  .add-row2,.add-row3{grid-template-columns:1fr}
+}
+
 </style>
 </head>
 <body>
@@ -616,16 +746,17 @@ footer{border-top:1px solid rgba(255,255,255,.12);padding:36px 20px;background:r
 <nav id="nav">
   <div class="logo" onclick="showHome()">
     <div class="logo-box">
-      <svg width="21" height="21" viewBox="0 0 24 24" fill="none"
-           stroke="#ffffff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-        <path d="M6 8l-1.8 2.35A4 4 0 0 0 3.2 12.87V16H5"/>
-        <path d="M18 8H6L4 14h16l-2-6z" fill="rgba(255,255,255,.15)" stroke="#ffffff" stroke-width="1.8"/>
-        <circle cx="7.5" cy="16.5" r="1.5" fill="#ffffff" stroke="none"/>
-        <circle cx="16.5" cy="16.5" r="1.5" fill="#ffffff" stroke="none"/>
-        <path d="M3 14h18" stroke="#ffffff" stroke-width="1.6"/>
+      <!-- Lucide Car icon — exact same as App.tsx -->
+      <svg width="19" height="19" viewBox="0 0 24 24" fill="none"
+           stroke="#ffffff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M19 17H5a2 2 0 0 1-2-2V9a2 2 0 0 1 2-2h1.38L8 4h8l1.62 3H19a2 2 0 0 1 2 2v6a2 2 0 0 1-2 2z"/>
+        <circle cx="8.5" cy="17" r="2.5"/>
+        <circle cx="15.5" cy="17" r="2.5"/>
       </svg>
     </div>
-    <span class="logo-text"><span class="r">YOUGO</span><span class="logo-israel"> ISRAEL</span></span>
+    <div>
+      <span class="logo-text"><span class="r">YOUGO</span><span style="color:#ffffff"> CARS</span></span>
+    </div>
   </div>
 
   <div class="nav-mid">
@@ -794,52 +925,165 @@ footer{border-top:1px solid rgba(255,255,255,.12);padding:36px 20px;background:r
   </div>
 </div>
 
-<!-- ADD MODAL -->
+<!-- ADD MODAL — redesigned -->
 <div class="overlay" id="addOvl" onclick="if(event.target.id==='addOvl')closeAdd()">
-  <div class="modal" onclick="event.stopPropagation()">
-    <div class="modal-head">
-      <h3 class="modal-title" id="addTitle">🚗 פרסם את הרכב שלך</h3>
+  <div class="modal add-modal" onclick="event.stopPropagation()">
+
+    <!-- Header with red gradient -->
+    <div class="add-modal-head">
+      <div class="add-head-logo">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
+          <path d="M18 8H6L4 14h16l-2-6z" fill="rgba(255,255,255,.25)" stroke="#fff" stroke-width="1.8" stroke-linejoin="round"/>
+          <circle cx="7.5" cy="16.5" r="2" fill="#fff"/>
+          <circle cx="16.5" cy="16.5" r="2" fill="#fff"/>
+          <path d="M3 14h18" stroke="#fff" stroke-width="1.6" stroke-linecap="round"/>
+          <path d="M5 14v2M19 14v2" stroke="#fff" stroke-width="1.4" stroke-linecap="round"/>
+        </svg>
+        <div>
+          <div class="add-head-title" id="addTitle">פרסם את הרכב שלך</div>
+          <div class="add-head-sub">YOUGO CARS — חינם ומיידי</div>
+        </div>
+      </div>
       <button class="modal-x" onclick="closeAdd()">×</button>
     </div>
-    <div class="modal-body" id="addBody">
-      <form id="addForm" onsubmit="submitCar(event)">
-        <div class="fg">
-          <div class="form-divider">🚗 פרטי הרכב</div>
-          <div class="fg-item"><label class="fg-label">יצרן *</label><input class="fg-input" id="f_make" placeholder="Toyota, BMW..." required></div>
-          <div class="fg-item"><label class="fg-label">דגם *</label><input class="fg-input" id="f_model" placeholder="Corolla, X5..." required></div>
-          <div class="fg-item"><label class="fg-label">שנה *</label><input class="fg-input" id="f_year" type="number" min="1990" max="2026" placeholder="2022" required></div>
-          <div class="fg-item"><label class="fg-label">מחיר ₪ *</label><input class="fg-input" id="f_price" type="number" placeholder="80000" required></div>
-          <div class="fg-item"><label class="fg-label">קילומטראז'</label><input class="fg-input" id="f_mileage" type="number" placeholder="50000"></div>
-          <div class="fg-item"><label class="fg-label">יד</label>
-            <select class="fg-sel" id="f_hand"><option value="1">יד ראשונה</option><option value="2" selected>יד שנייה</option><option value="3">יד שלישית</option><option value="4">יד רביעית+</option></select>
-          </div>
-          <div class="fg-item"><label class="fg-label">גיר</label>
-            <select class="fg-sel" id="f_gear"><option value="אוטומט">אוטומטי</option><option value="ידני">ידני</option><option value="CVT">CVT</option></select>
-          </div>
-          <div class="fg-item"><label class="fg-label">דלק</label>
-            <select class="fg-sel" id="f_fuel"><option value="בנזין">בנזין</option><option value="דיזל">דיזל</option><option value="היברידי">היברידי</option><option value="חשמלי">חשמלי</option></select>
-          </div>
-          <div class="fg-item"><label class="fg-label">צבע</label><input class="fg-input" id="f_color" placeholder="לבן, שחור..."></div>
-          <div class="fg-item"><label class="fg-label">נפח מנוע (L)</label><input class="fg-input" id="f_engine" type="number" step="0.1" placeholder="1.6"></div>
-          <div class="form-divider">📝 תיאור</div>
-          <div class="fg-item full"><label class="fg-label">תיאור בעברית</label><textarea class="fg-ta" id="f_desc_he" placeholder="מצב, תוספות, היסטוריה..."></textarea></div>
-          <div class="fg-item full"><label class="fg-label">وصف بالعربية</label><textarea class="fg-ta" id="f_desc_ar" placeholder="وصف السيارة..."></textarea></div>
-          <div class="form-divider">📷 תמונות</div>
-          <div class="fg-item full">
-            <div class="up-zone">
-              <input type="file" id="imgIn" multiple accept="image/*" onchange="handleImgs(this)">
-              <div class="up-ico">📷</div>
-              <div class="up-txt" id="upTxt">לחץ להוספת תמונות <strong>(עד 10)</strong></div>
-            </div>
-            <div class="prog" id="prog"><div class="prog-bar" id="progBar"></div></div>
-            <div class="prev-grid" id="prevGrid"></div>
-          </div>
-          <div class="form-divider">👤 פרטי המוכר</div>
-          <div class="fg-item"><label class="fg-label">שם מלא *</label><input class="fg-input" id="f_name" placeholder="ישראל ישראלי" required></div>
-          <div class="fg-item"><label class="fg-label">טלפון *</label><input class="fg-input" id="f_phone" type="tel" placeholder="050-0000000" required></div>
-          <div class="fg-item full"><label class="fg-label">עיר *</label><input class="fg-input" id="f_city" placeholder="תל אביב, חיפה..." required></div>
+
+    <!-- Upload zone — prominent at top -->
+    <div class="add-upload-zone" onclick="document.getElementById('imgIn').click()">
+      <input type="file" id="imgIn" multiple accept="image/*" onchange="handleImgs(this)" style="display:none">
+      <div class="add-upload-inner" id="uploadInner">
+        <div class="add-up-icon">
+          <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,.55)" stroke-width="1.8" stroke-linecap="round">
+            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/>
+          </svg>
         </div>
-        <button type="submit" class="submit-btn" id="subBtn">🚗 פרסם מודעה בחינם — מיידי!</button>
+        <div class="add-up-txt" id="upTxt">העלה תמונות הרכב <span>(עד 10)</span></div>
+        <div class="add-up-hint">לחץ לבחירה · גרור לכאן</div>
+      </div>
+      <div class="prev-grid" id="prevGrid"></div>
+      <div class="prog" id="prog"><div class="prog-bar" id="progBar"></div></div>
+    </div>
+
+    <div class="modal-body add-body-scroll" id="addBody">
+      <form id="addForm" onsubmit="submitCar(event)">
+
+        <!-- Config tip — shown if upload failed before -->
+        <div id="cfgTip" style="display:none;background:rgba(234,179,8,.1);border:1px solid rgba(234,179,8,.35);border-radius:12px;padding:12px 14px;margin-bottom:14px;font-size:12px;color:#fbbf24;line-height:1.6">
+          ⚙️ <strong>הגדרת Cloudinary:</strong><br>
+          1. כנס ל <strong>cloudinary.com → Dashboard</strong> — העתק את <strong>Cloud name</strong><br>
+          2. כנס ל <strong>Settings → Upload → Add preset</strong> — בחר <strong>Unsigned</strong> — העתק את השם<br>
+          3. עדכן בקוד: <code style="background:rgba(0,0,0,.4);padding:1px 5px;border-radius:4px">CL_NAME</code> ו <code style="background:rgba(0,0,0,.4);padding:1px 5px;border-radius:4px">CL_PRESET</code>
+        </div>
+
+        <!-- Section: Car details -->
+        <div class="add-section">
+          <div class="add-section-title">
+            <span class="add-section-dot"></span> פרטי הרכב
+          </div>
+          <div class="add-row2">
+            <div class="fg-item">
+              <label class="fg-label">יצרן *</label>
+              <input class="fg-input" id="f_make" placeholder="Toyota, BMW, Hyundai..." required>
+            </div>
+            <div class="fg-item">
+              <label class="fg-label">דגם *</label>
+              <input class="fg-input" id="f_model" placeholder="Corolla, X5, i30..." required>
+            </div>
+          </div>
+          <div class="add-row3">
+            <div class="fg-item">
+              <label class="fg-label">שנה *</label>
+              <input class="fg-input" id="f_year" type="number" min="1990" max="2026" placeholder="2021" required>
+            </div>
+            <div class="fg-item">
+              <label class="fg-label">מחיר ₪ *</label>
+              <input class="fg-input" id="f_price" type="number" placeholder="75,000" required>
+            </div>
+            <div class="fg-item">
+              <label class="fg-label">ק"מ</label>
+              <input class="fg-input" id="f_mileage" type="number" placeholder="80,000">
+            </div>
+          </div>
+          <div class="add-row3">
+            <div class="fg-item">
+              <label class="fg-label">יד</label>
+              <select class="fg-sel" id="f_hand">
+                <option value="1">יד 1</option>
+                <option value="2" selected>יד 2</option>
+                <option value="3">יד 3</option>
+                <option value="4">יד 4+</option>
+              </select>
+            </div>
+            <div class="fg-item">
+              <label class="fg-label">גיר</label>
+              <select class="fg-sel" id="f_gear">
+                <option value="אוטומט">אוטומטי</option>
+                <option value="ידני">ידני</option>
+                <option value="CVT">CVT</option>
+              </select>
+            </div>
+            <div class="fg-item">
+              <label class="fg-label">דלק</label>
+              <select class="fg-sel" id="f_fuel">
+                <option value="בנזין">בנזין</option>
+                <option value="דיזל">דיזל</option>
+                <option value="היברידי">היברידי</option>
+                <option value="חשמלי">חשמלי</option>
+              </select>
+            </div>
+          </div>
+          <div class="add-row2">
+            <div class="fg-item">
+              <label class="fg-label">צבע</label>
+              <input class="fg-input" id="f_color" placeholder="לבן / שחור / כסוף...">
+            </div>
+            <div class="fg-item">
+              <label class="fg-label">מנוע (L)</label>
+              <input class="fg-input" id="f_engine" type="number" step="0.1" placeholder="1.6">
+            </div>
+          </div>
+        </div>
+
+        <!-- Section: Description -->
+        <div class="add-section">
+          <div class="add-section-title">
+            <span class="add-section-dot"></span> תיאור הרכב
+          </div>
+          <div class="fg-item">
+            <label class="fg-label">תיאור בעברית</label>
+            <textarea class="fg-ta" id="f_desc_he" placeholder="מצב הרכב, תוספות, היסטוריית תחזוקה..." style="min-height:70px"></textarea>
+          </div>
+          <div class="fg-item" style="margin-top:8px">
+            <label class="fg-label">وصف بالعربية</label>
+            <textarea class="fg-ta" id="f_desc_ar" placeholder="وصف السيارة، الإضافات، الصيانة..." style="min-height:70px"></textarea>
+          </div>
+        </div>
+
+        <!-- Section: Seller -->
+        <div class="add-section add-section-seller">
+          <div class="add-section-title">
+            <span class="add-section-dot"></span> פרטי המוכר
+          </div>
+          <div class="add-row2">
+            <div class="fg-item">
+              <label class="fg-label">שם מלא *</label>
+              <input class="fg-input" id="f_name" placeholder="ישראל ישראלי" required>
+            </div>
+            <div class="fg-item">
+              <label class="fg-label">טלפון *</label>
+              <input class="fg-input" id="f_phone" type="tel" placeholder="050-000-0000" required>
+            </div>
+          </div>
+          <div class="fg-item">
+            <label class="fg-label">עיר *</label>
+            <input class="fg-input" id="f_city" placeholder="תל אביב, חיפה, ירושלים..." required>
+          </div>
+        </div>
+
+        <button type="submit" class="submit-btn" id="subBtn">
+          <span class="sub-icon">🚗</span>
+          <span id="subBtnTxt">פרסם מודעה בחינם — מיידי!</span>
+        </button>
+
       </form>
     </div>
   </div>
@@ -852,7 +1096,12 @@ footer{border-top:1px solid rgba(255,255,255,.12);padding:36px 20px;background:r
 const SB_URL='https://arsbodqhmmtmoqqhykep.supabase.co';
 const SB_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImFyc2JvZHFobW10bW9xcWh5a2VwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzIxNTgxMTQsImV4cCI6MjA4NzczNDExNH0.mt_WpPshp5xdbIx23pMmcwq7MhktA0-vWPIstOy1_HM';
 const sb=supabase.createClient(SB_URL,SB_KEY);
-const CL_NAME='dbd2dgqti', CL_PRESET='htxdjln0', ADMIN_PW='yougo2026';
+// ⚙️ CLOUDINARY CONFIG — עדכן כאן אם יש שגיאת API key
+// כנס ל: cloudinary.com → Dashboard → Cloud name
+// Upload preset: Settings → Upload → Add upload preset (Unsigned)
+const CL_NAME='dbd2dgqtl';    // ← Cloud Name שלך
+const CL_PRESET='htxdjln0';   // ← Upload Preset (Unsigned)
+const ADMIN_PW='yougo2026';
 
 // STATE
 let all=[],filtered=[],imgs=[],isAdmin=false,lang='he',sort='newest';
@@ -934,7 +1183,7 @@ function applyLang(){
   document.getElementById('statFrL').textContent=L.frL;
   document.getElementById('listTitle').innerHTML=L.lT;
   document.getElementById('addTitle').textContent=L.aT;
-  document.getElementById('subBtn').textContent=L.sub2;
+  const sb2El=document.getElementById('subBtnTxt');if(sb2El)sb2El.textContent=L.sub2;
   document.getElementById('upTxt').innerHTML=L.upT;
   document.getElementById('sBtn').textContent=L.sb2;
   document.getElementById('fMake').options[0].text=L.mk;
@@ -1095,13 +1344,35 @@ function switchImg(src,el){document.getElementById('dmImg').src=src;document.que
 function closeDetail(){document.getElementById('detailOvl').classList.remove('open')}
 
 // ADD
-function openAdd(){document.getElementById('addOvl').classList.add('open');document.getElementById('addForm').reset();document.getElementById('prevGrid').innerHTML='';imgs=[]}
+function openAdd(){
+  document.getElementById('addOvl').classList.add('open');
+  document.getElementById('addForm').reset();
+  document.getElementById('prevGrid').innerHTML='';
+  imgs=[];
+  const inner=document.getElementById('uploadInner');
+  if(inner)inner.style.display='flex';
+  const errBox=document.getElementById('formErrBox');
+  if(errBox)errBox.remove();
+  // Keep cfg tip if it was shown before
+}
 function closeAdd(){document.getElementById('addOvl').classList.remove('open')}
 
 function handleImgs(input){
   const files=[...input.files].slice(0,10);imgs=files;
   const pg=document.getElementById('prevGrid');pg.innerHTML='';
-  files.forEach((f,i)=>{const r=new FileReader();r.onload=e=>{const d=document.createElement('div');d.className='prev-wrap';d.innerHTML=`<img src="${e.target.result}" class="prev-img"><button class="prev-rm" onclick="rmImg(${i})" type="button">×</button>`;pg.appendChild(d)};r.readAsDataURL(f)});
+  // Update upload zone appearance
+  const inner=document.getElementById('uploadInner');
+  if(inner) inner.style.display=files.length>0?'none':'flex';
+  files.forEach((f,i)=>{
+    const r=new FileReader();
+    r.onload=e=>{
+      const d=document.createElement('div');
+      d.className='prev-wrap';
+      d.innerHTML=`<img src="${e.target.result}" class="prev-img"><button class="prev-rm" onclick="rmImg(${i});event.stopPropagation()" type="button">×</button>`;
+      pg.appendChild(d);
+    };
+    r.readAsDataURL(f);
+  });
 }
 function rmImg(i){imgs.splice(i,1);const dt=new DataTransfer();imgs.forEach(f=>dt.items.add(f));document.getElementById('imgIn').files=dt.files;handleImgs(document.getElementById('imgIn'))}
 
@@ -1114,12 +1385,18 @@ async function uploadImg(file){
     const r=await fetch(`https://api.cloudinary.com/v1_1/${CL_NAME}/image/upload`,{method:'POST',body:fd});
     const json=await r.json();
     if(!r.ok||json.error){
-      const msg=json.error?.message||'Upload HTTP '+r.status;
-      throw new Error('Cloudinary: '+msg);
+      const msg=json.error?.message||'HTTP '+r.status;
+      // Show config hint
+      if(msg.toLowerCase().includes('unknown api key')||msg.toLowerCase().includes('invalid')){
+        const tip=document.getElementById('cfgTip');if(tip)tip.style.display='block';
+        throw new Error(`Cloudinary config שגוי — בדוק Cloud Name ו-Upload Preset`);
+      }
+      throw new Error('העלאת תמונה נכשלה: '+msg);
     }
     return json.secure_url;
   }catch(e){
-    throw new Error('תמונה: '+e.message);
+    if(e.message.startsWith('Cloudinary')||e.message.startsWith('העלאת')) throw e;
+    throw new Error('שגיאת רשת בהעלאת תמונה');
   }
 }
 
@@ -1154,12 +1431,22 @@ async function submitCar(e){
   btn.disabled=true;btn.textContent='⏳ מעלה...';
   if(imgs.length)pg.style.display='block';
   try{
-    // STEP 1: Upload images
+    // STEP 1: Upload images (optional — saves without images if upload fails)
     const urls=[];
-    for(let i=0;i<imgs.length;i++){
-      btn.textContent=`📷 תמונה ${i+1} מתוך ${imgs.length}...`;
-      pb.style.width=`${((i+1)/imgs.length)*100}%`;
-      urls.push(await uploadImg(imgs[i]));
+    if(imgs.length>0){
+      for(let i=0;i<imgs.length;i++){
+        btn.textContent=`📷 מעלה תמונה ${i+1} מתוך ${imgs.length}...`;
+        pb.style.width=`${Math.round(((i+1)/imgs.length)*100)}%`;
+        try{
+          urls.push(await uploadImg(imgs[i]));
+        }catch(imgErr){
+          // If ALL images fail show error, else continue with uploaded ones
+          if(i===0&&imgs.length>0){
+            throw imgErr; // First image failed = config problem, stop
+          }
+          console.warn('[YOUGO] Image',i,'failed:',imgErr.message);
+        }
+      }
     }
     pg.style.display='none';
 
