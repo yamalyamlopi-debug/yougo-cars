@@ -1106,43 +1106,126 @@ function handleImgs(input){
 function rmImg(i){imgs.splice(i,1);const dt=new DataTransfer();imgs.forEach(f=>dt.items.add(f));document.getElementById('imgIn').files=dt.files;handleImgs(document.getElementById('imgIn'))}
 
 async function uploadImg(file){
-  const fd=new FormData();fd.append('file',file);fd.append('upload_preset',CL_PRESET);fd.append('folder','yougo-cars');
-  const r=await fetch(`https://api.cloudinary.com/v1_1/${CL_NAME}/image/upload`,{method:'POST',body:fd});
-  if(!r.ok)throw new Error('Upload failed');return(await r.json()).secure_url;
+  try{
+    const fd=new FormData();
+    fd.append('file',file);
+    fd.append('upload_preset',CL_PRESET);
+    fd.append('folder','yougo-cars');
+    const r=await fetch(`https://api.cloudinary.com/v1_1/${CL_NAME}/image/upload`,{method:'POST',body:fd});
+    const json=await r.json();
+    if(!r.ok||json.error){
+      const msg=json.error?.message||'Upload HTTP '+r.status;
+      throw new Error('Cloudinary: '+msg);
+    }
+    return json.secure_url;
+  }catch(e){
+    throw new Error('תמונה: '+e.message);
+  }
+}
+
+function getErrMsg(err){
+  if(!err) return 'שגיאה לא ידועה';
+  if(typeof err==='string') return err;
+  // Supabase error object
+  if(err.message) return err.message;
+  if(err.details) return err.details;
+  if(err.hint) return err.hint;
+  if(err.code) return 'קוד: '+err.code;
+  try{ return JSON.stringify(err); }catch(e){ return 'שגיאה לא ידועה'; }
+}
+
+function showErrInForm(msg){
+  let box=document.getElementById('formErrBox');
+  if(!box){
+    box=document.createElement('div');
+    box.id='formErrBox';
+    box.style.cssText='background:rgba(239,68,68,.12);border:1px solid rgba(239,68,68,.4);color:#fca5a5;border-radius:12px;padding:14px 16px;font-size:13px;font-weight:700;margin-top:12px;line-height:1.5;word-break:break-word;';
+    document.getElementById('subBtn').after(box);
+  }
+  box.innerHTML='❌ '+msg;
+  box.scrollIntoView({behavior:'smooth',block:'nearest'});
 }
 
 async function submitCar(e){
   e.preventDefault();
   const btn=document.getElementById('subBtn'),pg=document.getElementById('prog'),pb=document.getElementById('progBar');
+  // Clear previous error
+  const prevErr=document.getElementById('formErrBox');if(prevErr)prevErr.remove();
   btn.disabled=true;btn.textContent='⏳ מעלה...';
   if(imgs.length)pg.style.display='block';
   try{
+    // STEP 1: Upload images
     const urls=[];
-    for(let i=0;i<imgs.length;i++){btn.textContent=`⏳ תמונה ${i+1}/${imgs.length}`;pb.style.width=`${((i+1)/imgs.length)*100}%`;urls.push(await uploadImg(imgs[i]))}
-    pg.style.display='none';btn.textContent='💾 שומר...';
-    const{error}=await sb.from('cars').insert({
-      make:document.getElementById('f_make').value.trim(),
-      model:document.getElementById('f_model').value.trim(),
-      year:parseInt(document.getElementById('f_year').value),
-      price:parseInt(document.getElementById('f_price').value),
+    for(let i=0;i<imgs.length;i++){
+      btn.textContent=`📷 תמונה ${i+1} מתוך ${imgs.length}...`;
+      pb.style.width=`${((i+1)/imgs.length)*100}%`;
+      urls.push(await uploadImg(imgs[i]));
+    }
+    pg.style.display='none';
+
+    // STEP 2: Validate required fields
+    const make=document.getElementById('f_make').value.trim();
+    const model=document.getElementById('f_model').value.trim();
+    const year=parseInt(document.getElementById('f_year').value);
+    const price=parseInt(document.getElementById('f_price').value);
+    const sellerName=document.getElementById('f_name').value.trim();
+    const sellerPhone=document.getElementById('f_phone').value.trim();
+    const sellerCity=document.getElementById('f_city').value.trim();
+    if(!make||!model||!year||!price||!sellerName||!sellerPhone||!sellerCity){
+      throw new Error('אנא מלא את כל שדות החובה (*)');
+    }
+
+    btn.textContent='💾 שומר במסד נתונים...';
+
+    // STEP 3: Insert to Supabase
+    const payload={
+      make,model,year,price,
       mileage:parseInt(document.getElementById('f_mileage').value)||0,
-      hand:parseInt(document.getElementById('f_hand').value),
+      hand:parseInt(document.getElementById('f_hand').value)||2,
       gear_type:document.getElementById('f_gear').value,
       fuel_type:document.getElementById('f_fuel').value,
-      color:document.getElementById('f_color').value.trim(),
+      color:document.getElementById('f_color').value.trim()||null,
       engine_size:parseFloat(document.getElementById('f_engine').value)||null,
-      description_he:document.getElementById('f_desc_he').value,
-      description_ar:document.getElementById('f_desc_ar').value,
-      seller_name:document.getElementById('f_name').value.trim(),
-      seller_phone:document.getElementById('f_phone').value.trim(),
-      seller_city:document.getElementById('f_city').value.trim(),
-      images:urls,main_image:urls[0]||null,status:'active'
-    });
-    if(error)throw error;
+      description_he:document.getElementById('f_desc_he').value||null,
+      description_ar:document.getElementById('f_desc_ar').value||null,
+      seller_name:sellerName,
+      seller_phone:sellerPhone,
+      seller_city:sellerCity,
+      images:urls,
+      main_image:urls[0]||null,
+      status:'active'
+    };
+
+    console.log('[YOUGO] Inserting:', payload);
+    const{data,error}=await sb.from('cars').insert(payload).select();
+    console.log('[YOUGO] Result:', {data,error});
+
+    if(error){
+      throw new Error(getErrMsg(error));
+    }
+
+    // SUCCESS
     await loadCars();
-    document.getElementById('addBody').innerHTML=`<div class="success-wrap"><div class="suc-ico">🎉</div><h3 style="font-size:1.4rem;font-weight:900;margin-bottom:8px">המודעה פורסמה!</h3><p style="color:var(--t1)">הרכב שלך זמין עכשיו לכולם 🚗✨</p><button class="btn btn-red" style="margin-top:24px;padding:14px 36px;font-size:15px" onclick="closeAdd();document.getElementById('addBody').innerHTML=''">סגור</button></div>`;
+    document.getElementById('addBody').innerHTML=`
+      <div class="success-wrap" style="text-align:center;padding:40px 20px">
+        <div style="font-size:56px;margin-bottom:16px">🎉</div>
+        <h3 style="font-size:1.5rem;font-weight:900;margin-bottom:10px;color:#fff">המודעה פורסמה!</h3>
+        <p style="color:rgba(255,255,255,.7);font-size:14px;margin-bottom:24px">הרכב שלך זמין עכשיו לכולם 🚗✨</p>
+        <button class="btn btn-red" style="padding:14px 36px;font-size:15px"
+          onclick="closeAdd();document.getElementById('addBody').innerHTML=''">סגור</button>
+      </div>`;
     showToast('🚗 המודעה פורסמה בהצלחה!','ok');
-  }catch(err){showToast('❌ שגיאה: '+err.message,'err');btn.disabled=false;btn.textContent=t('sub2');pg.style.display='none'}
+
+  }catch(err){
+    const msg=getErrMsg(err);
+    console.error('[YOUGO] Submit error:',err);
+    showErrInForm(msg);
+    showToast('❌ '+msg.slice(0,60),'err');
+    btn.disabled=false;
+    btn.textContent='🚗 פרסם מודעה בחינם — מיידי!';
+    pg.style.display='none';
+    pb.style.width='0%';
+  }
 }
 
 // ADMIN
