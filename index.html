@@ -241,17 +241,35 @@ body::before{
 .sort-btn.on{background:rgba(200,16,46,.1);border-color:var(--bred);color:var(--red)}
 
 /* ── CARS GRID ── */
-.cars-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:18px}
+.cars-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:18px;padding-top:8px}
 
 /* ── CAR CARD ── */
 .car-card{
   background:#0f0f1d;border:1px solid rgba(255,255,255,.09);border-radius:20px;
-  overflow:hidden;cursor:pointer;display:flex;flex-direction:column;position:relative;
-  transition:all .3s cubic-bezier(.25,.46,.45,.94);box-shadow:0 2px 16px rgba(0,0,0,.5);
+  overflow:visible;cursor:pointer;display:flex;flex-direction:column;position:relative;
+  transition:all .3s cubic-bezier(.25,.46,.45,.94);
+  box-shadow:0 2px 16px rgba(0,0,0,.5);
+  margin-top:18px; /* space for peek */
 }
 .car-card::before{content:'';position:absolute;inset:0;border-radius:20px;background:linear-gradient(135deg,rgba(232,17,46,.04) 0%,transparent 60%);opacity:0;transition:opacity .3s;pointer-events:none;z-index:1}
-.car-card:hover{transform:translateY(-6px) scale(1.01);border-color:rgba(232,17,46,.5);box-shadow:0 24px 60px rgba(0,0,0,.7),0 0 0 1px rgba(232,17,46,.2)}
+.car-card:hover{transform:translateY(-4px);border-color:rgba(232,17,46,.5);box-shadow:0 20px 56px rgba(0,0,0,.7),0 0 0 1px rgba(232,17,46,.2)}
 .car-card:hover::before{opacity:1}
+
+/* Floating image peek above card */
+.car-img-outer{
+  position:relative;
+  margin:-18px 10px 0;
+  z-index:2;
+  border-radius:14px;
+  overflow:hidden;
+  box-shadow:0 10px 36px rgba(0,0,0,.65);
+  flex-shrink:0;
+  transition:transform .3s cubic-bezier(.25,.46,.45,.94),box-shadow .3s;
+}
+.car-card:hover .car-img-outer{
+  transform:translateY(-5px);
+  box-shadow:0 18px 52px rgba(0,0,0,.8),0 0 0 1.5px rgba(232,17,46,.3);
+}
 
 .car-img-wrap{position:relative;overflow:hidden;aspect-ratio:4/3.2;background:#0a0a18;flex-shrink:0}
 .car-img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .5s cubic-bezier(.25,.46,.45,.94)}
@@ -437,15 +455,101 @@ footer{border-top:1px solid rgba(255,255,255,.12);padding:36px 20px;background:r
 .add-modal-head .modal-x{position:relative;z-index:1;background:rgba(255,255,255,.15);border-color:rgba(255,255,255,.25);color:#fff}
 .add-modal-head .modal-x:hover{background:rgba(0,0,0,.25);border-color:rgba(255,255,255,.3)}
 
-.add-upload-zone{flex-shrink:0;background:linear-gradient(160deg,rgba(200,16,46,.28) 0%,rgba(140,8,30,.22) 100%);border-bottom:1px solid rgba(200,16,46,.4);padding:14px 16px;cursor:pointer;transition:background .2s}
-.add-upload-zone:hover{background:linear-gradient(160deg,rgba(200,16,46,.38) 0%,rgba(140,8,30,.30) 100%)}
-.add-upload-inner{display:flex;align-items:center;gap:12px;padding:10px 0}
-.add-up-icon{width:46px;height:46px;border-radius:12px;flex-shrink:0;background:rgba(200,16,46,.2);border:1.5px dashed rgba(200,16,46,.5);display:flex;align-items:center;justify-content:center}
-.add-up-txt{font-size:14px;font-weight:800;color:#fff}
-.add-up-txt span{color:rgba(255,255,255,.6);font-weight:600}
-.add-up-hint{font-size:11px;color:rgba(255,255,255,.42);margin-top:3px}
-.add-upload-zone .prev-grid{margin-top:6px;display:flex;flex-wrap:wrap;gap:7px}
-.add-upload-zone .prog{margin:8px 0 2px;display:none;background:rgba(255,255,255,.12);border-radius:100px;height:3px}
+.add-upload-zone{flex-shrink:0;background:linear-gradient(160deg,rgba(200,16,46,.18) 0%,rgba(140,8,30,.14) 100%);border-bottom:1px solid rgba(200,16,46,.3);padding:14px 16px 12px;transition:background .2s}
+
+/* Upload grid — Instagram-style */
+.up-grid{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:8px;
+}
+
+/* + Add button cell */
+.up-add-btn{
+  aspect-ratio:1/1;border-radius:12px;
+  background:rgba(200,16,46,.12);
+  border:2px dashed rgba(200,16,46,.5);
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  cursor:pointer;transition:all .2s;gap:4px;
+  -webkit-tap-highlight-color:transparent;
+}
+.up-add-btn:hover,.up-add-btn:active{
+  background:rgba(200,16,46,.22);
+  border-color:rgba(200,16,46,.85);
+  transform:scale(1.04);
+}
+.up-plus-icon{
+  width:40px;height:40px;border-radius:50%;
+  background:linear-gradient(135deg,#e8112e,#c8102e);
+  display:flex;align-items:center;justify-content:center;
+  color:#fff;box-shadow:0 4px 14px rgba(200,16,46,.45);
+  transition:transform .2s,box-shadow .2s;
+}
+.up-add-btn:hover .up-plus-icon{transform:scale(1.12);box-shadow:0 6px 20px rgba(200,16,46,.65)}
+.up-add-lbl{font-size:11px;font-weight:900;color:rgba(255,255,255,.85)}
+.up-add-hint{font-size:9.5px;color:rgba(255,255,255,.4);font-weight:700}
+
+/* Image preview cells */
+.up-img-cell{
+  aspect-ratio:1/1;border-radius:12px;
+  overflow:hidden;position:relative;
+  border:2px solid transparent;
+  transition:all .2s;
+  cursor:grab;
+}
+.up-img-cell.drag-over{border-color:rgba(200,16,46,.7);transform:scale(1.05)}
+.up-img-cell.dragging{opacity:.5;transform:scale(.95)}
+.up-img-cell img{
+  width:100%;height:100%;object-fit:cover;display:block;
+  transition:transform .25s;
+}
+.up-img-cell:hover img{transform:scale(1.08)}
+
+/* Main badge on first image */
+.up-img-cell:first-child .up-main-badge{display:flex}
+.up-main-badge{
+  display:none;
+  position:absolute;bottom:5px;right:0;left:0;
+  justify-content:center;
+  pointer-events:none;z-index:2;
+}
+.up-main-badge span{
+  background:linear-gradient(135deg,#e8112e,#c8102e);
+  color:#fff;font-size:9px;font-weight:900;
+  padding:2px 8px;border-radius:100px;
+  letter-spacing:.06em;
+  box-shadow:0 2px 8px rgba(200,16,46,.5);
+}
+
+/* Remove button */
+.up-rm{
+  position:absolute;top:5px;left:5px;z-index:3;
+  width:22px;height:22px;border-radius:50%;
+  background:rgba(0,0,0,.75);backdrop-filter:blur(4px);
+  border:1.5px solid rgba(255,255,255,.3);
+  color:#fff;font-size:12px;font-weight:900;
+  display:flex;align-items:center;justify-content:center;
+  cursor:pointer;transition:all .18s;
+  line-height:1;
+}
+.up-rm:hover{background:rgba(239,68,68,.9);border-color:transparent;transform:scale(1.15)}
+
+/* Drag handle indicator */
+.up-drag-handle{
+  position:absolute;top:5px;right:5px;z-index:3;
+  width:20px;height:20px;
+  display:flex;flex-direction:column;justify-content:center;align-items:center;gap:3px;
+  opacity:0;transition:opacity .2s;
+}
+.up-img-cell:hover .up-drag-handle{opacity:1}
+.up-drag-handle span{display:block;width:12px;height:1.5px;background:rgba(255,255,255,.7);border-radius:2px}
+
+.prog{margin:10px 0 2px;display:none;background:rgba(255,255,255,.1);border-radius:100px;height:3px;overflow:hidden}
+.prog-bar{height:100%;background:linear-gradient(90deg,var(--red),#e0162f);border-radius:100px;width:0%;transition:width .3s}
+
+@media(max-width:500px){
+  .up-grid{grid-template-columns:repeat(4,1fr);gap:6px}
+}
 
 .add-body-scroll{padding:0 !important;overflow-y:auto;flex:1;background:linear-gradient(180deg,#1a0008 0%,#12000a 40%,#0e000a 100%)}
 .add-body-scroll form{padding:16px 18px 20px}
@@ -730,20 +834,23 @@ footer{border-top:1px solid rgba(255,255,255,.12);padding:36px 20px;background:r
       <button class="modal-x" onclick="closeAdd()">×</button>
     </div>
 
-    <div class="add-upload-zone" onclick="document.getElementById('imgIn').click()">
+    <div class="add-upload-zone" id="uploadZone">
       <input type="file" id="imgIn" multiple accept="image/*" onchange="handleImgs(this)" style="display:none">
-      <div class="add-upload-inner" id="uploadInner">
-        <div class="add-up-icon">
-          <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,.55)" stroke-width="1.8" stroke-linecap="round">
-            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/>
-          </svg>
-        </div>
-        <div>
-          <div class="add-up-txt" id="upTxt">העלה תמונות הרכב <span>(עד 10)</span></div>
-          <div class="add-up-hint">לחץ לבחירה · גרור לכאן</div>
+      
+      <!-- Upload grid — shows + button + previews -->
+      <div class="up-grid" id="upGrid">
+        <!-- + button always first -->
+        <div class="up-add-btn" onclick="document.getElementById('imgIn').click()" id="upAddBtn">
+          <div class="up-plus-icon">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+              <line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/>
+            </svg>
+          </div>
+          <span class="up-add-lbl" id="upTxt">הוסף תמונות</span>
+          <span class="up-add-hint">עד 10</span>
         </div>
       </div>
-      <div class="prev-grid" id="prevGrid"></div>
+      
       <div class="prog" id="prog"><div class="prog-bar" id="progBar"></div></div>
     </div>
 
@@ -838,7 +945,7 @@ const ADMIN_PW='yougo2026';
 const TABLE='cars'; // ← שם הטבלה ב-Supabase
 
 // ── STATE ──
-let all=[],filtered=[],imgs=[],isAdmin=false,lang='he',sort='newest';
+let all=[],filtered=[],imgFiles=[],isAdmin=false,lang='he',sort='newest';
 
 // ── NAV SCROLL ──
 window.addEventListener('scroll',()=>document.getElementById('nav').classList.toggle('solid',scrollY>40),{passive:true});
@@ -1096,6 +1203,7 @@ function carCard(car){
     <button class="a-btn a-del" onclick="delCar('${car.id}');event.stopPropagation()">✕</button>
   </div>`:'';
   return`<div class="car-card" onclick="openDetail('${car.id}')">
+    <div class="car-img-outer">
     <div class="car-img-wrap">
       ${im
         ?`<img class="car-img" src="${im}" alt="${car.make} ${car.model}" loading="lazy">`
@@ -1108,6 +1216,7 @@ function carCard(car){
       <div class="car-badges">${badges.join('')}</div>
       ${is.length>1?`<div class="car-cnt">📷 ${is.length}</div>`:''}
       <div class="car-price-float"><small>₪</small>${Number(car.price).toLocaleString()}</div>
+    </div>
     </div>
     ${car.status==='pending'&&isAdmin?'<div class="pend-bar">⏳ ממתין לאישור</div>':''}
     <div class="car-body">
@@ -1239,38 +1348,102 @@ function closeDetail(){document.getElementById('detailOvl').classList.remove('op
 function openAdd(){
   document.getElementById('addOvl').classList.add('open');
   document.getElementById('addForm').reset();
-  document.getElementById('prevGrid').innerHTML='';
-  imgs=[];
-  const inner=document.getElementById('uploadInner');
-  if(inner)inner.style.display='flex';
+  imgFiles=[];
+  renderUpGrid();
   const errBox=document.getElementById('formErrBox');
   if(errBox)errBox.remove();
 }
 function closeAdd(){document.getElementById('addOvl').classList.remove('open')}
 
+// ── UPLOAD GRID — Instagram style ──
+let imgFiles=[];
+
 function handleImgs(input){
-  const files=[...input.files].slice(0,10);imgs=files;
-  const pg=document.getElementById('prevGrid');pg.innerHTML='';
-  const inner=document.getElementById('uploadInner');
-  if(inner)inner.style.display=files.length>0?'none':'flex';
-  files.forEach((f,i)=>{
-    const r=new FileReader();
-    r.onload=e=>{
-      const d=document.createElement('div');
-      d.className='prev-wrap';
-      d.innerHTML=`<img src="${e.target.result}" class="prev-img"><button class="prev-rm" onclick="rmImg(${i});event.stopPropagation()" type="button">×</button>`;
-      pg.appendChild(d);
-    };
-    r.readAsDataURL(f);
+  const newFiles=[...input.files].slice(0,10-imgFiles.length);
+  // Compress/resize each image before adding
+  newFiles.forEach(f=>{
+    resizeImage(f, 1200, (blob)=>{
+      // Create new File from blob keeping name
+      const resized=new File([blob], f.name, {type:'image/jpeg',lastModified:Date.now()});
+      imgFiles.push(resized);
+      if(imgFiles.length>10) imgFiles=imgFiles.slice(0,10);
+      renderUpGrid();
+    });
   });
+  input.value=''; // reset so same file can be re-added
 }
+
+// Auto-resize image to max dimension
+function resizeImage(file, maxSize, cb){
+  const reader=new FileReader();
+  reader.onload=e=>{
+    const img=new Image();
+    img.onload=()=>{
+      let w=img.width,h=img.height;
+      if(w>maxSize||h>maxSize){
+        if(w>h){h=Math.round(h*maxSize/w);w=maxSize}
+        else{w=Math.round(w*maxSize/h);h=maxSize}
+      }
+      const canvas=document.createElement('canvas');
+      canvas.width=w;canvas.height=h;
+      const ctx=canvas.getContext('2d');
+      ctx.drawImage(img,0,0,w,h);
+      canvas.toBlob(blob=>cb(blob),'image/jpeg',0.88);
+    };
+    img.src=e.target.result;
+  };
+  reader.readAsDataURL(file);
+}
+
+function renderUpGrid(){
+  const grid=document.getElementById('upGrid');
+  // Keep + button, rebuild image cells
+  const cells=imgFiles.map((f,i)=>{
+    const url=URL.createObjectURL(f);
+    return`<div class="up-img-cell" draggable="true"
+      ondragstart="dragStart(${i})" ondragover="dragOver(event,${i})"
+      ondrop="dragDrop(event,${i})" ondragend="dragEnd()">
+      <img src="${url}" alt="">
+      <div class="up-main-badge"><span>ראשית</span></div>
+      <button class="up-rm" onclick="rmImg(${i});event.stopPropagation()" type="button">×</button>
+      <div class="up-drag-handle"><span></span><span></span><span></span></div>
+    </div>`;
+  }).join('');
+
+  // + button (hidden if 10 reached)
+  const addBtn=imgFiles.length<10
+    ?`<div class="up-add-btn" onclick="document.getElementById('imgIn').click()">
+        <div class="up-plus-icon">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
+            <line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/>
+          </svg>
+        </div>
+        <span class="up-add-lbl">${imgFiles.length===0?'הוסף תמונות':'הוסף עוד'}</span>
+        <span class="up-add-hint">${imgFiles.length}/10</span>
+      </div>`
+    :'';
+
+  grid.innerHTML=cells+addBtn;
+}
+
 function rmImg(i){
-  imgs.splice(i,1);
-  const dt=new DataTransfer();
-  imgs.forEach(f=>dt.items.add(f));
-  document.getElementById('imgIn').files=dt.files;
-  handleImgs(document.getElementById('imgIn'));
+  imgFiles.splice(i,1);
+  renderUpGrid();
 }
+
+// Drag to reorder
+let dragIdx=null;
+function dragStart(i){dragIdx=i;setTimeout(()=>{const cells=document.querySelectorAll('.up-img-cell');if(cells[i])cells[i].classList.add('dragging')},0)}
+function dragOver(e,i){e.preventDefault();document.querySelectorAll('.up-img-cell').forEach((c,j)=>c.classList.toggle('drag-over',j===i&&j!==dragIdx))}
+function dragDrop(e,i){
+  e.preventDefault();
+  if(dragIdx===null||dragIdx===i)return;
+  const tmp=imgFiles[dragIdx];imgFiles[dragIdx]=imgFiles[i];imgFiles[i]=tmp;
+  dragIdx=null;renderUpGrid();
+}
+function dragEnd(){dragIdx=null;document.querySelectorAll('.up-img-cell').forEach(c=>{c.classList.remove('dragging','drag-over')})}
+
+// ── ADD MODAL ──
 
 async function uploadImg(file){
   const fd=new FormData();
@@ -1316,14 +1489,14 @@ async function submitCar(e){
   const btn=document.getElementById('subBtn'),pg=document.getElementById('prog'),pb=document.getElementById('progBar');
   const prevErr=document.getElementById('formErrBox');if(prevErr)prevErr.remove();
   btn.disabled=true;btn.innerHTML='<span>⏳</span> <span>מעלה...</span>';
-  if(imgs.length)pg.style.display='block';
+  if(imgFiles.length)pg.style.display='block';
   try{
     const urls=[];
-    if(imgs.length>0){
-      for(let i=0;i<imgs.length;i++){
-        btn.innerHTML=`<span>📷</span> <span>מעלה תמונה ${i+1}/${imgs.length}...</span>`;
-        pb.style.width=`${Math.round(((i+1)/imgs.length)*100)}%`;
-        try{urls.push(await uploadImg(imgs[i]))}catch(imgErr){if(i===0)throw imgErr;console.warn('[YOUGO] Image',i,'failed:',imgErr.message)}
+    if(imgFiles.length>0){
+      for(let i=0;i<imgFiles.length;i++){
+        btn.innerHTML=`<span>📷</span> <span>מעלה תמונה ${i+1}/${imgFiles.length}...</span>`;
+        pb.style.width=`${Math.round(((i+1)/imgFiles.length)*100)}%`;
+        try{urls.push(await uploadImg(imgFiles[i]))}catch(imgErr){if(i===0)throw imgErr;console.warn('[YOUGO] Image',i,'failed:',imgErr.message)}
       }
     }
     pg.style.display='none';
