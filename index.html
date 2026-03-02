@@ -7,7 +7,7 @@
 <title>YOUGO CARS — שוק הרכבים הדיגיטלי</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.39.8/dist/umd/supabase.min.js"></script>
 <style>
 /* ── TOKENS ── */
 :root{
@@ -1450,22 +1450,29 @@ function applyLang(){
 
 // LOAD
 async function loadCars(){
+  // Check supabase loaded
+  if(typeof supabase==='undefined'||!sb){
+    document.getElementById('carsBox').innerHTML='<div class="empty-box"><div class="empty-ico">⚠️</div><h3>טעינה נכשלה</h3><p style="color:#f87171">ספריית Supabase לא נטענה — בדוק חיבור אינטרנט</p><button class="btn btn-red" style="margin-top:14px" onclick="location.reload()">רענן דף</button></div>';
+    return;
+  }
   document.getElementById('carsBox').innerHTML='<div class="loading-box"><div class="spin"></div><p style="color:var(--t1);font-weight:600">טוען מודעות...</p></div>';
   try{
-    const{data,error}=await sb.from('cars').select('*').order('created_at',{ascending:false});
+    const res=await sb.from('cars').select('*').order('created_at',{ascending:false});
+    const data=res.data, error=res.error;
     if(error){
-      document.getElementById('carsBox').innerHTML=`<div class="empty-box"><div class="empty-ico">⚠️</div><h3>שגיאת DB</h3><p style="color:#f87171;font-size:13px;word-break:break-all">${JSON.stringify(error)}</p><button class="btn btn-red" style="margin-top:14px" onclick="loadCars()">נסה שוב</button></div>`;
+      document.getElementById('carsBox').innerHTML=`<div class="empty-box"><div class="empty-ico">⚠️</div><h3>שגיאת DB</h3><p style="color:#f87171;font-size:12px;word-break:break-all">${error.message||JSON.stringify(error)}</p><button class="btn btn-red" style="margin-top:14px" onclick="loadCars()">נסה שוב</button></div>`;
       return;
     }
     if(!data||data.length===0){
-      document.getElementById('carsBox').innerHTML=`<div class="empty-box"><div class="empty-ico">🚗</div><h3>אין מודעות</h3><p>DB מחובר אבל ריק — URL: ${SB_URL.slice(8,30)}...</p><button class="btn btn-red" style="margin-top:14px" onclick="openAdd()">פרסם ראשון</button></div>`;
+      document.getElementById('carsBox').innerHTML='<div class="empty-box"><div class="empty-ico">🚗</div><h3>אין מודעות עדיין</h3><p style="color:rgba(255,255,255,.6)">היה הראשון לפרסם!</p><button class="btn btn-red" style="margin-top:16px;padding:12px 28px" onclick="openAdd()">🚗 פרסם רכב בחינם</button></div>';
+      document.getElementById('statCars').textContent='0';
       return;
     }
-    all=data;filtered=[...all];
-    buildFilters();doSort(sort);
-    document.getElementById('statCars').textContent=all.filter(c=>c.status==='active').length;
+    all=data; filtered=[...all];
+    buildFilters(); doSort(sort);
+    document.getElementById('statCars').textContent=all.length;
   }catch(e){
-    document.getElementById('carsBox').innerHTML=`<div class="empty-box"><div class="empty-ico">❌</div><h3>שגיאת חיבור</h3><p style="color:#f87171;font-size:13px;word-break:break-all">${e.message}</p><button class="btn btn-red" style="margin-top:14px" onclick="loadCars()">נסה שוב</button></div>`;
+    document.getElementById('carsBox').innerHTML=`<div class="empty-box"><div class="empty-ico">❌</div><h3>שגיאת חיבור</h3><p style="color:#f87171;font-size:12px;word-break:break-all">${e.message}</p><button class="btn btn-red" style="margin-top:14px" onclick="loadCars()">נסה שוב</button></div>`;
   }
 }
 
