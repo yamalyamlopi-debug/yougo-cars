@@ -7,7 +7,27 @@
 <title>YOUGO CARS — שוק הרכבים הדיגיטלי</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.39.8/dist/umd/supabase.min.js"></script>
+<script>
+// Load Supabase with fallback CDNs
+(function(){
+  function loadScript(url, cb){
+    var s=document.createElement('script');
+    s.src=url; s.onload=cb;
+    s.onerror=function(){
+      // Try fallback
+      var s2=document.createElement('script');
+      s2.src='https://unpkg.com/@supabase/supabase-js@2.39.8/dist/umd/supabase.min.js';
+      s2.onload=cb;
+      s2.onerror=function(){document.getElementById('carsBox').innerHTML='<div class="empty-box"><div class="empty-ico">❌</div><h3>שגיאת טעינה</h3><p style="color:#f87171">לא ניתן לטעון את ספריית Supabase<br>בדוק חיבור אינטרנט ורענן</p><button class="btn btn-red" style="margin-top:14px" onclick="location.reload()">🔄 רענן</button></div>';};
+      document.head.appendChild(s2);
+    };
+    document.head.appendChild(s);
+  }
+  loadScript('https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.39.8/dist/umd/supabase.min.js', function(){
+    console.log('[YOUGO] Supabase loaded ✓');
+  });
+})();
+</script>
 <style>
 /* ── TOKENS ── */
 :root{
@@ -1349,7 +1369,13 @@ footer{border-top:1px solid rgba(255,255,255,.12);padding:36px 20px;background:r
 // CONFIG
 const SB_URL='https://arsbodqhmmtmoqqhykep.supabase.co';
 const SB_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImFyc2JvZHFobW10bW9xcWh5a2VwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzIxNTgxMTQsImV4cCI6MjA4NzczNDExNH0.mt_WpPshp5xdbIx23pMmcwq7MhktA0-vWPIstOy1_HM';
-const sb=supabase.createClient(SB_URL,SB_KEY);
+let sb=null;
+function getSB(){
+  if(!sb && typeof window.supabase !== 'undefined'){
+    sb = window.supabase.createClient(SB_URL, SB_KEY);
+  }
+  return sb;
+}
 // ⚙️ CLOUDINARY CONFIG — עדכן כאן אם יש שגיאת API key
 // כנס ל: cloudinary.com → Dashboard → Cloud name
 // Upload preset: Settings → Upload → Add upload preset (Unsigned)
@@ -1904,7 +1930,23 @@ function showToast(msg,type='ok'){const el=document.getElementById('toast');el.t
 function showHome(){filtered=[...all];doSort(sort);window.scrollTo({top:0,behavior:'smooth'})}
 
 document.addEventListener('keydown',e=>{if(e.key==='Escape'){closeDetail();closeAdd()}});
-loadCars();
+
+// Wait for Supabase to load before calling loadCars
+function waitForSupabase(tries){
+  tries = tries || 0;
+  if(tries > 30){
+    document.getElementById('carsBox').innerHTML='<div class="empty-box"><div class="empty-ico">❌</div><h3>שגיאת טעינה</h3><p style="color:#f87171">Supabase לא נטען — רענן את הדף</p><button class="btn btn-red" style="margin-top:14px" onclick="location.reload()">🔄 רענן</button></div>';
+    return;
+  }
+  if(typeof window.supabase !== 'undefined' && window.supabase.createClient){
+    sb = window.supabase.createClient(SB_URL, SB_KEY);
+    console.log('[YOUGO] sb initialized:', !!sb);
+    loadCars();
+  } else {
+    setTimeout(function(){ waitForSupabase(tries+1); }, 200);
+  }
+}
+waitForSupabase();
 </script>
 </body>
 </html>
