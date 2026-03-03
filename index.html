@@ -9,6 +9,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <style>
+/* ── TOKENS ── */
 :root{
   --red:#e8112e; --red2:#b50d24;
   --bg:#0a0a12; --bg2:#0f0f1e; --bg3:#141428;
@@ -31,78 +32,221 @@ img{display:block;max-width:100%}
 a{color:inherit;text-decoration:none}
 ::-webkit-scrollbar{width:3px}
 ::-webkit-scrollbar-thumb{background:var(--red);border-radius:2px}
-body::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.035'/%3E%3C/svg%3E");background-repeat:repeat;background-size:200px 200px;opacity:.4;mix-blend-mode:overlay;}
-#nav{position:fixed;top:0;left:0;right:0;z-index:500;height:var(--nav);padding:0 14px;display:flex;align-items:center;gap:8px;background:rgba(7,7,14,.78);backdrop-filter:blur(28px) saturate(1.8);border-bottom:1px solid rgba(255,255,255,.055);transition:background .3s var(--ease),border-color .3s var(--ease);overflow:hidden;}
+
+body::before{
+  content:'';position:fixed;inset:0;z-index:0;pointer-events:none;
+  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.035'/%3E%3C/svg%3E");
+  background-repeat:repeat;background-size:200px 200px;opacity:.4;mix-blend-mode:overlay;
+}
+
+/* ── NAV ── */
+#nav{
+  position:fixed;top:0;left:0;right:0;z-index:500;height:var(--nav);
+  padding:0 14px;
+  display:flex;align-items:center;gap:8px;
+  background:rgba(7,7,14,.78);backdrop-filter:blur(28px) saturate(1.8);
+  border-bottom:1px solid rgba(255,255,255,.055);
+  transition:background .3s var(--ease),border-color .3s var(--ease);
+  overflow:hidden;
+}
 #nav.solid{background:rgba(7,7,14,.97);border-color:var(--b0)}
+
 .logo{display:flex;align-items:center;gap:9px;cursor:pointer;flex-shrink:0;min-width:0}
-.logo-box{width:36px;height:36px;min-width:36px;border-radius:10px;flex-shrink:0;background:linear-gradient(135deg,#c8102e,#9b0d24);display:flex;align-items:center;justify-content:center;box-shadow:0 4px 14px rgba(200,16,46,.45);}
+.logo-box{
+  width:36px;height:36px;min-width:36px;border-radius:10px;flex-shrink:0;
+  background:linear-gradient(135deg,#c8102e,#9b0d24);
+  display:flex;align-items:center;justify-content:center;
+  box-shadow:0 4px 14px rgba(200,16,46,.45);
+}
 .logo-text{font-size:17px;font-weight:900;letter-spacing:-.5px;white-space:nowrap;line-height:1;color:#fff;}
 .logo-text .r{color:#e8112e}
 .logo-cars{color:#ffffff}
+
 .nav-mid{display:flex;gap:2px;flex-shrink:0}
-.nav-a{padding:6px 11px;border-radius:9px;font-size:12.5px;font-weight:700;color:var(--t1);cursor:pointer;background:none;border:none;font-family:var(--font);transition:all .18s;white-space:nowrap;display:flex;align-items:center;gap:5px;}
+.nav-a{padding:6px 11px;border-radius:9px;font-size:12.5px;font-weight:700;color:var(--t1);
+  cursor:pointer;background:none;border:none;font-family:var(--font);transition:all .18s;white-space:nowrap;
+  display:flex;align-items:center;gap:5px;}
 .nav-a:hover{color:var(--t0);background:rgba(255,255,255,.07)}
+
 .nav-end{display:flex;gap:6px;align-items:center;margin-right:auto;flex-shrink:0}
-.btn-lang{display:inline-flex;align-items:center;gap:6px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);color:var(--t0);padding:7px 12px;border-radius:10px;font-size:12px;cursor:pointer;font-family:var(--font);transition:all .2s var(--ease);font-weight:700;letter-spacing:.02em;white-space:nowrap;flex-shrink:0;}
+
+.btn-lang{
+  display:inline-flex;align-items:center;gap:6px;
+  background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);
+  color:var(--t0);padding:7px 12px;border-radius:10px;font-size:12px;cursor:pointer;
+  font-family:var(--font);transition:all .2s var(--ease);font-weight:700;
+  letter-spacing:.02em;white-space:nowrap;flex-shrink:0;
+}
 .btn-lang:hover{border-color:rgba(200,16,46,.5);background:rgba(200,16,46,.08);color:#fff}
-.btn-lang .lang-icon{width:18px;height:18px;border-radius:4px;display:flex;align-items:center;justify-content:center;background:linear-gradient(135deg,var(--red),#e0162f);font-size:9px;font-weight:900;color:#fff;letter-spacing:0;flex-shrink:0;}
-.btn-pkg-nav{display:inline-flex;align-items:center;gap:5px;padding:8px 12px;border-radius:10px;font-size:12px;font-weight:900;background:rgba(212,175,55,.1);border:1.5px solid rgba(212,175,55,.35);color:var(--gold);cursor:pointer;font-family:var(--font);white-space:nowrap;text-decoration:none;flex-shrink:0;transition:all .18s;}
+.btn-lang .lang-icon{
+  width:18px;height:18px;border-radius:4px;
+  display:flex;align-items:center;justify-content:center;
+  background:linear-gradient(135deg,var(--red),#e0162f);
+  font-size:9px;font-weight:900;color:#fff;letter-spacing:0;flex-shrink:0;
+}
+
+.btn-pkg-nav{
+  display:inline-flex;align-items:center;gap:5px;
+  padding:8px 12px;border-radius:10px;font-size:12px;font-weight:900;
+  background:rgba(212,175,55,.1);border:1.5px solid rgba(212,175,55,.35);
+  color:var(--gold);cursor:pointer;font-family:var(--font);
+  white-space:nowrap;text-decoration:none;flex-shrink:0;transition:all .18s;
+}
 .btn-pkg-nav:hover{background:rgba(212,175,55,.2);border-color:rgba(212,175,55,.6)}
-.btn{display:inline-flex;align-items:center;gap:6px;padding:9px 16px;border-radius:11px;font-family:var(--font);font-weight:900;font-size:13px;cursor:pointer;border:none;transition:all .2s var(--ease);white-space:nowrap;text-decoration:none}
-.btn-red{background:linear-gradient(135deg,var(--red),#e0162f);color:#fff;box-shadow:0 4px 16px rgba(200,16,46,.38)}
+
+.btn{display:inline-flex;align-items:center;gap:6px;padding:9px 16px;
+  border-radius:11px;font-family:var(--font);font-weight:900;font-size:13px;
+  cursor:pointer;border:none;transition:all .2s var(--ease);white-space:nowrap;text-decoration:none}
+.btn-red{background:linear-gradient(135deg,var(--red),#e0162f);color:#fff;
+  box-shadow:0 4px 16px rgba(200,16,46,.38)}
 .btn-red:hover{transform:translateY(-1px);box-shadow:0 6px 22px rgba(200,16,46,.54)}
-#adminBar{display:none;background:rgba(200,16,46,.06);border-bottom:1px solid var(--bred);padding:9px 22px;align-items:center;gap:10px;flex-wrap:wrap}
+
+/* ── ADMIN BAR ── */
+#adminBar{display:none;background:rgba(200,16,46,.06);border-bottom:1px solid var(--bred);
+  padding:9px 22px;align-items:center;gap:10px;flex-wrap:wrap}
 #adminBar.show{display:flex}
-.hero{position:relative;min-height:100svh;display:flex;align-items:center;justify-content:center;text-align:center;padding:calc(var(--nav) + 56px) 22px 72px;overflow:hidden;}
-.hero-bg{position:absolute;inset:0;z-index:0;background:radial-gradient(ellipse 120% 60% at 50% -5%,rgba(232,17,46,.42) 0%,transparent 58%),radial-gradient(ellipse 60% 50% at 2% 88%,rgba(232,17,46,.18) 0%,transparent 50%),radial-gradient(ellipse 55% 45% at 98% 85%,rgba(90,20,220,.12) 0%,transparent 50%),radial-gradient(ellipse 80% 40% at 50% 50%,rgba(20,10,50,.6) 0%,transparent 80%),var(--bg);}
-.hero-grid{position:absolute;inset:0;z-index:0;background-image:linear-gradient(rgba(255,255,255,.07) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.07) 1px,transparent 1px);background-size:52px 52px;-webkit-mask-image:radial-gradient(ellipse 96% 78% at 50% 32%,#000 28%,transparent 75%);mask-image:radial-gradient(ellipse 96% 78% at 50% 32%,#000 28%,transparent 75%);}
-.hero-glow{position:absolute;top:-80px;left:50%;transform:translateX(-50%);width:800px;height:500px;background:radial-gradient(ellipse,rgba(232,17,46,.28) 0%,transparent 65%);filter:blur(60px);z-index:0;pointer-events:none;}
+
+/* ── HERO ── */
+.hero{
+  position:relative;min-height:100svh;
+  display:flex;align-items:center;justify-content:center;text-align:center;
+  padding:calc(var(--nav) + 56px) 22px 72px;overflow:hidden;
+}
+.hero-bg{
+  position:absolute;inset:0;z-index:0;
+  background:
+    radial-gradient(ellipse 120% 60% at 50% -5%,rgba(232,17,46,.42) 0%,transparent 58%),
+    radial-gradient(ellipse 60% 50% at 2% 88%,rgba(232,17,46,.18) 0%,transparent 50%),
+    radial-gradient(ellipse 55% 45% at 98% 85%,rgba(90,20,220,.12) 0%,transparent 50%),
+    radial-gradient(ellipse 80% 40% at 50% 50%,rgba(20,10,50,.6) 0%,transparent 80%),
+    var(--bg);
+}
+.hero-grid{
+  position:absolute;inset:0;z-index:0;
+  background-image:
+    linear-gradient(rgba(255,255,255,.07) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(255,255,255,.07) 1px,transparent 1px);
+  background-size:52px 52px;
+  -webkit-mask-image:radial-gradient(ellipse 96% 78% at 50% 32%,#000 28%,transparent 75%);
+  mask-image:radial-gradient(ellipse 96% 78% at 50% 32%,#000 28%,transparent 75%);
+}
+.hero-glow{
+  position:absolute;top:-80px;left:50%;transform:translateX(-50%);
+  width:800px;height:500px;
+  background:radial-gradient(ellipse,rgba(232,17,46,.28) 0%,transparent 65%);
+  filter:blur(60px);z-index:0;pointer-events:none;
+}
 .hero-in{position:relative;z-index:2;max-width:840px;width:100%}
-.hero-badge{display:inline-flex;align-items:center;gap:8px;padding:8px 20px;border-radius:100px;margin-bottom:28px;background:rgba(232,17,46,.15);border:1px solid rgba(232,17,46,.45);animation:fu .6s ease both;box-shadow:0 0 24px rgba(232,17,46,.15);}
-.badge-dot{width:7px;height:7px;border-radius:50%;background:var(--red);animation:blink 2s infinite;box-shadow:0 0 10px var(--red)}
+
+.hero-badge{
+  display:inline-flex;align-items:center;gap:8px;
+  padding:8px 20px;border-radius:100px;margin-bottom:28px;
+  background:rgba(232,17,46,.15);border:1px solid rgba(232,17,46,.45);
+  animation:fu .6s ease both;box-shadow:0 0 24px rgba(232,17,46,.15);
+}
+.badge-dot{width:7px;height:7px;border-radius:50%;background:var(--red);
+  animation:blink 2s infinite;box-shadow:0 0 10px var(--red)}
 @keyframes blink{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.4;transform:scale(.7)}}
-.hero-badge span{font-size:11.5px;font-weight:800;color:rgba(255,255,255,.88);text-transform:uppercase;letter-spacing:.12em}
+.hero-badge span{font-size:11.5px;font-weight:800;color:rgba(255,255,255,.88);
+  text-transform:uppercase;letter-spacing:.12em}
 @keyframes fu{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
-.hero h1{font-size:clamp(2.6rem,8vw,5.6rem);font-weight:900;line-height:1.06;letter-spacing:-2px;margin-bottom:22px;animation:fu .6s .1s ease both;color:#ffffff;text-shadow:0 2px 40px rgba(0,0,0,.9);}
-.hero h1 .r{color:transparent;background:linear-gradient(125deg,#ff5878 0%,#e8112e 55%,#ff2040 100%);-webkit-background-clip:text;background-clip:text;text-decoration:none;border:none;display:inline;filter:drop-shadow(0 0 20px rgba(232,17,46,.55));}
+
+.hero h1{
+  font-size:clamp(2.6rem,8vw,5.6rem);font-weight:900;line-height:1.06;
+  letter-spacing:-2px;margin-bottom:22px;animation:fu .6s .1s ease both;
+  color:#ffffff;text-shadow:0 2px 40px rgba(0,0,0,.9);
+}
+.hero h1 .r{
+  color:transparent;
+  background:linear-gradient(125deg,#ff5878 0%,#e8112e 55%,#ff2040 100%);
+  -webkit-background-clip:text;background-clip:text;
+  text-decoration:none;border:none;display:inline;
+  filter:drop-shadow(0 0 20px rgba(232,17,46,.55));
+}
 .hero h1 br{display:block;content:'';border:none;background:none}
 .hero h1 span{border:none !important;text-decoration:none !important;box-shadow:none !important}
-.hero-sub{font-size:clamp(1rem,2vw,1.16rem);color:rgba(255,255,255,.84);line-height:1.75;max-width:500px;margin:0 auto 36px;animation:fu .6s .2s ease both;text-shadow:0 1px 12px rgba(0,0,0,.6);}
-.hero-ctas{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-bottom:48px;animation:fu .6s .3s ease both;}
+
+.hero-sub{
+  font-size:clamp(1rem,2vw,1.16rem);color:rgba(255,255,255,.84);
+  line-height:1.75;max-width:500px;margin:0 auto 36px;
+  animation:fu .6s .2s ease both;text-shadow:0 1px 12px rgba(0,0,0,.6);
+}
+
+.hero-ctas{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;
+  margin-bottom:48px;animation:fu .6s .3s ease both;}
 .hero-ctas .btn{padding:14px 30px;font-size:15px}
-.btn-pkg{display:inline-flex;align-items:center;gap:9px;padding:13px 26px;border-radius:14px;background:linear-gradient(135deg,rgba(212,175,55,.14),rgba(212,175,55,.06));border:1.5px solid rgba(212,175,55,.45);color:var(--gold);font-weight:900;font-size:14px;cursor:pointer;font-family:var(--font);transition:all .22s var(--ease);text-decoration:none;}
-.btn-pkg:hover{background:linear-gradient(135deg,rgba(212,175,55,.26),rgba(212,175,55,.12));border-color:rgba(212,175,55,.75);transform:translateY(-2px);box-shadow:0 8px 28px rgba(212,175,55,.22);}
+
+.btn-pkg{
+  display:inline-flex;align-items:center;gap:9px;
+  padding:13px 26px;border-radius:14px;
+  background:linear-gradient(135deg,rgba(212,175,55,.14),rgba(212,175,55,.06));
+  border:1.5px solid rgba(212,175,55,.45);color:var(--gold);
+  font-weight:900;font-size:14px;cursor:pointer;
+  font-family:var(--font);transition:all .22s var(--ease);text-decoration:none;
+}
+.btn-pkg:hover{
+  background:linear-gradient(135deg,rgba(212,175,55,.26),rgba(212,175,55,.12));
+  border-color:rgba(212,175,55,.75);transform:translateY(-2px);
+  box-shadow:0 8px 28px rgba(212,175,55,.22);
+}
 .btn-ghost{background:rgba(255,255,255,.08);border:1px solid var(--b0);color:var(--t1);font-size:15px;padding:14px 30px;}
 .btn-ghost:hover{background:rgba(255,255,255,.13);color:var(--t0);border-color:var(--b1)}
-.hero-stats{display:flex;max-width:500px;margin:0 auto;border:1px solid rgba(255,255,255,.14);border-radius:20px;background:rgba(255,255,255,.06);overflow:hidden;box-shadow:0 8px 32px rgba(0,0,0,.4),inset 0 1px 0 rgba(255,255,255,.08);backdrop-filter:blur(12px);animation:fu .6s .4s ease both;}
+
+.hero-stats{
+  display:flex;max-width:500px;margin:0 auto;
+  border:1px solid rgba(255,255,255,.14);border-radius:20px;
+  background:rgba(255,255,255,.06);overflow:hidden;
+  box-shadow:0 8px 32px rgba(0,0,0,.4),inset 0 1px 0 rgba(255,255,255,.08);
+  backdrop-filter:blur(12px);animation:fu .6s .4s ease both;
+}
 .hs{flex:1;padding:20px 14px;text-align:center;position:relative}
-.hs:not(:last-child)::after{content:'';position:absolute;right:0;top:20%;bottom:20%;width:1px;background:rgba(255,255,255,.14);}
+.hs:not(:last-child)::after{
+  content:'';position:absolute;right:0;top:20%;bottom:20%;
+  width:1px;background:rgba(255,255,255,.14);
+}
 .hs-v{font-size:1.8rem;font-weight:900;color:#ffffff;text-shadow:0 2px 12px rgba(0,0,0,.5)}
 .hs-v .a{color:var(--red)}
-.hs-l{font-size:10px;color:rgba(255,255,255,.55);margin-top:3px;font-weight:700;text-transform:uppercase;letter-spacing:.08em}
-.ticker{overflow:hidden;border-top:1px solid var(--b0);border-bottom:1px solid var(--b0);background:rgba(255,255,255,.016);height:42px;display:flex;align-items:center;}
+.hs-l{font-size:10px;color:rgba(255,255,255,.55);margin-top:3px;font-weight:700;
+  text-transform:uppercase;letter-spacing:.08em}
+
+/* ── TICKER ── */
+.ticker{overflow:hidden;border-top:1px solid var(--b0);border-bottom:1px solid var(--b0);
+  background:rgba(255,255,255,.016);height:42px;display:flex;align-items:center;}
 .ticker-inner{display:flex;white-space:nowrap;animation:tick 26s linear infinite}
 @keyframes tick{from{transform:translateX(0)}to{transform:translateX(-50%)}}
-.ti{display:flex;align-items:center;gap:8px;padding:0 26px;height:42px;font-size:12.5px;font-weight:700;color:rgba(255,255,255,.72);border-left:1px solid rgba(255,255,255,.08)}
+.ti{display:flex;align-items:center;gap:8px;padding:0 26px;height:42px;
+  font-size:12.5px;font-weight:700;color:rgba(255,255,255,.72);border-left:1px solid rgba(255,255,255,.08)}
 .ti:first-child{border-left:none}
 .ti svg{flex-shrink:0;opacity:.85}
+
+/* ── SEARCH ── */
 .search-wrap{padding:52px 22px 0;max-width:980px;margin:0 auto}
 .search-eyebrow{display:flex;align-items:center;gap:8px;margin-bottom:13px;}
 .search-eyebrow-line{width:28px;height:2px;border-radius:2px;background:var(--red)}
 .search-eyebrow-text{font-size:10.5px;font-weight:900;color:#ff4466;text-transform:uppercase;letter-spacing:.14em}
-.search-card{background:linear-gradient(160deg,#181832,#0f0f1e);border:1.5px solid rgba(255,255,255,.16);border-radius:22px;overflow:hidden;box-shadow:0 6px 40px rgba(0,0,0,.55),0 0 0 1px rgba(200,16,46,.07);transition:border-color .22s,box-shadow .22s;}
+
+.search-card{
+  background:linear-gradient(160deg,#181832,#0f0f1e);
+  border:1.5px solid rgba(255,255,255,.16);border-radius:22px;overflow:hidden;
+  box-shadow:0 6px 40px rgba(0,0,0,.55),0 0 0 1px rgba(200,16,46,.07);
+  transition:border-color .22s,box-shadow .22s;
+}
 .search-card:focus-within{border-color:rgba(200,16,46,.48);box-shadow:0 6px 40px rgba(0,0,0,.55),0 0 0 4px rgba(200,16,46,.07);}
+
 .search-main{display:flex;align-items:center;padding:7px 7px 7px 18px;border-bottom:1px solid rgba(255,255,255,.10);gap:10px;}
 .search-ico{font-size:17px;color:var(--t2);flex-shrink:0;display:flex;align-items:center}
 .search-input{flex:1;background:none;border:none;outline:none;font-size:15px;font-weight:600;color:var(--t0);font-family:var(--font);padding:10px 4px;min-width:0;}
 .search-input::placeholder{color:rgba(255,255,255,.38)}
 .search-go{padding:11px 28px;border-radius:14px;border:none;background:linear-gradient(135deg,var(--red),#e0162f);color:#fff;font-family:var(--font);font-size:14px;font-weight:900;cursor:pointer;transition:all .2s var(--ease);flex-shrink:0;box-shadow:0 4px 14px rgba(200,16,46,.4);}
 .search-go:hover{transform:translateY(-1px);box-shadow:0 6px 22px rgba(200,16,46,.56)}
+
 .filter-strip{display:flex;gap:4px;padding:6px 8px;overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none;}
 .filter-strip::-webkit-scrollbar{display:none}
 .fc{display:flex;align-items:center;gap:5px;padding:8px 14px;border-radius:10px;cursor:pointer;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);color:rgba(255,255,255,.78);font-size:12.5px;font-weight:700;white-space:nowrap;font-family:var(--font);transition:all .18s;flex-shrink:0;appearance:none;-webkit-appearance:none;outline:none;}
 .fc:hover,.fc:focus{border-color:rgba(200,16,46,.38);color:var(--t0);background:rgba(200,16,46,.07);}
 .fc option{background:#101022}
+
+/* ── LISTINGS ── */
 .main{max-width:1240px;margin:0 auto;padding:42px 20px 100px}
 .main::before{content:'';position:fixed;inset:0;z-index:-1;background:radial-gradient(ellipse 70% 50% at 50% 0%,rgba(232,17,46,.06) 0%,transparent 60%),var(--bg);pointer-events:none;}
 .list-head{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;margin-bottom:22px}
@@ -113,55 +257,186 @@ body::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;bac
 .sort-btn{padding:7px 15px;border-radius:9px;border:1px solid rgba(255,255,255,.14);background:rgba(255,255,255,.05);color:rgba(255,255,255,.75);font-family:var(--font);font-size:12px;font-weight:700;cursor:pointer;transition:all .18s;white-space:nowrap;display:flex;align-items:center;gap:5px;}
 .sort-btn:hover{color:var(--t0);border-color:var(--b1);background:rgba(255,255,255,.05)}
 .sort-btn.on{background:rgba(200,16,46,.1);border-color:var(--bred);color:var(--red)}
-.cars-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:22px;}
-.car-card{background:#0d0d1e;border:1px solid rgba(255,255,255,.08);border-radius:20px;overflow:hidden;cursor:pointer;display:flex;flex-direction:column;position:relative;transition:transform .3s cubic-bezier(.25,.46,.45,.94),border-color .3s,box-shadow .3s;box-shadow:0 4px 24px rgba(0,0,0,.55);contain:layout style;}
-.car-card::before{content:'';position:absolute;inset:0;border-radius:20px;background:linear-gradient(135deg,rgba(232,17,46,.05) 0%,transparent 60%);opacity:0;transition:opacity .3s;pointer-events:none;z-index:1;}
-.car-card:hover{transform:translateY(-6px) scale(1.01);border-color:rgba(232,17,46,.45);box-shadow:0 24px 60px rgba(0,0,0,.7),0 0 0 1px rgba(232,17,46,.18);}
+
+/* ── CARS GRID — Instagram square layout ── */
+.cars-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(320px,1fr));
+  gap:22px;
+}
+
+/* ── CAR CARD ── */
+.car-card{
+  background:#0d0d1e;
+  border:1px solid rgba(255,255,255,.08);
+  border-radius:20px;overflow:hidden;cursor:pointer;
+  display:flex;flex-direction:column;position:relative;
+  transition:transform .3s cubic-bezier(.25,.46,.45,.94),
+              border-color .3s,box-shadow .3s;
+  box-shadow:0 4px 24px rgba(0,0,0,.55);
+  contain:layout style;
+}
+.car-card::before{
+  content:'';position:absolute;inset:0;border-radius:20px;
+  background:linear-gradient(135deg,rgba(232,17,46,.05) 0%,transparent 60%);
+  opacity:0;transition:opacity .3s;pointer-events:none;z-index:1;
+}
+.car-card:hover{
+  transform:translateY(-6px) scale(1.01);
+  border-color:rgba(232,17,46,.45);
+  box-shadow:0 24px 60px rgba(0,0,0,.7),0 0 0 1px rgba(232,17,46,.18);
+}
 .car-card:hover::before{opacity:1}
-.car-img-wrap{position:relative;overflow:hidden;aspect-ratio:1/1;background:#07071a;flex-shrink:0;}
-.car-img{width:100%;height:100%;object-fit:cover;object-position:center 60%;display:block;transition:transform .55s cubic-bezier(.25,.46,.45,.94);will-change:transform;}
+
+/* ── IMAGE: Square Instagram 1:1 ── */
+.car-img-wrap{
+  position:relative;overflow:hidden;
+  aspect-ratio:1/1;   /* ← Instagram square */
+  background:#07071a;
+  flex-shrink:0;
+}
+.car-img{
+  width:100%;height:100%;
+  object-fit:cover;object-position:center 60%;
+  display:block;
+  transition:transform .55s cubic-bezier(.25,.46,.45,.94);
+  will-change:transform;
+}
 .car-card:hover .car-img{transform:scale(1.07)}
-.car-placeholder{width:100%;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;background:linear-gradient(155deg,#101028,#080816);}
+
+.car-placeholder{
+  width:100%;height:100%;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;
+  background:linear-gradient(155deg,#101028,#080816);
+}
 .car-placeholder svg{opacity:.15}
-.car-img-wrap::after{content:'';position:absolute;bottom:0;left:0;right:0;height:55%;background:linear-gradient(to top,rgba(8,8,20,.92) 0%,rgba(8,8,20,.4) 55%,transparent 100%);pointer-events:none;z-index:1;}
-.car-price-float{position:absolute;bottom:14px;right:14px;z-index:2;background:rgba(232,17,46,.92);backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,.18);padding:6px 14px;border-radius:10px;font-size:19px;font-weight:900;color:#fff;letter-spacing:-.4px;box-shadow:0 4px 18px rgba(232,17,46,.45);line-height:1.1;}
+
+/* Bottom gradient overlay */
+.car-img-wrap::after{
+  content:'';position:absolute;bottom:0;left:0;right:0;
+  height:55%;
+  background:linear-gradient(to top,rgba(8,8,20,.92) 0%,rgba(8,8,20,.4) 55%,transparent 100%);
+  pointer-events:none;z-index:1;
+}
+
+/* Price floating on image */
+.car-price-float{
+  position:absolute;bottom:14px;right:14px;z-index:2;
+  background:rgba(232,17,46,.92);
+  backdrop-filter:blur(8px);
+  border:1px solid rgba(255,255,255,.18);
+  padding:6px 14px;border-radius:10px;
+  font-size:19px;font-weight:900;color:#fff;
+  letter-spacing:-.4px;
+  box-shadow:0 4px 18px rgba(232,17,46,.45);
+  line-height:1.1;
+}
 .car-price-float small{font-size:11px;font-weight:800;color:rgba(255,255,255,.8);margin-right:2px}
-.car-cnt{position:absolute;bottom:14px;left:14px;z-index:2;display:flex;align-items:center;gap:4px;padding:4px 10px;border-radius:8px;font-size:10.5px;font-weight:800;background:rgba(0,0,0,.72);color:rgba(255,255,255,.9);backdrop-filter:blur(10px);border:1px solid rgba(255,255,255,.1);}
+
+/* Image count badge */
+.car-cnt{
+  position:absolute;bottom:14px;left:14px;z-index:2;
+  display:flex;align-items:center;gap:4px;
+  padding:4px 10px;border-radius:8px;
+  font-size:10.5px;font-weight:800;
+  background:rgba(0,0,0,.72);color:rgba(255,255,255,.9);
+  backdrop-filter:blur(10px);
+  border:1px solid rgba(255,255,255,.1);
+}
+
 .car-badges{position:absolute;top:12px;right:12px;z-index:2;display:flex;flex-direction:column;gap:5px;align-items:flex-end}
 .cbadge{padding:4px 10px;border-radius:100px;font-size:9.5px;font-weight:900;backdrop-filter:blur(12px);letter-spacing:.05em;display:flex;align-items:center;gap:4px;}
 .cb-feat{background:rgba(240,200,74,.92);color:#000}
 .cb-sold{background:rgba(239,68,68,.92);color:#fff}
 .cb-new{background:linear-gradient(135deg,#e8112e,#c8102e);color:#fff;box-shadow:0 2px 10px rgba(232,17,46,.5);}
 .pend-bar{background:linear-gradient(90deg,rgba(234,179,8,.15),rgba(234,179,8,.08));border-bottom:1px solid rgba(234,179,8,.2);color:#fbbf24;font-size:10.5px;font-weight:800;padding:7px 14px;text-align:center;display:flex;align-items:center;justify-content:center;gap:6px}
-.car-body{padding:16px 18px 14px;display:flex;flex-direction:column;gap:10px;flex:1;background:linear-gradient(180deg,#0d0d1e 0%,#0a0a18 100%);}
+
+/* ── CARD BODY: Professional layout ── */
+.car-body{
+  padding:16px 18px 14px;
+  display:flex;flex-direction:column;gap:10px;
+  flex:1;
+  background:linear-gradient(180deg,#0d0d1e 0%,#0a0a18 100%);
+}
+
+/* Car name + year row */
 .car-name-row{display:flex;align-items:flex-start;justify-content:space-between;gap:8px}
 .car-name{font-size:17px;font-weight:900;line-height:1.2;color:#fff;letter-spacing:-.3px;}
-.car-year-tag{flex-shrink:0;padding:3px 9px;border-radius:7px;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.12);font-size:11px;font-weight:800;color:rgba(255,255,255,.65);letter-spacing:.02em;margin-top:2px;}
-.car-meta{display:flex;align-items:center;gap:0;font-size:11.5px;color:rgba(255,255,255,.5);font-weight:600;flex-wrap:wrap;}
+.car-year-tag{
+  flex-shrink:0;
+  padding:3px 9px;border-radius:7px;
+  background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.12);
+  font-size:11px;font-weight:800;color:rgba(255,255,255,.65);
+  letter-spacing:.02em;margin-top:2px;
+}
+
+/* Meta row */
+.car-meta{
+  display:flex;align-items:center;gap:0;
+  font-size:11.5px;color:rgba(255,255,255,.5);font-weight:600;
+  flex-wrap:wrap;
+}
 .car-meta-item{display:flex;align-items:center;gap:4px}
-.car-meta-sep{width:1px;height:12px;background:rgba(255,255,255,.15);margin:0 8px;flex-shrink:0;}
-.specs{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;}
-.spec{display:flex;flex-direction:column;align-items:center;gap:4px;padding:8px 6px;border-radius:10px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);transition:border-color .2s,background .2s;}
+.car-meta-sep{
+  width:1px;height:12px;background:rgba(255,255,255,.15);
+  margin:0 8px;flex-shrink:0;
+}
+
+/* Specs grid — professional company style */
+.specs{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:6px;
+}
+.spec{
+  display:flex;flex-direction:column;align-items:center;gap:4px;
+  padding:8px 6px;border-radius:10px;
+  background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);
+  transition:border-color .2s,background .2s;
+}
 .spec:hover{border-color:rgba(232,17,46,.25);background:rgba(232,17,46,.04)}
-.spec-icon{width:26px;height:26px;display:flex;align-items:center;justify-content:center;background:rgba(255,255,255,.06);border-radius:7px;color:rgba(255,255,255,.6);flex-shrink:0;}
+.spec-icon{
+  width:26px;height:26px;
+  display:flex;align-items:center;justify-content:center;
+  background:rgba(255,255,255,.06);border-radius:7px;
+  color:rgba(255,255,255,.6);
+  flex-shrink:0;
+}
 .spec-icon svg{width:13px;height:13px}
 .spec-val{font-size:11.5px;font-weight:800;color:#fff;text-align:center;line-height:1.2}
 .spec-lbl{font-size:9px;font-weight:700;color:rgba(255,255,255,.38);text-align:center;text-transform:uppercase;letter-spacing:.06em}
-.car-foot{display:flex;align-items:center;justify-content:space-between;padding:11px 18px 14px;border-top:1px solid rgba(255,255,255,.07);}
-.car-loc{font-size:11px;color:rgba(255,255,255,.42);font-weight:600;display:flex;align-items:center;gap:5px;}
+
+/* Footer row */
+.car-foot{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:11px 18px 14px;
+  border-top:1px solid rgba(255,255,255,.07);
+}
+.car-loc{
+  font-size:11px;color:rgba(255,255,255,.42);font-weight:600;
+  display:flex;align-items:center;gap:5px;
+}
 .car-loc svg{width:11px;height:11px;flex-shrink:0;opacity:.6}
 .car-acts{display:flex;gap:7px}
-.act{width:36px;height:36px;border-radius:10px;display:flex;align-items:center;justify-content:center;transition:all .2s;border:1px solid rgba(255,255,255,.1);text-decoration:none;}
+.act{
+  width:36px;height:36px;border-radius:10px;
+  display:flex;align-items:center;justify-content:center;
+  transition:all .2s;border:1px solid rgba(255,255,255,.1);
+  text-decoration:none;
+}
 .act-wa{background:rgba(37,211,102,.08);color:#25d366}
 .act-wa:hover{background:rgba(37,211,102,.2);transform:scale(1.1);border-color:rgba(37,211,102,.3)}
 .act-call{background:rgba(59,130,246,.08);color:#60a5fa}
 .act-call:hover{background:rgba(59,130,246,.2);transform:scale(1.1);border-color:rgba(59,130,246,.3)}
 .act svg{width:15px;height:15px}
+
 .admin-row{padding:9px 14px;display:flex;gap:7px;border-top:1px solid var(--b0)}
 .a-btn{flex:1;padding:8px;border-radius:9px;font-size:11.5px;font-weight:900;cursor:pointer;border:none;font-family:var(--font);transition:all .15s;display:flex;align-items:center;justify-content:center;gap:5px}
 .a-approve{background:rgba(74,222,128,.1);border:1px solid rgba(74,222,128,.28);color:#4ade80}
 .a-sold{background:rgba(212,175,55,.1);border:1px solid rgba(212,175,55,.28);color:var(--gold)}
 .a-del{flex:0;padding:8px 12px;background:rgba(239,68,68,.1);border:1px solid rgba(239,68,68,.28);color:#ef4444}
+
+/* Loading / empty */
 .loading-box{grid-column:1/-1;padding:80px;display:flex;flex-direction:column;align-items:center;gap:14px}
 .spin{width:36px;height:36px;border-radius:50%;border:3px solid rgba(255,255,255,.07);border-top-color:var(--red);animation:sp .75s linear infinite}
 @keyframes sp{to{transform:rotate(360deg)}}
@@ -169,6 +444,8 @@ body::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;bac
 .empty-ico{font-size:52px;opacity:.24;margin-bottom:14px}
 .empty-box h3{font-size:1.3rem;font-weight:900;margin-bottom:8px}
 .empty-box p{color:var(--t1)}
+
+/* ── FOOTER ── */
 footer{border-top:1px solid rgba(255,255,255,.12);padding:36px 20px;background:rgba(255,255,255,.02)}
 .foot-in{max-width:1200px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:16px}
 .foot-brand{display:flex;align-items:center;gap:9px}
@@ -182,6 +459,8 @@ footer{border-top:1px solid rgba(255,255,255,.12);padding:36px 20px;background:r
 .foot-dot{cursor:pointer;opacity:.1;transition:opacity .2s;color:var(--red);user-select:none;padding:4px;font-size:18px;line-height:1}
 .foot-dot:hover{opacity:.4}
 .foot-dot svg{width:12px;height:12px}
+
+/* ── MODALS ── */
 .overlay{position:fixed;inset:0;z-index:600;background:rgba(0,0,0,0);backdrop-filter:blur(0);display:flex;align-items:flex-end;justify-content:center;pointer-events:none;transition:all .3s var(--ease);}
 .overlay.open{background:rgba(0,0,0,.86);backdrop-filter:blur(20px);pointer-events:all;align-items:center}
 .modal{background:var(--bg2);border:1px solid var(--b0);border-radius:var(--r3);width:100%;max-width:680px;max-height:92svh;overflow:hidden;display:flex;flex-direction:column;transform:translateY(30px) scale(.97);opacity:0;transition:all .3s var(--ease);}
@@ -193,58 +472,155 @@ footer{border-top:1px solid rgba(255,255,255,.12);padding:36px 20px;background:r
 .modal-body{padding:20px;overflow-y:auto;flex:1;-webkit-overflow-scrolling:touch}
 .modal-body::-webkit-scrollbar{width:2px}
 .modal-body::-webkit-scrollbar-thumb{background:var(--red)}
+
+/* ── DETAIL MODAL ── */
 #detailOvl.open{align-items:flex-end}
 @media(min-width:640px){#detailOvl.open{align-items:center}}
-.detail-modal{background:#08080f;border:1px solid rgba(255,255,255,.10);border-radius:28px 28px 0 0;width:100%;max-width:820px;max-height:94svh;overflow:hidden;display:flex;flex-direction:column;transform:translateY(60px);opacity:0;transition:all .35s cubic-bezier(.25,.46,.45,.94);box-shadow:0 -8px 60px rgba(0,0,0,.8);}
-@media(min-width:640px){.detail-modal{border-radius:24px;max-height:90svh;transform:translateY(30px) scale(.97)}}
+
+.detail-modal{
+  background:#08080f;border:1px solid rgba(255,255,255,.10);
+  border-radius:28px 28px 0 0;width:100%;max-width:820px;
+  max-height:94svh;overflow:hidden;display:flex;flex-direction:column;
+  transform:translateY(60px);opacity:0;
+  transition:all .35s cubic-bezier(.25,.46,.45,.94);
+  box-shadow:0 -8px 60px rgba(0,0,0,.8);
+}
+@media(min-width:640px){
+  .detail-modal{border-radius:24px;max-height:90svh;transform:translateY(30px) scale(.97)}
+}
 .overlay.open .detail-modal{transform:translateY(0) scale(1);opacity:1}
+
+/* Detail gallery — also square */
 .d-gallery{position:relative;background:#000;flex-shrink:0}
-.d-main-wrap{position:relative;overflow:hidden;aspect-ratio:1/1;background:#050510;}
+.d-main-wrap{
+  position:relative;overflow:hidden;
+  aspect-ratio:1/1;  /* ← square in detail too */
+  background:#050510;
+}
 .d-main-img{width:100%;height:100%;object-fit:cover;object-position:center 60%;display:block;transition:opacity .2s ease;}
+
 .d-arrow{position:absolute;top:50%;transform:translateY(-50%);width:40px;height:40px;border-radius:50%;background:rgba(0,0,0,.6);backdrop-filter:blur(10px);border:1px solid rgba(255,255,255,.15);color:#fff;font-size:18px;cursor:pointer;display:flex;align-items:center;justify-content:center;z-index:10;transition:all .2s;-webkit-tap-highlight-color:transparent;}
 .d-arrow:hover{background:rgba(232,17,46,.7);border-color:rgba(232,17,46,.5)}
-.d-arrow-prev{left:10px}.d-arrow-next{right:10px}.d-arrow.hidden{display:none}
+.d-arrow-prev{left:10px}
+.d-arrow-next{right:10px}
+.d-arrow.hidden{display:none}
+
 .d-img-counter{position:absolute;top:12px;left:12px;z-index:10;padding:4px 10px;border-radius:100px;background:rgba(0,0,0,.65);backdrop-filter:blur(8px);font-size:11px;font-weight:800;color:rgba(255,255,255,.85);}
+
 .d-thumbs{display:flex;gap:6px;padding:10px 14px;overflow-x:auto;background:#050510;-webkit-overflow-scrolling:touch;scrollbar-width:none;}
 .d-thumbs::-webkit-scrollbar{display:none}
 .d-thumb{width:68px;height:68px;object-fit:cover;border-radius:9px;cursor:pointer;flex-shrink:0;border:2px solid transparent;opacity:.55;transition:all .2s;}
-.d-thumb.on{border-color:#e8112e;opacity:1}.d-thumb:hover{opacity:.85}
+.d-thumb.on{border-color:#e8112e;opacity:1}
+.d-thumb:hover{opacity:.85}
+
 .d-info{overflow-y:auto;flex:1;-webkit-overflow-scrolling:touch;padding:0;}
-.d-info::-webkit-scrollbar{width:2px}.d-info::-webkit-scrollbar-thumb{background:rgba(232,17,46,.4)}
-.d-header{padding:18px 22px 16px;border-bottom:1px solid rgba(255,255,255,.07);display:flex;align-items:flex-start;justify-content:space-between;gap:12px;}
+.d-info::-webkit-scrollbar{width:2px}
+.d-info::-webkit-scrollbar-thumb{background:rgba(232,17,46,.4)}
+
+.d-header{
+  padding:18px 22px 16px;border-bottom:1px solid rgba(255,255,255,.07);
+  display:flex;align-items:flex-start;justify-content:space-between;gap:12px;
+}
 .d-name{font-size:1.45rem;font-weight:900;color:#fff;letter-spacing:-.4px;line-height:1.2}
 .d-sub{font-size:12px;color:rgba(255,255,255,.5);font-weight:600;margin-top:5px;display:flex;align-items:center;gap:6px}
 .d-sub-dot{width:3px;height:3px;border-radius:50%;background:rgba(255,255,255,.3)}
 .d-price-block{text-align:left;flex-shrink:0}
-.d-price{font-size:1.7rem;font-weight:900;background:linear-gradient(130deg,#ff4466,#e8112e);-webkit-background-clip:text;background-clip:text;color:transparent;letter-spacing:-.5px;line-height:1;}
+.d-price{
+  font-size:1.7rem;font-weight:900;
+  background:linear-gradient(130deg,#ff4466,#e8112e);
+  -webkit-background-clip:text;background-clip:text;color:transparent;
+  letter-spacing:-.5px;line-height:1;
+}
 .d-price-lbl{font-size:10px;color:rgba(255,255,255,.4);font-weight:700;text-transform:uppercase;letter-spacing:.08em;margin-top:3px;text-align:left}
-.d-close{position:absolute;top:12px;right:12px;z-index:20;width:36px;height:36px;border-radius:50%;background:rgba(0,0,0,.65);backdrop-filter:blur(10px);border:1px solid rgba(255,255,255,.2);color:#fff;font-size:20px;line-height:1;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .2s;}
+
+.d-close{
+  position:absolute;top:12px;right:12px;z-index:20;
+  width:36px;height:36px;border-radius:50%;
+  background:rgba(0,0,0,.65);backdrop-filter:blur(10px);
+  border:1px solid rgba(255,255,255,.2);color:#fff;
+  font-size:20px;line-height:1;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;transition:all .2s;
+}
 .d-close:hover{background:rgba(239,68,68,.7);border-color:transparent}
+
 .d-specs-wrap{padding:16px 22px}
-.d-specs-title{font-size:10px;font-weight:900;color:rgba(255,255,255,.35);text-transform:uppercase;letter-spacing:.14em;margin-bottom:12px;display:flex;align-items:center;gap:7px;}
+.d-specs-title{
+  font-size:10px;font-weight:900;color:rgba(255,255,255,.35);
+  text-transform:uppercase;letter-spacing:.14em;margin-bottom:12px;
+  display:flex;align-items:center;gap:7px;
+}
 .d-specs-title::after{content:'';flex:1;height:1px;background:rgba(255,255,255,.07)}
 .d-specs{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
-.d-spec{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:14px;padding:14px 10px;text-align:center;transition:border-color .2s;}
+.d-spec{
+  background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);
+  border-radius:14px;padding:14px 10px;text-align:center;transition:border-color .2s;
+}
 .d-spec:hover{border-color:rgba(232,17,46,.3)}
-.d-spec-icon{width:36px;height:36px;border-radius:10px;background:rgba(255,255,255,.06);display:flex;align-items:center;justify-content:center;margin:0 auto 8px;}
+.d-spec-icon{
+  width:36px;height:36px;border-radius:10px;
+  background:rgba(255,255,255,.06);
+  display:flex;align-items:center;justify-content:center;
+  margin:0 auto 8px;
+}
 .d-spec-icon svg{width:17px;height:17px;color:rgba(255,255,255,.65)}
 .d-spec-v{font-size:13.5px;font-weight:800;color:#fff;margin-bottom:3px}
 .d-spec-k{font-size:9.5px;color:rgba(255,255,255,.38);font-weight:700;text-transform:uppercase;letter-spacing:.07em}
-.d-desc{margin:0 22px 16px;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.07);border-radius:14px;padding:14px 16px;font-size:13.5px;color:rgba(255,255,255,.75);line-height:1.75;}
-.d-seller{margin:0 22px 16px;background:linear-gradient(135deg,rgba(232,17,46,.07),rgba(232,17,46,.03));border:1px solid rgba(232,17,46,.2);border-radius:14px;padding:14px 16px;display:flex;align-items:center;gap:14px;}
-.d-seller-av{width:46px;height:46px;border-radius:50%;flex-shrink:0;background:linear-gradient(135deg,rgba(232,17,46,.3),rgba(200,16,46,.15));border:2px solid rgba(232,17,46,.35);display:flex;align-items:center;justify-content:center;}
+
+.d-desc{
+  margin:0 22px 16px;
+  background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.07);
+  border-radius:14px;padding:14px 16px;
+  font-size:13.5px;color:rgba(255,255,255,.75);line-height:1.75;
+}
+
+.d-seller{
+  margin:0 22px 16px;
+  background:linear-gradient(135deg,rgba(232,17,46,.07),rgba(232,17,46,.03));
+  border:1px solid rgba(232,17,46,.2);border-radius:14px;
+  padding:14px 16px;display:flex;align-items:center;gap:14px;
+}
+.d-seller-av{
+  width:46px;height:46px;border-radius:50%;flex-shrink:0;
+  background:linear-gradient(135deg,rgba(232,17,46,.3),rgba(200,16,46,.15));
+  border:2px solid rgba(232,17,46,.35);
+  display:flex;align-items:center;justify-content:center;
+}
 .d-seller-av svg{width:20px;height:20px;color:rgba(255,255,255,.7)}
 .d-seller-name{font-weight:900;font-size:15px;color:#fff;margin-bottom:3px}
 .d-seller-city{font-size:11.5px;color:rgba(255,255,255,.5);font-weight:600;display:flex;align-items:center;gap:4px}
 .d-seller-city svg{width:11px;height:11px;opacity:.6}
+
 .d-ctas{padding:0 22px 22px;display:flex;gap:10px;}
-.cta-wa{flex:1;padding:14px 16px;border-radius:14px;display:flex;align-items:center;justify-content:center;gap:8px;font-size:14px;font-weight:900;transition:all .22s;text-decoration:none;background:linear-gradient(135deg,rgba(37,211,102,.15),rgba(37,211,102,.08));border:1.5px solid rgba(37,211,102,.35);color:#4ade80;}
+.cta-wa{
+  flex:1;padding:14px 16px;border-radius:14px;
+  display:flex;align-items:center;justify-content:center;gap:8px;
+  font-size:14px;font-weight:900;transition:all .22s;text-decoration:none;
+  background:linear-gradient(135deg,rgba(37,211,102,.15),rgba(37,211,102,.08));
+  border:1.5px solid rgba(37,211,102,.35);color:#4ade80;
+}
 .cta-wa:hover{background:linear-gradient(135deg,rgba(37,211,102,.28),rgba(37,211,102,.15));transform:translateY(-2px);box-shadow:0 8px 24px rgba(37,211,102,.2)}
-.cta-call{flex:1;padding:14px 16px;border-radius:14px;display:flex;align-items:center;justify-content:center;gap:8px;font-size:14px;font-weight:900;transition:all .22s;text-decoration:none;background:linear-gradient(135deg,rgba(59,130,246,.15),rgba(59,130,246,.08));border:1.5px solid rgba(59,130,246,.35);color:#60a5fa;}
+.cta-call{
+  flex:1;padding:14px 16px;border-radius:14px;
+  display:flex;align-items:center;justify-content:center;gap:8px;
+  font-size:14px;font-weight:900;transition:all .22s;text-decoration:none;
+  background:linear-gradient(135deg,rgba(59,130,246,.15),rgba(59,130,246,.08));
+  border:1.5px solid rgba(59,130,246,.35);color:#60a5fa;
+}
 .cta-call:hover{background:linear-gradient(135deg,rgba(59,130,246,.28),rgba(59,130,246,.15));transform:translateY(-2px);box-shadow:0 8px 24px rgba(59,130,246,.2)}
 .cta-wa svg,.cta-call svg{width:17px;height:17px;flex-shrink:0}
-@media(max-width:600px){.d-specs{grid-template-columns:repeat(3,1fr)}.d-name{font-size:1.2rem}.d-price{font-size:1.35rem}.d-ctas{flex-direction:column}.d-arrow{width:34px;height:34px;font-size:16px}.d-main-wrap{aspect-ratio:1/1}}
+
+@media(max-width:600px){
+  .d-specs{grid-template-columns:repeat(3,1fr)}
+  .d-name{font-size:1.2rem}
+  .d-price{font-size:1.35rem}
+  .d-ctas{flex-direction:column}
+  .d-arrow{width:34px;height:34px;font-size:16px}
+  .d-main-wrap{aspect-ratio:1/1}
+}
+
+/* ── ADD MODAL ── */
 .add-modal{max-width:620px !important;border-radius:24px !important;overflow:hidden;display:flex;flex-direction:column;background:linear-gradient(160deg,#1a0008 0%,#0e0008 100%) !important;border:1px solid rgba(200,16,46,.3) !important;box-shadow:0 24px 80px rgba(200,16,46,.25),0 0 0 1px rgba(200,16,46,.15) !important;}
+
 .add-modal-head{display:flex;align-items:center;justify-content:space-between;padding:18px 20px;flex-shrink:0;background:linear-gradient(135deg,#c8102e 0%,#a00d24 40%,#7a0818 100%);position:relative;overflow:hidden;}
 .add-modal-head::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 80% 120% at 30% -20%,rgba(255,100,100,.25) 0%,transparent 60%);pointer-events:none;}
 .add-head-logo{display:flex;align-items:center;gap:12px;position:relative;z-index:1}
@@ -253,6 +629,7 @@ footer{border-top:1px solid rgba(255,255,255,.12);padding:36px 20px;background:r
 .add-head-sub{font-size:10.5px;font-weight:700;color:rgba(255,255,255,.65);text-transform:uppercase;letter-spacing:.1em;margin-top:2px}
 .add-modal-head .modal-x{position:relative;z-index:1;background:rgba(255,255,255,.15);border-color:rgba(255,255,255,.25);color:#fff;}
 .add-modal-head .modal-x:hover{background:rgba(0,0,0,.25);border-color:rgba(255,255,255,.3)}
+
 .add-upload-zone{flex-shrink:0;background:linear-gradient(160deg,rgba(200,16,46,.28) 0%,rgba(140,8,30,.22) 100%);border-bottom:1px solid rgba(200,16,46,.4);padding:14px 16px;cursor:pointer;transition:background .2s;}
 .add-upload-zone:hover{background:linear-gradient(160deg,rgba(200,16,46,.38) 0%,rgba(140,8,30,.30) 100%)}
 .add-upload-inner{display:flex;align-items:center;gap:12px;padding:10px 0}
@@ -262,14 +639,18 @@ footer{border-top:1px solid rgba(255,255,255,.12);padding:36px 20px;background:r
 .add-up-hint{font-size:11px;color:rgba(255,255,255,.42);margin-top:3px}
 .add-upload-zone .prev-grid{margin-top:6px;display:flex;flex-wrap:wrap;gap:7px}
 .add-upload-zone .prog{margin:8px 0 2px;display:none;background:rgba(255,255,255,.12);border-radius:100px;height:3px}
+
 .add-body-scroll{padding:0 !important;overflow-y:auto;flex:1;background:linear-gradient(180deg,#1a0008 0%,#12000a 40%,#0e000a 100%);}
 .add-body-scroll form{padding:16px 18px 20px}
+
 .add-section{margin-bottom:14px;padding:16px;border-radius:16px;background:rgba(200,16,46,.07);border:1px solid rgba(200,16,46,.22);}
 .add-section-seller{background:rgba(200,16,46,.12);border-color:rgba(200,16,46,.35);}
 .add-section-title{display:flex;align-items:center;gap:8px;font-size:11px;font-weight:900;color:rgba(255,180,180,.8);text-transform:uppercase;letter-spacing:.12em;margin-bottom:14px;}
 .add-section-dot{width:6px;height:6px;border-radius:50%;background:var(--red);box-shadow:0 0 8px var(--red);flex-shrink:0;}
+
 .add-row2{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px}
 .add-row3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-bottom:10px}
+
 .fg-item{display:flex;flex-direction:column;gap:5px}
 .fg-label{font-size:10px;font-weight:900;color:rgba(255,255,255,.6);text-transform:uppercase;letter-spacing:.1em}
 .fg-input,.fg-sel,.fg-ta{background:rgba(0,0,0,.35);border:1.5px solid rgba(200,16,46,.3);color:#fff;padding:10px 13px;border-radius:11px;outline:none;transition:all .18s;width:100%;font-size:13.5px;font-family:var(--font);}
@@ -279,26 +660,36 @@ footer{border-top:1px solid rgba(255,255,255,.12);padding:36px 20px;background:r
 .fg-sel{appearance:none;-webkit-appearance:none}
 .fg-sel option{background:#121224;color:#fff}
 .fg-ta{resize:vertical;min-height:72px}
+
 .prev-grid{display:flex;flex-wrap:wrap;gap:7px;margin-top:8px}
 .prev-wrap{position:relative;width:68px;height:68px;border-radius:9px;overflow:hidden}
 .prev-img{width:100%;height:100%;object-fit:cover}
 .prev-rm{position:absolute;top:2px;right:2px;width:17px;height:17px;border-radius:50%;background:rgba(239,68,68,.9);color:#fff;border:none;cursor:pointer;font-size:10px;display:flex;align-items:center;justify-content:center;font-weight:900}
 .prog{margin:6px 0;display:none;background:rgba(255,255,255,.12);border-radius:100px;height:3px;overflow:hidden}
 .prog-bar{height:100%;background:linear-gradient(90deg,var(--red),#e0162f);border-radius:100px;width:0%;transition:width .3s}
+
 .submit-btn{width:100%;padding:15px;border-radius:14px;margin-top:14px;background:linear-gradient(135deg,#e8112e,#c8102e,#a00d22);color:#fff;border:none;font-size:15px;font-weight:900;cursor:pointer;box-shadow:0 6px 24px rgba(200,16,46,.45),inset 0 1px 0 rgba(255,255,255,.15);transition:all .2s;font-family:var(--font);display:flex;align-items:center;justify-content:center;gap:9px;letter-spacing:.02em;}
 .submit-btn:hover:not(:disabled){transform:translateY(-2px);box-shadow:0 10px 32px rgba(200,16,46,.58),inset 0 1px 0 rgba(255,255,255,.2);}
 .submit-btn:disabled{opacity:.6;cursor:not-allowed;transform:none}
+.sub-icon{font-size:18px}
+
+/* Toast */
 #toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(70px);padding:12px 22px;border-radius:12px;font-size:13.5px;font-weight:800;z-index:9999;pointer-events:none;transition:all .28s var(--ease);background:rgba(10,10,20,.98);border:1px solid var(--b0);box-shadow:0 8px 28px rgba(0,0,0,.55);white-space:nowrap;}
 #toast.show{transform:translateX(-50%) translateY(0)}
 #toast.ok{border-color:rgba(74,222,128,.4);color:#4ade80}
 #toast.err{border-color:rgba(239,68,68,.4);color:#ef4444}
+
+/* ── PERFORMANCE ── */
 .car-card{content-visibility:auto;contain-intrinsic-size:0 460px}
 .cars-grid{contain:layout}
+
+/* ── RESPONSIVE ── */
 @media(max-width:900px){.nav-mid{display:none}}
 @media(max-width:600px){
   :root{--nav:54px}
   #nav{padding:0 12px;height:54px;gap:7px}
   .btn-pkg-nav{display:none !important}
+  .logo-israel{display:none}
   .logo-text{font-size:14px}
   #langTxt{display:none}
   .btn-lang{padding:6px 7px;gap:0}
@@ -329,6 +720,7 @@ footer{border-top:1px solid rgba(255,255,255,.12);padding:36px 20px;background:r
   .car-foot{padding:9px 12px 11px}
   .modal{border-radius:20px 20px 0 0;max-height:94svh}
   .d-specs{grid-template-columns:repeat(2,1fr)}
+  .fg{grid-template-columns:1fr}
   .foot-in{flex-direction:column;gap:12px;text-align:center}
   .add-row2{grid-template-columns:1fr 1fr}
   .add-row3{grid-template-columns:1fr 1fr}
@@ -345,74 +737,163 @@ footer{border-top:1px solid rgba(255,255,255,.12);padding:36px 20px;background:r
 </style>
 </head>
 <body>
+
+<!-- ── SVG ICON DEFS (inline, no external requests) ── -->
 <svg xmlns="http://www.w3.org/2000/svg" style="display:none">
-  <symbol id="ico-car" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 17H3a2 2 0 0 1-2-2V9a2 2 0 0 1 2-2h13l4 4v4a2 2 0 0 1-2 2h-1"/><circle cx="7" cy="17" r="2"/><circle cx="17" cy="17" r="2"/></symbol>
-  <symbol id="ico-search" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></symbol>
-  <symbol id="ico-globe" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></symbol>
-  <symbol id="ico-briefcase" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"/><line x1="12" y1="12" x2="12" y2="12.01"/></symbol>
-  <symbol id="ico-pin" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></symbol>
-  <symbol id="ico-img" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></symbol>
-  <symbol id="ico-wa" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.127.558 4.122 1.532 5.856L.057 23.49a.5.5 0 0 0 .617.608l5.76-1.504A11.943 11.943 0 0 0 12 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 22c-1.99 0-3.85-.552-5.44-1.51l-.39-.23-4.04 1.056 1.072-3.924-.253-.404A10 10 0 0 1 2 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10z"/></symbol>
-  <symbol id="ico-phone" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12 19.79 19.79 0 0 1 1.61 3.41 2 2 0 0 1 3.6 1.21h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L7.91 9a16 16 0 0 0 6 6l.92-.92a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 21.73 16.92z"/></symbol>
-  <symbol id="ico-gear" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></symbol>
-  <symbol id="ico-fuel" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 22V6a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v16"/><path d="M3 22h12"/><path d="M17 6h2a2 2 0 0 1 2 2v3.5"/><path d="M19 14.5V17a2 2 0 0 1-2 2"/></symbol>
-  <symbol id="ico-km" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 2a10 10 0 1 0 10 10"/><path d="M12 6v6l4 2"/><path d="M18 2l4 4-4 4"/><path d="M22 6h-6"/></symbol>
-  <symbol id="ico-hand" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M18 11V6a2 2 0 0 0-2-2 2 2 0 0 0-2 2"/><path d="M14 10V4a2 2 0 0 0-2-2 2 2 0 0 0-2 2v2"/><path d="M10 10.5V6a2 2 0 0 0-2-2 2 2 0 0 0-2 2v8"/><path d="M18 8a2 2 0 1 1 4 0v6a8 8 0 0 1-8 8h-2c-2.8 0-4.5-.86-5.99-2.34l-3.6-3.6a2 2 0 0 1 2.83-2.82L7 15"/></symbol>
-  <symbol id="ico-color" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="13.5" cy="6.5" r=".5" fill="currentColor"/><circle cx="17.5" cy="10.5" r=".5" fill="currentColor"/><circle cx="8.5" cy="7.5" r=".5" fill="currentColor"/><circle cx="6.5" cy="12.5" r=".5" fill="currentColor"/><path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10c.926 0 1.648-.746 1.648-1.688 0-.437-.18-.835-.437-1.125-.29-.289-.438-.652-.438-1.125a1.64 1.64 0 0 1 1.668-1.668h1.996c3.051 0 5.555-2.503 5.555-5.554C21.965 6.012 17.461 2 12 2z"/></symbol>
-  <symbol id="ico-engine" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="2" y="7" width="14" height="10" rx="2"/><path d="M16 9h4v6h-4"/><path d="M2 12h-2"/><path d="M6 7V5"/><path d="M10 7V5"/></symbol>
-  <symbol id="ico-star" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></symbol>
-  <symbol id="ico-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></symbol>
-  <symbol id="ico-upload" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></symbol>
-  <symbol id="ico-user" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></symbol>
-  <symbol id="ico-new" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></symbol>
-  <symbol id="ico-lock" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></symbol>
-  <symbol id="ico-arrow-left" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></symbol>
+  <symbol id="ico-car" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M5 17H3a2 2 0 0 1-2-2V9a2 2 0 0 1 2-2h13l4 4v4a2 2 0 0 1-2 2h-1"/>
+    <circle cx="7" cy="17" r="2"/><circle cx="17" cy="17" r="2"/>
+  </symbol>
+  <symbol id="ico-search" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round">
+    <circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/>
+  </symbol>
+  <symbol id="ico-globe" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+    <circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>
+  </symbol>
+  <symbol id="ico-briefcase" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+    <rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"/>
+    <line x1="12" y1="12" x2="12" y2="12.01"/>
+  </symbol>
+  <symbol id="ico-pin" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round">
+    <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/>
+  </symbol>
+  <symbol id="ico-img" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+    <rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/>
+    <polyline points="21 15 16 10 5 21"/>
+  </symbol>
+  <symbol id="ico-wa" viewBox="0 0 24 24" fill="currentColor">
+    <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/>
+    <path d="M12 0C5.373 0 0 5.373 0 12c0 2.127.558 4.122 1.532 5.856L.057 23.49a.5.5 0 0 0 .617.608l5.76-1.504A11.943 11.943 0 0 0 12 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 22c-1.99 0-3.85-.552-5.44-1.51l-.39-.23-4.04 1.056 1.072-3.924-.253-.404A10 10 0 0 1 2 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10z"/>
+  </symbol>
+  <symbol id="ico-phone" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
+    <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12 19.79 19.79 0 0 1 1.61 3.41 2 2 0 0 1 3.6 1.21h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L7.91 9a16 16 0 0 0 6 6l.92-.92a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 21.73 16.92z"/>
+  </symbol>
+  <symbol id="ico-gear" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+    <circle cx="12" cy="12" r="3"/>
+    <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/>
+  </symbol>
+  <symbol id="ico-fuel" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+    <path d="M3 22V6a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v16"/><path d="M3 22h12"/><path d="M17 6h2a2 2 0 0 1 2 2v3.5"/>
+    <path d="M19 14.5V17a2 2 0 0 1-2 2"/>
+  </symbol>
+  <symbol id="ico-km" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+    <path d="M12 2a10 10 0 1 0 10 10"/><path d="M12 6v6l4 2"/>
+    <path d="M18 2l4 4-4 4"/><path d="M22 6h-6"/>
+  </symbol>
+  <symbol id="ico-hand" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+    <path d="M18 11V6a2 2 0 0 0-2-2 2 2 0 0 0-2 2"/><path d="M14 10V4a2 2 0 0 0-2-2 2 2 0 0 0-2 2v2"/>
+    <path d="M10 10.5V6a2 2 0 0 0-2-2 2 2 0 0 0-2 2v8"/><path d="M18 8a2 2 0 1 1 4 0v6a8 8 0 0 1-8 8h-2c-2.8 0-4.5-.86-5.99-2.34l-3.6-3.6a2 2 0 0 1 2.83-2.82L7 15"/>
+  </symbol>
+  <symbol id="ico-color" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+    <circle cx="13.5" cy="6.5" r=".5" fill="currentColor"/><circle cx="17.5" cy="10.5" r=".5" fill="currentColor"/>
+    <circle cx="8.5" cy="7.5" r=".5" fill="currentColor"/><circle cx="6.5" cy="12.5" r=".5" fill="currentColor"/>
+    <path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10c.926 0 1.648-.746 1.648-1.688 0-.437-.18-.835-.437-1.125-.29-.289-.438-.652-.438-1.125a1.64 1.64 0 0 1 1.668-1.668h1.996c3.051 0 5.555-2.503 5.555-5.554C21.965 6.012 17.461 2 12 2z"/>
+  </symbol>
+  <symbol id="ico-engine" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+    <rect x="2" y="7" width="14" height="10" rx="2"/><path d="M16 9h4v6h-4"/>
+    <path d="M2 12h-2"/><path d="M6 7V5"/><path d="M10 7V5"/>
+  </symbol>
+  <symbol id="ico-star" viewBox="0 0 24 24" fill="currentColor">
+    <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+  </symbol>
+  <symbol id="ico-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
+    <polyline points="20 6 9 17 4 12"/>
+  </symbol>
+  <symbol id="ico-upload" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round">
+    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/>
+  </symbol>
+  <symbol id="ico-user" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+    <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/>
+  </symbol>
+  <symbol id="ico-new" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+    <path d="M12 5v14M5 12h14"/>
+  </symbol>
+  <symbol id="ico-lock" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+    <rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+  </symbol>
+  <symbol id="ico-arrow-left" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
+    <line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/>
+  </symbol>
 </svg>
 
+<!-- NAV -->
 <nav id="nav">
   <div class="logo" onclick="showHome()">
-    <div class="logo-box"><svg width="20" height="20"><use href="#ico-car"/></svg></div>
+    <div class="logo-box">
+      <svg width="20" height="20"><use href="#ico-car"/></svg>
+    </div>
     <span class="logo-text"><span class="r">YOUGO</span><span class="logo-cars"> CARS</span></span>
   </div>
+
   <div class="nav-mid">
-    <button class="nav-a" onclick="scrollTo2('searchSec')"><svg width="13" height="13"><use href="#ico-search"/></svg> חיפוש</button>
-    <button class="nav-a" onclick="scrollTo2('listSec')"><svg width="13" height="13"><use href="#ico-car"/></svg> מודעות</button>
-    <button class="nav-a" onclick="open('https://yougo-roan.vercel.app','_blank')"><svg width="13" height="13"><use href="#ico-globe"/></svg> YOUGO ISRAEL</button>
+    <button class="nav-a" onclick="scrollTo2('searchSec')">
+      <svg width="13" height="13"><use href="#ico-search"/></svg> חיפוש
+    </button>
+    <button class="nav-a" onclick="scrollTo2('listSec')">
+      <svg width="13" height="13"><use href="#ico-car"/></svg> מודעות
+    </button>
+    <button class="nav-a" onclick="open('https://yougo-roan.vercel.app','_blank')">
+      <svg width="13" height="13"><use href="#ico-globe"/></svg> YOUGO ISRAEL
+    </button>
   </div>
+
   <div class="nav-end">
     <button class="btn-lang" onclick="cycleLang()" id="langBtn">
       <span class="lang-icon" id="langIco">HE</span>
       <span id="langTxt">עברית</span>
     </button>
-    <a class="btn-pkg-nav" href="https://yougo-roan.vercel.app" target="_blank"><svg width="12" height="12"><use href="#ico-briefcase"/></svg> חבילות</a>
-    <button class="btn btn-red btn-nav-post" onclick="openAdd()"><svg width="13" height="13"><use href="#ico-new"/></svg><span id="navTxt">פרסם רכב</span></button>
+    <a class="btn-pkg-nav" href="https://yougo-roan.vercel.app" target="_blank">
+      <svg width="12" height="12"><use href="#ico-briefcase"/></svg> חבילות
+    </a>
+    <button class="btn btn-red btn-nav-post" onclick="openAdd()">
+      <svg width="13" height="13"><use href="#ico-new"/></svg>
+      <span id="navTxt">פרסם רכב</span>
+    </button>
   </div>
 </nav>
 
+<!-- ADMIN BAR -->
 <div id="adminBar">
-  <span style="font-weight:900;color:var(--red);font-size:13px;display:flex;align-items:center;gap:6px"><svg width="14" height="14"><use href="#ico-lock"/></svg> Admin Mode</span>
+  <span style="font-weight:900;color:var(--red);font-size:13px;display:flex;align-items:center;gap:6px">
+    <svg width="14" height="14"><use href="#ico-lock"/></svg> Admin Mode
+  </span>
   <div id="adminActs" style="display:flex;gap:7px;align-items:center;flex-wrap:wrap"></div>
 </div>
 
+<!-- HERO -->
 <div class="hero" id="heroSec" style="margin-top:var(--nav)">
-  <div class="hero-bg"></div><div class="hero-grid"></div><div class="hero-glow"></div>
+  <div class="hero-bg"></div>
+  <div class="hero-grid"></div>
+  <div class="hero-glow"></div>
   <div class="hero-in">
-    <div class="hero-badge"><div class="badge-dot"></div><span id="heroBadge">YOUGO ISRAEL — הפלטפורמה המובילה</span></div>
+    <div class="hero-badge">
+      <div class="badge-dot"></div>
+      <span id="heroBadge">YOUGO ISRAEL — הפלטפורמה המובילה</span>
+    </div>
     <h1 id="heroH">שוק הרכבים <span class="r">הדיגיטלי</span><br><span style="color:var(--t0)">של ישראל</span></h1>
     <p class="hero-sub" id="heroSub">קנה ומכור רכב בקלות ובמהירות. מודעות מאומתות עם אפשרות יצירת קשר מיידית.</p>
     <div class="hero-ctas">
-      <button class="btn btn-red" onclick="openAdd()" id="hBtn1"><svg width="15" height="15"><use href="#ico-car"/></svg> פרסם רכב בחינם</button>
-      <button class="btn btn-ghost" onclick="scrollTo2('listSec')" id="hBtn2"><svg width="15" height="15"><use href="#ico-search"/></svg> <span>חפש רכב</span></button>
-      <a class="btn-pkg" href="https://yougo-roan.vercel.app" target="_blank"><svg width="14" height="14"><use href="#ico-briefcase"/></svg><span id="hBtn3">חבילות פרסום מקצועיות</span><svg width="14" height="14"><use href="#ico-arrow-left"/></svg></a>
+      <button class="btn btn-red" onclick="openAdd()" id="hBtn1">
+        <svg width="15" height="15"><use href="#ico-car"/></svg> פרסם רכב בחינם
+      </button>
+      <button class="btn btn-ghost" onclick="scrollTo2('listSec')" id="hBtn2">
+        <svg width="15" height="15"><use href="#ico-search"/></svg> <span>חפש רכב</span>
+      </button>
+      <a class="btn-pkg" href="https://yougo-roan.vercel.app" target="_blank">
+        <svg width="14" height="14"><use href="#ico-briefcase"/></svg>
+        <span id="hBtn3">חבילות פרסום מקצועיות</span>
+        <svg width="14" height="14"><use href="#ico-arrow-left"/></svg>
+      </a>
     </div>
     <div class="hero-stats">
-      <div class="hs"><div class="hs-v" id="statCars">1,500</div><div class="hs-l" id="statCL">מודעות פעילות</div></div>
+      <div class="hs"><div class="hs-v" id="statCars">0</div><div class="hs-l" id="statCL">מודעות פעילות</div></div>
       <div class="hs"><div class="hs-v" style="font-size:1.35rem;line-height:1.15">מעל 2M<span class="a">+</span></div><div class="hs-l" id="statFL">צפיות בשנה</div></div>
       <div class="hs"><div class="hs-v">60<span class="a">״</span></div><div class="hs-l" id="statFrL">לפרסום מיידי</div></div>
     </div>
   </div>
 </div>
 
+<!-- TICKER -->
 <div class="ticker">
   <div class="ticker-inner">
     <div class="ti"><svg width="13" height="13"><use href="#ico-check"/></svg> פרסום חינמי מיידי</div>
@@ -420,23 +901,30 @@ footer{border-top:1px solid rgba(255,255,255,.12);padding:36px 20px;background:r
     <div class="ti"><svg width="13" height="13"><use href="#ico-wa"/></svg> פנייה ישירה ב-WhatsApp</div>
     <div class="ti"><svg width="13" height="13"><use href="#ico-lock"/></svg> מאובטח ובטוח</div>
     <div class="ti"><svg width="13" height="13"><use href="#ico-globe"/></svg> עברית · عربية · English</div>
-    <div class="ti"><svg width="13" height="13"><use href="#ico-star"/></svg> YOUGO ISRAEL — מעל 2 מיליון צפיות בשנה</div>
+    <div class="ti"><svg width="13" height="13"><use href="#ico-star"/></svg> YOUGO ISRAEL — 50K+ עוקבים</div>
     <div class="ti"><svg width="13" height="13"><use href="#ico-search"/></svg> אלפי גולשים יומיים</div>
+    <!-- duplicate for seamless loop -->
     <div class="ti"><svg width="13" height="13"><use href="#ico-check"/></svg> פרסום חינמי מיידי</div>
     <div class="ti"><svg width="13" height="13"><use href="#ico-car"/></svg> פרסום ב-60 שניות</div>
     <div class="ti"><svg width="13" height="13"><use href="#ico-wa"/></svg> פנייה ישירה ב-WhatsApp</div>
     <div class="ti"><svg width="13" height="13"><use href="#ico-lock"/></svg> מאובטח ובטוח</div>
     <div class="ti"><svg width="13" height="13"><use href="#ico-globe"/></svg> עברית · عربية · English</div>
-    <div class="ti"><svg width="13" height="13"><use href="#ico-star"/></svg> YOUGO ISRAEL — מעל 2 מיליון צפיות בשנה</div>
+    <div class="ti"><svg width="13" height="13"><use href="#ico-star"/></svg> YOUGO ISRAEL — 50K+ עוקבים</div>
     <div class="ti"><svg width="13" height="13"><use href="#ico-search"/></svg> אלפי גולשים יומיים</div>
   </div>
 </div>
 
+<!-- SEARCH -->
 <div class="search-wrap" id="searchSec">
-  <div class="search-eyebrow"><div class="search-eyebrow-line"></div><span class="search-eyebrow-text">חיפוש מתקדם</span></div>
+  <div class="search-eyebrow">
+    <div class="search-eyebrow-line"></div>
+    <span class="search-eyebrow-text">חיפוש מתקדם</span>
+  </div>
   <div class="search-card">
     <div class="search-main">
-      <span class="search-ico"><svg width="17" height="17"><use href="#ico-search"/></svg></span>
+      <span class="search-ico">
+        <svg width="17" height="17"><use href="#ico-search"/></svg>
+      </span>
       <input class="search-input" id="sTxt" placeholder="חפש לפי יצרן, דגם, עיר..." oninput="doFilter()">
       <button class="search-go" onclick="doFilter()" id="sBtn">חפש</button>
     </div>
@@ -445,58 +933,90 @@ footer{border-top:1px solid rgba(255,255,255,.12);padding:36px 20px;background:r
       <select class="fc" id="fYear" onchange="doFilter()"><option value="">כל השנים</option></select>
       <select class="fc" id="fPrice" onchange="doFilter()">
         <option value="">כל המחירים</option>
-        <option value="30000">עד ₪30,000</option><option value="50000">עד ₪50,000</option>
-        <option value="80000">עד ₪80,000</option><option value="100000">עד ₪100,000</option>
-        <option value="150000">עד ₪150,000</option><option value="200000">עד ₪200,000</option>
+        <option value="30000">עד ₪30,000</option>
+        <option value="50000">עד ₪50,000</option>
+        <option value="80000">עד ₪80,000</option>
+        <option value="100000">עד ₪100,000</option>
+        <option value="150000">עד ₪150,000</option>
+        <option value="200000">עד ₪200,000</option>
       </select>
       <select class="fc" id="fCity" onchange="doFilter()"><option value="">כל הערים</option></select>
       <select class="fc" id="fGear" onchange="doFilter()">
-        <option value="">כל הגירים</option><option value="אוטומט">אוטומט</option>
-        <option value="ידני">ידני</option><option value="CVT">CVT</option>
+        <option value="">כל הגירים</option>
+        <option value="אוטומט">אוטומט</option>
+        <option value="ידני">ידני</option>
+        <option value="CVT">CVT</option>
       </select>
       <select class="fc" id="fFuel" onchange="doFilter()">
-        <option value="">כל הדלקים</option><option value="בנזין">בנזין</option>
-        <option value="דיזל">דיזל</option><option value="היברידי">היברידי</option><option value="חשמלי">חשמלי</option>
+        <option value="">כל הדלקים</option>
+        <option value="בנזין">בנזין</option>
+        <option value="דיזל">דיזל</option>
+        <option value="היברידי">היברידי</option>
+        <option value="חשמלי">חשמלי</option>
       </select>
     </div>
   </div>
 </div>
 
+<!-- LISTINGS -->
 <div class="main" id="listSec">
   <div class="list-head">
     <h2 class="list-title" id="listTitle">מודעות <span class="r">פעילות</span></h2>
     <span class="cnt-badge" id="cntBadge">טוען...</span>
   </div>
   <div class="sort-row">
-    <button class="sort-btn on" onclick="doSort('newest',this)"><svg width="13" height="13"><use href="#ico-new"/></svg> החדשים</button>
-    <button class="sort-btn" onclick="doSort('price_asc',this)"><svg width="13" height="13"><use href="#ico-arrow-left"/></svg> מחיר נמוך</button>
-    <button class="sort-btn" onclick="doSort('price_desc',this)"><svg width="13" height="13"><use href="#ico-star"/></svg> מחיר גבוה</button>
-    <button class="sort-btn" onclick="doSort('km_asc',this)"><svg width="13" height="13"><use href="#ico-km"/></svg> ק"מ נמוך</button>
+    <button class="sort-btn on" onclick="doSort('newest',this)">
+      <svg width="13" height="13"><use href="#ico-new"/></svg> החדשים
+    </button>
+    <button class="sort-btn" onclick="doSort('price_asc',this)">
+      <svg width="13" height="13"><use href="#ico-arrow-left"/></svg> מחיר נמוך
+    </button>
+    <button class="sort-btn" onclick="doSort('price_desc',this)">
+      <svg width="13" height="13"><use href="#ico-star"/></svg> מחיר גבוה
+    </button>
+    <button class="sort-btn" onclick="doSort('km_asc',this)">
+      <svg width="13" height="13"><use href="#ico-km"/></svg> ק"מ נמוך
+    </button>
   </div>
-  <div id="carsBox"><div class="loading-box"><div class="spin"></div><p style="color:var(--t1);font-weight:600">טוען מודעות...</p></div></div>
+  <div id="carsBox">
+    <div class="loading-box"><div class="spin"></div><p style="color:var(--t1);font-weight:600">טוען מודעות...</p></div>
+  </div>
 </div>
 
+<!-- FOOTER -->
 <footer>
   <div class="foot-in">
-    <div class="foot-brand"><div class="foot-box"><svg width="17" height="17"><use href="#ico-car"/></svg></div><span class="foot-name"><span class="r">YOUGO</span> ISRAEL</span></div>
+    <div class="foot-brand">
+      <div class="foot-box">
+        <svg width="17" height="17"><use href="#ico-car"/></svg>
+      </div>
+      <span class="foot-name"><span class="r">YOUGO</span> ISRAEL</span>
+    </div>
     <span class="foot-copy">© 2026 YOUGO ISRAEL — כל הזכויות שמורות</span>
     <div class="foot-links">
-      <a class="foot-link" href="https://yougo-roan.vercel.app" target="_blank"><svg width="12" height="12"><use href="#ico-briefcase"/></svg> YOUGO ISRAEL</a>
-      <a class="foot-link" href="https://wa.me/972546980606" target="_blank"><svg width="12" height="12"><use href="#ico-wa"/></svg> WhatsApp</a>
-      <span class="foot-dot" onclick="adminLogin()"><svg width="8" height="8" viewBox="0 0 8 8"><circle cx="4" cy="4" r="4" fill="currentColor"/></svg></span>
+      <a class="foot-link" href="https://yougo-roan.vercel.app" target="_blank">
+        <svg width="12" height="12"><use href="#ico-briefcase"/></svg> YOUGO ISRAEL
+      </a>
+      <a class="foot-link" href="https://wa.me/972546980606" target="_blank">
+        <svg width="12" height="12"><use href="#ico-wa"/></svg> WhatsApp
+      </a>
+      <span class="foot-dot" onclick="adminLogin()">
+        <svg width="8" height="8" viewBox="0 0 8 8"><circle cx="4" cy="4" r="4" fill="currentColor"/></svg>
+      </span>
     </div>
   </div>
 </footer>
 
+<!-- DETAIL MODAL -->
 <div class="overlay" id="detailOvl" onclick="if(event.target.id==='detailOvl')closeDetail()">
   <div class="detail-modal" onclick="event.stopPropagation()">
     <div class="d-gallery" id="dGallery">
       <div class="d-main-wrap">
         <img class="d-main-img" id="dmImg" src="" alt="">
         <div class="d-img-counter" id="dCounter"></div>
-        <button class="d-arrow d-arrow-prev hidden" id="dPrev" onclick="dNav(-1)">&#8249;</button>
-        <button class="d-arrow d-arrow-next hidden" id="dNext" onclick="dNav(1)">&#8250;</button>
-        <button class="d-close" onclick="closeDetail()">&#215;</button>
+        <button class="d-arrow d-arrow-prev hidden" id="dPrev" onclick="dNav(-1)">‹</button>
+        <button class="d-arrow d-arrow-next hidden" id="dNext" onclick="dNav(1)">›</button>
+        <button class="d-close" onclick="closeDetail()">×</button>
       </div>
       <div class="d-thumbs" id="dThumbs"></div>
     </div>
@@ -504,13 +1024,15 @@ footer{border-top:1px solid rgba(255,255,255,.12);padding:36px 20px;background:r
   </div>
 </div>
 
+<!-- ADD MODAL -->
 <div class="overlay" id="addOvl" onclick="if(event.target.id==='addOvl')closeAdd()">
   <div class="modal add-modal" onclick="event.stopPropagation()">
     <div class="add-modal-head">
       <div class="add-head-logo">
         <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
           <path d="M18 8H6L4 14h16l-2-6z" fill="rgba(255,255,255,.25)" stroke="#fff" stroke-width="1.8" stroke-linejoin="round"/>
-          <circle cx="7.5" cy="16.5" r="2" fill="#fff"/><circle cx="16.5" cy="16.5" r="2" fill="#fff"/>
+          <circle cx="7.5" cy="16.5" r="2" fill="#fff"/>
+          <circle cx="16.5" cy="16.5" r="2" fill="#fff"/>
           <path d="M3 14h18" stroke="#fff" stroke-width="1.6" stroke-linecap="round"/>
           <path d="M5 14v2M19 14v2" stroke="#fff" stroke-width="1.4" stroke-linecap="round"/>
         </svg>
@@ -519,17 +1041,24 @@ footer{border-top:1px solid rgba(255,255,255,.12);padding:36px 20px;background:r
           <div class="add-head-sub">YOUGO CARS — חינם ומיידי</div>
         </div>
       </div>
-      <button class="modal-x" onclick="closeAdd()">&#215;</button>
+      <button class="modal-x" onclick="closeAdd()">×</button>
     </div>
+
     <div class="add-upload-zone" onclick="document.getElementById('imgIn').click()">
       <input type="file" id="imgIn" multiple accept="image/*" onchange="handleImgs(this)" style="display:none">
       <div class="add-upload-inner" id="uploadInner">
-        <div class="add-up-icon"><svg width="32" height="32"><use href="#ico-upload"/></svg></div>
-        <div><div class="add-up-txt" id="upTxt">העלה תמונות הרכב <span>(עד 10)</span></div><div class="add-up-hint">לחץ לבחירה · גרור לכאן</div></div>
+        <div class="add-up-icon">
+          <svg width="32" height="32"><use href="#ico-upload"/></svg>
+        </div>
+        <div>
+          <div class="add-up-txt" id="upTxt">העלה תמונות הרכב <span>(עד 10)</span></div>
+          <div class="add-up-hint">לחץ לבחירה · גרור לכאן</div>
+        </div>
       </div>
       <div class="prev-grid" id="prevGrid"></div>
       <div class="prog" id="prog"><div class="prog-bar" id="progBar"></div></div>
     </div>
+
     <div class="modal-body add-body-scroll" id="addBody">
       <form id="addForm" onsubmit="submitCar(event)">
         <div id="cfgTip" style="display:none;background:rgba(234,179,8,.1);border:1px solid rgba(234,179,8,.35);border-radius:12px;padding:12px 14px;margin-bottom:14px;font-size:12px;color:#fbbf24;line-height:1.6">
@@ -538,6 +1067,7 @@ footer{border-top:1px solid rgba(255,255,255,.12);padding:36px 20px;background:r
           2. כנס ל <strong>Settings → Upload → Add preset</strong> — בחר <strong>Unsigned</strong> — העתק את השם<br>
           3. עדכן בקוד: <code style="background:rgba(0,0,0,.4);padding:1px 5px;border-radius:4px">CL_NAME</code> ו <code style="background:rgba(0,0,0,.4);padding:1px 5px;border-radius:4px">CL_PRESET</code>
         </div>
+
         <div class="add-section">
           <div class="add-section-title"><span class="add-section-dot"></span> פרטי הרכב</div>
           <div class="add-row2">
@@ -550,20 +1080,28 @@ footer{border-top:1px solid rgba(255,255,255,.12);padding:36px 20px;background:r
             <div class="fg-item"><label class="fg-label">ק"מ</label><input class="fg-input" id="f_mileage" type="number" placeholder="80,000"></div>
           </div>
           <div class="add-row3">
-            <div class="fg-item"><label class="fg-label">יד</label><select class="fg-sel" id="f_hand"><option value="1">יד 1</option><option value="2" selected>יד 2</option><option value="3">יד 3</option><option value="4">יד 4+</option></select></div>
-            <div class="fg-item"><label class="fg-label">גיר</label><select class="fg-sel" id="f_gear"><option value="אוטומט">אוטומטי</option><option value="ידני">ידני</option><option value="CVT">CVT</option></select></div>
-            <div class="fg-item"><label class="fg-label">דלק</label><select class="fg-sel" id="f_fuel"><option value="בנזין">בנזין</option><option value="דיזל">דיזל</option><option value="היברידי">היברידי</option><option value="חשמלי">חשמלי</option></select></div>
+            <div class="fg-item"><label class="fg-label">יד</label>
+              <select class="fg-sel" id="f_hand"><option value="1">יד 1</option><option value="2" selected>יד 2</option><option value="3">יד 3</option><option value="4">יד 4+</option></select>
+            </div>
+            <div class="fg-item"><label class="fg-label">גיר</label>
+              <select class="fg-sel" id="f_gear"><option value="אוטומט">אוטומטי</option><option value="ידני">ידני</option><option value="CVT">CVT</option></select>
+            </div>
+            <div class="fg-item"><label class="fg-label">דלק</label>
+              <select class="fg-sel" id="f_fuel"><option value="בנזין">בנזין</option><option value="דיזל">דיזל</option><option value="היברידי">היברידי</option><option value="חשמלי">חשמלי</option></select>
+            </div>
           </div>
           <div class="add-row2">
             <div class="fg-item"><label class="fg-label">צבע</label><input class="fg-input" id="f_color" placeholder="לבן / שחור / כסוף..."></div>
             <div class="fg-item"><label class="fg-label">מנוע (L)</label><input class="fg-input" id="f_engine" type="number" step="0.1" placeholder="1.6"></div>
           </div>
         </div>
+
         <div class="add-section">
           <div class="add-section-title"><span class="add-section-dot"></span> תיאור הרכב</div>
           <div class="fg-item"><label class="fg-label">תיאור בעברית</label><textarea class="fg-ta" id="f_desc_he" placeholder="מצב הרכב, תוספות, היסטוריית תחזוקה..." style="min-height:70px"></textarea></div>
           <div class="fg-item" style="margin-top:8px"><label class="fg-label">وصف بالعربية</label><textarea class="fg-ta" id="f_desc_ar" placeholder="وصف السيارة، الإضافات، الصيانة..." style="min-height:70px"></textarea></div>
         </div>
+
         <div class="add-section add-section-seller">
           <div class="add-section-title"><span class="add-section-dot"></span> פרטי המוכר</div>
           <div class="add-row2">
@@ -572,6 +1110,7 @@ footer{border-top:1px solid rgba(255,255,255,.12);padding:36px 20px;background:r
           </div>
           <div class="fg-item"><label class="fg-label">עיר *</label><input class="fg-input" id="f_city" placeholder="תל אביב, חיפה, ירושלים..." required></div>
         </div>
+
         <button type="submit" class="submit-btn" id="subBtn">
           <svg width="18" height="18"><use href="#ico-car"/></svg>
           <span id="subBtnTxt">פרסם מודעה בחינם — מיידי!</span>
@@ -582,24 +1121,38 @@ footer{border-top:1px solid rgba(255,255,255,.12);padding:36px 20px;background:r
 </div>
 
 <div id="toast"></div>
+
 <script>
+// ═══════════════════════════════════════
+// CONFIG — DO NOT TOUCH
+// ═══════════════════════════════════════
 const SB_URL = 'https://arsbodqhmmtmoqqhykep.supabase.co';
 const SB_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImFyc2JvZHFobW10bW9xcWh5a2VwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzIxNTgxMTQsImV4cCI6MjA4NzczNDExNH0.mt_WpPshp5xdbIx23pMmcwq7MhktA0-vWPIstOy1_HM';
 const sb = supabase.createClient(SB_URL, SB_KEY);
+
 const CL_NAME   = 'dbd2dgqtl';
 const CL_PRESET = 'htxdjln0';
 const ADMIN_PW  = 'yougo2026';
 
+// ═══════════════════════════════════════
+// STATE
+// ═══════════════════════════════════════
 let all = [], filtered = [], imgs = [], isAdmin = false, lang = 'he', sort = 'newest';
 
+// ═══════════════════════════════════════
+// NAV
+// ═══════════════════════════════════════
 window.addEventListener('scroll', () =>
-  document.getElementById('nav').classList.toggle('solid', scrollY > 40), {passive:true});
-function scrollTo2(id){ document.getElementById(id)?.scrollIntoView({behavior:'smooth'}); }
+  document.getElementById('nav').classList.toggle('solid', scrollY > 40), {passive: true});
+function scrollTo2(id) { document.getElementById(id)?.scrollIntoView({behavior:'smooth'}); }
 
+// ═══════════════════════════════════════
+// TRANSLATIONS
+// ═══════════════════════════════════════
 const LANG_META = {
-  he:{code:'HE',label:'עברית'},
-  ar:{code:'AR',label:'عربي'},
-  en:{code:'EN',label:'English'}
+  he: {code:'HE', label:'עברית'},
+  ar: {code:'AR', label:'عربي'},
+  en: {code:'EN', label:'English'}
 };
 const T = {
   he:{badge:'YOUGO ISRAEL — הפלטפורמה המובילה',
@@ -610,9 +1163,11 @@ const T = {
     lT:'מודעות <span class="r">פעילות</span>',
     aT:'פרסם את הרכב שלך',sub2:'פרסם מודעה בחינם — מיידי!',
     upT:'העלה תמונות הרכב <span>(עד 10)</span>',
-    mk:'כל היצרנים',yr:'כל השנים',pr:'כל המחירים',ct:'כל הערים',gr:'כל הגירים',
+    mk:'כל היצרנים',yr:'כל השנים',pr:'כל המחירים',
+    ct:'כל הערים',gr:'כל הגירים',
     nc:'אין מודעות תואמות',ncd:'נסה לשנות פרמטרי חיפוש',
-    sold:'נמכר',feat:'מומלץ',nw:'חדש',na:'פרסם רכב',km:'ק"מ',ge:'גיר',fu:'דלק',sb2:'חפש',dir:'rtl'},
+    sold:'נמכר',feat:'מומלץ',nw:'חדש',
+    na:'פרסם רכב',km:'ק"מ',ge:'גיר',fu:'דלק',sb2:'חפש',dir:'rtl'},
   ar:{badge:'YOUGO ISRAEL — المنصة الرائدة',
     h1:'سوق السيارات <span class="r">الرقمي</span><br><span style="color:var(--t0)">في إسرائيل</span>',
     sub:'اشترِ وبِع سيارتك بسهولة وسرعة. إعلانات موثقة مع تواصل فوري.',
@@ -621,457 +1176,620 @@ const T = {
     lT:'الإعلانات <span class="r">النشطة</span>',
     aT:'أضف إعلانك',sub2:'انشر الآن — مجاناً!',
     upT:'انقر لإضافة صور <strong>(حتى 10)</strong>',
-    mk:'كل الماركات',yr:'كل السنوات',pr:'كل الأسعار',ct:'كل المدن',gr:'كل الناقلات',
+    mk:'كل الماركات',yr:'كل السنوات',pr:'كل الأسعار',
+    ct:'كل المدن',gr:'كل الناقلات',
     nc:'لا توجد إعلانات',ncd:'جرّب تغيير المعايير',
-    sold:'مباع',feat:'مميز',nw:'جديد',na:'أعلن عن سيارتك',km:'كم',ge:'ناقل',fu:'وقود',sb2:'بحث',dir:'rtl'},
+    sold:'مباع',feat:'مميز',nw:'جديد',
+    na:'أعلن عن سيارتك',km:'كم',ge:'ناقل',fu:'وقود',sb2:'بحث',dir:'rtl'},
   en:{badge:'YOUGO ISRAEL — The Leading Platform',
-    h1:'Israel's <span class="r">Digital</span><br><span style="color:var(--t0)">Car Market</span>',
+    h1:'Israel\\'s <span class="r">Digital</span><br><span style="color:var(--t0)">Car Market</span>',
     sub:'Buy and sell cars easily. Verified listings with instant contact.',
     b1:'Post Free',b2:'Browse',b3:'Professional Packages',
     cL:'Active Listings',fL:'Views per Year',frL:'Instant Post',
     lT:'<span class="r">Active</span> Listings',
     aT:'Post Your Car',sub2:'Post Now — Free!',
     upT:'Click to add photos <strong>(up to 10)</strong>',
-    mk:'All Makes',yr:'All Years',pr:'All Prices',ct:'All Cities',gr:'All Gears',
+    mk:'All Makes',yr:'All Years',pr:'All Prices',
+    ct:'All Cities',gr:'All Gears',
     nc:'No listings found',ncd:'Try changing filters',
-    sold:'Sold',feat:'Featured',nw:'New',na:'Post Car',km:'km',ge:'Gear',fu:'Fuel',sb2:'Search',dir:'ltr'}
+    sold:'Sold',feat:'Featured',nw:'New',
+    na:'Post Car',km:'km',ge:'Gear',fu:'Fuel',sb2:'Search',dir:'ltr'}
 };
 const t = k => T[lang]?.[k] || T.he[k] || k;
 
-function cycleLang(){
-  const l=['he','ar','en'];
-  lang=l[(l.indexOf(lang)+1)%3];
+function cycleLang() {
+  const l = ['he','ar','en'];
+  lang = l[(l.indexOf(lang)+1)%3];
   applyLang();
 }
-function applyLang(){
-  const L=T[lang],M=LANG_META[lang];
-  document.documentElement.lang=lang;
-  document.documentElement.dir=L.dir;
-  document.getElementById('langIco').textContent=M.code;
-  document.getElementById('langTxt').textContent=M.label;
-  document.getElementById('heroBadge').textContent=L.badge;
-  document.getElementById('heroH').innerHTML=L.h1;
-  document.getElementById('heroSub').textContent=L.sub;
-  document.getElementById('hBtn1').innerHTML=`<svg width="15" height="15"><use href="#ico-car"/></svg> ${L.b1}`;
-  document.getElementById('hBtn2').innerHTML=`<svg width="15" height="15"><use href="#ico-search"/></svg> ${L.b2}`;
-  document.getElementById('hBtn3').textContent=L.b3;
-  document.getElementById('navTxt').textContent=L.na;
-  document.getElementById('statCL').textContent=L.cL;
-  document.getElementById('statFL').textContent=L.fL;
-  document.getElementById('statFrL').textContent=L.frL;
-  document.getElementById('listTitle').innerHTML=L.lT;
-  document.getElementById('addTitle').textContent=L.aT;
-  const sb2El=document.getElementById('subBtnTxt');
-  if(sb2El) sb2El.textContent=L.sub2;
-  document.getElementById('upTxt').innerHTML=L.upT;
-  document.getElementById('sBtn').textContent=L.sb2;
-  document.getElementById('fMake').options[0].text=L.mk;
-  document.getElementById('fYear').options[0].text=L.yr;
-  document.getElementById('fPrice').options[0].text=L.pr;
-  document.getElementById('fCity').options[0].text=L.ct;
-  document.getElementById('fGear').options[0].text=L.gr;
+function applyLang() {
+  const L = T[lang], M = LANG_META[lang];
+  document.documentElement.lang = lang;
+  document.documentElement.dir = L.dir;
+  document.getElementById('langIco').textContent = M.code;
+  document.getElementById('langTxt').textContent = M.label;
+  document.getElementById('heroBadge').textContent = L.badge;
+  document.getElementById('heroH').innerHTML = L.h1;
+  document.getElementById('heroSub').textContent = L.sub;
+  document.getElementById('hBtn1').innerHTML = `<svg width="15" height="15"><use href="#ico-car"/></svg> ${L.b1}`;
+  document.getElementById('hBtn2').innerHTML = `<svg width="15" height="15"><use href="#ico-search"/></svg> ${L.b2}`;
+  document.getElementById('hBtn3').textContent = L.b3;
+  document.getElementById('navTxt').textContent = L.na;
+  document.getElementById('statCL').textContent = L.cL;
+  document.getElementById('statFL').textContent = L.fL;
+  document.getElementById('statFrL').textContent = L.frL;
+  document.getElementById('listTitle').innerHTML = L.lT;
+  document.getElementById('addTitle').textContent = L.aT;
+  const sb2El = document.getElementById('subBtnTxt');
+  if (sb2El) sb2El.textContent = L.sub2;
+  document.getElementById('upTxt').innerHTML = L.upT;
+  document.getElementById('sBtn').textContent = L.sb2;
+  document.getElementById('fMake').options[0].text = L.mk;
+  document.getElementById('fYear').options[0].text = L.yr;
+  document.getElementById('fPrice').options[0].text = L.pr;
+  document.getElementById('fCity').options[0].text = L.ct;
+  document.getElementById('fGear').options[0].text = L.gr;
   renderCars(filtered);
 }
 
-async function loadCars(){
-  document.getElementById('carsBox').innerHTML=
-    '<div class="loading-box"><div class="spin"></div><p style="color:var(--t1);font-weight:600">טוען מודעות...</p></div>';
-  try{
-    let q=sb.from('cars').select('*').order('created_at',{ascending:false});
-    if(!isAdmin) q=q.eq('status','active');
-    const {data,error}=await q;
-    if(error){
-      document.getElementById('carsBox').innerHTML=
-        `<div class="empty-box"><div class="empty-ico">⚠️</div><h3>שגיאת DB</h3>
-        <p style="color:#f87171;font-size:12px;word-break:break-all;margin-top:8px">${error.message||JSON.stringify(error)}</p>
-        <p style="color:var(--t2);font-size:11px;margin-top:6px">קוד: ${error.code||'—'} | hint: ${error.hint||'—'}</p>
-        <button class="btn btn-red" style="margin-top:14px" onclick="loadCars()">נסה שוב</button></div>`;
+// ═══════════════════════════════════════
+// LOAD CARS
+// ═══════════════════════════════════════
+async function loadCars() {
+  document.getElementById('carsBox').innerHTML =
+    '<div class="loading-box"><div class="spin"></div>' +
+    '<p style="color:var(--t1);font-weight:600">טוען מודעות...</p></div>';
+
+  try {
+    let query = sb.from('cars').select('*').order('created_at', {ascending: false});
+    if (!isAdmin) {
+      query = query.eq('status', 'active');
+    }
+
+    const {data, error} = await query;
+
+    if (error) {
+      document.getElementById('carsBox').innerHTML =
+        `<div class="empty-box">
+          <div class="empty-ico">⚠️</div>
+          <h3>שגיאת DB</h3>
+          <p style="color:#f87171;font-size:12px;word-break:break-all;margin-top:8px">${error.message || JSON.stringify(error)}</p>
+          <p style="color:var(--t2);font-size:11px;margin-top:6px">קוד: ${error.code||'—'} | hint: ${error.hint||'—'}</p>
+          <button class="btn btn-red" style="margin-top:14px" onclick="loadCars()">נסה שוב</button>
+        </div>`;
       return;
     }
-    all=data||[];
-    filtered=[...all];
+
+    all = data || [];
+    filtered = [...all];
     buildFilters();
     doSort(sort);
-    // CHANGE 1: base 1500 + real active count
-    const activeCount=all.filter(c=>c.status==='active').length;
-    document.getElementById('statCars').textContent=(1500+activeCount).toLocaleString();
-    if(all.length===0){
-      document.getElementById('carsBox').innerHTML=
-        `<div class="empty-box"><div style="opacity:.2;margin-bottom:14px"><svg width="52" height="52"><use href="#ico-car"/></svg></div>
-        <h3>אין מודעות עדיין</h3><p>היה הראשון לפרסם רכב!</p>
-        <button class="btn btn-red" style="margin-top:16px" onclick="openAdd()">פרסם רכב בחינם</button></div>`;
-      document.getElementById('cntBadge').textContent='0 מודעות';
+
+    const activeCount = all.filter(c => c.status === 'active').length;
+    document.getElementById('statCars').textContent = (1500 + activeCount).toLocaleString();
+
+    if (all.length === 0) {
+      document.getElementById('carsBox').innerHTML =
+        `<div class="empty-box">
+          <div class="empty-ico" style="font-size:52px;opacity:.2;margin-bottom:14px">
+            <svg width="52" height="52"><use href="#ico-car"/></svg>
+          </div>
+          <h3>אין מודעות עדיין</h3>
+          <p>היה הראשון לפרסם רכב!</p>
+          <button class="btn btn-red" style="margin-top:16px" onclick="openAdd()">פרסם רכב בחינם</button>
+        </div>`;
+      document.getElementById('cntBadge').textContent = '0 מודעות';
     }
-  }catch(e){
-    console.error('[YOUGO] loadCars error:',e);
-    document.getElementById('carsBox').innerHTML=
-      `<div class="empty-box"><div class="empty-ico">❌</div><h3>שגיאת חיבור</h3>
-      <p style="color:#f87171;font-size:12px;word-break:break-all">${e.message}</p>
-      <button class="btn btn-red" style="margin-top:14px" onclick="loadCars()">נסה שוב</button></div>`;
+
+  } catch(e) {
+    console.error('[YOUGO] loadCars error:', e);
+    document.getElementById('carsBox').innerHTML =
+      `<div class="empty-box">
+        <div class="empty-ico">❌</div>
+        <h3>שגיאת חיבור</h3>
+        <p style="color:#f87171;font-size:12px;word-break:break-all">${e.message}</p>
+        <button class="btn btn-red" style="margin-top:14px" onclick="loadCars()">נסה שוב</button>
+      </div>`;
   }
 }
 
-function buildFilters(){
-  const makes=[...new Set(all.map(c=>c.make).filter(Boolean))].sort();
-  const years=[...new Set(all.map(c=>c.year).filter(Boolean))].sort((a,b)=>b-a);
-  const cities=[...new Set(all.map(c=>c.seller_city).filter(Boolean))].sort();
-  const mk=document.getElementById('fMake');
-  const yr=document.getElementById('fYear');
-  const ct=document.getElementById('fCity');
-  const [cm,cy,cc]=[mk.value,yr.value,ct.value];
-  while(mk.options.length>1)mk.remove(1);
-  while(yr.options.length>1)yr.remove(1);
-  while(ct.options.length>1)ct.remove(1);
-  makes.forEach(m=>mk.add(new Option(m,m)));
-  years.forEach(y=>yr.add(new Option(y,y)));
-  cities.forEach(c=>ct.add(new Option(c,c)));
-  mk.value=cm;yr.value=cy;ct.value=cc;
+function buildFilters() {
+  const makes  = [...new Set(all.map(c => c.make).filter(Boolean))].sort();
+  const years  = [...new Set(all.map(c => c.year).filter(Boolean))].sort((a,b) => b-a);
+  const cities = [...new Set(all.map(c => c.seller_city).filter(Boolean))].sort();
+  const mk = document.getElementById('fMake');
+  const yr = document.getElementById('fYear');
+  const ct = document.getElementById('fCity');
+  const [cm, cy, cc] = [mk.value, yr.value, ct.value];
+  while (mk.options.length > 1) mk.remove(1);
+  while (yr.options.length > 1) yr.remove(1);
+  while (ct.options.length > 1) ct.remove(1);
+  makes.forEach(m  => mk.add(new Option(m, m)));
+  years.forEach(y  => yr.add(new Option(y, y)));
+  cities.forEach(c => ct.add(new Option(c, c)));
+  mk.value = cm; yr.value = cy; ct.value = cc;
 }
 
-function doFilter(){
-  const tx=document.getElementById('sTxt').value.toLowerCase();
-  const mk=document.getElementById('fMake').value;
-  const yr=document.getElementById('fYear').value;
-  const pr=document.getElementById('fPrice').value;
-  const ct=document.getElementById('fCity').value;
-  const gr=document.getElementById('fGear').value;
-  const fu=document.getElementById('fFuel').value;
-  filtered=all.filter(c=>{
-    if(tx&&!`${c.make} ${c.model} ${c.seller_city} ${c.color}`.toLowerCase().includes(tx))return false;
-    if(mk&&c.make!==mk)return false;
-    if(yr&&c.year!=yr)return false;
-    if(pr&&c.price>parseInt(pr))return false;
-    if(ct&&c.seller_city!==ct)return false;
-    if(gr&&c.gear_type!==gr)return false;
-    if(fu&&c.fuel_type!==fu)return false;
+function doFilter() {
+  const tx = document.getElementById('sTxt').value.toLowerCase();
+  const mk = document.getElementById('fMake').value;
+  const yr = document.getElementById('fYear').value;
+  const pr = document.getElementById('fPrice').value;
+  const ct = document.getElementById('fCity').value;
+  const gr = document.getElementById('fGear').value;
+  const fu = document.getElementById('fFuel').value;
+
+  filtered = all.filter(c => {
+    if (tx && !`${c.make} ${c.model} ${c.seller_city} ${c.color}`.toLowerCase().includes(tx)) return false;
+    if (mk && c.make !== mk) return false;
+    if (yr && c.year != yr) return false;
+    if (pr && c.price > parseInt(pr)) return false;
+    if (ct && c.seller_city !== ct) return false;
+    if (gr && c.gear_type !== gr) return false;
+    if (fu && c.fuel_type !== fu) return false;
     return true;
   });
   doSort(sort);
 }
 
-function doSort(type,btn){
-  sort=type;
-  if(btn){document.querySelectorAll('.sort-btn').forEach(b=>b.classList.remove('on'));btn.classList.add('on');}
-  const s=[...filtered];
-  if(type==='price_asc')s.sort((a,b)=>a.price-b.price);
-  else if(type==='price_desc')s.sort((a,b)=>b.price-a.price);
-  else if(type==='km_asc')s.sort((a,b)=>(a.mileage||999999)-(b.mileage||999999));
-  else s.sort((a,b)=>new Date(b.created_at)-new Date(a.created_at));
+function doSort(type, btn) {
+  sort = type;
+  if (btn) {
+    document.querySelectorAll('.sort-btn').forEach(b => b.classList.remove('on'));
+    btn.classList.add('on');
+  }
+  const s = [...filtered];
+  if      (type === 'price_asc')  s.sort((a,b) => a.price - b.price);
+  else if (type === 'price_desc') s.sort((a,b) => b.price - a.price);
+  else if (type === 'km_asc')     s.sort((a,b) => (a.mileage||999999) - (b.mileage||999999));
+  else                            s.sort((a,b) => new Date(b.created_at) - new Date(a.created_at));
   renderCars(s);
-  document.getElementById('cntBadge').textContent=filtered.length+' מודעות';
+  document.getElementById('cntBadge').textContent = filtered.length + ' מודעות';
 }
 
-function renderCars(cars){
-  const c=document.getElementById('carsBox');
-  if(!cars.length){
-    c.innerHTML=`<div class="empty-box"><div style="opacity:.2;margin-bottom:14px"><svg width="52" height="52"><use href="#ico-search"/></svg></div><h3>${t('nc')}</h3><p>${t('ncd')}</p></div>`;
+// ═══════════════════════════════════════
+// RENDER CARS — Professional card layout
+// ═══════════════════════════════════════
+function renderCars(cars) {
+  const c = document.getElementById('carsBox');
+  if (!cars.length) {
+    c.innerHTML = `<div class="empty-box">
+      <div style="opacity:.2;margin-bottom:14px"><svg width="52" height="52"><use href="#ico-search"/></svg></div>
+      <h3>${t('nc')}</h3><p>${t('ncd')}</p>
+    </div>`;
     return;
   }
-  c.innerHTML=`<div class="cars-grid">${cars.map(carCard).join('')}</div>`;
+  c.innerHTML = `<div class="cars-grid">${cars.map(carCard).join('')}</div>`;
 }
 
-function carCard(car){
-  const is=car.images||[],im=car.main_image||is[0];
-  const ph2=(car.seller_phone||'').replace(/\D/g,'').replace(/^0/,'');
-  const isNew=(Date.now()-new Date(car.created_at))<86400000*3&&car.status!=='sold';
-  const badges=[];
-  if(car.featured)badges.push(`<span class="cbadge cb-feat"><svg width="9" height="9"><use href="#ico-star"/></svg> ${t('feat')}</span>`);
-  if(car.status==='sold')badges.push(`<span class="cbadge cb-sold"><svg width="9" height="9"><use href="#ico-check"/></svg> ${t('sold')}</span>`);
-  if(isNew)badges.push(`<span class="cbadge cb-new"><svg width="9" height="9"><use href="#ico-new"/></svg> ${t('nw')}</span>`);
-  const specList=[];
-  if(car.gear_type)specList.push({icon:'ico-gear',val:car.gear_type,lbl:t('ge')});
-  if(car.fuel_type)specList.push({icon:'ico-fuel',val:car.fuel_type,lbl:t('fu')});
-  if(car.mileage)specList.push({icon:'ico-km',val:Number(car.mileage).toLocaleString(),lbl:t('km')});
-  else if(car.hand)specList.push({icon:'ico-hand',val:'יד '+car.hand,lbl:'יד'});
-  const specsHTML=specList.slice(0,3).map(s=>`<div class="spec"><div class="spec-icon"><svg><use href="#${s.icon}"/></svg></div><div class="spec-val">${s.val}</div><div class="spec-lbl">${s.lbl}</div></div>`).join('');
-  const adminRow=isAdmin?`<div class="admin-row">
-    ${car.status==='pending'?`<button class="a-btn a-approve" onclick="approve('${car.id}');event.stopPropagation()"><svg width="11" height="11"><use href="#ico-check"/></svg> אשר</button>`:''}
-    ${car.status==='active'?`<button class="a-btn a-sold" onclick="markSold('${car.id}');event.stopPropagation()"><svg width="11" height="11"><use href="#ico-star"/></svg> נמכר</button>`:''}
+function carCard(car) {
+  const is = car.images || [], im = car.main_image || is[0];
+  const ph2 = (car.seller_phone || '').replace(/\\D/g, '').replace(/^0/, '');
+  const isNew = (Date.now() - new Date(car.created_at)) < 86400000*3 && car.status !== 'sold';
+
+  const badges = [];
+  if (car.featured) badges.push(`<span class="cbadge cb-feat"><svg width="9" height="9"><use href="#ico-star"/></svg> ${t('feat')}</span>`);
+  if (car.status === 'sold') badges.push(`<span class="cbadge cb-sold"><svg width="9" height="9"><use href="#ico-check"/></svg> ${t('sold')}</span>`);
+  if (isNew) badges.push(`<span class="cbadge cb-new"><svg width="9" height="9"><use href="#ico-new"/></svg> ${t('nw')}</span>`);
+
+  // Specs — only filled values, max 3
+  const specList = [];
+  if (car.gear_type) specList.push({icon:'ico-gear', val:car.gear_type, lbl:t('ge')});
+  if (car.fuel_type) specList.push({icon:'ico-fuel', val:car.fuel_type, lbl:t('fu')});
+  if (car.mileage)   specList.push({icon:'ico-km',   val:Number(car.mileage).toLocaleString(), lbl:t('km')});
+  else if (car.hand) specList.push({icon:'ico-hand', val:'יד '+car.hand, lbl:'יד'});
+
+  const specsHTML = specList.slice(0,3).map(s => `
+    <div class="spec">
+      <div class="spec-icon"><svg><use href="#${s.icon}"/></svg></div>
+      <div class="spec-val">${s.val}</div>
+      <div class="spec-lbl">${s.lbl}</div>
+    </div>`).join('');
+
+  const adminRow = isAdmin ? `<div class="admin-row">
+    ${car.status==='pending' ? `<button class="a-btn a-approve" onclick="approve('${car.id}');event.stopPropagation()"><svg width="11" height="11"><use href="#ico-check"/></svg> אשר</button>` : ''}
+    ${car.status==='active'  ? `<button class="a-btn a-sold"    onclick="markSold('${car.id}');event.stopPropagation()"><svg width="11" height="11"><use href="#ico-star"/></svg> נמכר</button>` : ''}
     <button class="a-btn a-del" onclick="delCar('${car.id}');event.stopPropagation()">✕</button>
-  </div>`:'';
+  </div>` : '';
+
   return `<div class="car-card" onclick="openDetail('${car.id}')">
     <div class="car-img-wrap">
-      ${im?`<img class="car-img" src="${im}" alt="${car.make} ${car.model}" loading="lazy" decoding="async">`
-         :`<div class="car-placeholder"><svg width="52" height="52" opacity=".15"><use href="#ico-car"/></svg></div>`}
+      ${im
+        ? `<img class="car-img" src="${im}" alt="${car.make} ${car.model}" loading="lazy" decoding="async">`
+        : `<div class="car-placeholder">
+            <svg width="52" height="52" opacity=".15"><use href="#ico-car"/></svg>
+          </div>`}
       <div class="car-badges">${badges.join('')}</div>
-      ${is.length>1?`<div class="car-cnt"><svg width="11" height="11"><use href="#ico-img"/></svg> ${is.length}</div>`:''}
+      ${is.length > 1 ? `<div class="car-cnt">
+        <svg width="11" height="11"><use href="#ico-img"/></svg> ${is.length}
+      </div>` : ''}
       <div class="car-price-float"><small>₪</small>${Number(car.price).toLocaleString()}</div>
     </div>
-    ${car.status==='pending'&&isAdmin?`<div class="pend-bar"><svg width="12" height="12"><use href="#ico-new"/></svg> ממתין לאישור</div>`:''}
+    ${car.status === 'pending' && isAdmin ? `<div class="pend-bar">
+      <svg width="12" height="12"><use href="#ico-new"/></svg> ממתין לאישור
+    </div>` : ''}
     <div class="car-body">
-      <div class="car-name-row"><div class="car-name">${car.make} ${car.model}</div><div class="car-year-tag">${car.year}</div></div>
+      <div class="car-name-row">
+        <div class="car-name">${car.make} ${car.model}</div>
+        <div class="car-year-tag">${car.year}</div>
+      </div>
       <div class="car-meta">
-        ${car.hand?`<span class="car-meta-item"><svg width="10" height="10"><use href="#ico-hand"/></svg> יד ${car.hand}</span>`:''}
-        ${car.hand&&car.seller_city?'<span class="car-meta-sep"></span>':''}
-        ${car.seller_city?`<span class="car-meta-item"><svg width="10" height="10"><use href="#ico-pin"/></svg> ${car.seller_city}</span>`:''}
+        ${car.hand ? `<span class="car-meta-item"><svg width="10" height="10"><use href="#ico-hand"/></svg> יד ${car.hand}</span>` : ''}
+        ${car.hand && car.seller_city ? '<span class="car-meta-sep"></span>' : ''}
+        ${car.seller_city ? `<span class="car-meta-item"><svg width="10" height="10"><use href="#ico-pin"/></svg> ${car.seller_city}</span>` : ''}
       </div>
       <div class="specs">${specsHTML}</div>
     </div>
     <div class="car-foot">
-      <span class="car-loc"><svg><use href="#ico-pin"/></svg> ${car.seller_city||''}</span>
+      <span class="car-loc">
+        <svg><use href="#ico-pin"/></svg>
+        ${car.seller_city || ''}
+      </span>
       <div class="car-acts" onclick="event.stopPropagation()">
-        <a class="act act-wa" href="https://wa.me/972${ph2}" target="_blank"><svg><use href="#ico-wa"/></svg></a>
-        <a class="act act-call" href="tel:${car.seller_phone}"><svg><use href="#ico-phone"/></svg></a>
+        <a class="act act-wa" href="https://wa.me/972${ph2}" target="_blank" title="WhatsApp">
+          <svg><use href="#ico-wa"/></svg>
+        </a>
+        <a class="act act-call" href="tel:${car.seller_phone}" title="Call">
+          <svg><use href="#ico-phone"/></svg>
+        </a>
       </div>
     </div>
     ${adminRow}
   </div>`;
 }
 
-let _dImgs=[],_dIdx=0;
-function openDetail(id){
-  const car=all.find(c=>c.id===id);if(!car)return;
-  _dImgs=car.images?.length?car.images:(car.main_image?[car.main_image]:[]);
-  _dIdx=0;
-  const ph2=(car.seller_phone||'').replace(/\D/g,'').replace(/^0/,'');
-  const gallery=document.getElementById('dGallery');
-  const dmImg=document.getElementById('dmImg');
-  const dThumbs=document.getElementById('dThumbs');
-  const dCounter=document.getElementById('dCounter');
-  if(_dImgs.length>0){
-    gallery.style.display='';
-    dmImg.src=_dImgs[0];dmImg.alt=car.make+' '+car.model;
-    dCounter.textContent='1 / '+_dImgs.length;
-    if(_dImgs.length>1){
-      dThumbs.style.display='';
-      dThumbs.innerHTML=_dImgs.map((s,i)=>`<img class="d-thumb ${i===0?'on':''}" src="${s}" onclick="dGoTo(${i})" loading="lazy" decoding="async">`).join('');
+// ═══════════════════════════════════════
+// DETAIL MODAL
+// ═══════════════════════════════════════
+let _dImgs = [], _dIdx = 0;
+
+function openDetail(id) {
+  const car = all.find(c => c.id === id);
+  if (!car) return;
+  _dImgs = car.images?.length ? car.images : (car.main_image ? [car.main_image] : []);
+  _dIdx = 0;
+  const ph2 = (car.seller_phone || '').replace(/\\D/g, '').replace(/^0/, '');
+
+  const gallery  = document.getElementById('dGallery');
+  const dmImg    = document.getElementById('dmImg');
+  const dThumbs  = document.getElementById('dThumbs');
+  const dCounter = document.getElementById('dCounter');
+
+  if (_dImgs.length > 0) {
+    gallery.style.display = '';
+    dmImg.src = _dImgs[0];
+    dmImg.alt = car.make + ' ' + car.model;
+    dCounter.textContent = '1 / ' + _dImgs.length;
+    if (_dImgs.length > 1) {
+      dThumbs.style.display = '';
+      dThumbs.innerHTML = _dImgs.map((s,i) =>
+        `<img class="d-thumb ${i===0?'on':''}" src="${s}" onclick="dGoTo(${i})" loading="lazy" decoding="async">`
+      ).join('');
       document.getElementById('dPrev').classList.remove('hidden');
       document.getElementById('dNext').classList.remove('hidden');
-    }else{
-      dThumbs.style.display='none';dThumbs.innerHTML='';
+    } else {
+      dThumbs.style.display = 'none'; dThumbs.innerHTML = '';
       document.getElementById('dPrev').classList.add('hidden');
       document.getElementById('dNext').classList.add('hidden');
     }
-  }else{gallery.style.display='none';}
-  const specs=[
-    car.mileage?{icon:'ico-km',v:Number(car.mileage).toLocaleString(),k:t('km')}:null,
-    {icon:'ico-gear',v:car.gear_type||'—',k:t('ge')},
-    {icon:'ico-fuel',v:car.fuel_type||'—',k:t('fu')},
-    car.color?{icon:'ico-color',v:car.color,k:'צבע'}:null,
-    car.engine_size?{icon:'ico-engine',v:car.engine_size+'L',k:'מנוע'}:null,
-    car.hand?{icon:'ico-hand',v:'יד '+car.hand,k:'יד'}:null,
+  } else {
+    gallery.style.display = 'none';
+  }
+
+  const specs = [
+    car.mileage      ? {icon:'ico-km',     v:Number(car.mileage).toLocaleString(), k:t('km')} : null,
+    {icon:'ico-gear', v:car.gear_type||'—', k:t('ge')},
+    {icon:'ico-fuel', v:car.fuel_type||'—', k:t('fu')},
+    car.color        ? {icon:'ico-color',   v:car.color,           k:'צבע'}    : null,
+    car.engine_size  ? {icon:'ico-engine',  v:car.engine_size+'L', k:'מנוע'}   : null,
+    car.hand         ? {icon:'ico-hand',    v:'יד '+car.hand,      k:'יד'}     : null,
   ].filter(Boolean);
-  const waMsg=encodeURIComponent('שלום, ראיתי את המודעה של '+car.make+' '+car.model+' '+car.year+' ב-YOUGO CARS');
-  document.getElementById('detailBody').innerHTML=
+
+  const waMsg = encodeURIComponent('שלום, ראיתי את המודעה של '+car.make+' '+car.model+' '+car.year+' ב-YOUGO CARS');
+
+  document.getElementById('detailBody').innerHTML =
     `<div class="d-header">
       <div class="d-title-block">
         <div class="d-name">${car.make} ${car.model}</div>
-        <div class="d-sub"><span>${car.year}</span>
-          ${car.hand?`<span class="d-sub-dot"></span><span>יד ${car.hand}</span>`:''}
-          ${car.seller_city?`<span class="d-sub-dot"></span><span>${car.seller_city}</span>`:''}
+        <div class="d-sub">
+          <span>${car.year}</span>
+          ${car.hand ? `<span class="d-sub-dot"></span><span>יד ${car.hand}</span>` : ''}
+          ${car.seller_city ? `<span class="d-sub-dot"></span><span>${car.seller_city}</span>` : ''}
         </div>
       </div>
-      <div class="d-price-block"><div class="d-price">₪${Number(car.price).toLocaleString()}</div><div class="d-price-lbl">מחיר מבוקש</div></div>
+      <div class="d-price-block">
+        <div class="d-price">₪${Number(car.price).toLocaleString()}</div>
+        <div class="d-price-lbl">מחיר מבוקש</div>
+      </div>
     </div>
     <div class="d-specs-wrap">
       <div class="d-specs-title">מפרט טכני</div>
-      <div class="d-specs">${specs.map(s=>`<div class="d-spec"><div class="d-spec-icon"><svg><use href="#${s.icon}"/></svg></div><div class="d-spec-v">${s.v}</div><div class="d-spec-k">${s.k}</div></div>`).join('')}</div>
+      <div class="d-specs">
+        ${specs.map(s => `
+          <div class="d-spec">
+            <div class="d-spec-icon"><svg><use href="#${s.icon}"/></svg></div>
+            <div class="d-spec-v">${s.v}</div>
+            <div class="d-spec-k">${s.k}</div>
+          </div>`).join('')}
+      </div>
     </div>
-    ${car.description_he?`<div class="d-desc">${car.description_he}</div>`:''}
+    ${car.description_he ? `<div class="d-desc">${car.description_he}</div>` : ''}
     <div class="d-seller">
       <div class="d-seller-av"><svg width="20" height="20"><use href="#ico-user"/></svg></div>
-      <div><div class="d-seller-name">${car.seller_name||'—'}</div>
-      <div class="d-seller-city"><svg><use href="#ico-pin"/></svg> ${car.seller_city||'—'}</div></div>
+      <div>
+        <div class="d-seller-name">${car.seller_name || '—'}</div>
+        <div class="d-seller-city">
+          <svg><use href="#ico-pin"/></svg> ${car.seller_city || '—'}
+        </div>
+      </div>
     </div>
     <div class="d-ctas">
-      <a class="cta-wa" href="https://wa.me/972${ph2}?text=${waMsg}" target="_blank"><svg><use href="#ico-wa"/></svg> WhatsApp</a>
-      <a class="cta-call" href="tel:${car.seller_phone}"><svg><use href="#ico-phone"/></svg> ${car.seller_phone}</a>
+      <a class="cta-wa" href="https://wa.me/972${ph2}?text=${waMsg}" target="_blank">
+        <svg><use href="#ico-wa"/></svg> WhatsApp
+      </a>
+      <a class="cta-call" href="tel:${car.seller_phone}">
+        <svg><use href="#ico-phone"/></svg> ${car.seller_phone}
+      </a>
     </div>
-    ${isAdmin?`<div style="display:flex;gap:8px;margin:0 22px 22px">
-      ${car.status==='pending'?`<button onclick="approve('${car.id}');closeDetail()" style="flex:1;padding:13px;background:rgba(74,222,128,.1);border:1px solid rgba(74,222,128,.3);color:#4ade80;border-radius:12px;cursor:pointer;font-size:13px;font-weight:900;font-family:var(--font);display:flex;align-items:center;justify-content:center;gap:7px"><svg width="14" height="14"><use href="#ico-check"/></svg> אשר מודעה</button>`:''}
-      <button onclick="delCar('${car.id}');closeDetail()" style="flex:1;padding:13px;background:rgba(239,68,68,.1);border:1px solid rgba(239,68,68,.3);color:#ef4444;border-radius:12px;cursor:pointer;font-size:13px;font-weight:900;font-family:var(--font)">מחק</button>
-    </div>`:''}`;
-  document.getElementById('detailOvl').classList.add('open');
-  document.body.style.overflow='hidden';
-}
-function dGoTo(i){
-  if(i<0||i>=_dImgs.length)return;_dIdx=i;
-  const img=document.getElementById('dmImg');
-  img.style.opacity='0';
-  setTimeout(()=>{img.src=_dImgs[i];img.style.opacity='1';},200);
-  document.getElementById('dCounter').textContent=(i+1)+' / '+_dImgs.length;
-  document.querySelectorAll('.d-thumb').forEach((th,j)=>th.classList.toggle('on',j===i));
-}
-function dNav(dir){dGoTo(_dIdx+dir);}
-function closeDetail(){document.getElementById('detailOvl').classList.remove('open');document.body.style.overflow='';}
+    ${isAdmin ? `
+      <div style="display:flex;gap:8px;margin:0 22px 22px">
+        ${car.status==='pending' ? `<button onclick="approve('${car.id}');closeDetail()" style="flex:1;padding:13px;background:rgba(74,222,128,.1);border:1px solid rgba(74,222,128,.3);color:#4ade80;border-radius:12px;cursor:pointer;font-size:13px;font-weight:900;font-family:var(--font);display:flex;align-items:center;justify-content:center;gap:7px">
+          <svg width="14" height="14"><use href="#ico-check"/></svg> אשר מודעה</button>` : ''}
+        <button onclick="delCar('${car.id}');closeDetail()" style="flex:1;padding:13px;background:rgba(239,68,68,.1);border:1px solid rgba(239,68,68,.3);color:#ef4444;border-radius:12px;cursor:pointer;font-size:13px;font-weight:900;font-family:var(--font)">מחק</button>
+      </div>` : ''}`;
 
-function openAdd(){
+  document.getElementById('detailOvl').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+function dGoTo(i) {
+  if (i < 0 || i >= _dImgs.length) return;
+  _dIdx = i;
+  const img = document.getElementById('dmImg');
+  img.style.opacity = '0';
+  setTimeout(() => { img.src = _dImgs[i]; img.style.opacity = '1'; }, 200);
+  document.getElementById('dCounter').textContent = (i+1) + ' / ' + _dImgs.length;
+  document.querySelectorAll('.d-thumb').forEach((th,j) => th.classList.toggle('on', j===i));
+}
+function dNav(dir) { dGoTo(_dIdx + dir); }
+function closeDetail() {
+  document.getElementById('detailOvl').classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+// ═══════════════════════════════════════
+// ADD MODAL
+// ═══════════════════════════════════════
+function openAdd() {
   document.getElementById('addOvl').classList.add('open');
   document.getElementById('addForm').reset();
-  document.getElementById('prevGrid').innerHTML='';
-  imgs=[];
-  const inner=document.getElementById('uploadInner');
-  if(inner)inner.style.display='flex';
-  const errBox=document.getElementById('formErrBox');
-  if(errBox)errBox.remove();
+  document.getElementById('prevGrid').innerHTML = '';
+  imgs = [];
+  const inner = document.getElementById('uploadInner');
+  if (inner) inner.style.display = 'flex';
+  const errBox = document.getElementById('formErrBox');
+  if (errBox) errBox.remove();
 }
-function closeAdd(){document.getElementById('addOvl').classList.remove('open');}
+function closeAdd() { document.getElementById('addOvl').classList.remove('open'); }
 
-function handleImgs(input){
-  const files=[...input.files].slice(0,10);imgs=files;
-  const pg=document.getElementById('prevGrid');pg.innerHTML='';
-  const inner=document.getElementById('uploadInner');
-  if(inner)inner.style.display=files.length>0?'none':'flex';
-  files.forEach((f,i)=>{
-    const r=new FileReader();
-    r.onload=e=>{
-      const d=document.createElement('div');d.className='prev-wrap';
-      d.innerHTML=`<img src="${e.target.result}" class="prev-img"><button class="prev-rm" onclick="rmImg(${i});event.stopPropagation()" type="button">×</button>`;
+function handleImgs(input) {
+  const files = [...input.files].slice(0, 10);
+  imgs = files;
+  const pg = document.getElementById('prevGrid');
+  pg.innerHTML = '';
+  const inner = document.getElementById('uploadInner');
+  if (inner) inner.style.display = files.length > 0 ? 'none' : 'flex';
+  files.forEach((f, i) => {
+    const r = new FileReader();
+    r.onload = e => {
+      const d = document.createElement('div');
+      d.className = 'prev-wrap';
+      d.innerHTML = `<img src="${e.target.result}" class="prev-img">
+        <button class="prev-rm" onclick="rmImg(${i});event.stopPropagation()" type="button">×</button>`;
       pg.appendChild(d);
-    };r.readAsDataURL(f);
+    };
+    r.readAsDataURL(f);
   });
 }
-function rmImg(i){
-  imgs.splice(i,1);
-  const dt=new DataTransfer();imgs.forEach(f=>dt.items.add(f));
-  document.getElementById('imgIn').files=dt.files;
+function rmImg(i) {
+  imgs.splice(i, 1);
+  const dt = new DataTransfer();
+  imgs.forEach(f => dt.items.add(f));
+  document.getElementById('imgIn').files = dt.files;
   handleImgs(document.getElementById('imgIn'));
 }
 
-async function uploadImg(file){
-  const fd=new FormData();
-  fd.append('file',file);fd.append('upload_preset',CL_PRESET);fd.append('folder','yougo-cars');
-  const r=await fetch(`https://api.cloudinary.com/v1_1/${CL_NAME}/image/upload`,{method:'POST',body:fd});
-  const json=await r.json();
-  if(!r.ok||json.error){
-    const msg=json.error?.message||'HTTP '+r.status;
-    if(msg.toLowerCase().includes('unknown api key')||msg.toLowerCase().includes('invalid')){
-      const tip=document.getElementById('cfgTip');if(tip)tip.style.display='block';
+async function uploadImg(file) {
+  const fd = new FormData();
+  fd.append('file', file);
+  fd.append('upload_preset', CL_PRESET);
+  fd.append('folder', 'yougo-cars');
+  const r = await fetch(`https://api.cloudinary.com/v1_1/${CL_NAME}/image/upload`, {method:'POST', body:fd});
+  const json = await r.json();
+  if (!r.ok || json.error) {
+    const msg = json.error?.message || 'HTTP ' + r.status;
+    if (msg.toLowerCase().includes('unknown api key') || msg.toLowerCase().includes('invalid')) {
+      const tip = document.getElementById('cfgTip');
+      if (tip) tip.style.display = 'block';
       throw new Error('Cloudinary config שגוי — בדוק Cloud Name ו-Upload Preset');
     }
-    throw new Error('העלאת תמונה נכשלה: '+msg);
+    throw new Error('העלאת תמונה נכשלה: ' + msg);
   }
   return json.secure_url;
 }
-function getErrMsg(err){
-  if(!err)return 'שגיאה לא ידועה';
-  if(typeof err==='string')return err;
-  if(err.message)return err.message;
-  if(err.details)return err.details;
-  if(err.hint)return err.hint;
-  if(err.code)return 'קוד: '+err.code;
-  try{return JSON.stringify(err);}catch(e){return 'שגיאה לא ידועה';}
-}
-function showErrInForm(msg){
-  let box=document.getElementById('formErrBox');
-  if(!box){
-    box=document.createElement('div');box.id='formErrBox';
-    box.style.cssText='background:rgba(239,68,68,.12);border:1px solid rgba(239,68,68,.4);color:#fca5a5;border-radius:12px;padding:14px 16px;font-size:13px;font-weight:700;margin-top:12px;line-height:1.5;word-break:break-word;';
-    document.getElementById('subBtn').after(box);
-  }
-  box.innerHTML='❌ '+msg;
-  box.scrollIntoView({behavior:'smooth',block:'nearest'});
+
+function getErrMsg(err) {
+  if (!err) return 'שגיאה לא ידועה';
+  if (typeof err === 'string') return err;
+  if (err.message) return err.message;
+  if (err.details) return err.details;
+  if (err.hint)    return err.hint;
+  if (err.code)    return 'קוד: ' + err.code;
+  try { return JSON.stringify(err); } catch(e) { return 'שגיאה לא ידועה'; }
 }
 
-async function submitCar(e){
+function showErrInForm(msg) {
+  let box = document.getElementById('formErrBox');
+  if (!box) {
+    box = document.createElement('div');
+    box.id = 'formErrBox';
+    box.style.cssText = 'background:rgba(239,68,68,.12);border:1px solid rgba(239,68,68,.4);color:#fca5a5;border-radius:12px;padding:14px 16px;font-size:13px;font-weight:700;margin-top:12px;line-height:1.5;word-break:break-word;';
+    document.getElementById('subBtn').after(box);
+  }
+  box.innerHTML = '❌ ' + msg;
+  box.scrollIntoView({behavior:'smooth', block:'nearest'});
+}
+
+async function submitCar(e) {
   e.preventDefault();
-  const btn=document.getElementById('subBtn');
-  const pg=document.getElementById('prog');
-  const pb=document.getElementById('progBar');
-  const prevErr=document.getElementById('formErrBox');
-  if(prevErr)prevErr.remove();
-  btn.disabled=true;btn.innerHTML='<span>⏳</span><span>מעלה...</span>';
-  if(imgs.length)pg.style.display='block';
-  try{
-    const urls=[];
-    for(let i=0;i<imgs.length;i++){
-      btn.innerHTML=`<span>📷</span><span>מעלה תמונה ${i+1} מתוך ${imgs.length}...</span>`;
-      pb.style.width=`${Math.round(((i+1)/imgs.length)*100)}%`;
-      try{urls.push(await uploadImg(imgs[i]));}
-      catch(imgErr){if(i===0)throw imgErr;console.warn('[YOUGO] Image',i,'failed:',imgErr.message);}
+  const btn = document.getElementById('subBtn');
+  const pg  = document.getElementById('prog');
+  const pb  = document.getElementById('progBar');
+  const prevErr = document.getElementById('formErrBox');
+  if (prevErr) prevErr.remove();
+
+  btn.disabled = true;
+  btn.innerHTML = '<span>⏳</span><span>מעלה...</span>';
+  if (imgs.length) pg.style.display = 'block';
+
+  try {
+    const urls = [];
+    for (let i = 0; i < imgs.length; i++) {
+      btn.innerHTML = `<span></span><span>מעלה תמונה ${i+1} מתוך ${imgs.length}...</span>`;
+      pb.style.width = `${Math.round(((i+1)/imgs.length)*100)}%`;
+      try {
+        urls.push(await uploadImg(imgs[i]));
+      } catch(imgErr) {
+        if (i === 0) throw imgErr;
+        console.warn('[YOUGO] Image', i, 'failed:', imgErr.message);
+      }
     }
-    pg.style.display='none';
-    const make=document.getElementById('f_make').value.trim();
-    const model=document.getElementById('f_model').value.trim();
-    const year=parseInt(document.getElementById('f_year').value);
-    const price=parseInt(document.getElementById('f_price').value);
-    const sellerName=document.getElementById('f_name').value.trim();
-    const sellerPhone=document.getElementById('f_phone').value.trim();
-    const sellerCity=document.getElementById('f_city').value.trim();
-    if(!make||!model||!year||!price||!sellerName||!sellerPhone||!sellerCity)
+    pg.style.display = 'none';
+
+    const make       = document.getElementById('f_make').value.trim();
+    const model      = document.getElementById('f_model').value.trim();
+    const year       = parseInt(document.getElementById('f_year').value);
+    const price      = parseInt(document.getElementById('f_price').value);
+    const sellerName = document.getElementById('f_name').value.trim();
+    const sellerPhone= document.getElementById('f_phone').value.trim();
+    const sellerCity = document.getElementById('f_city').value.trim();
+
+    if (!make || !model || !year || !price || !sellerName || !sellerPhone || !sellerCity) {
       throw new Error('אנא מלא את כל שדות החובה (*)');
-    btn.innerHTML='<span>💾</span><span>שומר...</span>';
-    const payload={
-      make,model,year,price,
-      mileage:parseInt(document.getElementById('f_mileage').value)||0,
-      hand:parseInt(document.getElementById('f_hand').value)||2,
-      gear_type:document.getElementById('f_gear').value,
-      fuel_type:document.getElementById('f_fuel').value,
-      color:document.getElementById('f_color').value.trim()||null,
-      engine_size:parseFloat(document.getElementById('f_engine').value)||null,
-      description_he:document.getElementById('f_desc_he').value||null,
-      description_ar:document.getElementById('f_desc_ar').value||null,
-      seller_name:sellerName,seller_phone:sellerPhone,seller_city:sellerCity,
-      images:urls,main_image:urls[0]||null,status:'active'
+    }
+
+    btn.innerHTML = '<span></span><span>שומר...</span>';
+
+    const payload = {
+      make, model, year, price,
+      mileage:     parseInt(document.getElementById('f_mileage').value) || 0,
+      hand:        parseInt(document.getElementById('f_hand').value) || 2,
+      gear_type:   document.getElementById('f_gear').value,
+      fuel_type:   document.getElementById('f_fuel').value,
+      color:       document.getElementById('f_color').value.trim() || null,
+      engine_size: parseFloat(document.getElementById('f_engine').value) || null,
+      description_he: document.getElementById('f_desc_he').value || null,
+      description_ar: document.getElementById('f_desc_ar').value || null,
+      seller_name:  sellerName,
+      seller_phone: sellerPhone,
+      seller_city:  sellerCity,
+      images:      urls,
+      main_image:  urls[0] || null,
+      status:      'active'
     };
-    console.log('[YOUGO] Inserting:',payload);
-    const {data,error}=await sb.from('cars').insert(payload).select();
-    console.log('[YOUGO] Result:',{data,error});
-    if(error)throw new Error(getErrMsg(error));
+
+    console.log('[YOUGO] Inserting:', payload);
+    const {data, error} = await sb.from('cars').insert(payload).select();
+    console.log('[YOUGO] Result:', {data, error});
+
+    if (error) throw new Error(getErrMsg(error));
+
     await loadCars();
-    document.getElementById('addBody').innerHTML=`
+    document.getElementById('addBody').innerHTML = `
       <div style="text-align:center;padding:48px 20px">
         <div style="margin:0 auto 16px;width:64px;height:64px;border-radius:50%;background:rgba(74,222,128,.12);border:2px solid rgba(74,222,128,.3);display:flex;align-items:center;justify-content:center">
           <svg width="28" height="28" color="#4ade80"><use href="#ico-check"/></svg>
         </div>
         <h3 style="font-size:1.5rem;font-weight:900;margin-bottom:10px;color:#fff">המודעה פורסמה!</h3>
         <p style="color:rgba(255,255,255,.7);font-size:14px;margin-bottom:28px">הרכב שלך זמין עכשיו לכולם</p>
-        <button class="btn btn-red" style="padding:14px 36px;font-size:15px" onclick="closeAdd();document.getElementById('addBody').innerHTML=''">סגור</button>
+        <button class="btn btn-red" style="padding:14px 36px;font-size:15px"
+          onclick="closeAdd();document.getElementById('addBody').innerHTML=''">סגור</button>
       </div>`;
-    showToast('המודעה פורסמה בהצלחה!','ok');
-  }catch(err){
-    const msg=getErrMsg(err);
-    console.error('[YOUGO] Submit error:',err);
-    showErrInForm(msg);showToast('❌ '+msg.slice(0,60),'err');
-    btn.disabled=false;
-    btn.innerHTML=`<svg width="18" height="18"><use href="#ico-car"/></svg><span id="subBtnTxt">פרסם מודעה בחינם — מיידי!</span>`;
-    pg.style.display='none';pb.style.width='0%';
+    showToast('המודעה פורסמה בהצלחה!', 'ok');
+
+  } catch(err) {
+    const msg = getErrMsg(err);
+    console.error('[YOUGO] Submit error:', err);
+    showErrInForm(msg);
+    showToast('❌ ' + msg.slice(0,60), 'err');
+    btn.disabled = false;
+    btn.innerHTML = `<svg width="18" height="18"><use href="#ico-car"/></svg><span id="subBtnTxt">פרסם מודעה בחינם — מיידי!</span>`;
+    pg.style.display = 'none';
+    pb.style.width = '0%';
   }
 }
 
-function adminLogin(){
-  const p=prompt('Admin Password:');if(p===null)return;
-  if(p===ADMIN_PW){
-    isAdmin=true;
+// ═══════════════════════════════════════
+// ADMIN
+// ═══════════════════════════════════════
+function adminLogin() {
+  const p = prompt('Admin Password:');
+  if (p === null) return;
+  if (p === ADMIN_PW) {
+    isAdmin = true;
     document.getElementById('adminBar').classList.add('show');
-    document.getElementById('heroSec').style.marginTop='0';
-    document.getElementById('adminActs').innerHTML=`
+    document.getElementById('heroSec').style.marginTop = '0';
+    document.getElementById('adminActs').innerHTML = `
       <span style="color:var(--t1);font-size:12.5px;font-weight:600">Admin Mode</span>
       <button onclick="loadCars()" style="background:rgba(200,16,46,.12);border:1px solid var(--bred);color:var(--red);padding:6px 14px;border-radius:8px;cursor:pointer;font-size:12px;font-weight:900;font-family:var(--font)">רענן</button>
       <a href="admin.html" style="background:rgba(59,130,246,.12);border:1px solid rgba(59,130,246,.3);color:#60a5fa;padding:6px 14px;border-radius:8px;font-size:12px;font-weight:900;font-family:var(--font);text-decoration:none">לוח ניהול</a>
       <button onclick="adminOut()" style="background:var(--bg3);border:1px solid var(--b0);color:var(--t1);padding:6px 14px;border-radius:8px;cursor:pointer;font-size:12px;font-family:var(--font)">יציאה</button>`;
-    loadCars();showToast('Admin Mode פעיל','ok');
-  }else{showToast('❌ סיסמה שגויה','err');}
+    loadCars();
+    showToast('Admin Mode פעיל', 'ok');
+  } else {
+    showToast('❌ סיסמה שגויה', 'err');
+  }
 }
-function adminOut(){
-  isAdmin=false;
+function adminOut() {
+  isAdmin = false;
   document.getElementById('adminBar').classList.remove('show');
-  document.getElementById('heroSec').style.marginTop='';
+  document.getElementById('heroSec').style.marginTop = '';
   loadCars();
 }
-async function approve(id){
-  const {error}=await sb.from('cars').update({status:'active'}).eq('id',id);
-  if(!error){showToast('אושרה','ok');loadCars();}
-  else showToast('❌ '+error.message,'err');
+async function approve(id) {
+  const {error} = await sb.from('cars').update({status:'active'}).eq('id', id);
+  if (!error) { showToast('אושרה', 'ok'); loadCars(); }
+  else showToast('❌ ' + error.message, 'err');
 }
-async function markSold(id){
-  const {error}=await sb.from('cars').update({status:'sold'}).eq('id',id);
-  if(!error){showToast('נמכר','ok');loadCars();}
-  else showToast('❌ '+error.message,'err');
+async function markSold(id) {
+  const {error} = await sb.from('cars').update({status:'sold'}).eq('id', id);
+  if (!error) { showToast('נמכר', 'ok'); loadCars(); }
+  else showToast('❌ ' + error.message, 'err');
 }
-async function delCar(id){
-  if(!confirm('למחוק לצמיתות?'))return;
-  const {error}=await sb.from('cars').delete().eq('id',id);
-  if(!error){showToast('נמחקה','ok');loadCars();}
-  else showToast('❌ '+error.message,'err');
+async function delCar(id) {
+  if (!confirm('למחוק לצמיתות?')) return;
+  const {error} = await sb.from('cars').delete().eq('id', id);
+  if (!error) { showToast('נמחקה', 'ok'); loadCars(); }
+  else showToast('❌ ' + error.message, 'err');
 }
-function showToast(msg,type='ok'){
-  const el=document.getElementById('toast');
-  el.textContent=msg;el.className=`show ${type}`;
-  clearTimeout(el._t);el._t=setTimeout(()=>el.className='',3400);
+
+function showToast(msg, type='ok') {
+  const el = document.getElementById('toast');
+  el.textContent = msg;
+  el.className = `show ${type}`;
+  clearTimeout(el._t);
+  el._t = setTimeout(() => el.className = '', 3400);
 }
-function showHome(){filtered=[...all];doSort(sort);window.scrollTo({top:0,behavior:'smooth'});}
-document.addEventListener('keydown',e=>{if(e.key==='Escape'){closeDetail();closeAdd();}});
+function showHome() {
+  filtered = [...all];
+  doSort(sort);
+  window.scrollTo({top:0, behavior:'smooth'});
+}
+
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') { closeDetail(); closeAdd(); }
+});
+
 loadCars();
 </script>
 </body>
