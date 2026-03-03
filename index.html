@@ -1,3 +1,4 @@
+```html
 <!DOCTYPE html>
 <html lang="he" dir="rtl">
 <head>
@@ -160,7 +161,6 @@ body::before{
   color:transparent;
   background:linear-gradient(125deg,#ff5878 0%,#e8112e 55%,#ff2040 100%);
   -webkit-background-clip:text;background-clip:text;
-  text-decoration:none;border:none;display:inline;
   filter:drop-shadow(0 0 20px rgba(232,17,46,.55));
 }
 .hero h1 br{display:block;content:'';border:none;background:none}
@@ -886,9 +886,9 @@ footer{border-top:1px solid rgba(255,255,255,.12);padding:36px 20px;background:r
       </a>
     </div>
     <div class="hero-stats">
-      <div class="hs"><div class="hs-v" id="statCars">0</div><div class="hs-l" id="statCL">מודעות פעילות</div></div>
-      <div class="hs"><div class="hs-v">50K<span class="a">+</span></div><div class="hs-l" id="statFL">עוקבים</div></div>
-      <div class="hs"><div class="hs-v">100<span class="a">%</span></div><div class="hs-l" id="statFrL">חינם לפרסם</div></div>
+      <div class="hs"><div class="hs-v" id="statCars">1500</div><div class="hs-l" id="statCL">מודעות פעילות</div></div>
+      <div class="hs"><div class="hs-v">מעל 2 מיליון</div><div class="hs-l" id="statFL">צפיות בשנה</div></div>
+      <div class="hs"><div class="hs-v">∞</div><div class="hs-l" id="statFrL">פרסום ללא הגבלה</div></div>
     </div>
   </div>
 </div>
@@ -1159,7 +1159,7 @@ const T = {
     h1:'שוק הרכבים <span class="r">הדיגיטלי</span><br><span style="color:var(--t0)">של ישראל</span>',
     sub:'קנה ומכור רכב בקלות ובמהירות. מודעות מאומתות עם אפשרות יצירת קשר מיידית.',
     b1:'פרסם רכב בחינם',b2:'חפש רכב',b3:'חבילות פרסום מקצועיות',
-    cL:'מודעות פעילות',fL:'עוקבים',frL:'חינם לפרסם',
+    cL:'מודעות פעילות',fL:'צפיות בשנה',frL:'פרסום ללא הגבלה',
     lT:'מודעות <span class="r">פעילות</span>',
     aT:'פרסם את הרכב שלך',sub2:'פרסם מודעה בחינם — מיידי!',
     upT:'העלה תמונות הרכב <span>(עד 10)</span>',
@@ -1172,7 +1172,7 @@ const T = {
     h1:'سوق السيارات <span class="r">الرقمي</span><br><span style="color:var(--t0)">في إسرائيل</span>',
     sub:'اشترِ وبِع سيارتك بسهولة وسرعة. إعلانات موثقة مع تواصل فوري.',
     b1:'أعلن مجاناً',b2:'تصفح',b3:'باقات الإعلان',
-    cL:'إعلان نشط',fL:'متابع',frL:'نشر مجاني',
+    cL:'إعلان نشط',fL:'مشاهدة سنوية',frL:'نشر غير محدود',
     lT:'الإعلانات <span class="r">النشطة</span>',
     aT:'أضف إعلانك',sub2:'انشر الآن — مجاناً!',
     upT:'انقر لإضافة صور <strong>(حتى 10)</strong>',
@@ -1185,7 +1185,7 @@ const T = {
     h1:'Israel\'s <span class="r">Digital</span><br><span style="color:var(--t0)">Car Market</span>',
     sub:'Buy and sell cars easily. Verified listings with instant contact.',
     b1:'Post Free',b2:'Browse',b3:'Professional Packages',
-    cL:'Active Listings',fL:'Followers',frL:'Free to Post',
+    cL:'Active Listings',fL:'Yearly views',frL:'Unlimited free posting',
     lT:'<span class="r">Active</span> Listings',
     aT:'Post Your Car',sub2:'Post Now — Free!',
     upT:'Click to add photos <strong>(up to 10)</strong>',
@@ -1265,8 +1265,8 @@ async function loadCars() {
     buildFilters();
     doSort(sort);
 
-    document.getElementById('statCars').textContent =
-      all.filter(c => c.status === 'active').length;
+    const activeCount = all.filter(c => c.status === 'active').length;
+    document.getElementById('statCars').textContent = 1500 + activeCount;
 
     if (all.length === 0) {
       document.getElementById('carsBox').innerHTML =
@@ -1794,3 +1794,4 @@ loadCars();
 </script>
 </body>
 </html>
+```
