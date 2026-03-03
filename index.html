@@ -1,4 +1,3 @@
-```html
 <!DOCTYPE html>
 <html lang="he" dir="rtl">
 <head>
@@ -89,7 +88,7 @@ body::before {
   mix-blend-mode: overlay;
 }
 
-/* ── NAV (unchanged) ── */
+/* ── NAV ── */
 #nav {
   position: fixed;
   top: 0;
@@ -279,7 +278,7 @@ body::before {
   box-shadow: 0 6px 22px rgba(200, 16, 46, 0.54);
 }
 
-/* ── ADMIN BAR (unchanged) ── */
+/* ── ADMIN BAR ── */
 #adminBar {
   display: none;
   background: rgba(200, 16, 46, 0.06);
@@ -294,7 +293,7 @@ body::before {
   display: flex;
 }
 
-/* ── HERO (ultra‑luxury, refined for mobile/desktop) ── */
+/* ── HERO ── */
 .hero {
   position: relative;
   min-height: 100svh;
@@ -416,73 +415,99 @@ body::before {
   box-shadow: 0 8px 28px rgba(212, 175, 55, 0.22);
 }
 
-/* ── STATS CARDS (elegant, glass‑morphism, refined typography) ── */
+/* ══════════════════════════════════════════
+   STATS CARDS — WORLD-CLASS LUXURY REDESIGN
+══════════════════════════════════════════ */
 .hero-stats {
-  display: flex;
-  max-width: 800px;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  max-width: 900px;
   margin: 0 auto 40px;
-  gap: 16px;
-  justify-content: center;
+  gap: 18px;
 }
 
 .stat-card {
-  flex: 1;
-  background: rgba(20, 20, 40, 0.5);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  border-radius: 32px;
-  padding: 22px 12px;
-  text-align: center;
-  transition: transform 0.3s var(--ease), border-color 0.3s, box-shadow 0.3s;
-  box-shadow: 0 20px 40px -20px rgba(0, 0, 0, 0.6);
   position: relative;
+  background: rgba(8, 8, 22, 0.75);
+  backdrop-filter: blur(40px) saturate(1.6);
+  -webkit-backdrop-filter: blur(40px) saturate(1.6);
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  border-radius: 28px;
+  padding: 32px 20px 26px;
+  text-align: center;
+  transition: transform 0.4s var(--ease), border-color 0.4s, box-shadow 0.4s;
+  box-shadow:
+    0 24px 60px -20px rgba(0, 0, 0, 0.8),
+    inset 0 1px 0 rgba(255, 255, 255, 0.06),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.3);
   overflow: hidden;
 }
 
-/* Shine effect on hover */
+/* Top accent line */
+.stat-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 20%; right: 20%;
+  height: 1.5px;
+  background: linear-gradient(90deg, transparent, rgba(232, 17, 46, 0.9), transparent);
+  border-radius: 0 0 4px 4px;
+  transition: left 0.3s, right 0.3s, opacity 0.3s;
+}
+
+.stat-card:hover::before {
+  left: 10%; right: 10%;
+}
+
+/* Radial glow inside */
 .stat-card::after {
   content: '';
   position: absolute;
-  top: -50%;
-  left: -50%;
-  width: 200%;
-  height: 200%;
-  background: linear-gradient(45deg, transparent 30%, rgba(255,255,255,0.03) 50%, transparent 70%);
-  transform: rotate(30deg);
-  transition: transform 0.6s var(--ease);
-  opacity: 0;
-}
-
-.stat-card:hover::after {
-  opacity: 1;
-  transform: rotate(30deg) translate(20%, 20%);
+  top: -40%;
+  left: -20%;
+  width: 140%;
+  height: 120%;
+  background: radial-gradient(ellipse at 50% 0%, rgba(232, 17, 46, 0.09) 0%, transparent 65%);
+  pointer-events: none;
+  transition: opacity 0.4s;
 }
 
 .stat-card:hover {
-  transform: translateY(-4px);
+  transform: translateY(-8px) scale(1.02);
   border-color: rgba(232, 17, 46, 0.3);
-  box-shadow: 0 25px 50px -20px rgba(232, 17, 46, 0.4);
+  box-shadow:
+    0 36px 80px -20px rgba(232, 17, 46, 0.3),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1),
+    0 0 0 1px rgba(232, 17, 46, 0.12);
 }
 
+.stat-card:hover::after {
+  opacity: 1.5;
+}
+
+/* Icon */
 .stat-icon {
-  width: 48px;
-  height: 48px;
-  margin: 0 auto 16px;
+  width: 60px;
+  height: 60px;
+  margin: 0 auto 20px;
   display: flex;
   align-items: center;
   justify-content: center;
-  background: rgba(232, 17, 46, 0.12);
-  border-radius: 24px;
-  border: 1px solid rgba(232, 17, 46, 0.25);
-  color: var(--red);
-  transition: all 0.3s var(--ease);
+  background: rgba(232, 17, 46, 0.08);
+  border-radius: 18px;
+  border: 1px solid rgba(232, 17, 46, 0.18);
+  color: #ff3355;
+  transition: all 0.35s var(--ease);
+  position: relative;
+  z-index: 1;
+  box-shadow: 0 8px 24px -8px rgba(232, 17, 46, 0.25);
 }
 
 .stat-card:hover .stat-icon {
-  background: rgba(232, 17, 46, 0.2);
-  border-color: rgba(232, 17, 46, 0.5);
-  transform: scale(1.05);
+  background: rgba(232, 17, 46, 0.18);
+  border-color: rgba(232, 17, 46, 0.45);
+  transform: scale(1.1) translateY(-2px);
+  box-shadow: 0 12px 32px -8px rgba(232, 17, 46, 0.45);
+  color: #ff5577;
 }
 
 .stat-icon svg {
@@ -493,47 +518,96 @@ body::before {
   fill: none;
 }
 
+/* Value */
 .stat-value {
-  font-size: clamp(1.9rem, 4vw, 2.8rem);
+  font-size: clamp(2rem, 4.5vw, 3.2rem);
   font-weight: 900;
-  color: #fff;
-  line-height: 1.2;
-  margin-bottom: 6px;
-  letter-spacing: -0.02em;
+  line-height: 1.05;
+  margin-bottom: 10px;
+  letter-spacing: -0.03em;
+  position: relative;
+  z-index: 1;
+  background: linear-gradient(160deg, #ffffff 30%, rgba(255,255,255,0.75) 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
 }
 
+/* Label */
 .stat-label {
-  font-size: clamp(0.7rem, 1.5vw, 0.85rem);
-  font-weight: 700;
+  font-size: 0.72rem;
+  font-weight: 900;
   text-transform: uppercase;
-  letter-spacing: 0.08em;
-  color: rgba(255, 255, 255, 0.6);
-  margin-bottom: 8px;
+  letter-spacing: 0.14em;
+  color: rgba(255, 255, 255, 0.45);
+  margin-bottom: 10px;
+  position: relative;
+  z-index: 1;
 }
 
+/* Divider line */
+.stat-card .stat-divider {
+  width: 32px;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(232,17,46,0.6), transparent);
+  margin: 0 auto 10px;
+}
+
+/* Desc */
 .stat-desc {
-  font-size: 0.7rem;
+  font-size: 0.72rem;
   font-weight: 500;
-  color: rgba(255, 255, 255, 0.4);
-  max-width: 180px;
+  color: rgba(255, 255, 255, 0.3);
+  line-height: 1.55;
+  max-width: 160px;
   margin: 0 auto;
-  line-height: 1.4;
+  position: relative;
+  z-index: 1;
+}
+
+/* ── HIGHLIGHT (middle card — gold) ── */
+.stat-card.highlight::before {
+  background: linear-gradient(90deg, transparent, rgba(240, 200, 74, 0.9), transparent);
+}
+
+.stat-card.highlight::after {
+  background: radial-gradient(ellipse at 50% 0%, rgba(212, 175, 55, 0.09) 0%, transparent 65%);
+}
+
+.stat-card.highlight:hover {
+  border-color: rgba(212, 175, 55, 0.35);
+  box-shadow:
+    0 36px 80px -20px rgba(212, 175, 55, 0.2),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1),
+    0 0 0 1px rgba(212, 175, 55, 0.1);
 }
 
 .stat-card.highlight .stat-value {
-  background: linear-gradient(135deg, #fff, #ffb3b3);
+  background: linear-gradient(140deg, #ffffff 10%, #ffd96a 55%, #f0c84a 100%);
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
 }
 
 .stat-card.highlight .stat-icon {
-  background: rgba(212, 175, 55, 0.15);
-  border-color: rgba(212, 175, 55, 0.4);
+  background: rgba(212, 175, 55, 0.1);
+  border-color: rgba(212, 175, 55, 0.25);
   color: var(--gold);
+  box-shadow: 0 8px 24px -8px rgba(212, 175, 55, 0.3);
 }
 
-/* ── TICKER (unchanged) ── */
+.stat-card.highlight:hover .stat-icon {
+  background: rgba(212, 175, 55, 0.2);
+  border-color: rgba(212, 175, 55, 0.5);
+  box-shadow: 0 12px 32px -8px rgba(212, 175, 55, 0.45);
+  color: #ffd060;
+}
+
+.stat-card.highlight .stat-divider {
+  background: linear-gradient(90deg, transparent, rgba(212,175,55,0.6), transparent);
+}
+
+/* ── TICKER ── */
 .ticker {
   overflow: hidden;
   border-top: 1px solid var(--b0);
@@ -576,7 +650,7 @@ body::before {
   opacity: 0.85;
 }
 
-/* ── SEARCH (unchanged) ── */
+/* ── SEARCH ── */
 .search-wrap {
   padding: 60px 22px 0;
   max-width: 980px;
@@ -717,7 +791,7 @@ body::before {
   background: #101022;
 }
 
-/* ── LISTINGS and rest unchanged from original (but we keep it) ── */
+/* ── LISTINGS ── */
 .main {
   max-width: 1240px;
   margin: 0 auto;
@@ -798,14 +872,14 @@ body::before {
   color: var(--red);
 }
 
-/* ── CARS GRID (unchanged) ── */
+/* ── CARS GRID ── */
 .cars-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
   gap: 22px;
 }
 
-/* ── CAR CARD (unchanged) ── */
+/* ── CAR CARD ── */
 .car-card {
   background: #0d0d1e;
   border: 1px solid rgba(255, 255, 255, 0.08);
@@ -1261,78 +1335,321 @@ body::before {
   color: var(--t1);
 }
 
-/* ── FOOTER (unchanged) ── */
+/* ══════════════════════════════════════════
+   FOOTER — PROFESSIONAL MULTI-COLUMN REDESIGN
+══════════════════════════════════════════ */
 footer {
-  border-top: 1px solid rgba(255, 255, 255, 0.12);
-  padding: 36px 20px;
-  background: rgba(255, 255, 255, 0.02);
+  position: relative;
+  background: #060610;
+  overflow: hidden;
 }
 
-.foot-in {
+footer::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent 0%, rgba(232,17,46,0.55) 40%, rgba(232,17,46,0.55) 60%, transparent 100%);
+  pointer-events: none;
+}
+
+/* CTA Bar */
+.foot-cta-bar {
+  background: linear-gradient(135deg, rgba(232, 17, 46, 0.1) 0%, rgba(232, 17, 46, 0.04) 100%);
+  border-bottom: 1px solid rgba(232, 17, 46, 0.14);
+  padding: 24px 28px;
+  position: relative;
+  overflow: hidden;
+}
+
+.foot-cta-bar::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse 60% 120% at 20% 50%, rgba(232,17,46,0.06) 0%, transparent 60%);
+  pointer-events: none;
+}
+
+.foot-cta-in {
   max-width: 1200px;
   margin: 0 auto;
   display: flex;
   align-items: center;
   justify-content: space-between;
+  gap: 20px;
   flex-wrap: wrap;
-  gap: 16px;
+  position: relative;
+  z-index: 1;
 }
 
-.foot-brand {
+.foot-cta-left {
   display: flex;
-  align-items: center;
-  gap: 9px;
+  flex-direction: column;
+  gap: 4px;
 }
 
-.foot-box {
-  width: 32px;
-  height: 32px;
-  border-radius: 9px;
-  background: linear-gradient(135deg, var(--red), var(--red2));
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.foot-name {
-  font-size: 14px;
+.foot-cta-title {
+  font-size: 1.25rem;
   font-weight: 900;
+  color: #fff;
+  letter-spacing: -0.3px;
 }
 
-.foot-name .r {
-  color: var(--red);
-}
-
-.foot-copy {
-  font-size: 11.5px;
-  color: rgba(255, 255, 255, 0.52);
+.foot-cta-sub {
+  font-size: 13px;
+  color: rgba(255,255,255,0.5);
   font-weight: 600;
 }
 
-.foot-links {
+/* Main footer grid */
+.foot-main {
+  padding: 52px 28px 44px;
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+}
+
+.foot-grid {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 2.2fr 1fr 1fr 1fr;
+  gap: 48px;
+}
+
+/* Brand column */
+.foot-brand-col {
   display: flex;
-  gap: 6px;
+  flex-direction: column;
+  gap: 0;
+}
+
+.foot-brand-logo {
+  display: flex;
   align-items: center;
+  gap: 10px;
+  margin-bottom: 16px;
+}
+
+.foot-brand-desc {
+  font-size: 13px;
+  color: rgba(255,255,255,0.45);
+  line-height: 1.75;
+  margin-bottom: 16px;
+  max-width: 290px;
+}
+
+.foot-brand-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 14px;
+  border-radius: 100px;
+  background: rgba(232, 17, 46, 0.08);
+  border: 1px solid rgba(232, 17, 46, 0.18);
+  color: #ff4466;
+  font-size: 10.5px;
+  font-weight: 900;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  margin-bottom: 20px;
+  width: fit-content;
+}
+
+.foot-brand-tag::before {
+  content: '';
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: var(--red);
+  box-shadow: 0 0 6px var(--red);
+  flex-shrink: 0;
+}
+
+/* Mini stats */
+.foot-stats-mini {
+  display: flex;
+  align-items: center;
+  gap: 0;
+  margin-bottom: 20px;
+  background: rgba(255,255,255,0.03);
+  border: 1px solid rgba(255,255,255,0.07);
+  border-radius: 14px;
+  padding: 14px 16px;
+  width: fit-content;
+}
+
+.foot-stat {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: 0 16px;
+}
+
+.foot-stat:first-child {
+  padding-right: 0;
+}
+
+.foot-stat-n {
+  font-size: 18px;
+  font-weight: 900;
+  color: #fff;
+  letter-spacing: -0.02em;
+  line-height: 1;
+}
+
+.foot-stat-l {
+  font-size: 10px;
+  font-weight: 700;
+  color: rgba(255,255,255,0.38);
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+}
+
+.foot-stat-sep {
+  width: 1px;
+  height: 30px;
+  background: rgba(255,255,255,0.1);
+  flex-shrink: 0;
+}
+
+/* Contact */
+.foot-phone {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 15px;
+  font-weight: 800;
+  color: #fff;
+  text-decoration: none;
+  margin-bottom: 10px;
+  transition: color 0.2s;
+  width: fit-content;
+}
+
+.foot-phone svg {
+  color: var(--red);
+}
+
+.foot-phone:hover {
+  color: var(--red);
+}
+
+.foot-location {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12.5px;
+  font-weight: 600;
+  color: rgba(255,255,255,0.38);
+  margin-bottom: 18px;
+}
+
+/* Social */
+.foot-follow-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.foot-follow-lbl {
+  font-size: 11.5px;
+  font-weight: 700;
+  color: rgba(255,255,255,0.4);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.foot-social {
+  width: 36px;
+  height: 36px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(37, 211, 102, 0.08);
+  border: 1px solid rgba(37, 211, 102, 0.18);
+  color: #25d366;
+  transition: all 0.22s var(--ease);
+  text-decoration: none;
+}
+
+.foot-social:hover {
+  background: rgba(37, 211, 102, 0.2);
+  border-color: rgba(37, 211, 102, 0.4);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 18px rgba(37,211,102,0.2);
+}
+
+/* Link columns */
+.foot-col {
+  display: flex;
+  flex-direction: column;
+}
+
+.foot-col-title {
+  font-size: 11px;
+  font-weight: 900;
+  color: rgba(255,255,255,0.85);
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  margin-bottom: 18px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid rgba(255,255,255,0.07);
+  display: flex;
+  align-items: center;
+  gap: 7px;
+}
+
+.foot-col-title::before {
+  content: '';
+  width: 4px; height: 4px;
+  border-radius: 50%;
+  background: var(--red);
+  flex-shrink: 0;
+}
+
+.foot-col-link {
+  font-size: 13px;
+  font-weight: 600;
+  color: rgba(255,255,255,0.45);
+  text-decoration: none;
+  padding: 6px 0;
+  transition: color 0.18s, padding-right 0.18s;
+  display: block;
+  cursor: pointer;
+  border: none;
+  background: none;
+  font-family: var(--font);
+  text-align: right;
+}
+
+html[dir="rtl"] .foot-col-link:hover {
+  color: rgba(255,255,255,0.85);
+  padding-right: 6px;
+}
+
+html[dir="ltr"] .foot-col-link:hover {
+  color: rgba(255,255,255,0.85);
+  padding-left: 6px;
+}
+
+/* Bottom bar */
+.foot-bottom {
+  padding: 18px 28px;
+}
+
+.foot-bottom-in {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
   flex-wrap: wrap;
 }
 
-.foot-link {
-  padding: 5px 11px;
-  border-radius: 7px;
-  font-size: 11.5px;
-  font-weight: 700;
-  color: rgba(255, 255, 255, 0.6);
-  background: rgba(255, 255, 255, 0.06);
-  border: 1px solid rgba(255, 255, 255, 0.12);
-  transition: all 0.15s;
-  display: inline-flex;
-  align-items: center;
-  gap: 5px;
-}
-
-.foot-link:hover {
-  color: #fff;
-  border-color: rgba(255, 255, 255, 0.28);
+.foot-copy {
+  font-size: 12px;
+  color: rgba(255,255,255,0.25);
+  font-weight: 600;
 }
 
 .foot-dot {
@@ -1355,7 +1672,7 @@ footer {
   height: 12px;
 }
 
-/* ── MODALS (unchanged) ── */
+/* ── MODALS ── */
 .overlay {
   position: fixed;
   inset: 0;
@@ -1452,7 +1769,7 @@ footer {
   background: var(--red);
 }
 
-/* ── DETAIL MODAL (unchanged) ── */
+/* ── DETAIL MODAL ── */
 #detailOvl.open {
   align-items: flex-end;
 }
@@ -1920,7 +2237,7 @@ footer {
   }
 }
 
-/* ── ADD MODAL (unchanged) ── */
+/* ── ADD MODAL ── */
 .add-modal {
   max-width: 620px !important;
   border-radius: 24px !important;
@@ -2312,10 +2629,17 @@ footer {
   contain: layout;
 }
 
-/* ── RESPONSIVE (unchanged) ── */
+/* ── RESPONSIVE ── */
 @media (max-width: 900px) {
   .nav-mid {
     display: none;
+  }
+  .foot-grid {
+    grid-template-columns: 1fr 1fr;
+    gap: 32px;
+  }
+  .foot-brand-col {
+    grid-column: 1 / -1;
   }
 }
 
@@ -2379,13 +2703,21 @@ footer {
     padding: 12px 18px;
     font-size: 13px;
   }
+  /* Stats mobile — single column, compact */
   .hero-stats {
-    flex-direction: column;
+    grid-template-columns: 1fr;
+    max-width: 340px;
     gap: 12px;
-    max-width: 320px;
   }
   .stat-card {
-    padding: 18px 10px;
+    padding: 22px 16px 18px;
+    border-radius: 20px;
+  }
+  .stat-icon {
+    width: 48px;
+    height: 48px;
+    border-radius: 14px;
+    margin-bottom: 14px;
   }
   .search-wrap {
     padding: 36px 14px 0;
@@ -2454,11 +2786,6 @@ footer {
   .fg {
     grid-template-columns: 1fr;
   }
-  .foot-in {
-    flex-direction: column;
-    gap: 12px;
-    text-align: center;
-  }
   .add-row2 {
     grid-template-columns: 1fr 1fr;
   }
@@ -2479,6 +2806,25 @@ footer {
     font-size: 10px;
     padding: 2px 7px;
   }
+  /* Footer mobile */
+  .foot-grid {
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+  }
+  .foot-cta-in {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 14px;
+  }
+  .foot-cta-title {
+    font-size: 1rem;
+  }
+  .foot-main {
+    padding: 32px 18px 28px;
+  }
+  .foot-stats-mini {
+    width: 100%;
+  }
 }
 
 @media (max-width: 400px) {
@@ -2492,12 +2838,15 @@ footer {
   .cars-grid {
     grid-template-columns: 1fr;
   }
+  .foot-grid {
+    grid-template-columns: 1fr;
+  }
 }
 </style>
 </head>
 <body>
 
-<!-- ── SVG ICON DEFS (inline, no external requests) ── -->
+<!-- ── SVG ICON DEFS ── -->
 <svg xmlns="http://www.w3.org/2000/svg" style="display:none">
   <symbol id="ico-car" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
     <path d="M5 17H3a2 2 0 0 1-2-2V9a2 2 0 0 1 2-2h13l4 4v4a2 2 0 0 1-2 2h-1"/>
@@ -2635,24 +2984,24 @@ footer {
   <div class="hero-grid"></div>
   <div class="hero-glow"></div>
   <div class="hero-in">
-    <h1>שוק הרכבים <span class="r">הדיגיטלי</span><br>של ישראל</h1>
-    <p class="hero-sub">קנה ומכור רכב בקלות ובמהירות. מודעות מאומתות עם אפשרות יצירת קשר מיידית.</p>
+    <h1 id="heroH">שוק הרכבים <span class="r">הדיגיטלי</span><br>של ישראל</h1>
+    <p class="hero-sub" id="heroSub">קנה ומכור רכב בקלות ובמהירות. מודעות מאומתות עם אפשרות יצירת קשר מיידית.</p>
 
     <div class="hero-ctas">
-      <button class="btn btn-red" onclick="openAdd()">
+      <button class="btn btn-red" id="hBtn1" onclick="openAdd()">
         <svg width="15" height="15"><use href="#ico-car"/></svg> פרסם רכב בחינם
       </button>
-      <button class="btn btn-ghost" onclick="scrollTo2('listSec')">
+      <button class="btn btn-ghost" id="hBtn2" onclick="scrollTo2('listSec')">
         <svg width="15" height="15"><use href="#ico-search"/></svg> <span>חפש רכב</span>
       </button>
-      <a class="btn-pkg" href="https://yougo-roan.vercel.app" target="_blank">
+      <a class="btn-pkg" href="https://yougo-roan.vercel.app" target="_blank" id="hBtn3">
         <svg width="14" height="14"><use href="#ico-briefcase"/></svg>
         <span>חבילות פרסום מקצועיות</span>
         <svg width="14" height="14"><use href="#ico-arrow-left"/></svg>
       </a>
     </div>
 
-    <!-- STATS CARDS — LUXURY, REFINED, WITH PROFESSIONAL DESCRIPTIONS -->
+    <!-- STATS CARDS — WORLD-CLASS LUXURY -->
     <div class="hero-stats">
       <!-- Card 1: Active Listings -->
       <div class="stat-card">
@@ -2661,26 +3010,29 @@ footer {
         </div>
         <div class="stat-value" id="statCars">1502</div>
         <div class="stat-label">מודעות פעילות</div>
+        <div class="stat-divider"></div>
         <div class="stat-desc">רכבים מאומתים ומעודכנים בזמן אמת</div>
       </div>
-      
-      <!-- Card 2: Yearly Views (highlighted) -->
+
+      <!-- Card 2: Yearly Views (highlighted — gold) -->
       <div class="stat-card highlight">
         <div class="stat-icon">
           <svg><use href="#ico-eye"/></svg>
         </div>
-        <div class="stat-value">מעל 2 מיליון</div>
+        <div class="stat-value">מעל 2M</div>
         <div class="stat-label">צפיות בשנה</div>
+        <div class="stat-divider"></div>
         <div class="stat-desc">חשיפה חסרת תקדים למודעות שלך</div>
       </div>
-      
+
       <!-- Card 3: Instant Posting -->
       <div class="stat-card">
         <div class="stat-icon">
           <svg><use href="#ico-clock"/></svg>
         </div>
-        <div class="stat-value">60 שניות</div>
+        <div class="stat-value">60 שנ'</div>
         <div class="stat-label">פרסום מיידי</div>
+        <div class="stat-divider"></div>
         <div class="stat-desc">מהעלאת התמונה ועד ללקוח הראשון</div>
       </div>
     </div>
@@ -2697,7 +3049,6 @@ footer {
     <div class="ti"><svg width="13" height="13"><use href="#ico-globe"/></svg> עברית · عربية · English</div>
     <div class="ti"><svg width="13" height="13"><use href="#ico-star"/></svg> YOUGO ISRAEL — 50K+ עוקבים</div>
     <div class="ti"><svg width="13" height="13"><use href="#ico-search"/></svg> אלפי גולשים יומיים</div>
-    <!-- duplicate for seamless loop -->
     <div class="ti"><svg width="13" height="13"><use href="#ico-check"/></svg> פרסום חינמי מיידי</div>
     <div class="ti"><svg width="13" height="13"><use href="#ico-car"/></svg> פרסום ב-60 שניות</div>
     <div class="ti"><svg width="13" height="13"><use href="#ico-wa"/></svg> פנייה ישירה ב-WhatsApp</div>
@@ -2777,23 +3128,107 @@ footer {
   </div>
 </div>
 
-<!-- FOOTER -->
+<!-- ══════════════════════════════════════════
+     FOOTER — PROFESSIONAL REDESIGN
+══════════════════════════════════════════ -->
 <footer>
-  <div class="foot-in">
-    <div class="foot-brand">
-      <div class="foot-box">
-        <svg width="17" height="17"><use href="#ico-car"/></svg>
+  <!-- CTA Bar -->
+  <div class="foot-cta-bar">
+    <div class="foot-cta-in">
+      <div class="foot-cta-left">
+        <div class="foot-cta-title">מוכן למכור את הרכב?</div>
+        <div class="foot-cta-sub">הצטרף לאלפי מוכרים מרוצים ב-YOUGO CARS</div>
       </div>
-      <span class="foot-name"><span class="r">YOUGO</span> ISRAEL</span>
+      <a class="btn btn-red" href="https://yougo-roan.vercel.app" target="_blank" style="padding:12px 28px;font-size:14px;border-radius:12px">
+        <svg width="14" height="14"><use href="#ico-briefcase"/></svg>
+        בחר חבילה עכשיו
+      </a>
     </div>
-    <span class="foot-copy">© 2026 YOUGO ISRAEL — כל הזכויות שמורות</span>
-    <div class="foot-links">
-      <a class="foot-link" href="https://yougo-roan.vercel.app" target="_blank">
-        <svg width="12" height="12"><use href="#ico-briefcase"/></svg> YOUGO ISRAEL
-      </a>
-      <a class="foot-link" href="https://wa.me/972546980606" target="_blank">
-        <svg width="12" height="12"><use href="#ico-wa"/></svg> WhatsApp
-      </a>
+  </div>
+
+  <!-- Main Grid -->
+  <div class="foot-main">
+    <div class="foot-grid">
+
+      <!-- Brand Column -->
+      <div class="foot-brand-col">
+        <div class="foot-brand-logo">
+          <div class="logo-box">
+            <svg width="18" height="18"><use href="#ico-car"/></svg>
+          </div>
+          <span class="logo-text"><span class="r">YOUGO</span><span class="logo-cars"> CARS</span></span>
+        </div>
+        <p class="foot-brand-desc">הפלטפורמה המובילה בישראל לפרסום ומכירת רכבים, ציוד מקצועי ורכבים מסחריים ברשתות החברתיות. מעל 50,000 עוקבים, מעל 1,000 עסקאות מוצלחות.</p>
+        <div class="foot-brand-tag">Digital Car Marketing</div>
+
+        <div class="foot-stats-mini">
+          <div class="foot-stat" style="padding-right:0;padding-left:16px">
+            <span class="foot-stat-n">50K+</span>
+            <span class="foot-stat-l">עוקבים</span>
+          </div>
+          <div class="foot-stat-sep"></div>
+          <div class="foot-stat" style="padding:0 16px">
+            <span class="foot-stat-n">1,000+</span>
+            <span class="foot-stat-l">עסקאות</span>
+          </div>
+          <div class="foot-stat-sep"></div>
+          <div class="foot-stat" style="padding-left:0;padding-right:16px">
+            <span class="foot-stat-n">2M+</span>
+            <span class="foot-stat-l">צפיות</span>
+          </div>
+        </div>
+
+        <a class="foot-phone" href="tel:0546980606">
+          <svg width="14" height="14"><use href="#ico-phone"/></svg>
+          054-6980606
+        </a>
+        <div class="foot-location">
+          <svg width="12" height="12"><use href="#ico-pin"/></svg>
+          ישראל · פעילים בכל הארץ
+        </div>
+
+        <div class="foot-follow-row">
+          <span class="foot-follow-lbl">עקבו אחרינו</span>
+          <a class="foot-social" href="https://wa.me/972546980606" target="_blank" title="WhatsApp">
+            <svg width="16" height="16"><use href="#ico-wa"/></svg>
+          </a>
+        </div>
+      </div>
+
+      <!-- מידע Column -->
+      <div class="foot-col">
+        <div class="foot-col-title">מידע</div>
+        <span class="foot-col-link">מי אנחנו?</span>
+        <span class="foot-col-link">איך מפרסמים רכב?</span>
+        <span class="foot-col-link">שיווק שותפים</span>
+      </div>
+
+      <!-- חבילות Column -->
+      <div class="foot-col">
+        <div class="foot-col-title">חבילות</div>
+        <a class="foot-col-link" href="https://yougo-roan.vercel.app" target="_blank">רכב פרטי</a>
+        <a class="foot-col-link" href="https://yougo-roan.vercel.app" target="_blank">VIP LUXURY</a>
+        <a class="foot-col-link" href="https://yougo-roan.vercel.app" target="_blank">DUO DEAL</a>
+        <a class="foot-col-link" href="https://yougo-roan.vercel.app" target="_blank">עסקים וסוכנויות</a>
+        <a class="foot-col-link" href="https://yougo-roan.vercel.app" target="_blank">ציוד ותחבורה</a>
+      </div>
+
+      <!-- משפטי Column -->
+      <div class="foot-col">
+        <div class="foot-col-title">משפטי ואחר</div>
+        <span class="foot-col-link">תקנון השימוש</span>
+        <span class="foot-col-link">מדיניות פרטיות</span>
+        <span class="foot-col-link">בדיקת סטטוס</span>
+        <span class="foot-col-link" onclick="adminLogin()">פאנל ניהול</span>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Bottom Bar -->
+  <div class="foot-bottom">
+    <div class="foot-bottom-in">
+      <span class="foot-copy">© 2026 YOUGO ISRAEL — כל הזכויות שמורות</span>
       <span class="foot-dot" onclick="adminLogin()">
         <svg width="8" height="8" viewBox="0 0 8 8"><circle cx="4" cy="4" r="4" fill="currentColor"/></svg>
       </span>
@@ -2918,7 +3353,7 @@ footer {
 
 <script>
 // ═══════════════════════════════════════
-// CONFIG — DO NOT TOUCH
+// CONFIG
 // ═══════════════════════════════════════
 const SB_URL = 'https://arsbodqhmmtmoqqhykep.supabase.co';
 const SB_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImFyc2JvZHFobW10bW9xcWh5a2VwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzIxNTgxMTQsImV4cCI6MjA4NzczNDExNH0.mt_WpPshp5xdbIx23pMmcwq7MhktA0-vWPIstOy1_HM';
@@ -3011,28 +3446,21 @@ function applyLang() {
   document.documentElement.dir = L.dir;
   document.getElementById('langIco').textContent = M.code;
   document.getElementById('langTxt').textContent = M.label;
-  // Update hero texts
   document.getElementById('heroH').innerHTML = L.h1;
   document.getElementById('heroSub').textContent = L.sub;
   document.getElementById('hBtn1').innerHTML = `<svg width="15" height="15"><use href="#ico-car"/></svg> ${L.b1}`;
   document.getElementById('hBtn2').innerHTML = `<svg width="15" height="15"><use href="#ico-search"/></svg> ${L.b2}`;
   document.getElementById('hBtn3').textContent = L.b3;
   document.getElementById('navTxt').textContent = L.na;
-  
-  // Update stat labels and descriptions
   const statCards = document.querySelectorAll('.stat-card');
   if (statCards.length >= 3) {
-    // Card 1
     statCards[0].querySelector('.stat-label').textContent = L.cL;
     statCards[0].querySelector('.stat-desc').textContent = L.cD;
-    // Card 2
     statCards[1].querySelector('.stat-label').textContent = L.fL;
     statCards[1].querySelector('.stat-desc').textContent = L.fD;
-    // Card 3
     statCards[2].querySelector('.stat-label').textContent = L.pL;
     statCards[2].querySelector('.stat-desc').textContent = L.pD;
   }
-  
   document.getElementById('listTitle').innerHTML = L.lT;
   document.getElementById('addTitle').textContent = L.aT;
   const sb2El = document.getElementById('subBtnTxt');
@@ -3048,7 +3476,7 @@ function applyLang() {
 }
 
 // ═══════════════════════════════════════
-// LOAD CARS (unchanged logic, but we set the initial stats to 1502 and "מעל 2 מיליון")
+// LOAD CARS
 // ═══════════════════════════════════════
 async function loadCars() {
   document.getElementById('carsBox').innerHTML =
@@ -3080,7 +3508,6 @@ async function loadCars() {
     buildFilters();
     doSort(sort);
 
-    // Update the statCars with base 1502 + actual active count (to show dynamic)
     const activeCount = all.filter(c => c.status === 'active').length;
     document.getElementById('statCars').textContent = 1500 + activeCount;
 
@@ -3164,7 +3591,7 @@ function doSort(type, btn) {
 }
 
 // ═══════════════════════════════════════
-// RENDER CARS — unchanged
+// RENDER CARS
 // ═══════════════════════════════════════
 function renderCars(cars) {
   const c = document.getElementById('carsBox');
@@ -3188,7 +3615,6 @@ function carCard(car) {
   if (car.status === 'sold') badges.push(`<span class="cbadge cb-sold"><svg width="9" height="9"><use href="#ico-check"/></svg> ${t('sold')}</span>`);
   if (isNew) badges.push(`<span class="cbadge cb-new"><svg width="9" height="9"><use href="#ico-new"/></svg> ${t('nw')}</span>`);
 
-  // Specs — only filled values, max 3
   const specList = [];
   if (car.gear_type) specList.push({icon:'ico-gear', val:car.gear_type, lbl:t('ge')});
   if (car.fuel_type) specList.push({icon:'ico-fuel', val:car.fuel_type, lbl:t('fu')});
@@ -3255,7 +3681,7 @@ function carCard(car) {
 }
 
 // ═══════════════════════════════════════
-// DETAIL MODAL (unchanged)
+// DETAIL MODAL
 // ═══════════════════════════════════════
 let _dImgs = [], _dIdx = 0;
 
@@ -3374,7 +3800,7 @@ function closeDetail() {
 }
 
 // ═══════════════════════════════════════
-// ADD MODAL (unchanged)
+// ADD MODAL
 // ═══════════════════════════════════════
 function openAdd() {
   document.getElementById('addOvl').classList.add('open');
@@ -3546,7 +3972,7 @@ async function submitCar(e) {
 }
 
 // ═══════════════════════════════════════
-// ADMIN (unchanged)
+// ADMIN
 // ═══════════════════════════════════════
 function adminLogin() {
   const p = prompt('Admin Password:');
@@ -3610,4 +4036,3 @@ loadCars();
 </script>
 </body>
 </html>
-```
