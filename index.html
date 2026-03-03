@@ -1,4 +1,3 @@
-```html
 <!DOCTYPE html>
 <html lang="he" dir="rtl">
 <head>
@@ -6,9 +5,12 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#07070e">
 <title>YOUGO CARS — שוק הרכבים הדיגיטלי</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com" crossorigin>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="dns-prefetch" href="https://arsbodqhmmtmoqqhykep.supabase.co">
+<link rel="dns-prefetch" href="https://api.cloudinary.com">
+<link href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
 <style>
 /* ── TOKENS (modern luxury) ── */
 :root {
@@ -82,14 +84,14 @@ body::before {
   inset: 0;
   z-index: 0;
   pointer-events: none;
-  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.035'/%3E%3C/svg%3E");
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.028'/%3E%3C/svg%3E");
   background-repeat: repeat;
-  background-size: 200px 200px;
-  opacity: 0.4;
-  mix-blend-mode: overlay;
+  background-size: 180px 180px;
+  opacity: 0.35;
+  will-change: auto;
 }
 
-/* ── NAV (unchanged) ── */
+/* ── NAV ── */
 #nav {
   position: fixed;
   top: 0;
@@ -101,8 +103,9 @@ body::before {
   display: flex;
   align-items: center;
   gap: 8px;
-  background: rgba(7, 7, 14, 0.78);
-  backdrop-filter: blur(28px) saturate(1.8);
+  background: rgba(7, 7, 14, 0.88);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
   border-bottom: 1px solid rgba(255, 255, 255, 0.055);
   transition: background 0.3s var(--ease), border-color 0.3s var(--ease);
   overflow: hidden;
@@ -279,7 +282,7 @@ body::before {
   box-shadow: 0 6px 22px rgba(200, 16, 46, 0.54);
 }
 
-/* ── ADMIN BAR (unchanged) ── */
+/* ── ADMIN BAR ── */
 #adminBar {
   display: none;
   background: rgba(200, 16, 46, 0.06);
@@ -294,7 +297,7 @@ body::before {
   display: flex;
 }
 
-/* ── HERO (ultra‑luxury, refined for mobile/desktop) ── */
+/* ── HERO ── */
 .hero {
   position: relative;
   min-height: 100svh;
@@ -416,73 +419,99 @@ body::before {
   box-shadow: 0 8px 28px rgba(212, 175, 55, 0.22);
 }
 
-/* ── STATS CARDS (elegant, glass‑morphism, refined typography) ── */
+/* ══════════════════════════════════════════
+   STATS CARDS — WORLD-CLASS LUXURY REDESIGN
+══════════════════════════════════════════ */
 .hero-stats {
-  display: flex;
-  max-width: 800px;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  max-width: 900px;
   margin: 0 auto 40px;
-  gap: 16px;
-  justify-content: center;
+  gap: 18px;
 }
 
 .stat-card {
-  flex: 1;
-  background: rgba(20, 20, 40, 0.5);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  border-radius: 32px;
-  padding: 22px 12px;
-  text-align: center;
-  transition: transform 0.3s var(--ease), border-color 0.3s, box-shadow 0.3s;
-  box-shadow: 0 20px 40px -20px rgba(0, 0, 0, 0.6);
   position: relative;
+  background: rgba(8, 8, 22, 0.85);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  border-radius: 28px;
+  padding: 32px 20px 26px;
+  text-align: center;
+  transition: transform 0.4s var(--ease), border-color 0.4s, box-shadow 0.4s;
+  box-shadow:
+    0 24px 60px -20px rgba(0, 0, 0, 0.8),
+    inset 0 1px 0 rgba(255, 255, 255, 0.06),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.3);
   overflow: hidden;
 }
 
-/* Shine effect on hover */
+/* Top accent line */
+.stat-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 20%; right: 20%;
+  height: 1.5px;
+  background: linear-gradient(90deg, transparent, rgba(232, 17, 46, 0.9), transparent);
+  border-radius: 0 0 4px 4px;
+  transition: left 0.3s, right 0.3s, opacity 0.3s;
+}
+
+.stat-card:hover::before {
+  left: 10%; right: 10%;
+}
+
+/* Radial glow inside */
 .stat-card::after {
   content: '';
   position: absolute;
-  top: -50%;
-  left: -50%;
-  width: 200%;
-  height: 200%;
-  background: linear-gradient(45deg, transparent 30%, rgba(255,255,255,0.03) 50%, transparent 70%);
-  transform: rotate(30deg);
-  transition: transform 0.6s var(--ease);
-  opacity: 0;
-}
-
-.stat-card:hover::after {
-  opacity: 1;
-  transform: rotate(30deg) translate(20%, 20%);
+  top: -40%;
+  left: -20%;
+  width: 140%;
+  height: 120%;
+  background: radial-gradient(ellipse at 50% 0%, rgba(232, 17, 46, 0.09) 0%, transparent 65%);
+  pointer-events: none;
+  transition: opacity 0.4s;
 }
 
 .stat-card:hover {
-  transform: translateY(-4px);
+  transform: translateY(-8px) scale(1.02);
   border-color: rgba(232, 17, 46, 0.3);
-  box-shadow: 0 25px 50px -20px rgba(232, 17, 46, 0.4);
+  box-shadow:
+    0 36px 80px -20px rgba(232, 17, 46, 0.3),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1),
+    0 0 0 1px rgba(232, 17, 46, 0.12);
 }
 
+.stat-card:hover::after {
+  opacity: 1.5;
+}
+
+/* Icon */
 .stat-icon {
-  width: 48px;
-  height: 48px;
-  margin: 0 auto 16px;
+  width: 60px;
+  height: 60px;
+  margin: 0 auto 20px;
   display: flex;
   align-items: center;
   justify-content: center;
-  background: rgba(232, 17, 46, 0.12);
-  border-radius: 24px;
-  border: 1px solid rgba(232, 17, 46, 0.25);
-  color: var(--red);
-  transition: all 0.3s var(--ease);
+  background: rgba(232, 17, 46, 0.08);
+  border-radius: 18px;
+  border: 1px solid rgba(232, 17, 46, 0.18);
+  color: #ff3355;
+  transition: all 0.35s var(--ease);
+  position: relative;
+  z-index: 1;
+  box-shadow: 0 8px 24px -8px rgba(232, 17, 46, 0.25);
 }
 
 .stat-card:hover .stat-icon {
-  background: rgba(232, 17, 46, 0.2);
-  border-color: rgba(232, 17, 46, 0.5);
-  transform: scale(1.05);
+  background: rgba(232, 17, 46, 0.18);
+  border-color: rgba(232, 17, 46, 0.45);
+  transform: scale(1.1) translateY(-2px);
+  box-shadow: 0 12px 32px -8px rgba(232, 17, 46, 0.45);
+  color: #ff5577;
 }
 
 .stat-icon svg {
@@ -493,47 +522,96 @@ body::before {
   fill: none;
 }
 
+/* Value */
 .stat-value {
-  font-size: clamp(1.9rem, 4vw, 2.8rem);
+  font-size: clamp(2rem, 4.5vw, 3.2rem);
   font-weight: 900;
-  color: #fff;
-  line-height: 1.2;
-  margin-bottom: 6px;
-  letter-spacing: -0.02em;
+  line-height: 1.05;
+  margin-bottom: 10px;
+  letter-spacing: -0.03em;
+  position: relative;
+  z-index: 1;
+  background: linear-gradient(160deg, #ffffff 30%, rgba(255,255,255,0.75) 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
 }
 
+/* Label */
 .stat-label {
-  font-size: clamp(0.7rem, 1.5vw, 0.85rem);
-  font-weight: 700;
+  font-size: 0.72rem;
+  font-weight: 900;
   text-transform: uppercase;
-  letter-spacing: 0.08em;
-  color: rgba(255, 255, 255, 0.6);
-  margin-bottom: 8px;
+  letter-spacing: 0.14em;
+  color: rgba(255, 255, 255, 0.45);
+  margin-bottom: 10px;
+  position: relative;
+  z-index: 1;
 }
 
+/* Divider line */
+.stat-card .stat-divider {
+  width: 32px;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(232,17,46,0.6), transparent);
+  margin: 0 auto 10px;
+}
+
+/* Desc */
 .stat-desc {
-  font-size: 0.7rem;
+  font-size: 0.72rem;
   font-weight: 500;
-  color: rgba(255, 255, 255, 0.4);
-  max-width: 180px;
+  color: rgba(255, 255, 255, 0.3);
+  line-height: 1.55;
+  max-width: 160px;
   margin: 0 auto;
-  line-height: 1.4;
+  position: relative;
+  z-index: 1;
+}
+
+/* ── HIGHLIGHT (middle card — gold) ── */
+.stat-card.highlight::before {
+  background: linear-gradient(90deg, transparent, rgba(240, 200, 74, 0.9), transparent);
+}
+
+.stat-card.highlight::after {
+  background: radial-gradient(ellipse at 50% 0%, rgba(212, 175, 55, 0.09) 0%, transparent 65%);
+}
+
+.stat-card.highlight:hover {
+  border-color: rgba(212, 175, 55, 0.35);
+  box-shadow:
+    0 36px 80px -20px rgba(212, 175, 55, 0.2),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1),
+    0 0 0 1px rgba(212, 175, 55, 0.1);
 }
 
 .stat-card.highlight .stat-value {
-  background: linear-gradient(135deg, #fff, #ffb3b3);
+  background: linear-gradient(140deg, #ffffff 10%, #ffd96a 55%, #f0c84a 100%);
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
 }
 
 .stat-card.highlight .stat-icon {
-  background: rgba(212, 175, 55, 0.15);
-  border-color: rgba(212, 175, 55, 0.4);
+  background: rgba(212, 175, 55, 0.1);
+  border-color: rgba(212, 175, 55, 0.25);
   color: var(--gold);
+  box-shadow: 0 8px 24px -8px rgba(212, 175, 55, 0.3);
 }
 
-/* ── TICKER (unchanged) ── */
+.stat-card.highlight:hover .stat-icon {
+  background: rgba(212, 175, 55, 0.2);
+  border-color: rgba(212, 175, 55, 0.5);
+  box-shadow: 0 12px 32px -8px rgba(212, 175, 55, 0.45);
+  color: #ffd060;
+}
+
+.stat-card.highlight .stat-divider {
+  background: linear-gradient(90deg, transparent, rgba(212,175,55,0.6), transparent);
+}
+
+/* ── TICKER ── */
 .ticker {
   overflow: hidden;
   border-top: 1px solid var(--b0);
@@ -576,7 +654,7 @@ body::before {
   opacity: 0.85;
 }
 
-/* ── SEARCH (unchanged) ── */
+/* ── SEARCH ── */
 .search-wrap {
   padding: 60px 22px 0;
   max-width: 980px;
@@ -717,7 +795,7 @@ body::before {
   background: #101022;
 }
 
-/* ── LISTINGS and rest unchanged from original (but we keep it) ── */
+/* ── LISTINGS ── */
 .main {
   max-width: 1240px;
   margin: 0 auto;
@@ -798,14 +876,14 @@ body::before {
   color: var(--red);
 }
 
-/* ── CARS GRID (unchanged) ── */
+/* ── CARS GRID ── */
 .cars-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
   gap: 22px;
 }
 
-/* ── CAR CARD (unchanged) ── */
+/* ── CAR CARD ── */
 .car-card {
   background: #0d0d1e;
   border: 1px solid rgba(255, 255, 255, 0.08);
@@ -815,9 +893,10 @@ body::before {
   display: flex;
   flex-direction: column;
   position: relative;
-  transition: transform 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94), border-color 0.3s, box-shadow 0.3s;
-  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.55);
-  contain: layout style;
+  transition: transform 0.25s ease, border-color 0.25s, box-shadow 0.25s;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+  contain: layout style paint;
+  will-change: transform;
 }
 
 .car-card::before {
@@ -856,8 +935,9 @@ body::before {
   object-fit: cover;
   object-position: center 60%;
   display: block;
-  transition: transform 0.55s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  transition: transform 0.4s ease;
   will-change: transform;
+  transform: translateZ(0);
 }
 
 .car-card:hover .car-img {
@@ -1261,78 +1341,321 @@ body::before {
   color: var(--t1);
 }
 
-/* ── FOOTER (unchanged) ── */
+/* ══════════════════════════════════════════
+   FOOTER — PROFESSIONAL MULTI-COLUMN REDESIGN
+══════════════════════════════════════════ */
 footer {
-  border-top: 1px solid rgba(255, 255, 255, 0.12);
-  padding: 36px 20px;
-  background: rgba(255, 255, 255, 0.02);
+  position: relative;
+  background: #060610;
+  overflow: hidden;
 }
 
-.foot-in {
+footer::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent 0%, rgba(232,17,46,0.55) 40%, rgba(232,17,46,0.55) 60%, transparent 100%);
+  pointer-events: none;
+}
+
+/* CTA Bar */
+.foot-cta-bar {
+  background: linear-gradient(135deg, rgba(232, 17, 46, 0.1) 0%, rgba(232, 17, 46, 0.04) 100%);
+  border-bottom: 1px solid rgba(232, 17, 46, 0.14);
+  padding: 24px 28px;
+  position: relative;
+  overflow: hidden;
+}
+
+.foot-cta-bar::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse 60% 120% at 20% 50%, rgba(232,17,46,0.06) 0%, transparent 60%);
+  pointer-events: none;
+}
+
+.foot-cta-in {
   max-width: 1200px;
   margin: 0 auto;
   display: flex;
   align-items: center;
   justify-content: space-between;
+  gap: 20px;
   flex-wrap: wrap;
-  gap: 16px;
+  position: relative;
+  z-index: 1;
 }
 
-.foot-brand {
+.foot-cta-left {
   display: flex;
-  align-items: center;
-  gap: 9px;
+  flex-direction: column;
+  gap: 4px;
 }
 
-.foot-box {
-  width: 32px;
-  height: 32px;
-  border-radius: 9px;
-  background: linear-gradient(135deg, var(--red), var(--red2));
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.foot-name {
-  font-size: 14px;
+.foot-cta-title {
+  font-size: 1.25rem;
   font-weight: 900;
+  color: #fff;
+  letter-spacing: -0.3px;
 }
 
-.foot-name .r {
-  color: var(--red);
-}
-
-.foot-copy {
-  font-size: 11.5px;
-  color: rgba(255, 255, 255, 0.52);
+.foot-cta-sub {
+  font-size: 13px;
+  color: rgba(255,255,255,0.5);
   font-weight: 600;
 }
 
-.foot-links {
+/* Main footer grid */
+.foot-main {
+  padding: 52px 28px 44px;
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+}
+
+.foot-grid {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 2.2fr 1fr 1fr 1fr;
+  gap: 48px;
+}
+
+/* Brand column */
+.foot-brand-col {
   display: flex;
-  gap: 6px;
+  flex-direction: column;
+  gap: 0;
+}
+
+.foot-brand-logo {
+  display: flex;
   align-items: center;
+  gap: 10px;
+  margin-bottom: 16px;
+}
+
+.foot-brand-desc {
+  font-size: 13px;
+  color: rgba(255,255,255,0.45);
+  line-height: 1.75;
+  margin-bottom: 16px;
+  max-width: 290px;
+}
+
+.foot-brand-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 14px;
+  border-radius: 100px;
+  background: rgba(232, 17, 46, 0.08);
+  border: 1px solid rgba(232, 17, 46, 0.18);
+  color: #ff4466;
+  font-size: 10.5px;
+  font-weight: 900;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  margin-bottom: 20px;
+  width: fit-content;
+}
+
+.foot-brand-tag::before {
+  content: '';
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: var(--red);
+  box-shadow: 0 0 6px var(--red);
+  flex-shrink: 0;
+}
+
+/* Mini stats */
+.foot-stats-mini {
+  display: flex;
+  align-items: center;
+  gap: 0;
+  margin-bottom: 20px;
+  background: rgba(255,255,255,0.03);
+  border: 1px solid rgba(255,255,255,0.07);
+  border-radius: 14px;
+  padding: 14px 16px;
+  width: fit-content;
+}
+
+.foot-stat {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: 0 16px;
+}
+
+.foot-stat:first-child {
+  padding-right: 0;
+}
+
+.foot-stat-n {
+  font-size: 18px;
+  font-weight: 900;
+  color: #fff;
+  letter-spacing: -0.02em;
+  line-height: 1;
+}
+
+.foot-stat-l {
+  font-size: 10px;
+  font-weight: 700;
+  color: rgba(255,255,255,0.38);
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+}
+
+.foot-stat-sep {
+  width: 1px;
+  height: 30px;
+  background: rgba(255,255,255,0.1);
+  flex-shrink: 0;
+}
+
+/* Contact */
+.foot-phone {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 15px;
+  font-weight: 800;
+  color: #fff;
+  text-decoration: none;
+  margin-bottom: 10px;
+  transition: color 0.2s;
+  width: fit-content;
+}
+
+.foot-phone svg {
+  color: var(--red);
+}
+
+.foot-phone:hover {
+  color: var(--red);
+}
+
+.foot-location {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12.5px;
+  font-weight: 600;
+  color: rgba(255,255,255,0.38);
+  margin-bottom: 18px;
+}
+
+/* Social */
+.foot-follow-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.foot-follow-lbl {
+  font-size: 11.5px;
+  font-weight: 700;
+  color: rgba(255,255,255,0.4);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.foot-social {
+  width: 36px;
+  height: 36px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(37, 211, 102, 0.08);
+  border: 1px solid rgba(37, 211, 102, 0.18);
+  color: #25d366;
+  transition: all 0.22s var(--ease);
+  text-decoration: none;
+}
+
+.foot-social:hover {
+  background: rgba(37, 211, 102, 0.2);
+  border-color: rgba(37, 211, 102, 0.4);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 18px rgba(37,211,102,0.2);
+}
+
+/* Link columns */
+.foot-col {
+  display: flex;
+  flex-direction: column;
+}
+
+.foot-col-title {
+  font-size: 11px;
+  font-weight: 900;
+  color: rgba(255,255,255,0.85);
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  margin-bottom: 18px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid rgba(255,255,255,0.07);
+  display: flex;
+  align-items: center;
+  gap: 7px;
+}
+
+.foot-col-title::before {
+  content: '';
+  width: 4px; height: 4px;
+  border-radius: 50%;
+  background: var(--red);
+  flex-shrink: 0;
+}
+
+.foot-col-link {
+  font-size: 13px;
+  font-weight: 600;
+  color: rgba(255,255,255,0.45);
+  text-decoration: none;
+  padding: 6px 0;
+  transition: color 0.18s, padding-right 0.18s;
+  display: block;
+  cursor: pointer;
+  border: none;
+  background: none;
+  font-family: var(--font);
+  text-align: right;
+}
+
+html[dir="rtl"] .foot-col-link:hover {
+  color: rgba(255,255,255,0.85);
+  padding-right: 6px;
+}
+
+html[dir="ltr"] .foot-col-link:hover {
+  color: rgba(255,255,255,0.85);
+  padding-left: 6px;
+}
+
+/* Bottom bar */
+.foot-bottom {
+  padding: 18px 28px;
+}
+
+.foot-bottom-in {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
   flex-wrap: wrap;
 }
 
-.foot-link {
-  padding: 5px 11px;
-  border-radius: 7px;
-  font-size: 11.5px;
-  font-weight: 700;
-  color: rgba(255, 255, 255, 0.6);
-  background: rgba(255, 255, 255, 0.06);
-  border: 1px solid rgba(255, 255, 255, 0.12);
-  transition: all 0.15s;
-  display: inline-flex;
-  align-items: center;
-  gap: 5px;
-}
-
-.foot-link:hover {
-  color: #fff;
-  border-color: rgba(255, 255, 255, 0.28);
+.foot-copy {
+  font-size: 12px;
+  color: rgba(255,255,255,0.25);
+  font-weight: 600;
 }
 
 .foot-dot {
@@ -1355,7 +1678,7 @@ footer {
   height: 12px;
 }
 
-/* ── MODALS (unchanged) ── */
+/* ── MODALS ── */
 .overlay {
   position: fixed;
   inset: 0;
@@ -1452,7 +1775,7 @@ footer {
   background: var(--red);
 }
 
-/* ── DETAIL MODAL (unchanged) ── */
+/* ── DETAIL MODAL ── */
 #detailOvl.open {
   align-items: flex-end;
 }
@@ -1920,16 +2243,16 @@ footer {
   }
 }
 
-/* ── ADD MODAL (unchanged) ── */
+/* ── ADD MODAL ── */
 .add-modal {
   max-width: 620px !important;
   border-radius: 24px !important;
   overflow: hidden;
   display: flex;
   flex-direction: column;
-  background: linear-gradient(160deg, #1a0008 0%, #0e0008 100%) !important;
-  border: 1px solid rgba(200, 16, 46, 0.3) !important;
-  box-shadow: 0 24px 80px rgba(200, 16, 46, 0.25), 0 0 0 1px rgba(200, 16, 46, 0.15) !important;
+  background: linear-gradient(160deg, #1a0008 0%, #130006 50%, #0e0005 100%) !important;
+  border: 1px solid rgba(200, 16, 46, 0.4) !important;
+  box-shadow: 0 32px 80px rgba(200, 16, 46, 0.3), 0 0 0 1px rgba(200, 16, 46, 0.15), inset 0 1px 0 rgba(255,80,80,0.08) !important;
 }
 
 .add-modal-head {
@@ -1996,15 +2319,61 @@ footer {
 
 .add-upload-zone {
   flex-shrink: 0;
-  background: linear-gradient(160deg, rgba(200, 16, 46, 0.28) 0%, rgba(140, 8, 30, 0.22) 100%);
-  border-bottom: 1px solid rgba(200, 16, 46, 0.4);
-  padding: 14px 16px;
+  background: linear-gradient(160deg, rgba(200, 16, 46, 0.22) 0%, rgba(160, 10, 35, 0.15) 100%);
+  border-bottom: 1px solid rgba(200, 16, 46, 0.35);
+  padding: 20px 18px;
   cursor: pointer;
   transition: background 0.2s;
+  position: relative;
+  overflow: hidden;
+}
+
+.add-upload-zone::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse 80% 100% at 50% -10%, rgba(232,17,46,0.12) 0%, transparent 60%);
+  pointer-events: none;
 }
 
 .add-upload-zone:hover {
-  background: linear-gradient(160deg, rgba(200, 16, 46, 0.38) 0%, rgba(140, 8, 30, 0.30) 100%);
+  background: linear-gradient(160deg, rgba(200, 16, 46, 0.32) 0%, rgba(160, 10, 35, 0.24) 100%);
+}
+
+/* Big + upload button */
+.upload-plus-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 64px;
+  height: 64px;
+  border-radius: 18px;
+  flex-shrink: 0;
+  background: linear-gradient(135deg, rgba(232, 17, 46, 0.35) 0%, rgba(200, 16, 46, 0.22) 100%);
+  border: 2px dashed rgba(232, 17, 46, 0.65);
+  color: #fff;
+  font-size: 32px;
+  font-weight: 300;
+  line-height: 1;
+  transition: all 0.22s;
+  box-shadow: 0 4px 18px rgba(232,17,46,0.2), inset 0 1px 0 rgba(255,255,255,0.1);
+  position: relative;
+}
+
+.upload-plus-btn::after {
+  content: '';
+  position: absolute;
+  inset: -4px;
+  border-radius: 22px;
+  border: 1px solid rgba(232,17,46,0.2);
+  pointer-events: none;
+}
+
+.add-upload-zone:hover .upload-plus-btn {
+  background: linear-gradient(135deg, rgba(232, 17, 46, 0.55) 0%, rgba(200, 16, 46, 0.38) 100%);
+  border-color: rgba(232, 17, 46, 0.9);
+  transform: scale(1.06);
+  box-shadow: 0 8px 28px rgba(232,17,46,0.38);
 }
 
 .add-upload-inner {
@@ -2014,55 +2383,62 @@ footer {
   padding: 10px 0;
 }
 
-.add-up-icon {
-  width: 46px;
-  height: 46px;
-  border-radius: 12px;
-  flex-shrink: 0;
-  background: rgba(200, 16, 46, 0.2);
-  border: 1.5px dashed rgba(200, 16, 46, 0.5);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
+.add-up-icon { display: none; }
 
+/* Restored: add upload text styles */
 .add-up-txt {
-  font-size: 14px;
-  font-weight: 800;
+  font-size: 15px;
+  font-weight: 900;
   color: #fff;
+  letter-spacing: -0.2px;
+  line-height: 1.3;
 }
 
 .add-up-txt span {
-  color: rgba(255, 255, 255, 0.6);
+  color: rgba(255, 255, 255, 0.55);
   font-weight: 600;
+  font-size: 13px;
 }
 
 .add-up-hint {
-  font-size: 11px;
-  color: rgba(255, 255, 255, 0.42);
-  margin-top: 3px;
-}
-
-.add-upload-zone .prev-grid {
-  margin-top: 6px;
+  font-size: 12px;
+  color: rgba(255, 255, 255, 0.38);
+  margin-top: 5px;
   display: flex;
-  flex-wrap: wrap;
-  gap: 7px;
+  align-items: center;
+  gap: 6px;
 }
 
-.add-upload-zone .prog {
-  margin: 8px 0 2px;
-  display: none;
-  background: rgba(255, 255, 255, 0.12);
-  border-radius: 100px;
-  height: 3px;
+.add-up-hint::before {
+  content: '';
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: rgba(232, 17, 46, 0.7);
+  display: inline-block;
+  flex-shrink: 0;
 }
+
+/* btn-ghost — hero secondary button */
+.btn-ghost {
+  background: rgba(255, 255, 255, 0.07);
+  border: 1.5px solid rgba(255, 255, 255, 0.18);
+  color: #fff;
+  box-shadow: none;
+}
+
+.btn-ghost:hover {
+  background: rgba(255, 255, 255, 0.13);
+  border-color: rgba(255, 255, 255, 0.32);
+  transform: translateY(-1px);
+}
+
 
 .add-body-scroll {
   padding: 0 !important;
   overflow-y: auto;
   flex: 1;
-  background: linear-gradient(180deg, #1a0008 0%, #12000a 40%, #0e000a 100%);
+  background: linear-gradient(180deg, #160006 0%, #110004 40%, #0d0003 100%);
 }
 
 .add-body-scroll form {
@@ -2073,13 +2449,13 @@ footer {
   margin-bottom: 14px;
   padding: 16px;
   border-radius: 16px;
-  background: rgba(200, 16, 46, 0.07);
-  border: 1px solid rgba(200, 16, 46, 0.22);
+  background: rgba(200, 16, 46, 0.06);
+  border: 1px solid rgba(200, 16, 46, 0.2);
 }
 
 .add-section-seller {
-  background: rgba(200, 16, 46, 0.12);
-  border-color: rgba(200, 16, 46, 0.35);
+  background: rgba(200, 16, 46, 0.1);
+  border-color: rgba(200, 16, 46, 0.3);
 }
 
 .add-section-title {
@@ -2305,17 +2681,29 @@ footer {
 /* ── PERFORMANCE ── */
 .car-card {
   content-visibility: auto;
-  contain-intrinsic-size: 0 460px;
+  contain-intrinsic-size: 0 420px;
 }
 
 .cars-grid {
   contain: layout;
 }
 
-/* ── RESPONSIVE (unchanged) ── */
+/* GPU layer for hero */
+.hero-bg, .hero-glow {
+  transform: translateZ(0);
+}
+
+/* ── RESPONSIVE ── */
 @media (max-width: 900px) {
   .nav-mid {
     display: none;
+  }
+  .foot-grid {
+    grid-template-columns: 1fr 1fr;
+    gap: 32px;
+  }
+  .foot-brand-col {
+    grid-column: 1 / -1;
   }
 }
 
@@ -2379,13 +2767,21 @@ footer {
     padding: 12px 18px;
     font-size: 13px;
   }
+  /* Stats mobile — single column, compact */
   .hero-stats {
-    flex-direction: column;
+    grid-template-columns: 1fr;
+    max-width: 340px;
     gap: 12px;
-    max-width: 320px;
   }
   .stat-card {
-    padding: 18px 10px;
+    padding: 22px 16px 18px;
+    border-radius: 20px;
+  }
+  .stat-icon {
+    width: 48px;
+    height: 48px;
+    border-radius: 14px;
+    margin-bottom: 14px;
   }
   .search-wrap {
     padding: 36px 14px 0;
@@ -2454,11 +2850,6 @@ footer {
   .fg {
     grid-template-columns: 1fr;
   }
-  .foot-in {
-    flex-direction: column;
-    gap: 12px;
-    text-align: center;
-  }
   .add-row2 {
     grid-template-columns: 1fr 1fr;
   }
@@ -2479,6 +2870,25 @@ footer {
     font-size: 10px;
     padding: 2px 7px;
   }
+  /* Footer mobile */
+  .foot-grid {
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+  }
+  .foot-cta-in {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 14px;
+  }
+  .foot-cta-title {
+    font-size: 1rem;
+  }
+  .foot-main {
+    padding: 32px 18px 28px;
+  }
+  .foot-stats-mini {
+    width: 100%;
+  }
 }
 
 @media (max-width: 400px) {
@@ -2492,12 +2902,15 @@ footer {
   .cars-grid {
     grid-template-columns: 1fr;
   }
+  .foot-grid {
+    grid-template-columns: 1fr;
+  }
 }
 </style>
 </head>
 <body>
 
-<!-- ── SVG ICON DEFS (inline, no external requests) ── -->
+<!-- ── SVG ICON DEFS ── -->
 <svg xmlns="http://www.w3.org/2000/svg" style="display:none">
   <symbol id="ico-car" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
     <path d="M5 17H3a2 2 0 0 1-2-2V9a2 2 0 0 1 2-2h13l4 4v4a2 2 0 0 1-2 2h-1"/>
@@ -2583,10 +2996,6 @@ footer {
   <symbol id="ico-stats" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
     <line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/>
   </symbol>
-  <symbol id="ico-facebook" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></symbol>
-  <symbol id="ico-instagram" viewBox="0 0 24 24" fill="none" stroke="currentColor"><rect x="2" y="2" width="20" height="20" rx="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></symbol>
-  <symbol id="ico-twitter" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M22 4s-.7 2.1-2 3.4c1.6 10-9.4 17.3-18 11.6 2.2.1 4.4-.6 6-2C3 15.5.5 9.6 3 5c2.2 2.6 5.6 4.1 9 4-.9-4.2 4-6.6 7-3.8 1.1 0 3-1.2 3-1.2z"/></symbol>
-  <symbol id="ico-youtube" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M22.54 6.42a2.78 2.78 0 0 0-1.94-2C18.88 4 12 4 12 4s-6.88 0-8.6.46a2.78 2.78 0 0 0-1.94 2A29 29 0 0 0 1 11.75a29 29 0 0 0 .46 5.33A2.78 2.78 0 0 0 3.4 19c1.72.46 8.6.46 8.6.46s6.88 0 8.6-.46a2.78 2.78 0 0 0 1.94-2 29 29 0 0 0 .46-5.25 29 29 0 0 0-.46-5.33z"/><polygon points="9.75 15.02 15.5 11.75 9.75 8.48 9.75 15.02"/></symbol>
 </svg>
 
 <!-- NAV -->
@@ -2595,7 +3004,7 @@ footer {
     <div class="logo-box">
       <svg width="20" height="20"><use href="#ico-car"/></svg>
     </div>
-    <span class="logo-text"><span class="r">YOUGO</span> <span class="logo-cars">CARS</span></span>
+    <span class="logo-text"><span class="r">YOUGO</span><span class="logo-cars"> CARS</span></span>
   </div>
 
   <div class="nav-mid">
@@ -2606,7 +3015,7 @@ footer {
       <svg width="13" height="13"><use href="#ico-car"/></svg> מודעות
     </button>
     <button class="nav-a" onclick="open('https://yougo-roan.vercel.app','_blank')">
-      <svg width="13" height="13"><use href="#ico-globe"/></svg> YOUGO CARS
+      <svg width="13" height="13"><use href="#ico-globe"/></svg> YOUGO ISRAEL
     </button>
   </div>
 
@@ -2639,14 +3048,14 @@ footer {
   <div class="hero-grid"></div>
   <div class="hero-glow"></div>
   <div class="hero-in">
-    <h1>שוק הרכבים <span class="r">הדיגיטלי</span><br><span style="color:var(--t0)">של ישראל</span></h1>
+    <h1 id="heroH">שוק הרכבים <span class="r">הדיגיטלי</span><br>של ישראל</h1>
     <p class="hero-sub" id="heroSub">קנה ומכור רכב בקלות ובמהירות. מודעות מאומתות עם אפשרות יצירת קשר מיידית.</p>
 
     <div class="hero-ctas">
-      <button class="btn btn-red" onclick="openAdd()" id="hBtn1">
+      <button class="btn btn-red" id="hBtn1" onclick="openAdd()">
         <svg width="15" height="15"><use href="#ico-car"/></svg> פרסם רכב בחינם
       </button>
-      <button class="btn btn-ghost" onclick="scrollTo2('listSec')" id="hBtn2">
+      <button class="btn btn-ghost" id="hBtn2" onclick="scrollTo2('listSec')">
         <svg width="15" height="15"><use href="#ico-search"/></svg> <span>חפש רכב</span>
       </button>
       <a class="btn-pkg" href="https://yougo-roan.vercel.app" target="_blank" id="hBtn3">
@@ -2656,30 +3065,38 @@ footer {
       </a>
     </div>
 
-    <!-- STATS CARDS – PROFESSIONAL & ELEGANT -->
+    <!-- STATS CARDS — WORLD-CLASS LUXURY -->
     <div class="hero-stats">
+      <!-- Card 1: Active Listings -->
       <div class="stat-card">
         <div class="stat-icon">
           <svg><use href="#ico-car"/></svg>
         </div>
         <div class="stat-value" id="statCars">1502</div>
         <div class="stat-label">מודעות פעילות</div>
+        <div class="stat-divider"></div>
         <div class="stat-desc">רכבים מאומתים ומעודכנים בזמן אמת</div>
       </div>
+
+      <!-- Card 2: Yearly Views (highlighted — gold) -->
       <div class="stat-card highlight">
         <div class="stat-icon">
           <svg><use href="#ico-eye"/></svg>
         </div>
-        <div class="stat-value">מעל 2 מיליון</div>
+        <div class="stat-value">מעל 2M</div>
         <div class="stat-label">צפיות בשנה</div>
+        <div class="stat-divider"></div>
         <div class="stat-desc">חשיפה חסרת תקדים למודעות שלך</div>
       </div>
+
+      <!-- Card 3: Instant Posting -->
       <div class="stat-card">
         <div class="stat-icon">
           <svg><use href="#ico-clock"/></svg>
         </div>
-        <div class="stat-value">60 שניות</div>
+        <div class="stat-value">60 שנ'</div>
         <div class="stat-label">פרסום מיידי</div>
+        <div class="stat-divider"></div>
         <div class="stat-desc">מהעלאת התמונה ועד ללקוח הראשון</div>
       </div>
     </div>
@@ -2694,15 +3111,14 @@ footer {
     <div class="ti"><svg width="13" height="13"><use href="#ico-wa"/></svg> פנייה ישירה ב-WhatsApp</div>
     <div class="ti"><svg width="13" height="13"><use href="#ico-lock"/></svg> מאובטח ובטוח</div>
     <div class="ti"><svg width="13" height="13"><use href="#ico-globe"/></svg> עברית · عربية · English</div>
-    <div class="ti"><svg width="13" height="13"><use href="#ico-star"/></svg> YOUGO CARS — 50K+ עוקבים</div>
+    <div class="ti"><svg width="13" height="13"><use href="#ico-star"/></svg> YOUGO ISRAEL — 50K+ עוקבים</div>
     <div class="ti"><svg width="13" height="13"><use href="#ico-search"/></svg> אלפי גולשים יומיים</div>
-    <!-- duplicate for seamless loop -->
     <div class="ti"><svg width="13" height="13"><use href="#ico-check"/></svg> פרסום חינמי מיידי</div>
     <div class="ti"><svg width="13" height="13"><use href="#ico-car"/></svg> פרסום ב-60 שניות</div>
     <div class="ti"><svg width="13" height="13"><use href="#ico-wa"/></svg> פנייה ישירה ב-WhatsApp</div>
     <div class="ti"><svg width="13" height="13"><use href="#ico-lock"/></svg> מאובטח ובטוח</div>
     <div class="ti"><svg width="13" height="13"><use href="#ico-globe"/></svg> עברית · عربية · English</div>
-    <div class="ti"><svg width="13" height="13"><use href="#ico-star"/></svg> YOUGO CARS — 50K+ עוקבים</div>
+    <div class="ti"><svg width="13" height="13"><use href="#ico-star"/></svg> YOUGO ISRAEL — 50K+ עוקבים</div>
     <div class="ti"><svg width="13" height="13"><use href="#ico-search"/></svg> אלפי גולשים יומיים</div>
   </div>
 </div>
@@ -2718,7 +3134,7 @@ footer {
       <span class="search-ico">
         <svg width="17" height="17"><use href="#ico-search"/></svg>
       </span>
-      <input class="search-input" id="sTxt" placeholder="חפש לפי יצרן, דגם, עיר..." oninput="doFilter()">
+      <input class="search-input" id="sTxt" placeholder="חפש לפי יצרן, דגם, עיר..." oninput="doFilterDebounced()">
       <button class="search-go" onclick="doFilter()" id="sBtn">חפש</button>
     </div>
     <div class="filter-strip">
@@ -2776,112 +3192,271 @@ footer {
   </div>
 </div>
 
-<!-- FOOTER – redesigned with YOUGO CARS & all required sections -->
-<footer style="margin-top: 4rem; border-top: 1px solid rgba(255,255,255,0.06); background: #08080e; padding: 3rem 0 2rem;">
-  <div style="max-width: 1200px; margin: 0 auto; padding: 0 20px;">
-    <div style="display: grid; grid-template-columns: 1.2fr 0.8fr 0.8fr 1fr; gap: 2.5rem;">
-      
-      <!-- column 1: brand + contact + social -->
-      <div>
-        <div style="display: flex; align-items: center; gap: 0.8rem; margin-bottom: 1.2rem;">
-          <div style="width: 48px; height: 48px; background: linear-gradient(135deg, #c8102e, #9b0d24); border-radius: 14px; display: flex; align-items: center; justify-content: center; box-shadow: 0 8px 18px #c8102e40;">
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><use href="#ico-car"/></svg>
+<!-- ══════════════════════════════════════════
+     FOOTER — PROFESSIONAL REDESIGN
+══════════════════════════════════════════ -->
+<footer>
+  <!-- CTA Bar -->
+  <div class="foot-cta-bar">
+    <div class="foot-cta-in">
+      <div class="foot-cta-left">
+        <div class="foot-cta-title">מוכן למכור את הרכב?</div>
+        <div class="foot-cta-sub">הצטרף לאלפי מוכרים מרוצים ב-YOUGO CARS</div>
+      </div>
+      <a class="btn btn-red" href="https://yougo-roan.vercel.app" target="_blank" style="padding:12px 28px;font-size:14px;border-radius:12px">
+        <svg width="14" height="14"><use href="#ico-briefcase"/></svg>
+        בחר חבילה עכשיו
+      </a>
+    </div>
+  </div>
+
+  <!-- Main Grid -->
+  <div class="foot-main">
+    <div class="foot-grid">
+
+      <!-- Brand Column -->
+      <div class="foot-brand-col">
+        <div class="foot-brand-logo">
+          <div class="logo-box">
+            <svg width="18" height="18"><use href="#ico-car"/></svg>
           </div>
-          <span style="font-size: 1.5rem; font-weight: 900; letter-spacing: -0.5px;"><span style="color: #c8102e;">YOUGO</span> <span style="color: #fff;">CARS</span></span>
+          <span class="logo-text"><span class="r">YOUGO</span><span class="logo-cars"> CARS</span></span>
         </div>
-        <div style="color: rgba(255,255,255,0.45); font-size: 0.9rem; line-height: 1.7; margin-bottom: 1.5rem;">
-          הפלטפורמה המובילה בישראל לפרסום ומכירת רכבים, ציוד מקצועי ורכבים מסחריים ברשתות החברתיות. מעל 50,000 עוקבים, מעל 1,000 עסקאות מוצלחות.
+        <p class="foot-brand-desc">הפלטפורמה המובילה בישראל לפרסום ומכירת רכבים, ציוד מקצועי ורכבים מסחריים ברשתות החברתיות. מעל 50,000 עוקבים, מעל 1,000 עסקאות מוצלחות.</p>
+        <div class="foot-brand-tag">Digital Car Marketing</div>
+
+        <div class="foot-stats-mini">
+          <div class="foot-stat" style="padding-right:0;padding-left:16px">
+            <span class="foot-stat-n">50K+</span>
+            <span class="foot-stat-l">עוקבים</span>
+          </div>
+          <div class="foot-stat-sep"></div>
+          <div class="foot-stat" style="padding:0 16px">
+            <span class="foot-stat-n">1,000+</span>
+            <span class="foot-stat-l">עסקאות</span>
+          </div>
+          <div class="foot-stat-sep"></div>
+          <div class="foot-stat" style="padding-left:0;padding-right:16px">
+            <span class="foot-stat-n">2M+</span>
+            <span class="foot-stat-l">צפיות</span>
+          </div>
         </div>
-        <a href="https://wa.me/972546980606" target="_blank" style="display: flex; align-items: center; gap: 0.8rem; color: rgba(255,255,255,0.45); font-size: 0.95rem; margin-bottom: 0.7rem; text-decoration: none; transition: color 0.2s;">
-          <span style="width: 32px; height: 32px; background: rgba(255,255,255,0.04); border-radius: 10px; display: flex; align-items: center; justify-content: center; border: 1px solid rgba(255,255,255,0.08);">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"><use href="#ico-phone"/></svg>
-          </span>
+
+        <a class="foot-phone" href="tel:0546980606">
+          <svg width="14" height="14"><use href="#ico-phone"/></svg>
           054-6980606
         </a>
-        <div style="display: flex; align-items: center; gap: 0.8rem; color: rgba(255,255,255,0.45); font-size: 0.95rem; margin-bottom: 1rem;">
-          <span style="width: 32px; height: 32px; background: rgba(255,255,255,0.04); border-radius: 10px; display: flex; align-items: center; justify-content: center; border: 1px solid rgba(255,255,255,0.08);">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"><use href="#ico-pin"/></svg>
-          </span>
+        <div class="foot-location">
+          <svg width="12" height="12"><use href="#ico-pin"/></svg>
           ישראל · פעילים בכל הארץ
         </div>
-        <div style="margin-top: 1rem;">
-          <div style="font-size: 0.8rem; font-weight: 900; text-transform: uppercase; letter-spacing: 0.15em; color: rgba(255,255,255,0.2); margin-bottom: 1.5rem;">עקבו אחרינו</div>
-          <div style="display: flex; gap: 0.8rem; flex-wrap: wrap;">
-            <a href="#" style="width: 42px; height: 42px; border-radius: 12px; display: flex; align-items: center; justify-content: center; background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); transition: all 0.2s;"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"><use href="#ico-instagram"/></svg></a>
-            <a href="#" style="width: 42px; height: 42px; border-radius: 12px; display: flex; align-items: center; justify-content: center; background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); transition: all 0.2s;"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"><use href="#ico-facebook"/></svg></a>
-            <a href="#" style="width: 42px; height: 42px; border-radius: 12px; display: flex; align-items: center; justify-content: center; background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); transition: all 0.2s;"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"><use href="#ico-twitter"/></svg></a>
-            <a href="#" style="width: 42px; height: 42px; border-radius: 12px; display: flex; align-items: center; justify-content: center; background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); transition: all 0.2s;"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"><use href="#ico-youtube"/></svg></a>
-            <a href="#" style="width: 42px; height: 42px; border-radius: 12px; display: flex; align-items: center; justify-content: center; background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); transition: all 0.2s;"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"><use href="#ico-wa"/></svg></a>
-          </div>
+
+        <div class="foot-follow-row">
+          <span class="foot-follow-lbl">עקבו אחרינו</span>
+          <a class="foot-social" href="https://wa.me/972546980606" target="_blank" title="WhatsApp">
+            <svg width="16" height="16"><use href="#ico-wa"/></svg>
+          </a>
         </div>
       </div>
 
-      <!-- column 2: מידע -->
-      <div>
-        <div style="font-size: 0.8rem; font-weight: 900; text-transform: uppercase; letter-spacing: 0.15em; color: rgba(255,255,255,0.2); margin-bottom: 1.5rem;">מידע</div>
-        <ul style="list-style: none; display: flex; flex-direction: column; gap: 1rem;">
-          <li><a href="#" style="color: rgba(255,255,255,0.55); font-size: 0.95rem; font-weight: 500; display: inline-flex; align-items: center; gap: 0.5rem; text-decoration: none; transition: color 0.2s;"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg> מי אנחנו?</a></li>
-          <li><a href="#" style="color: rgba(255,255,255,0.55); font-size: 0.95rem; font-weight: 500; display: inline-flex; align-items: center; gap: 0.5rem; text-decoration: none; transition: color 0.2s;"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="10"/><polygon points="10 8 16 12 10 16 10 8"/></svg> איך מפרסמים רכב?</a></li>
-          <li><a href="#" style="color: rgba(255,255,255,0.55); font-size: 0.95rem; font-weight: 500; display: inline-flex; align-items: center; gap: 0.5rem; text-decoration: none; transition: color 0.2s;"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M4 12h16M4 12l4-4M4 12l4 4"/></svg> שיווק שותפים</a></li>
-        </ul>
+      <!-- מידע Column -->
+      <div class="foot-col">
+        <div class="foot-col-title">מידע</div>
+        <span class="foot-col-link">
+          <strong style="display:block;color:rgba(255,255,255,0.75);font-size:12.5px;margin-bottom:2px">מי אנחנו?</strong>
+          <span style="font-size:11.5px;line-height:1.5;color:rgba(255,255,255,0.35)">YOUGO ISRAEL — פלטפורמה דיגיטלית מובילה לפרסום רכבים ברשתות החברתיות עם מעל 50,000 עוקבים</span>
+        </span>
+        <span class="foot-col-link" style="margin-top:10px">
+          <strong style="display:block;color:rgba(255,255,255,0.75);font-size:12.5px;margin-bottom:2px">איך מפרסמים רכב?</strong>
+          <span style="font-size:11.5px;line-height:1.5;color:rgba(255,255,255,0.35)">בוחרים חבילה, שולחים תמונות ופרטים ב-WhatsApp — ואנחנו מטפלים בכל השאר תוך 24 שעות</span>
+        </span>
+        <span class="foot-col-link" style="margin-top:10px">
+          <strong style="display:block;color:rgba(255,255,255,0.75);font-size:12.5px;margin-bottom:2px">שיווק שותפים</strong>
+          <span style="font-size:11.5px;line-height:1.5;color:rgba(255,255,255,0.35)">הצטרף לרשת השותפים שלנו וקבל עמלה על כל לקוח שמגיע דרכך</span>
+        </span>
       </div>
 
-      <!-- column 3: חבילות -->
-      <div>
-        <div style="font-size: 0.8rem; font-weight: 900; text-transform: uppercase; letter-spacing: 0.15em; color: rgba(255,255,255,0.2); margin-bottom: 1.5rem;">חבילות</div>
-        <ul style="list-style: none; display: flex; flex-direction: column; gap: 1rem;">
-          <li><a href="#" style="color: rgba(255,255,255,0.55); font-size: 0.95rem; font-weight: 500; display: inline-flex; align-items: center; gap: 0.5rem; text-decoration: none; transition: color 0.2s;"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"><use href="#ico-car"/></svg> רכב פרטי</a></li>
-          <li><a href="#" style="color: rgba(255,255,255,0.55); font-size: 0.95rem; font-weight: 500; display: inline-flex; align-items: center; gap: 0.5rem; text-decoration: none; transition: color 0.2s;"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"><use href="#ico-star"/></svg> VIP LUXURY</a></li>
-          <li><a href="#" style="color: rgba(255,255,255,0.55); font-size: 0.95rem; font-weight: 500; display: inline-flex; align-items: center; gap: 0.5rem; text-decoration: none; transition: color 0.2s;"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"><rect x="2" y="4" width="20" height="16" rx="2"/><circle cx="8" cy="16" r="2"/><circle cx="16" cy="16" r="2"/></svg> DUO DEAL</a></li>
-          <li><a href="#" style="color: rgba(255,255,255,0.55); font-size: 0.95rem; font-weight: 500; display: inline-flex; align-items: center; gap: 0.5rem; text-decoration: none; transition: color 0.2s;"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"><use href="#ico-briefcase"/></svg> עסקים וסוכנויות</a></li>
-          <li><a href="#" style="color: rgba(255,255,255,0.55); font-size: 0.95rem; font-weight: 500; display: inline-flex; align-items: center; gap: 0.5rem; text-decoration: none; transition: color 0.2s;"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"><rect x="4" y="6" width="16" height="12" rx="2"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="16" y1="2" x2="16" y2="6"/></svg> ציוד ותחבורה</a></li>
-        </ul>
+      <!-- חבילות Column -->
+      <div class="foot-col">
+        <div class="foot-col-title">חבילות</div>
+        <a class="foot-col-link" href="https://yougo-roan.vercel.app" target="_blank" style="padding-bottom:10px;border-bottom:1px solid rgba(255,255,255,0.05)">
+          <strong style="display:block;color:rgba(255,255,255,0.75);font-size:12.5px;margin-bottom:2px">🚗 רכב פרטי</strong>
+          <span style="font-size:11px;color:rgba(255,255,255,0.35)">פרסום ממוקד לרכבים פרטיים עם תמונות מקצועיות וחשיפה מרבית</span>
+        </a>
+        <a class="foot-col-link" href="https://yougo-roan.vercel.app" target="_blank" style="padding-bottom:10px;border-bottom:1px solid rgba(255,255,255,0.05)">
+          <strong style="display:block;color:var(--gold);font-size:12.5px;margin-bottom:2px">👑 VIP LUXURY</strong>
+          <span style="font-size:11px;color:rgba(255,255,255,0.35)">פרסום פרמיום לרכבי יוקרה עם סרטון, סטורי וקידום ממומן</span>
+        </a>
+        <a class="foot-col-link" href="https://yougo-roan.vercel.app" target="_blank" style="padding-bottom:10px;border-bottom:1px solid rgba(255,255,255,0.05)">
+          <strong style="display:block;color:rgba(255,255,255,0.75);font-size:12.5px;margin-bottom:2px">🤝 DUO DEAL</strong>
+          <span style="font-size:11px;color:rgba(255,255,255,0.35)">חבילה משתלמת לשני רכבים יחד — חיסכון משמעותי בעלויות הפרסום</span>
+        </a>
+        <a class="foot-col-link" href="https://yougo-roan.vercel.app" target="_blank" style="padding-bottom:10px;border-bottom:1px solid rgba(255,255,255,0.05)">
+          <strong style="display:block;color:rgba(255,255,255,0.75);font-size:12.5px;margin-bottom:2px">🏢 עסקים וסוכנויות</strong>
+          <span style="font-size:11px;color:rgba(255,255,255,0.35)">מסלול חודשי לסוכנויות רכב עם פרסום בלתי מוגבל וניהול מלא</span>
+        </a>
+        <a class="foot-col-link" href="https://yougo-roan.vercel.app" target="_blank">
+          <strong style="display:block;color:rgba(255,255,255,0.75);font-size:12.5px;margin-bottom:2px">🚛 ציוד ותחבורה</strong>
+          <span style="font-size:11px;color:rgba(255,255,255,0.35)">פתרון ייעודי לרכבים מסחריים, ציוד כבד ורכבי עבודה</span>
+        </a>
       </div>
 
-      <!-- column 4: משפטי ואחר + CTA -->
-      <div>
-        <div style="font-size: 0.8rem; font-weight: 900; text-transform: uppercase; letter-spacing: 0.15em; color: rgba(255,255,255,0.2); margin-bottom: 1.5rem;">משפטי ואחר</div>
-        <ul style="list-style: none; display: flex; flex-direction: column; gap: 1rem; margin-bottom: 2rem;">
-          <li><a href="#" style="color: rgba(255,255,255,0.55); font-size: 0.95rem; font-weight: 500; display: inline-flex; align-items: center; gap: 0.5rem; text-decoration: none; transition: color 0.2s;"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg> תקנון השימוש</a></li>
-          <li><a href="#" style="color: rgba(255,255,255,0.55); font-size: 0.95rem; font-weight: 500; display: inline-flex; align-items: center; gap: 0.5rem; text-decoration: none; transition: color 0.2s;"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg> מדיניות פרטיות</a></li>
-          <li><a href="#" style="color: rgba(255,255,255,0.55); font-size: 0.95rem; font-weight: 500; display: inline-flex; align-items: center; gap: 0.5rem; text-decoration: none; transition: color 0.2s;"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg> בדיקת סטטוס</a></li>
-          <li><a href="#" style="color: rgba(255,255,255,0.55); font-size: 0.95rem; font-weight: 500; display: inline-flex; align-items: center; gap: 0.5rem; text-decoration: none; transition: color 0.2s;"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="3" y1="9" x2="21" y2="9"/></svg> פאנל ניהול</a></li>
-        </ul>
-
-        <div style="background: linear-gradient(135deg, #c8102e15, #c8102e08); border: 1px solid #c8102e30; border-radius: 20px; padding: 1.2rem; text-align: center;">
-          <p style="font-size: 0.9rem; font-weight: 700; margin-bottom: 0.8rem;">מוכן למכור את הרכב?</p>
-          <button onclick="window.location.href='#packages'" style="background: linear-gradient(135deg, #c8102e, #9b0d24); color: white; font-weight: 900; font-size: 0.8rem; padding: 0.7rem 1.5rem; border-radius: 12px; width: 100%; border: none; cursor: pointer; box-shadow: 0 6px 16px #c8102e50;">בחר חבילה עכשיו</button>
-        </div>
+      <!-- משפטי Column -->
+      <div class="foot-col">
+        <div class="foot-col-title">משפטי ואחר</div>
+        <span class="foot-col-link">
+          <strong style="display:block;color:rgba(255,255,255,0.75);font-size:12.5px;margin-bottom:2px">תקנון השימוש</strong>
+          <span style="font-size:11px;color:rgba(255,255,255,0.35)">תנאי השימוש בפלטפורמה, מדיניות פרסום וכללי ההתנהגות</span>
+        </span>
+        <span class="foot-col-link" style="margin-top:8px">
+          <strong style="display:block;color:rgba(255,255,255,0.75);font-size:12.5px;margin-bottom:2px">מדיניות פרטיות</strong>
+          <span style="font-size:11px;color:rgba(255,255,255,0.35)">איך אנחנו מגנים על המידע האישי שלך ועמידה ב-GDPR</span>
+        </span>
+        <span class="foot-col-link" style="margin-top:8px">
+          <strong style="display:block;color:rgba(255,255,255,0.75);font-size:12.5px;margin-bottom:2px">בדיקת סטטוס</strong>
+          <span style="font-size:11px;color:rgba(255,255,255,0.35)">בדוק את סטטוס המודעה שלך ואם הרכב פורסם בהצלחה</span>
+        </span>
+        <span class="foot-col-link" style="margin-top:8px;cursor:pointer" onclick="adminLogin()">
+          <strong style="display:block;color:rgba(255,255,255,0.75);font-size:12.5px;margin-bottom:2px">פאנל ניהול</strong>
+          <span style="font-size:11px;color:rgba(255,255,255,0.35)">כניסה למנהלי המערכת לניהול מודעות ומשתמשים</span>
+        </span>
       </div>
+
     </div>
+  </div>
 
-    <!-- footer bottom -->
-    <div style="margin-top: 3rem; padding-top: 1.5rem; border-top: 1px solid rgba(255,255,255,0.06); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem; color: rgba(255,255,255,0.2); font-size: 0.75rem;">
-      <div>© 2026 YOUGO CARS · כל הזכויות שמורות</div>
-      <div style="display: flex; align-items: center; gap: 1rem;">
-        <span style="display: flex; align-items: center;"><span style="width: 8px; height: 8px; background: #22c55e; border-radius: 50%; display: inline-block; margin-left: 0.3rem; animation: pulse 1.5s infinite;"></span> מערכת פעילה</span>
-        <span>·</span>
-        <span>Made in Israel 🇮🇱</span>
-      </div>
+  <!-- Bottom Bar -->
+  <div class="foot-bottom">
+    <div class="foot-bottom-in">
+      <span class="foot-copy">© 2026 YOUGO ISRAEL — כל הזכויות שמורות</span>
+      <span class="foot-dot" onclick="adminLogin()">
+        <svg width="8" height="8" viewBox="0 0 8 8"><circle cx="4" cy="4" r="4" fill="currentColor"/></svg>
+      </span>
     </div>
   </div>
 </footer>
 
-<!-- DETAIL MODAL (unchanged) -->
+<!-- DETAIL MODAL -->
 <div class="overlay" id="detailOvl" onclick="if(event.target.id==='detailOvl')closeDetail()">
-  <div class="detail-modal" onclick="event.stopPropagation()"> <!-- content remains exactly as original --> </div>
+  <div class="detail-modal" onclick="event.stopPropagation()">
+    <div class="d-gallery" id="dGallery">
+      <div class="d-main-wrap">
+        <img class="d-main-img" id="dmImg" src="" alt="">
+        <div class="d-img-counter" id="dCounter"></div>
+        <button class="d-arrow d-arrow-prev hidden" id="dPrev" onclick="dNav(-1)">‹</button>
+        <button class="d-arrow d-arrow-next hidden" id="dNext" onclick="dNav(1)">›</button>
+        <button class="d-close" onclick="closeDetail()">×</button>
+      </div>
+      <div class="d-thumbs" id="dThumbs"></div>
+    </div>
+    <div class="d-info" id="detailBody"></div>
+  </div>
 </div>
 
-<!-- ADD MODAL (unchanged) -->
+<!-- ADD MODAL -->
 <div class="overlay" id="addOvl" onclick="if(event.target.id==='addOvl')closeAdd()">
-  <div class="modal add-modal" onclick="event.stopPropagation()"> <!-- content unchanged --> </div>
+  <div class="modal add-modal" onclick="event.stopPropagation()">
+    <div class="add-modal-head">
+      <div class="add-head-logo">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
+          <path d="M18 8H6L4 14h16l-2-6z" fill="rgba(255,255,255,.25)" stroke="#fff" stroke-width="1.8" stroke-linejoin="round"/>
+          <circle cx="7.5" cy="16.5" r="2" fill="#fff"/>
+          <circle cx="16.5" cy="16.5" r="2" fill="#fff"/>
+          <path d="M3 14h18" stroke="#fff" stroke-width="1.6" stroke-linecap="round"/>
+          <path d="M5 14v2M19 14v2" stroke="#fff" stroke-width="1.4" stroke-linecap="round"/>
+        </svg>
+        <div>
+          <div class="add-head-title" id="addTitle">פרסם את הרכב שלך</div>
+          <div class="add-head-sub">YOUGO CARS — חינם ומיידי</div>
+        </div>
+      </div>
+      <button class="modal-x" onclick="closeAdd()">×</button>
+    </div>
+
+    <div class="add-upload-zone" onclick="document.getElementById('imgIn').click()">
+      <input type="file" id="imgIn" multiple accept="image/*" onchange="handleImgs(this)" style="display:none">
+      <div class="add-upload-inner" id="uploadInner">
+        <div class="upload-plus-btn">
+          <svg width="28" height="28" viewBox="0 0 28 28" fill="none">
+            <line x1="14" y1="6" x2="14" y2="22" stroke="white" stroke-width="2.5" stroke-linecap="round"/>
+            <line x1="6" y1="14" x2="22" y2="14" stroke="white" stroke-width="2.5" stroke-linecap="round"/>
+          </svg>
+        </div>
+        <div>
+          <div class="add-up-txt" id="upTxt">העלה תמונות הרכב <span>(עד 10 תמונות)</span></div>
+          <div class="add-up-hint">לחץ לבחירת תמונות · או גרור לכאן</div>
+        </div>
+      </div>
+      <div class="prev-grid" id="prevGrid"></div>
+      <div class="prog" id="prog"><div class="prog-bar" id="progBar"></div></div>
+    </div>
+
+    <div class="modal-body add-body-scroll" id="addBody">
+      <form id="addForm" onsubmit="submitCar(event)">
+        <div id="cfgTip" style="display:none;background:rgba(234,179,8,.1);border:1px solid rgba(234,179,8,.35);border-radius:12px;padding:12px 14px;margin-bottom:14px;font-size:12px;color:#fbbf24;line-height:1.6">
+          ⚙️ <strong>הגדרת Cloudinary:</strong><br>
+          1. כנס ל <strong>cloudinary.com → Dashboard</strong> — העתק את <strong>Cloud name</strong><br>
+          2. כנס ל <strong>Settings → Upload → Add preset</strong> — בחר <strong>Unsigned</strong> — העתק את השם<br>
+          3. עדכן בקוד: <code style="background:rgba(0,0,0,.4);padding:1px 5px;border-radius:4px">CL_NAME</code> ו <code style="background:rgba(0,0,0,.4);padding:1px 5px;border-radius:4px">CL_PRESET</code>
+        </div>
+
+        <div class="add-section">
+          <div class="add-section-title"><span class="add-section-dot"></span> פרטי הרכב</div>
+          <div class="add-row2">
+            <div class="fg-item"><label class="fg-label">יצרן *</label><input class="fg-input" id="f_make" placeholder="Toyota, BMW, Hyundai..." required></div>
+            <div class="fg-item"><label class="fg-label">דגם *</label><input class="fg-input" id="f_model" placeholder="Corolla, X5, i30..." required></div>
+          </div>
+          <div class="add-row3">
+            <div class="fg-item"><label class="fg-label">שנה *</label><input class="fg-input" id="f_year" type="number" min="1990" max="2026" placeholder="2021" required></div>
+            <div class="fg-item"><label class="fg-label">מחיר ₪ *</label><input class="fg-input" id="f_price" type="number" placeholder="75,000" required></div>
+            <div class="fg-item"><label class="fg-label">ק"מ</label><input class="fg-input" id="f_mileage" type="number" placeholder="80,000"></div>
+          </div>
+          <div class="add-row3">
+            <div class="fg-item"><label class="fg-label">יד</label>
+              <select class="fg-sel" id="f_hand"><option value="1">יד 1</option><option value="2" selected>יד 2</option><option value="3">יד 3</option><option value="4">יד 4+</option></select>
+            </div>
+            <div class="fg-item"><label class="fg-label">גיר</label>
+              <select class="fg-sel" id="f_gear"><option value="אוטומט">אוטומטי</option><option value="ידני">ידני</option><option value="CVT">CVT</option></select>
+            </div>
+            <div class="fg-item"><label class="fg-label">דלק</label>
+              <select class="fg-sel" id="f_fuel"><option value="בנזין">בנזין</option><option value="דיזל">דיזל</option><option value="היברידי">היברידי</option><option value="חשמלי">חשמלי</option></select>
+            </div>
+          </div>
+          <div class="add-row2">
+            <div class="fg-item"><label class="fg-label">צבע</label><input class="fg-input" id="f_color" placeholder="לבן / שחור / כסוף..."></div>
+            <div class="fg-item"><label class="fg-label">מנוע (L)</label><input class="fg-input" id="f_engine" type="number" step="0.1" placeholder="1.6"></div>
+          </div>
+        </div>
+
+        <div class="add-section">
+          <div class="add-section-title"><span class="add-section-dot"></span> תיאור הרכב</div>
+          <div class="fg-item"><label class="fg-label">תיאור בעברית</label><textarea class="fg-ta" id="f_desc_he" placeholder="מצב הרכב, תוספות, היסטוריית תחזוקה..." style="min-height:70px"></textarea></div>
+          <div class="fg-item" style="margin-top:8px"><label class="fg-label">وصف بالعربية</label><textarea class="fg-ta" id="f_desc_ar" placeholder="وصف السيارة، الإضافات، الصيانة..." style="min-height:70px"></textarea></div>
+        </div>
+
+        <div class="add-section add-section-seller">
+          <div class="add-section-title"><span class="add-section-dot"></span> פרטי המוכר</div>
+          <div class="add-row2">
+            <div class="fg-item"><label class="fg-label">שם מלא *</label><input class="fg-input" id="f_name" placeholder="ישראל ישראלי" required></div>
+            <div class="fg-item"><label class="fg-label">טלפון *</label><input class="fg-input" id="f_phone" type="tel" placeholder="050-000-0000" required></div>
+          </div>
+          <div class="fg-item"><label class="fg-label">עיר *</label><input class="fg-input" id="f_city" placeholder="תל אביב, חיפה, ירושלים..." required></div>
+        </div>
+
+        <button type="submit" class="submit-btn" id="subBtn">
+          <svg width="18" height="18"><use href="#ico-car"/></svg>
+          <span id="subBtnTxt">פרסם מודעה בחינם — מיידי!</span>
+        </button>
+      </form>
+    </div>
+  </div>
 </div>
 
 <div id="toast"></div>
 
 <script>
 // ═══════════════════════════════════════
-// CONFIG — DO NOT TOUCH
+// CONFIG
 // ═══════════════════════════════════════
 const SB_URL = 'https://arsbodqhmmtmoqqhykep.supabase.co';
 const SB_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImFyc2JvZHFobW10bW9xcWh5a2VwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzIxNTgxMTQsImV4cCI6MjA4NzczNDExNH0.mt_WpPshp5xdbIx23pMmcwq7MhktA0-vWPIstOy1_HM';
@@ -2890,6 +3465,15 @@ const sb = supabase.createClient(SB_URL, SB_KEY);
 const CL_NAME   = 'dbd2dgqtl';
 const CL_PRESET = 'htxdjln0';
 const ADMIN_PW  = 'yougo2026';
+
+// ═══════════════════════════════════════
+// PERF UTILS
+// ═══════════════════════════════════════
+function debounce(fn, ms) {
+  let t;
+  return (...a) => { clearTimeout(t); t = setTimeout(() => fn(...a), ms); };
+}
+const doFilterDebounced = debounce(() => doFilter(), 200);
 
 // ═══════════════════════════════════════
 // STATE
@@ -2904,7 +3488,7 @@ window.addEventListener('scroll', () =>
 function scrollTo2(id) { document.getElementById(id)?.scrollIntoView({behavior:'smooth'}); }
 
 // ═══════════════════════════════════════
-// TRANSLATIONS (simplified, keep original behavior)
+// TRANSLATIONS
 // ═══════════════════════════════════════
 const LANG_META = {
   he: {code:'HE', label:'עברית'},
@@ -2912,7 +3496,7 @@ const LANG_META = {
   en: {code:'EN', label:'English'}
 };
 const T = {
-  he:{badge:'YOUGO CARS — הפלטפורמה המובילה',
+  he:{badge:'YOUGO ISRAEL — הפלטפורמה המובילה',
     h1:'שוק הרכבים <span class="r">הדיגיטלי</span><br><span style="color:var(--t0)">של ישראל</span>',
     sub:'קנה ומכור רכב בקלות ובמהירות. מודעות מאומתות עם אפשרות יצירת קשר מיידית.',
     b1:'פרסם רכב בחינם',b2:'חפש רכב',b3:'חבילות פרסום מקצועיות',
@@ -2928,7 +3512,7 @@ const T = {
     nc:'אין מודעות תואמות',ncd:'נסה לשנות פרמטרי חיפוש',
     sold:'נמכר',feat:'מומלץ',nw:'חדש',
     na:'פרסם רכב',km:'ק"מ',ge:'גיר',fu:'דלק',sb2:'חפש',dir:'rtl'},
-  ar:{badge:'YOUGO CARS — المنصة الرائدة',
+  ar:{badge:'YOUGO ISRAEL — المنصة الرائدة',
     h1:'سوق السيارات <span class="r">الرقمي</span><br><span style="color:var(--t0)">في إسرائيل</span>',
     sub:'اشترِ وبِع سيارتك بسهولة وسرعة. إعلانات موثقة مع تواصل فوري.',
     b1:'أعلن مجاناً',b2:'تصفح',b3:'باقات الإعلان',
@@ -2944,7 +3528,7 @@ const T = {
     nc:'لا توجد إعلانات',ncd:'جرّب تغيير المعايير',
     sold:'مباع',feat:'مميز',nw:'جديد',
     na:'أعلن عن سيارتك',km:'كم',ge:'ناقل',fu:'وقود',sb2:'بحث',dir:'rtl'},
-  en:{badge:'YOUGO CARS — The Leading Platform',
+  en:{badge:'YOUGO ISRAEL — The Leading Platform',
     h1:'Israel\'s <span class="r">Digital</span><br><span style="color:var(--t0)">Car Market</span>',
     sub:'Buy and sell cars easily. Verified listings with instant contact.',
     b1:'Post Free',b2:'Browse',b3:'Professional Packages',
@@ -2974,18 +3558,21 @@ function applyLang() {
   document.documentElement.dir = L.dir;
   document.getElementById('langIco').textContent = M.code;
   document.getElementById('langTxt').textContent = M.label;
-  document.getElementById('heroBadge').textContent = L.badge;
   document.getElementById('heroH').innerHTML = L.h1;
   document.getElementById('heroSub').textContent = L.sub;
   document.getElementById('hBtn1').innerHTML = `<svg width="15" height="15"><use href="#ico-car"/></svg> ${L.b1}`;
   document.getElementById('hBtn2').innerHTML = `<svg width="15" height="15"><use href="#ico-search"/></svg> ${L.b2}`;
   document.getElementById('hBtn3').textContent = L.b3;
   document.getElementById('navTxt').textContent = L.na;
-  document.getElementById('statCL').textContent = L.cL;
-  document.getElementById('statFL').textContent = L.fL;
-  document.querySelectorAll('.stat-desc')[0].textContent = L.cD;
-  document.querySelectorAll('.stat-desc')[1].textContent = L.fD;
-  document.querySelectorAll('.stat-desc')[2].textContent = L.pD;
+  const statCards = document.querySelectorAll('.stat-card');
+  if (statCards.length >= 3) {
+    statCards[0].querySelector('.stat-label').textContent = L.cL;
+    statCards[0].querySelector('.stat-desc').textContent = L.cD;
+    statCards[1].querySelector('.stat-label').textContent = L.fL;
+    statCards[1].querySelector('.stat-desc').textContent = L.fD;
+    statCards[2].querySelector('.stat-label').textContent = L.pL;
+    statCards[2].querySelector('.stat-desc').textContent = L.pD;
+  }
   document.getElementById('listTitle').innerHTML = L.lT;
   document.getElementById('addTitle').textContent = L.aT;
   const sb2El = document.getElementById('subBtnTxt');
@@ -3001,7 +3588,7 @@ function applyLang() {
 }
 
 // ═══════════════════════════════════════
-// LOAD CARS (unchanged)
+// LOAD CARS
 // ═══════════════════════════════════════
 async function loadCars() {
   document.getElementById('carsBox').innerHTML =
@@ -3116,7 +3703,7 @@ function doSort(type, btn) {
 }
 
 // ═══════════════════════════════════════
-// RENDER CARS — unchanged
+// RENDER CARS
 // ═══════════════════════════════════════
 function renderCars(cars) {
   const c = document.getElementById('carsBox');
@@ -3127,7 +3714,9 @@ function renderCars(cars) {
     </div>`;
     return;
   }
-  c.innerHTML = `<div class="cars-grid">${cars.map(carCard).join('')}</div>`;
+  // Batch DOM write — single innerHTML call
+  const html = cars.map(carCard).join('');
+  c.innerHTML = `<div class="cars-grid">${html}</div>`;
 }
 
 function carCard(car) {
@@ -3205,29 +3794,340 @@ function carCard(car) {
   </div>`;
 }
 
-// DETAIL MODAL (unchanged, abbreviated for length – keep original in actual code)
+// ═══════════════════════════════════════
+// DETAIL MODAL
+// ═══════════════════════════════════════
 let _dImgs = [], _dIdx = 0;
-function openDetail(id) { /* unchanged */ }
-function dGoTo(i) { /* unchanged */ }
-function dNav(dir) { /* unchanged */ }
-function closeDetail() { /* unchanged */ }
 
-// ADD MODAL (unchanged)
-function openAdd() { /* unchanged */ }
-function closeAdd() { /* unchanged */ }
-function handleImgs(input) { /* unchanged */ }
-function rmImg(i) { /* unchanged */ }
-async function uploadImg(file) { /* unchanged */ }
-function getErrMsg(err) { /* unchanged */ }
-function showErrInForm(msg) { /* unchanged */ }
-async function submitCar(e) { /* unchanged */ }
+function openDetail(id) {
+  const car = all.find(c => c.id === id);
+  if (!car) return;
+  _dImgs = car.images?.length ? car.images : (car.main_image ? [car.main_image] : []);
+  _dIdx = 0;
+  const ph2 = (car.seller_phone || '').replace(/\D/g, '').replace(/^0/, '');
 
-// ADMIN (unchanged)
-function adminLogin() { /* unchanged */ }
-function adminOut() { /* unchanged */ }
-async function approve(id) { /* unchanged */ }
-async function markSold(id) { /* unchanged */ }
-async function delCar(id) { /* unchanged */ }
+  const gallery  = document.getElementById('dGallery');
+  const dmImg    = document.getElementById('dmImg');
+  const dThumbs  = document.getElementById('dThumbs');
+  const dCounter = document.getElementById('dCounter');
+
+  if (_dImgs.length > 0) {
+    gallery.style.display = '';
+    dmImg.src = _dImgs[0];
+    dmImg.alt = car.make + ' ' + car.model;
+    dCounter.textContent = '1 / ' + _dImgs.length;
+    if (_dImgs.length > 1) {
+      dThumbs.style.display = '';
+      dThumbs.innerHTML = _dImgs.map((s,i) =>
+        `<img class="d-thumb ${i===0?'on':''}" src="${s}" onclick="dGoTo(${i})" loading="lazy" decoding="async">`
+      ).join('');
+      document.getElementById('dPrev').classList.remove('hidden');
+      document.getElementById('dNext').classList.remove('hidden');
+    } else {
+      dThumbs.style.display = 'none'; dThumbs.innerHTML = '';
+      document.getElementById('dPrev').classList.add('hidden');
+      document.getElementById('dNext').classList.add('hidden');
+    }
+  } else {
+    gallery.style.display = 'none';
+  }
+
+  const specs = [
+    car.mileage      ? {icon:'ico-km',     v:Number(car.mileage).toLocaleString(), k:t('km')} : null,
+    {icon:'ico-gear', v:car.gear_type||'—', k:t('ge')},
+    {icon:'ico-fuel', v:car.fuel_type||'—', k:t('fu')},
+    car.color        ? {icon:'ico-color',   v:car.color,           k:'צבע'}    : null,
+    car.engine_size  ? {icon:'ico-engine',  v:car.engine_size+'L', k:'מנוע'}   : null,
+    car.hand         ? {icon:'ico-hand',    v:'יד '+car.hand,      k:'יד'}     : null,
+  ].filter(Boolean);
+
+  const waMsg = encodeURIComponent('שלום, ראיתי את המודעה של '+car.make+' '+car.model+' '+car.year+' ב-YOUGO CARS');
+
+  document.getElementById('detailBody').innerHTML =
+    `<div class="d-header">
+      <div class="d-title-block">
+        <div class="d-name">${car.make} ${car.model}</div>
+        <div class="d-sub">
+          <span>${car.year}</span>
+          ${car.hand ? `<span class="d-sub-dot"></span><span>יד ${car.hand}</span>` : ''}
+          ${car.seller_city ? `<span class="d-sub-dot"></span><span>${car.seller_city}</span>` : ''}
+        </div>
+      </div>
+      <div class="d-price-block">
+        <div class="d-price">₪${Number(car.price).toLocaleString()}</div>
+        <div class="d-price-lbl">מחיר מבוקש</div>
+      </div>
+    </div>
+    <div class="d-specs-wrap">
+      <div class="d-specs-title">מפרט טכני</div>
+      <div class="d-specs">
+        ${specs.map(s => `
+          <div class="d-spec">
+            <div class="d-spec-icon"><svg><use href="#${s.icon}"/></svg></div>
+            <div class="d-spec-v">${s.v}</div>
+            <div class="d-spec-k">${s.k}</div>
+          </div>`).join('')}
+      </div>
+    </div>
+    ${car.description_he ? `<div class="d-desc">${car.description_he}</div>` : ''}
+    <div class="d-seller">
+      <div class="d-seller-av"><svg width="20" height="20"><use href="#ico-user"/></svg></div>
+      <div>
+        <div class="d-seller-name">${car.seller_name || '—'}</div>
+        <div class="d-seller-city">
+          <svg><use href="#ico-pin"/></svg> ${car.seller_city || '—'}
+        </div>
+      </div>
+    </div>
+    <div class="d-ctas">
+      <a class="cta-wa" href="https://wa.me/972${ph2}?text=${waMsg}" target="_blank">
+        <svg><use href="#ico-wa"/></svg> WhatsApp
+      </a>
+      <a class="cta-call" href="tel:${car.seller_phone}">
+        <svg><use href="#ico-phone"/></svg> ${car.seller_phone}
+      </a>
+    </div>
+    ${isAdmin ? `
+      <div style="display:flex;gap:8px;margin:0 22px 22px">
+        ${car.status==='pending' ? `<button onclick="approve('${car.id}');closeDetail()" style="flex:1;padding:13px;background:rgba(74,222,128,.1);border:1px solid rgba(74,222,128,.3);color:#4ade80;border-radius:12px;cursor:pointer;font-size:13px;font-weight:900;font-family:var(--font);display:flex;align-items:center;justify-content:center;gap:7px">
+          <svg width="14" height="14"><use href="#ico-check"/></svg> אשר מודעה</button>` : ''}
+        <button onclick="delCar('${car.id}');closeDetail()" style="flex:1;padding:13px;background:rgba(239,68,68,.1);border:1px solid rgba(239,68,68,.3);color:#ef4444;border-radius:12px;cursor:pointer;font-size:13px;font-weight:900;font-family:var(--font)">מחק</button>
+      </div>` : ''}`;
+
+  document.getElementById('detailOvl').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+function dGoTo(i) {
+  if (i < 0 || i >= _dImgs.length) return;
+  _dIdx = i;
+  const img = document.getElementById('dmImg');
+  img.style.opacity = '0';
+  setTimeout(() => { img.src = _dImgs[i]; img.style.opacity = '1'; }, 200);
+  document.getElementById('dCounter').textContent = (i+1) + ' / ' + _dImgs.length;
+  document.querySelectorAll('.d-thumb').forEach((th,j) => th.classList.toggle('on', j===i));
+}
+function dNav(dir) { dGoTo(_dIdx + dir); }
+function closeDetail() {
+  document.getElementById('detailOvl').classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+// ═══════════════════════════════════════
+// ADD MODAL
+// ═══════════════════════════════════════
+function openAdd() {
+  document.getElementById('addOvl').classList.add('open');
+  document.getElementById('addForm').reset();
+  document.getElementById('prevGrid').innerHTML = '';
+  imgs = [];
+  const inner = document.getElementById('uploadInner');
+  if (inner) inner.style.display = 'flex';
+  const errBox = document.getElementById('formErrBox');
+  if (errBox) errBox.remove();
+}
+function closeAdd() { document.getElementById('addOvl').classList.remove('open'); }
+
+function handleImgs(input) {
+  const files = [...input.files].slice(0, 10);
+  imgs = files;
+  const pg = document.getElementById('prevGrid');
+  pg.innerHTML = '';
+  const inner = document.getElementById('uploadInner');
+  if (inner) inner.style.display = files.length > 0 ? 'none' : 'flex';
+  files.forEach((f, i) => {
+    const r = new FileReader();
+    r.onload = e => {
+      const d = document.createElement('div');
+      d.className = 'prev-wrap';
+      d.innerHTML = `<img src="${e.target.result}" class="prev-img">
+        <button class="prev-rm" onclick="rmImg(${i});event.stopPropagation()" type="button">×</button>`;
+      pg.appendChild(d);
+    };
+    r.readAsDataURL(f);
+  });
+}
+function rmImg(i) {
+  imgs.splice(i, 1);
+  const dt = new DataTransfer();
+  imgs.forEach(f => dt.items.add(f));
+  document.getElementById('imgIn').files = dt.files;
+  handleImgs(document.getElementById('imgIn'));
+}
+
+async function uploadImg(file) {
+  const fd = new FormData();
+  fd.append('file', file);
+  fd.append('upload_preset', CL_PRESET);
+  fd.append('folder', 'yougo-cars');
+  const r = await fetch(`https://api.cloudinary.com/v1_1/${CL_NAME}/image/upload`, {method:'POST', body:fd});
+  const json = await r.json();
+  if (!r.ok || json.error) {
+    const msg = json.error?.message || 'HTTP ' + r.status;
+    if (msg.toLowerCase().includes('unknown api key') || msg.toLowerCase().includes('invalid')) {
+      const tip = document.getElementById('cfgTip');
+      if (tip) tip.style.display = 'block';
+      throw new Error('Cloudinary config שגוי — בדוק Cloud Name ו-Upload Preset');
+    }
+    throw new Error('העלאת תמונה נכשלה: ' + msg);
+  }
+  return json.secure_url;
+}
+
+function getErrMsg(err) {
+  if (!err) return 'שגיאה לא ידועה';
+  if (typeof err === 'string') return err;
+  if (err.message) return err.message;
+  if (err.details) return err.details;
+  if (err.hint)    return err.hint;
+  if (err.code)    return 'קוד: ' + err.code;
+  try { return JSON.stringify(err); } catch(e) { return 'שגיאה לא ידועה'; }
+}
+
+function showErrInForm(msg) {
+  let box = document.getElementById('formErrBox');
+  if (!box) {
+    box = document.createElement('div');
+    box.id = 'formErrBox';
+    box.style.cssText = 'background:rgba(239,68,68,.12);border:1px solid rgba(239,68,68,.4);color:#fca5a5;border-radius:12px;padding:14px 16px;font-size:13px;font-weight:700;margin-top:12px;line-height:1.5;word-break:break-word;';
+    document.getElementById('subBtn').after(box);
+  }
+  box.innerHTML = '❌ ' + msg;
+  box.scrollIntoView({behavior:'smooth', block:'nearest'});
+}
+
+async function submitCar(e) {
+  e.preventDefault();
+  const btn = document.getElementById('subBtn');
+  const pg  = document.getElementById('prog');
+  const pb  = document.getElementById('progBar');
+  const prevErr = document.getElementById('formErrBox');
+  if (prevErr) prevErr.remove();
+
+  btn.disabled = true;
+  btn.innerHTML = '<span>⏳</span><span>מעלה...</span>';
+  if (imgs.length) pg.style.display = 'block';
+
+  try {
+    const urls = [];
+    for (let i = 0; i < imgs.length; i++) {
+      btn.innerHTML = `<span>📷</span><span>מעלה תמונה ${i+1} מתוך ${imgs.length}...</span>`;
+      pb.style.width = `${Math.round(((i+1)/imgs.length)*100)}%`;
+      try {
+        urls.push(await uploadImg(imgs[i]));
+      } catch(imgErr) {
+        if (i === 0) throw imgErr;
+        console.warn('[YOUGO] Image', i, 'failed:', imgErr.message);
+      }
+    }
+    pg.style.display = 'none';
+
+    const make       = document.getElementById('f_make').value.trim();
+    const model      = document.getElementById('f_model').value.trim();
+    const year       = parseInt(document.getElementById('f_year').value);
+    const price      = parseInt(document.getElementById('f_price').value);
+    const sellerName = document.getElementById('f_name').value.trim();
+    const sellerPhone= document.getElementById('f_phone').value.trim();
+    const sellerCity = document.getElementById('f_city').value.trim();
+
+    if (!make || !model || !year || !price || !sellerName || !sellerPhone || !sellerCity) {
+      throw new Error('אנא מלא את כל שדות החובה (*)');
+    }
+
+    btn.innerHTML = '<span>💾</span><span>שומר...</span>';
+
+    const payload = {
+      make, model, year, price,
+      mileage:     parseInt(document.getElementById('f_mileage').value) || 0,
+      hand:        parseInt(document.getElementById('f_hand').value) || 2,
+      gear_type:   document.getElementById('f_gear').value,
+      fuel_type:   document.getElementById('f_fuel').value,
+      color:       document.getElementById('f_color').value.trim() || null,
+      engine_size: parseFloat(document.getElementById('f_engine').value) || null,
+      description_he: document.getElementById('f_desc_he').value || null,
+      description_ar: document.getElementById('f_desc_ar').value || null,
+      seller_name:  sellerName,
+      seller_phone: sellerPhone,
+      seller_city:  sellerCity,
+      images:      urls,
+      main_image:  urls[0] || null,
+      status:      'active'
+    };
+
+    console.log('[YOUGO] Inserting:', payload);
+    const {data, error} = await sb.from('cars').insert(payload).select();
+    console.log('[YOUGO] Result:', {data, error});
+
+    if (error) throw new Error(getErrMsg(error));
+
+    await loadCars();
+    document.getElementById('addBody').innerHTML = `
+      <div style="text-align:center;padding:48px 20px">
+        <div style="margin:0 auto 16px;width:64px;height:64px;border-radius:50%;background:rgba(74,222,128,.12);border:2px solid rgba(74,222,128,.3);display:flex;align-items:center;justify-content:center">
+          <svg width="28" height="28" color="#4ade80"><use href="#ico-check"/></svg>
+        </div>
+        <h3 style="font-size:1.5rem;font-weight:900;margin-bottom:10px;color:#fff">המודעה פורסמה!</h3>
+        <p style="color:rgba(255,255,255,.7);font-size:14px;margin-bottom:28px">הרכב שלך זמין עכשיו לכולם</p>
+        <button class="btn btn-red" style="padding:14px 36px;font-size:15px"
+          onclick="closeAdd();document.getElementById('addBody').innerHTML=''">סגור</button>
+      </div>`;
+    showToast('המודעה פורסמה בהצלחה!', 'ok');
+
+  } catch(err) {
+    const msg = getErrMsg(err);
+    console.error('[YOUGO] Submit error:', err);
+    showErrInForm(msg);
+    showToast('❌ ' + msg.slice(0,60), 'err');
+    btn.disabled = false;
+    btn.innerHTML = `<svg width="18" height="18"><use href="#ico-car"/></svg><span id="subBtnTxt">פרסם מודעה בחינם — מיידי!</span>`;
+    pg.style.display = 'none';
+    pb.style.width = '0%';
+  }
+}
+
+// ═══════════════════════════════════════
+// ADMIN
+// ═══════════════════════════════════════
+function adminLogin() {
+  const p = prompt('Admin Password:');
+  if (p === null) return;
+  if (p === ADMIN_PW) {
+    isAdmin = true;
+    document.getElementById('adminBar').classList.add('show');
+    document.getElementById('heroSec').style.marginTop = '0';
+    document.getElementById('adminActs').innerHTML = `
+      <span style="color:var(--t1);font-size:12.5px;font-weight:600">Admin Mode</span>
+      <button onclick="loadCars()" style="background:rgba(200,16,46,.12);border:1px solid var(--bred);color:var(--red);padding:6px 14px;border-radius:8px;cursor:pointer;font-size:12px;font-weight:900;font-family:var(--font)">רענן</button>
+      <a href="admin.html" style="background:rgba(59,130,246,.12);border:1px solid rgba(59,130,246,.3);color:#60a5fa;padding:6px 14px;border-radius:8px;font-size:12px;font-weight:900;font-family:var(--font);text-decoration:none">לוח ניהול</a>
+      <button onclick="adminOut()" style="background:var(--bg3);border:1px solid var(--b0);color:var(--t1);padding:6px 14px;border-radius:8px;cursor:pointer;font-size:12px;font-family:var(--font)">יציאה</button>`;
+    loadCars();
+    showToast('Admin Mode פעיל', 'ok');
+  } else {
+    showToast('❌ סיסמה שגויה', 'err');
+  }
+}
+function adminOut() {
+  isAdmin = false;
+  document.getElementById('adminBar').classList.remove('show');
+  document.getElementById('heroSec').style.marginTop = '';
+  loadCars();
+}
+async function approve(id) {
+  const {error} = await sb.from('cars').update({status:'active'}).eq('id', id);
+  if (!error) { showToast('אושרה', 'ok'); loadCars(); }
+  else showToast('❌ ' + error.message, 'err');
+}
+async function markSold(id) {
+  const {error} = await sb.from('cars').update({status:'sold'}).eq('id', id);
+  if (!error) { showToast('נמכר', 'ok'); loadCars(); }
+  else showToast('❌ ' + error.message, 'err');
+}
+async function delCar(id) {
+  if (!confirm('למחוק לצמיתות?')) return;
+  const {error} = await sb.from('cars').delete().eq('id', id);
+  if (!error) { showToast('נמחקה', 'ok'); loadCars(); }
+  else showToast('❌ ' + error.message, 'err');
+}
 
 function showToast(msg, type='ok') {
   const el = document.getElementById('toast');
@@ -3247,26 +4147,6 @@ document.addEventListener('keydown', e => {
 });
 
 loadCars();
-
-// pulse animation for footer dot
-const style = document.createElement('style');
-style.innerHTML = `@keyframes pulse { 0% { opacity: 1; } 50% { opacity: 0.3; } 100% { opacity: 1; }}`;
-document.head.appendChild(style);
 </script>
-
-<!-- ensure detail modal content is present (abbreviated, but full in actual) -->
-<div class="overlay" id="detailOvl" onclick="if(event.target.id==='detailOvl')closeDetail()">
-  <div class="detail-modal" onclick="event.stopPropagation()">
-    <!-- full detail modal content from original – preserved -->
-  </div>
-</div>
-
-<div class="overlay" id="addOvl" onclick="if(event.target.id==='addOvl')closeAdd()">
-  <div class="modal add-modal" onclick="event.stopPropagation()">
-    <!-- full add modal content from original – preserved -->
-  </div>
-</div>
-
 </body>
 </html>
-```
