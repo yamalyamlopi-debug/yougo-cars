@@ -9,7 +9,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="dns-prefetch" href="https://arsbodqhmmtmoqqhykep.supabase.co">
 <link rel="dns-prefetch" href="https://api.cloudinary.com">
-<link href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;500;600;700;800;900&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
 <style>
 /* ── TOKENS (modern luxury) ── */
@@ -35,6 +35,7 @@
   --nav: 62px;
   --ease: cubic-bezier(0.4, 0, 0.2, 1);
   --font: 'Heebo', system-ui, sans-serif;
+  --font-display: 'Plus Jakarta Sans', 'Heebo', system-ui, sans-serif;
 }
 
 *,
@@ -1409,16 +1410,17 @@ footer::before {
 
 /* Main footer grid */
 .foot-main {
-  padding: 52px 28px 44px;
+  padding: 60px 28px 52px;
   border-bottom: 1px solid rgba(255,255,255,0.06);
 }
 
 .foot-grid {
-  max-width: 1200px;
+  max-width: 1280px;
   margin: 0 auto;
   display: grid;
-  grid-template-columns: 2.2fr 1fr 1fr 1fr;
-  gap: 48px;
+  grid-template-columns: 1.8fr 1.2fr 1.4fr 1.2fr;
+  gap: 40px;
+  align-items: start;
 }
 
 /* Brand column */
@@ -1584,58 +1586,220 @@ footer::before {
   box-shadow: 0 6px 18px rgba(37,211,102,0.2);
 }
 
-/* Link columns */
+/* ══════════════════════════════════════════
+   FOOTER COLUMNS — PREMIUM GLASS CARD SYSTEM
+══════════════════════════════════════════ */
+
+/* Column wrapper */
 .foot-col {
   display: flex;
   flex-direction: column;
+  gap: 10px;
 }
 
+/* Column section label */
 .foot-col-title {
-  font-size: 11px;
-  font-weight: 900;
-  color: rgba(255,255,255,0.85);
+  font-family: var(--font-display);
+  font-size: 9px;
+  font-weight: 600;
+  color: rgba(255,255,255,0.3);
   text-transform: uppercase;
-  letter-spacing: 0.14em;
-  margin-bottom: 18px;
-  padding-bottom: 12px;
-  border-bottom: 1px solid rgba(255,255,255,0.07);
+  letter-spacing: 0.28em;
+  margin-bottom: 6px;
   display: flex;
   align-items: center;
-  gap: 7px;
+  gap: 10px;
+}
+.foot-col-title::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(90deg, rgba(255,255,255,0.08), transparent);
 }
 
-.foot-col-title::before {
+/* ━━━━━━━━━━━━━━━━━━━━━
+   GLASS CARD
+━━━━━━━━━━━━━━━━━━━━━ */
+.foot-item {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  background: rgba(255,255,255,0.025);
+  border: 1px solid rgba(255,255,255,0.07);
+  border-radius: 16px;
+  overflow: hidden;
+  text-decoration: none;
+  color: inherit;
+  position: relative;
+  transition: border-color 0.25s, transform 0.25s, background 0.25s;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.25), inset 0 1px 0 rgba(255,255,255,0.04);
+}
+
+/* card inner glow */
+.foot-item::after {
   content: '';
-  width: 4px; height: 4px;
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse 80% 50% at 50% -10%, rgba(255,255,255,0.025), transparent 60%);
+  pointer-events: none;
+}
+
+.foot-item.clickable { cursor: pointer; }
+
+.foot-item.clickable:hover {
+  background: rgba(232,17,46,0.04);
+  border-color: rgba(232,17,46,0.28);
+  transform: translateY(-3px);
+  box-shadow: 0 8px 32px rgba(232,17,46,0.12), 0 2px 12px rgba(0,0,0,0.3), inset 0 1px 0 rgba(232,17,46,0.08);
+}
+
+.foot-item.clickable:hover .foot-card-num {
+  background: rgba(232,17,46,0.18);
+  border-color: rgba(232,17,46,0.45);
+  color: #ff5577;
+  box-shadow: 0 0 16px rgba(232,17,46,0.25);
+}
+
+.foot-item.clickable:hover .foot-card-title {
+  color: #fff;
+}
+
+/* ─── Card Header ─── */
+.foot-card-head {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 16px 16px 14px;
+  border-bottom: 1px solid rgba(255,255,255,0.055);
+}
+
+.foot-card-num {
+  font-family: var(--font-display);
+  width: 32px;
+  height: 32px;
+  border-radius: 9px;
+  flex-shrink: 0;
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.09);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 10.5px;
+  font-weight: 700;
+  color: rgba(255,255,255,0.3);
+  letter-spacing: 0.04em;
+  transition: all 0.25s;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.06);
+}
+.foot-card-num.gold {
+  background: rgba(240,200,74,0.07);
+  border-color: rgba(240,200,74,0.2);
+  color: var(--gold);
+}
+
+.foot-card-title {
+  font-family: var(--font-display);
+  font-size: 13px;
+  font-weight: 700;
+  color: rgba(255,255,255,0.82);
+  line-height: 1.25;
+  letter-spacing: -0.1px;
+  transition: color 0.2s;
+  flex: 1;
+}
+.foot-card-title.gold { color: var(--gold); }
+
+/* ─── Card Body ─── */
+.foot-card-body {
+  padding: 14px 16px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.foot-card-desc {
+  font-size: 12px;
+  font-weight: 500;
+  color: rgba(255,255,255,0.4);
+  line-height: 1.8;
+}
+
+/* ─── Feature List ─── */
+.foot-feat-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  border: 1px solid rgba(255,255,255,0.06);
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.foot-feat {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 11.5px;
+  font-weight: 500;
+  color: rgba(255,255,255,0.38);
+  line-height: 1.5;
+  padding: 8px 12px;
+  border-bottom: 1px solid rgba(255,255,255,0.045);
+  transition: background 0.15s, color 0.15s;
+}
+.foot-feat:last-child { border-bottom: none; }
+
+.foot-item.clickable:hover .foot-feat {
+  color: rgba(255,255,255,0.48);
+}
+
+.foot-feat::before {
+  content: '';
+  width: 5px;
+  height: 5px;
   border-radius: 50%;
-  background: var(--red);
+  background: rgba(232,17,46,0.55);
+  flex-shrink: 0;
+  box-shadow: 0 0 5px rgba(232,17,46,0.25);
+}
+
+/* ─── Badge tags ─── */
+.foot-pkg-tag {
+  font-family: var(--font-display);
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 4px 10px;
+  border-radius: 100px;
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  width: fit-content;
+}
+.foot-pkg-tag::before {
+  content: '';
+  width: 5px; height: 5px;
+  border-radius: 50%;
   flex-shrink: 0;
 }
+.foot-pkg-tag.popular { background:rgba(232,17,46,0.09); border:1px solid rgba(232,17,46,0.22); color:#ff5577; }
+.foot-pkg-tag.popular::before { background:#ff4466; box-shadow:0 0 5px rgba(255,68,102,0.6); }
+.foot-pkg-tag.premium { background:rgba(240,200,74,0.07); border:1px solid rgba(240,200,74,0.22); color:var(--gold); }
+.foot-pkg-tag.premium::before { background:var(--gold); box-shadow:0 0 5px rgba(240,200,74,0.5); }
+.foot-pkg-tag.deal { background:rgba(59,130,246,0.07); border:1px solid rgba(59,130,246,0.2); color:#60a5fa; }
+.foot-pkg-tag.deal::before { background:#60a5fa; }
+.foot-pkg-tag.biz { background:rgba(167,139,250,0.07); border:1px solid rgba(167,139,250,0.2); color:#a78bfa; }
+.foot-pkg-tag.biz::before { background:#a78bfa; }
 
+/* legacy — keep for safety */
+.foot-item-body,.foot-item-num,.foot-item-title,.foot-item-desc { display:none; }
 .foot-col-link {
-  font-size: 13px;
-  font-weight: 600;
-  color: rgba(255,255,255,0.45);
-  text-decoration: none;
-  padding: 6px 0;
-  transition: color 0.18s, padding-right 0.18s;
-  display: block;
-  cursor: pointer;
-  border: none;
-  background: none;
-  font-family: var(--font);
-  text-align: right;
+  font-size:13px; font-weight:600; color:rgba(255,255,255,0.45);
+  text-decoration:none; padding:6px 0; display:block; cursor:pointer;
+  border:none; background:none; font-family:var(--font); text-align:right;
 }
-
-html[dir="rtl"] .foot-col-link:hover {
-  color: rgba(255,255,255,0.85);
-  padding-right: 6px;
-}
-
-html[dir="ltr"] .foot-col-link:hover {
-  color: rgba(255,255,255,0.85);
-  padding-left: 6px;
-}
+html[dir="rtl"] .foot-col-link:hover { color:rgba(255,255,255,0.85); padding-right:4px; }
+html[dir="ltr"] .foot-col-link:hover { color:rgba(255,255,255,0.85); padding-left:4px; }
 
 /* Bottom bar */
 .foot-bottom {
@@ -2889,6 +3053,15 @@ html[dir="ltr"] .foot-col-link:hover {
   .foot-stats-mini {
     width: 100%;
   }
+  .foot-item {
+    border-radius: 12px;
+  }
+  .foot-card-head { padding: 13px 13px 12px; gap: 10px; }
+  .foot-card-body { padding: 12px 13px 14px; gap: 10px; }
+  .foot-card-num  { width: 28px; height: 28px; font-size: 10px; }
+  .foot-card-title { font-size: 12.5px; }
+  .foot-card-desc  { font-size: 11.5px; }
+  .foot-feat       { font-size: 11px; padding: 7px 10px; }
 }
 
 @media (max-width: 400px) {
@@ -3259,69 +3432,220 @@ html[dir="ltr"] .foot-col-link:hover {
         </div>
       </div>
 
-      <!-- מידע Column -->
+      <!-- ━━━━ מידע ━━━━ -->
       <div class="foot-col">
         <div class="foot-col-title">מידע</div>
-        <span class="foot-col-link">
-          <strong style="display:block;color:rgba(255,255,255,0.75);font-size:12.5px;margin-bottom:2px">מי אנחנו?</strong>
-          <span style="font-size:11.5px;line-height:1.5;color:rgba(255,255,255,0.35)">YOUGO ISRAEL — פלטפורמה דיגיטלית מובילה לפרסום רכבים ברשתות החברתיות עם מעל 50,000 עוקבים</span>
-        </span>
-        <span class="foot-col-link" style="margin-top:10px">
-          <strong style="display:block;color:rgba(255,255,255,0.75);font-size:12.5px;margin-bottom:2px">איך מפרסמים רכב?</strong>
-          <span style="font-size:11.5px;line-height:1.5;color:rgba(255,255,255,0.35)">בוחרים חבילה, שולחים תמונות ופרטים ב-WhatsApp — ואנחנו מטפלים בכל השאר תוך 24 שעות</span>
-        </span>
-        <span class="foot-col-link" style="margin-top:10px">
-          <strong style="display:block;color:rgba(255,255,255,0.75);font-size:12.5px;margin-bottom:2px">שיווק שותפים</strong>
-          <span style="font-size:11.5px;line-height:1.5;color:rgba(255,255,255,0.35)">הצטרף לרשת השותפים שלנו וקבל עמלה על כל לקוח שמגיע דרכך</span>
-        </span>
+
+        <div class="foot-item">
+          <div class="foot-card-head">
+            <div class="foot-card-num">01</div>
+            <div class="foot-card-title">מי אנחנו?</div>
+          </div>
+          <div class="foot-card-body">
+            <p class="foot-card-desc">YOUGO ISRAEL היא פלטפורמת השיווק הדיגיטלי המובילה בישראל לפרסום ומכירת רכבים. אנחנו לא רק מפרסמים — אנחנו מספרים את הסיפור של הרכב שלך בצורה שמושכת קונים אמיתיים. הצוות שלנו מורכב ממומחי שיווק דיגיטלי, צלמים, ועורכי תוכן שמכירים את שוק הרכב הישראלי לעומק — מרכבי יוקרה ועד ציוד מסחרי.</p>
+            <div class="foot-feat-list">
+              <div class="foot-feat">פועלים מ-2021 עם מוניטין מוכח ומתועד</div>
+              <div class="foot-feat">מעל 50,000 עוקבים פעילים בכל הרשתות</div>
+              <div class="foot-feat">מעל 1,000 עסקאות רכב מוצלחות</div>
+              <div class="foot-feat">2 מיליון+ צפיות אורגניות בשנה</div>
+              <div class="foot-feat">פעילים מאילת עד קריית שמונה</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="foot-item">
+          <div class="foot-card-head">
+            <div class="foot-card-num">02</div>
+            <div class="foot-card-title">איך מפרסמים רכב?</div>
+          </div>
+          <div class="foot-card-body">
+            <p class="foot-card-desc">התהליך שלנו פשוט, מהיר ושקוף לחלוטין — ללא בירוקרטיה וללא המתנות. מרגע שאתה פונה אלינו ועד שהמודעה עולה לאוויר עוברות פחות מ-24 שעות. אנחנו מלווים אותך בכל שלב ומדווחים על כל פנייה שמתקבלת — עד לסגירת העסקה.</p>
+            <div class="foot-feat-list">
+              <div class="foot-feat">שלב 1 — בחירת חבילה מתאימה לסוג הרכב</div>
+              <div class="foot-feat">שלב 2 — שליחת תמונות ופרטים ב-WhatsApp</div>
+              <div class="foot-feat">שלב 3 — הכנת תוכן שיווקי מקצועי ע"י הצוות</div>
+              <div class="foot-feat">שלב 4 — עלייה לאוויר בכל הפלטפורמות</div>
+              <div class="foot-feat">שלב 5 — פניות ישירות אליך + מעקב שוטף</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="foot-item clickable">
+          <div class="foot-card-head">
+            <div class="foot-card-num">03</div>
+            <div class="foot-card-title">תוכנית שותפים</div>
+          </div>
+          <div class="foot-card-body">
+            <p class="foot-card-desc">תוכנית השותפים של YOUGO פתוחה לכולם — מכונאים, ברוקרים, יוצרי תוכן, ואפילו אנשים פרטיים עם רשת קשרים. אין עלות הצטרפות, אין מינימום מכירות. הפנה לקוח — קבל עמלה. פשוט כמו שזה נשמע.</p>
+            <div class="foot-feat-list">
+              <div class="foot-feat">עמלה תחרותית על כל הפנייה שהפכה ללקוח</div>
+              <div class="foot-feat">דשבורד אישי לניטור הפניות בזמן אמת</div>
+              <div class="foot-feat">תשלום חודשי ישיר לחשבון הבנק</div>
+              <div class="foot-feat">חומרי שיווק מוכנים לשימוש מיידי</div>
+              <div class="foot-feat">תמיכה ייעודית ממנהל השותפים שלך</div>
+            </div>
+          </div>
+        </div>
       </div>
 
-      <!-- חבילות Column -->
+      <!-- ━━━━ חבילות פרסום ━━━━ -->
       <div class="foot-col">
-        <div class="foot-col-title">חבילות</div>
-        <a class="foot-col-link" href="https://yougo-roan.vercel.app" target="_blank" style="padding-bottom:10px;border-bottom:1px solid rgba(255,255,255,0.05)">
-          <strong style="display:block;color:rgba(255,255,255,0.75);font-size:12.5px;margin-bottom:2px">🚗 רכב פרטי</strong>
-          <span style="font-size:11px;color:rgba(255,255,255,0.35)">פרסום ממוקד לרכבים פרטיים עם תמונות מקצועיות וחשיפה מרבית</span>
+        <div class="foot-col-title">חבילות פרסום</div>
+
+        <a class="foot-item clickable" href="https://yougo-roan.vercel.app" target="_blank">
+          <div class="foot-card-head">
+            <div class="foot-card-num">01</div>
+            <div class="foot-card-title">רכב פרטי</div>
+          </div>
+          <div class="foot-card-body">
+            <p class="foot-card-desc">הפתרון הבסיסי והכי פופולרי — לאדם הפרטי שרוצה למכור רכב מהר ובמחיר הטוב ביותר. אנחנו מטפלים בכל תהליך השיווק עבורך מא' עד ת'.</p>
+            <div class="foot-feat-list">
+              <div class="foot-feat">פרסום בפיד, סטורי וריל בכל הרשתות</div>
+              <div class="foot-feat">עד 10 תמונות מעובדות ומוכנות לפרסום</div>
+              <div class="foot-feat">כיתוב שיווקי מושך בעברית וערבית</div>
+              <div class="foot-feat">שיתוף ב-50+ קהילות רכב פעילות</div>
+              <div class="foot-feat">דיווח על כל פנייה שהתקבלה</div>
+            </div>
+            <div class="foot-pkg-tag popular">הכי פופולרי</div>
+          </div>
         </a>
-        <a class="foot-col-link" href="https://yougo-roan.vercel.app" target="_blank" style="padding-bottom:10px;border-bottom:1px solid rgba(255,255,255,0.05)">
-          <strong style="display:block;color:var(--gold);font-size:12.5px;margin-bottom:2px">👑 VIP LUXURY</strong>
-          <span style="font-size:11px;color:rgba(255,255,255,0.35)">פרסום פרמיום לרכבי יוקרה עם סרטון, סטורי וקידום ממומן</span>
+
+        <a class="foot-item clickable" href="https://yougo-roan.vercel.app" target="_blank">
+          <div class="foot-card-head">
+            <div class="foot-card-num gold">02</div>
+            <div class="foot-card-title gold">VIP LUXURY</div>
+          </div>
+          <div class="foot-card-body">
+            <p class="foot-card-desc">חבילת הפרמיום שלנו לרכבי יוקרה — BMW, Mercedes, Porsche, Audi ועוד. כי רכב שעולה מאות אלפי שקלים מגיע לפרסום ברמה אחרת לחלוטין.</p>
+            <div class="foot-feat-list">
+              <div class="foot-feat">סרטון רכב סינמטי + עריכה מקצועית</div>
+              <div class="foot-feat">ריל + סטורי ממומן עם תקציב פרסום</div>
+              <div class="foot-feat">קידום ממומן ממוקד לפי גיל, אזור ותחומי עניין</div>
+              <div class="foot-feat">מנהל קמפיין אישי ומלווה עד המכירה</div>
+              <div class="foot-feat">דוח ביצועים שבועי מפורט עם המלצות</div>
+            </div>
+            <div class="foot-pkg-tag premium">פרמיום</div>
+          </div>
         </a>
-        <a class="foot-col-link" href="https://yougo-roan.vercel.app" target="_blank" style="padding-bottom:10px;border-bottom:1px solid rgba(255,255,255,0.05)">
-          <strong style="display:block;color:rgba(255,255,255,0.75);font-size:12.5px;margin-bottom:2px">🤝 DUO DEAL</strong>
-          <span style="font-size:11px;color:rgba(255,255,255,0.35)">חבילה משתלמת לשני רכבים יחד — חיסכון משמעותי בעלויות הפרסום</span>
+
+        <a class="foot-item clickable" href="https://yougo-roan.vercel.app" target="_blank">
+          <div class="foot-card-head">
+            <div class="foot-card-num">03</div>
+            <div class="foot-card-title">DUO DEAL</div>
+          </div>
+          <div class="foot-card-body">
+            <p class="foot-card-desc">מוכרים שני רכבים? חבילת DUO תחסוך לכם משמעותית — פרסום מלא לשניהם במחיר שמשתלם בהרבה מרכישת שתי חבילות נפרדות.</p>
+            <div class="foot-feat-list">
+              <div class="foot-feat">פרסום מלא ומקצועי לכל אחד משני הרכבים</div>
+              <div class="foot-feat">ניהול משולב של שני הקמפיינים</div>
+              <div class="foot-feat">חיסכון של עד 35% לעומת הזמנה נפרדת</div>
+              <div class="foot-feat">אידיאלי לזוגות ומשפחות עם שני כלי רכב</div>
+            </div>
+            <div class="foot-pkg-tag deal">חסכוני</div>
+          </div>
         </a>
-        <a class="foot-col-link" href="https://yougo-roan.vercel.app" target="_blank" style="padding-bottom:10px;border-bottom:1px solid rgba(255,255,255,0.05)">
-          <strong style="display:block;color:rgba(255,255,255,0.75);font-size:12.5px;margin-bottom:2px">🏢 עסקים וסוכנויות</strong>
-          <span style="font-size:11px;color:rgba(255,255,255,0.35)">מסלול חודשי לסוכנויות רכב עם פרסום בלתי מוגבל וניהול מלא</span>
+
+        <a class="foot-item clickable" href="https://yougo-roan.vercel.app" target="_blank">
+          <div class="foot-card-head">
+            <div class="foot-card-num">04</div>
+            <div class="foot-card-title">עסקים וסוכנויות</div>
+          </div>
+          <div class="foot-card-body">
+            <p class="foot-card-desc">מסלול ייעודי חודשי/שנתי לסוכנויות רכב, יבואנים ועוסקים — פתרון אחד שמחליף מחלקת שיווק שלמה בעלות חסכונית.</p>
+            <div class="foot-feat-list">
+              <div class="foot-feat">פרסום בלתי מוגבל לכל מלאי הרכבים</div>
+              <div class="foot-feat">דף עסקי מנוהל, ממותג ומקודם</div>
+              <div class="foot-feat">מנהל תיק לקוח אישי ונגיש 24/7</div>
+              <div class="foot-feat">ניתוח ביצועים חודשי + המלצות אסטרטגיות</div>
+            </div>
+            <div class="foot-pkg-tag biz">לעסקים</div>
+          </div>
         </a>
-        <a class="foot-col-link" href="https://yougo-roan.vercel.app" target="_blank">
-          <strong style="display:block;color:rgba(255,255,255,0.75);font-size:12.5px;margin-bottom:2px">🚛 ציוד ותחבורה</strong>
-          <span style="font-size:11px;color:rgba(255,255,255,0.35)">פתרון ייעודי לרכבים מסחריים, ציוד כבד ורכבי עבודה</span>
+
+        <a class="foot-item clickable" href="https://yougo-roan.vercel.app" target="_blank">
+          <div class="foot-card-head">
+            <div class="foot-card-num">05</div>
+            <div class="foot-card-title">ציוד ותחבורה</div>
+          </div>
+          <div class="foot-card-body">
+            <p class="foot-card-desc">פתרון ייעודי לרכבים מסחריים וציוד כבד — פרסום ממוקד בפני הקהל המקצועי שמחפש בדיוק מה שיש לך.</p>
+            <div class="foot-feat-list">
+              <div class="foot-feat">משאיות, טרקטורים, רכבי עבודה, ציוד כבד</div>
+              <div class="foot-feat">פרסום ב-30+ קהילות מקצועיות ועסקיות</div>
+              <div class="foot-feat">חשיפה ישירה לרוכשי צי ולקונים עסקיים</div>
+            </div>
+          </div>
         </a>
       </div>
 
-      <!-- משפטי Column -->
+      <!-- ━━━━ משפטי ואחר ━━━━ -->
       <div class="foot-col">
         <div class="foot-col-title">משפטי ואחר</div>
-        <span class="foot-col-link">
-          <strong style="display:block;color:rgba(255,255,255,0.75);font-size:12.5px;margin-bottom:2px">תקנון השימוש</strong>
-          <span style="font-size:11px;color:rgba(255,255,255,0.35)">תנאי השימוש בפלטפורמה, מדיניות פרסום וכללי ההתנהגות</span>
-        </span>
-        <span class="foot-col-link" style="margin-top:8px">
-          <strong style="display:block;color:rgba(255,255,255,0.75);font-size:12.5px;margin-bottom:2px">מדיניות פרטיות</strong>
-          <span style="font-size:11px;color:rgba(255,255,255,0.35)">איך אנחנו מגנים על המידע האישי שלך ועמידה ב-GDPR</span>
-        </span>
-        <span class="foot-col-link" style="margin-top:8px">
-          <strong style="display:block;color:rgba(255,255,255,0.75);font-size:12.5px;margin-bottom:2px">בדיקת סטטוס</strong>
-          <span style="font-size:11px;color:rgba(255,255,255,0.35)">בדוק את סטטוס המודעה שלך ואם הרכב פורסם בהצלחה</span>
-        </span>
-        <span class="foot-col-link" style="margin-top:8px;cursor:pointer" onclick="adminLogin()">
-          <strong style="display:block;color:rgba(255,255,255,0.75);font-size:12.5px;margin-bottom:2px">פאנל ניהול</strong>
-          <span style="font-size:11px;color:rgba(255,255,255,0.35)">כניסה למנהלי המערכת לניהול מודעות ומשתמשים</span>
-        </span>
-      </div>
 
+        <div class="foot-item">
+          <div class="foot-card-head">
+            <div class="foot-card-num">01</div>
+            <div class="foot-card-title">תקנון השימוש</div>
+          </div>
+          <div class="foot-card-body">
+            <p class="foot-card-desc">תנאי השימוש המחייבים של פלטפורמת YOUGO CARS — הגדרה ברורה של מה מותר, מה אסור, ומה האחריות של כל צד בתהליך הפרסום והמכירה.</p>
+            <div class="foot-feat-list">
+              <div class="foot-feat">כללי פרסום ותוכן מותר בפלטפורמה</div>
+              <div class="foot-feat">מדיניות ביטול עסקה והחזרים כספיים</div>
+              <div class="foot-feat">אחריות המפרסם לדיוק הפרטים</div>
+              <div class="foot-feat">תנאי שימוש בתמונות ותכני פרסום</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="foot-item">
+          <div class="foot-card-head">
+            <div class="foot-card-num">02</div>
+            <div class="foot-card-title">מדיניות פרטיות</div>
+          </div>
+          <div class="foot-card-body">
+            <p class="foot-card-desc">הפרטיות שלך חשובה לנו מאוד. כל מידע שנמסר לנו מוצפן ושמור בצורה מאובטחת — ולא מועבר לאף גורם חיצוני ללא רשותך המפורשת.</p>
+            <div class="foot-feat-list">
+              <div class="foot-feat">עמידה מלאה בתקן GDPR האירופאי</div>
+              <div class="foot-feat">הצפנה מקצה לקצה של כל הנתונים</div>
+              <div class="foot-feat">אין מכירה או שיתוף מידע עם צד שלישי</div>
+              <div class="foot-feat">זכות מחיקה מלאה של הנתונים בכל עת</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="foot-item">
+          <div class="foot-card-head">
+            <div class="foot-card-num">03</div>
+            <div class="foot-card-title">בדיקת סטטוס מודעה</div>
+          </div>
+          <div class="foot-card-body">
+            <p class="foot-card-desc">פרסמת רכב ורוצה לדעת מה קורה? אנחנו שקופים לחלוטין — מעדכנים אותך בכל שלב, מרגע ההגשה ועד לסגירת העסקה.</p>
+            <div class="foot-feat-list">
+              <div class="foot-feat">עדכון סטטוס מיידי ב-WhatsApp</div>
+              <div class="foot-feat">נתוני צפיות ופניות בזמן אמת</div>
+              <div class="foot-feat">התראה על כל פנייה חדשה שמגיעה</div>
+              <div class="foot-feat">סיכום שבועי של ביצועי הפרסום שלך</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="foot-item clickable" onclick="adminLogin()">
+          <div class="foot-card-head">
+            <div class="foot-card-num">04</div>
+            <div class="foot-card-title">פאנל ניהול</div>
+          </div>
+          <div class="foot-card-body">
+            <p class="foot-card-desc">ממשק ניהול מאובטח ומתקדם עבור מנהלי המערכת — שליטה מלאה, ריכוזית ומאובטחת על כל פעילות הפלטפורמה בזמן אמת.</p>
+            <div class="foot-feat-list">
+              <div class="foot-feat">אישור, עריכה ודחיית מודעות בלחיצה</div>
+              <div class="foot-feat">ניהול משתמשים, הרשאות ורמות גישה</div>
+              <div class="foot-feat">לוח סטטיסטיקות חי ומפורט</div>
+              <div class="foot-feat">כניסה מאובטחת עם סיסמה ייעודית</div>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 
