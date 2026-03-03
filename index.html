@@ -89,7 +89,7 @@ body::before {
   mix-blend-mode: overlay;
 }
 
-/* ── NAV (unchanged, but we keep it) ── */
+/* ── NAV (unchanged) ── */
 #nav {
   position: fixed;
   top: 0;
@@ -419,13 +419,13 @@ body::before {
   box-shadow: 0 8px 28px rgba(212, 175, 55, 0.22);
 }
 
-/* Stats */
+/* Stats — redesigned with 3 columns and a clock icon */
 .hero-stats {
   display: flex;
-  max-width: 500px;
+  max-width: 700px;
   margin: 0 auto 40px;
   border: 1px solid rgba(255, 255, 255, 0.14);
-  border-radius: 20px;
+  border-radius: 24px;
   background: rgba(255, 255, 255, 0.06);
   overflow: hidden;
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.08);
@@ -434,9 +434,13 @@ body::before {
 
 .hs {
   flex: 1;
-  padding: 22px 14px;
+  padding: 22px 10px;
   text-align: center;
   position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
 }
 
 .hs:not(:last-child)::after {
@@ -450,20 +454,35 @@ body::before {
 }
 
 .hs-v {
-  font-size: 2.4rem;
+  font-size: 2.2rem;
   font-weight: 900;
   color: #ffffff;
   text-shadow: 0 2px 12px rgba(0, 0, 0, 0.5);
   line-height: 1.2;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.hs-v svg {
+  width: 28px;
+  height: 28px;
+  stroke: var(--red);
+  stroke-width: 2;
+  fill: none;
 }
 
 .hs-l {
   font-size: 11px;
   color: rgba(255, 255, 255, 0.6);
-  margin-top: 5px;
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.08em;
+}
+
+/* خاص للخانة الثالثة */
+.hs.clock .hs-v {
+  color: var(--red);
 }
 
 /* ── TICKER (unchanged) ── */
@@ -2498,6 +2517,9 @@ footer {
   <symbol id="ico-arrow-left" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
     <line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/>
   </symbol>
+  <symbol id="ico-clock" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+    <circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/>
+  </symbol>
 </svg>
 
 <!-- NAV -->
@@ -2568,8 +2590,9 @@ footer {
     </div>
 
     <div class="hero-stats">
-      <div class="hs"><div class="hs-v" id="statCars">1502</div><div class="hs-l" id="statCL">מודעות פעילות</div></div>
-      <div class="hs"><div class="hs-v">מעל 2 מיליון</div><div class="hs-l" id="statFL">צפיות בשנה</div></div>
+      <div class="hs"><div class="hs-v" id="statCars">1502</div><div class="hs-l">מודעות פעילות</div></div>
+      <div class="hs"><div class="hs-v">מעל 2 מיליון</div><div class="hs-l">צפיות בשנה</div></div>
+      <div class="hs clock"><div class="hs-v"><svg><use href="#ico-clock"/></svg> 60 שניות</div><div class="hs-l">פרסום מיידי</div></div>
     </div>
   </div>
 </div>
@@ -2840,7 +2863,7 @@ const T = {
     h1:'שוק הרכבים <span class="r">הדיגיטלי</span><br><span style="color:var(--t0)">של ישראל</span>',
     sub:'קנה ומכור רכב בקלות ובמהירות. מודעות מאומתות עם אפשרות יצירת קשר מיידית.',
     b1:'פרסם רכב בחינם',b2:'חפש רכב',b3:'חבילות פרסום מקצועיות',
-    cL:'מודעות פעילות',fL:'צפיות בשנה',
+    cL:'מודעות פעילות',fL:'צפיות בשנה',pL:'פרסום מיידי',
     lT:'מודעות <span class="r">פעילות</span>',
     aT:'פרסם את הרכב שלך',sub2:'פרסם מודעה בחינם — מיידי!',
     upT:'העלה תמונות הרכב <span>(עד 10)</span>',
@@ -2853,7 +2876,7 @@ const T = {
     h1:'سوق السيارات <span class="r">الرقمي</span><br><span style="color:var(--t0)">في إسرائيل</span>',
     sub:'اشترِ وبِع سيارتك بسهولة وسرعة. إعلانات موثقة مع تواصل فوري.',
     b1:'أعلن مجاناً',b2:'تصفح',b3:'باقات الإعلان',
-    cL:'إعلان نشط',fL:'مشاهدة سنوية',
+    cL:'إعلان نشط',fL:'مشاهدة سنوية',pL:'نشر فوري',
     lT:'الإعلانات <span class="r">النشطة</span>',
     aT:'أضف إعلانك',sub2:'انشر الآن — مجاناً!',
     upT:'انقر لإضافة صور <strong>(حتى 10)</strong>',
@@ -2866,7 +2889,7 @@ const T = {
     h1:'Israel\'s <span class="r">Digital</span><br><span style="color:var(--t0)">Car Market</span>',
     sub:'Buy and sell cars easily. Verified listings with instant contact.',
     b1:'Post Free',b2:'Browse',b3:'Professional Packages',
-    cL:'Active Listings',fL:'Yearly views',
+    cL:'Active Listings',fL:'Yearly views',pL:'Instant posting',
     lT:'<span class="r">Active</span> Listings',
     aT:'Post Your Car',sub2:'Post Now — Free!',
     upT:'Click to add photos <strong>(up to 10)</strong>',
@@ -2898,7 +2921,7 @@ function applyLang() {
   document.getElementById('navTxt').textContent = L.na;
   document.getElementById('statCL').textContent = L.cL;
   document.getElementById('statFL').textContent = L.fL;
-  // statFrL is removed, so we don't set it
+  document.getElementById('statPL').textContent = L.pL; // for the 60s label
   document.getElementById('listTitle').innerHTML = L.lT;
   document.getElementById('addTitle').textContent = L.aT;
   const sb2El = document.getElementById('subBtnTxt');
@@ -2946,7 +2969,7 @@ async function loadCars() {
     buildFilters();
     doSort(sort);
 
-    // Update the statCars with base 1502 + actual active count
+    // Update the statCars with base 1502 + actual active count (to show dynamic)
     const activeCount = all.filter(c => c.status === 'active').length;
     document.getElementById('statCars').textContent = 1500 + activeCount;
 
