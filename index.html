@@ -436,6 +436,27 @@ body::before {
   text-align: center;
   transition: transform 0.3s var(--ease), border-color 0.3s, box-shadow 0.3s;
   box-shadow: 0 20px 40px -20px rgba(0, 0, 0, 0.6);
+  position: relative;
+  overflow: hidden;
+}
+
+/* Shine effect on hover */
+.stat-card::after {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: linear-gradient(45deg, transparent 30%, rgba(255,255,255,0.03) 50%, transparent 70%);
+  transform: rotate(30deg);
+  transition: transform 0.6s var(--ease);
+  opacity: 0;
+}
+
+.stat-card:hover::after {
+  opacity: 1;
+  transform: rotate(30deg) translate(20%, 20%);
 }
 
 .stat-card:hover {
@@ -447,14 +468,21 @@ body::before {
 .stat-icon {
   width: 48px;
   height: 48px;
-  margin: 0 auto 12px;
+  margin: 0 auto 16px;
   display: flex;
   align-items: center;
   justify-content: center;
-  background: rgba(232, 17, 46, 0.15);
+  background: rgba(232, 17, 46, 0.12);
   border-radius: 24px;
-  border: 1px solid rgba(232, 17, 46, 0.3);
+  border: 1px solid rgba(232, 17, 46, 0.25);
   color: var(--red);
+  transition: all 0.3s var(--ease);
+}
+
+.stat-card:hover .stat-icon {
+  background: rgba(232, 17, 46, 0.2);
+  border-color: rgba(232, 17, 46, 0.5);
+  transform: scale(1.05);
 }
 
 .stat-icon svg {
@@ -466,11 +494,11 @@ body::before {
 }
 
 .stat-value {
-  font-size: clamp(1.8rem, 4vw, 2.6rem);
+  font-size: clamp(1.9rem, 4vw, 2.8rem);
   font-weight: 900;
   color: #fff;
   line-height: 1.2;
-  margin-bottom: 4px;
+  margin-bottom: 6px;
   letter-spacing: -0.02em;
 }
 
@@ -479,7 +507,17 @@ body::before {
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.08em;
-  color: rgba(255, 255, 255, 0.55);
+  color: rgba(255, 255, 255, 0.6);
+  margin-bottom: 8px;
+}
+
+.stat-desc {
+  font-size: 0.7rem;
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.4);
+  max-width: 180px;
+  margin: 0 auto;
+  line-height: 1.4;
 }
 
 .stat-card.highlight .stat-value {
@@ -2614,28 +2652,36 @@ footer {
       </a>
     </div>
 
-    <!-- STATS CARDS — LUXURY, REFINED, FLEXIBLE -->
+    <!-- STATS CARDS — LUXURY, REFINED, WITH PROFESSIONAL DESCRIPTIONS -->
     <div class="hero-stats">
+      <!-- Card 1: Active Listings -->
       <div class="stat-card">
         <div class="stat-icon">
           <svg><use href="#ico-car"/></svg>
         </div>
         <div class="stat-value" id="statCars">1502</div>
         <div class="stat-label">מודעות פעילות</div>
+        <div class="stat-desc">רכבים מאומתים ומעודכנים בזמן אמת</div>
       </div>
+      
+      <!-- Card 2: Yearly Views (highlighted) -->
       <div class="stat-card highlight">
         <div class="stat-icon">
           <svg><use href="#ico-eye"/></svg>
         </div>
         <div class="stat-value">מעל 2 מיליון</div>
         <div class="stat-label">צפיות בשנה</div>
+        <div class="stat-desc">חשיפה חסרת תקדים למודעות שלך</div>
       </div>
+      
+      <!-- Card 3: Instant Posting -->
       <div class="stat-card">
         <div class="stat-icon">
           <svg><use href="#ico-clock"/></svg>
         </div>
         <div class="stat-value">60 שניות</div>
         <div class="stat-label">פרסום מיידי</div>
+        <div class="stat-desc">מהעלאת התמונה ועד ללקוח הראשון</div>
       </div>
     </div>
   </div>
@@ -2908,6 +2954,9 @@ const T = {
     sub:'קנה ומכור רכב בקלות ובמהירות. מודעות מאומתות עם אפשרות יצירת קשר מיידית.',
     b1:'פרסם רכב בחינם',b2:'חפש רכב',b3:'חבילות פרסום מקצועיות',
     cL:'מודעות פעילות',fL:'צפיות בשנה',pL:'פרסום מיידי',
+    cD:'רכבים מאומתים ומעודכנים בזמן אמת',
+    fD:'חשיפה חסרת תקדים למודעות שלך',
+    pD:'מהעלאת התמונה ועד ללקוח הראשון',
     lT:'מודעות <span class="r">פעילות</span>',
     aT:'פרסם את הרכב שלך',sub2:'פרסם מודעה בחינם — מיידי!',
     upT:'העלה תמונות הרכב <span>(עד 10)</span>',
@@ -2921,6 +2970,9 @@ const T = {
     sub:'اشترِ وبِع سيارتك بسهولة وسرعة. إعلانات موثقة مع تواصل فوري.',
     b1:'أعلن مجاناً',b2:'تصفح',b3:'باقات الإعلان',
     cL:'إعلان نشط',fL:'مشاهدة سنوية',pL:'نشر فوري',
+    cD:'سيارات موثقة ومحدثة آنياً',
+    fD:'وصول غير مسبوق لإعلاناتك',
+    pD:'من رفع الصور إلى العميل الأول',
     lT:'الإعلانات <span class="r">النشطة</span>',
     aT:'أضف إعلانك',sub2:'انشر الآن — مجاناً!',
     upT:'انقر لإضافة صور <strong>(حتى 10)</strong>',
@@ -2934,6 +2986,9 @@ const T = {
     sub:'Buy and sell cars easily. Verified listings with instant contact.',
     b1:'Post Free',b2:'Browse',b3:'Professional Packages',
     cL:'Active Listings',fL:'Yearly views',pL:'Instant posting',
+    cD:'Verified cars, updated in real time',
+    fD:'Unprecedented exposure for your ads',
+    pD:'From image upload to first customer',
     lT:'<span class="r">Active</span> Listings',
     aT:'Post Your Car',sub2:'Post Now — Free!',
     upT:'Click to add photos <strong>(up to 10)</strong>',
@@ -2956,17 +3011,28 @@ function applyLang() {
   document.documentElement.dir = L.dir;
   document.getElementById('langIco').textContent = M.code;
   document.getElementById('langTxt').textContent = M.label;
-  // Update hero texts (static now, but we keep translations for other elements)
+  // Update hero texts
   document.getElementById('heroH').innerHTML = L.h1;
   document.getElementById('heroSub').textContent = L.sub;
   document.getElementById('hBtn1').innerHTML = `<svg width="15" height="15"><use href="#ico-car"/></svg> ${L.b1}`;
   document.getElementById('hBtn2').innerHTML = `<svg width="15" height="15"><use href="#ico-search"/></svg> ${L.b2}`;
   document.getElementById('hBtn3').textContent = L.b3;
   document.getElementById('navTxt').textContent = L.na;
-  // Update stat labels (we keep the first stat card label dynamic for translations)
-  document.querySelectorAll('.stat-label')[0].textContent = L.cL;
-  document.querySelectorAll('.stat-label')[1].textContent = L.fL;
-  document.querySelectorAll('.stat-label')[2].textContent = L.pL;
+  
+  // Update stat labels and descriptions
+  const statCards = document.querySelectorAll('.stat-card');
+  if (statCards.length >= 3) {
+    // Card 1
+    statCards[0].querySelector('.stat-label').textContent = L.cL;
+    statCards[0].querySelector('.stat-desc').textContent = L.cD;
+    // Card 2
+    statCards[1].querySelector('.stat-label').textContent = L.fL;
+    statCards[1].querySelector('.stat-desc').textContent = L.fD;
+    // Card 3
+    statCards[2].querySelector('.stat-label').textContent = L.pL;
+    statCards[2].querySelector('.stat-desc').textContent = L.pD;
+  }
+  
   document.getElementById('listTitle').innerHTML = L.lT;
   document.getElementById('addTitle').textContent = L.aT;
   const sb2El = document.getElementById('subBtnTxt');
