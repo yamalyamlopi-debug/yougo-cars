@@ -1980,15 +1980,17 @@ html[dir="ltr"] .foot-col-link:hover { color:rgba(255,255,255,0.85); padding-lef
   opacity: 1;
 }
 
-/* Side-by-side layout wrapper */
-/* On mobile: stacked. On desktop: row — gallery fixed left, info scrolls right */
+/* ── MOBILE: كل شيء يتسكرول مع بعض ── */
 .d-layout {
   display: flex;
   flex-direction: column;
   flex: 1;
   min-height: 0;
-  overflow: hidden;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
 }
+
+/* ── DESKTOP: gallery ثابتة يسار، info تسكرول يمين ── */
 @media (min-width: 640px) {
   .d-layout {
     flex-direction: row;
@@ -1997,24 +1999,23 @@ html[dir="ltr"] .foot-col-link:hover { color:rgba(255,255,255,0.85); padding-lef
   }
 }
 
-/* Gallery — mobile: normal. Desktop: fixed height, no scroll, sticky via flex */
+/* Gallery */
 .d-gallery {
   position: relative;
   background: #000;
   flex-shrink: 0;
 }
+
 @media (min-width: 640px) {
   .d-gallery {
     width: 48%;
     flex-shrink: 0;
     overflow: hidden;
-    /* No overflow-y — gallery stays put while d-info scrolls */
     position: relative;
     align-self: stretch;
     display: flex;
     flex-direction: column;
   }
-  /* Make main image fill gallery height */
   .d-gallery .d-main-wrap {
     flex: 1;
     aspect-ratio: unset;
@@ -2125,17 +2126,15 @@ html[dir="ltr"] .foot-col-link:hover { color:rgba(255,255,255,0.85); padding-lef
 }
 
 .d-info {
-  overflow-y: auto;
   flex: 1;
-  -webkit-overflow-scrolling: touch;
   padding: 0;
   min-width: 0;
-  /* On desktop this column scrolls while gallery is fixed */
 }
 @media (min-width: 640px) {
   .d-info {
     overflow-y: auto;
     height: 100%;
+    -webkit-overflow-scrolling: touch;
   }
 }
 
@@ -2373,6 +2372,7 @@ html[dir="ltr"] .foot-col-link:hover { color:rgba(255,255,255,0.85); padding-lef
   padding: 0 22px 22px;
   display: flex;
   gap: 10px;
+  flex-wrap: wrap;
 }
 
 .cta-wa {
@@ -5255,10 +5255,10 @@ function openDetail(id) {
       </a>
     </div>
     ${isAdmin ? `
-      <div style="display:flex;gap:8px;margin:0 22px 22px">
-        ${car.status==='pending' ? `<button onclick="approve('${car.id}');closeDetail()" style="flex:1;padding:13px;background:rgba(74,222,128,.1);border:1px solid rgba(74,222,128,.3);color:#4ade80;border-radius:12px;cursor:pointer;font-size:13px;font-weight:900;font-family:var(--font);display:flex;align-items:center;justify-content:center;gap:7px">
+      <div style="display:flex;gap:8px;margin:0 22px 32px;flex-wrap:wrap">
+        ${car.status==='pending' ? `<button onclick="approve('${car.id}');closeDetail()" style="flex:1;min-width:120px;padding:13px;background:rgba(74,222,128,.1);border:1px solid rgba(74,222,128,.3);color:#4ade80;border-radius:12px;cursor:pointer;font-size:13px;font-weight:900;font-family:var(--font);display:flex;align-items:center;justify-content:center;gap:7px">
           <svg width="14" height="14"><use href="#ico-check"/></svg> ${t('approve')}</button>` : ''}
-        <button onclick="delCar('${car.id}');closeDetail()" style="flex:1;padding:13px;background:rgba(239,68,68,.1);border:1px solid rgba(239,68,68,.3);color:#ef4444;border-radius:12px;cursor:pointer;font-size:13px;font-weight:900;font-family:var(--font)">${t('del')}</button>
+        <button onclick="delCar('${car.id}');closeDetail()" style="flex:1;min-width:120px;padding:13px;background:rgba(239,68,68,.1);border:1px solid rgba(239,68,68,.3);color:#ef4444;border-radius:12px;cursor:pointer;font-size:13px;font-weight:900;font-family:var(--font)">${t('del')}</button>
       </div>` : ''}`;
 
   document.getElementById('detailOvl').classList.add('open');
