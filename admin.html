@@ -2,648 +2,980 @@
 <html lang="he" dir="rtl">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>YOUGO Admin — לוח בקרה</title>
-<link href="https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;500;700;800;900&display=swap" rel="stylesheet">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>YOUGO ADMIN — לוח בקרה</title>
+<link href="https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <style>
+/* ══════════════════════════════════════════════════════
+   YOUGO ADMIN — DESIGN SYSTEM
+══════════════════════════════════════════════════════ */
 :root {
-  --red: #c8102e; --red-dark: #a50d25;
-  --gold: #d4af37;
-  --bg: #05050a; --bg2: #0a0a12; --bg3: #0f0f18; --card: #0d0d16;
-  --border: rgba(255,255,255,0.07);
-  --border-red: rgba(200,16,46,0.3);
-  --text: #eeeef5; --text2: rgba(238,238,245,0.5); --text3: rgba(238,238,245,0.25);
-  --green: #22c55e; --yellow: #eab308; --blue: #3b82f6;
-  --font: 'Heebo', sans-serif;
+  --red:       #c8102e;
+  --red-h:     #e8112e;
+  --red-dim:   rgba(200,16,46,0.12);
+  --gold:      #d4af37;
+  --gold-dim:  rgba(212,175,55,0.12);
+
+  --bg:        #050508;
+  --bg2:       #09090e;
+  --bg3:       #0e0e16;
+  --bg4:       #13131c;
+  --card:      #0d0d15;
+
+  --border:    rgba(255,255,255,0.06);
+  --border2:   rgba(255,255,255,0.1);
+
+  --t0:  #f0f0f8;
+  --t1:  rgba(240,240,248,0.7);
+  --t2:  rgba(240,240,248,0.4);
+  --t3:  rgba(240,240,248,0.2);
+
+  --green:  #22c55e;
+  --yellow: #f59e0b;
+  --blue:   #3b82f6;
+  --purple: #8b5cf6;
+
+  --font:  'Heebo', sans-serif;
+  --mono:  'JetBrains Mono', monospace;
+
+  --sidebar-w: 240px;
+  --ease: cubic-bezier(0.25,0,0,1);
   --r: 14px;
 }
-* { margin:0; padding:0; box-sizing:border-box; }
-html { scroll-behavior:smooth; }
-body { font-family:var(--font); background:var(--bg); color:var(--text); min-height:100vh; }
-::-webkit-scrollbar { width:4px; } ::-webkit-scrollbar-thumb { background:var(--red); border-radius:2px; }
 
-/* ══ LOGIN PAGE ══ */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { -webkit-tap-highlight-color: transparent; }
+body {
+  background: var(--bg);
+  color: var(--t0);
+  font-family: var(--font);
+  font-size: 14px;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* ── SCROLLBAR ── */
+::-webkit-scrollbar { width: 5px; height: 5px; }
+::-webkit-scrollbar-track { background: var(--bg2); }
+::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); border-radius: 4px; }
+
+/* ══════════════════════════════════════
+   LOGIN
+══════════════════════════════════════ */
 #loginPage {
   min-height: 100vh;
-  display: flex; align-items: center; justify-content: center;
-  background: radial-gradient(ellipse 80% 60% at 50% 0%, rgba(200,16,46,0.18) 0%, transparent 65%), var(--bg);
-  padding: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  overflow: hidden;
+}
+#loginPage::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse 60% 50% at 30% 50%, rgba(200,16,46,0.07) 0%, transparent 70%),
+    radial-gradient(ellipse 40% 60% at 80% 20%, rgba(212,175,55,0.04) 0%, transparent 70%);
+}
+.login-grid-bg {
+  position: absolute; inset: 0;
+  background-image:
+    linear-gradient(rgba(255,255,255,0.02) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,0.02) 1px, transparent 1px);
+  background-size: 40px 40px;
+  mask-image: radial-gradient(ellipse at 50% 50%, black 30%, transparent 75%);
+}
+.login-wrap {
+  position: relative; z-index: 1;
+  width: 100%; max-width: 400px;
+  padding: 20px;
 }
 .login-card {
-  background: var(--bg2); border: 1px solid var(--border-red);
-  border-radius: 24px; padding: 48px 40px; width: 100%; max-width: 420px;
-  box-shadow: 0 32px 80px rgba(200,16,46,0.15);
-  position: relative; overflow: hidden;
+  background: var(--bg2);
+  border: 1px solid var(--border2);
+  border-radius: 24px;
+  padding: 40px 36px;
+  box-shadow: 0 32px 80px rgba(0,0,0,0.6), 0 0 0 1px rgba(255,255,255,0.04);
 }
-.login-card::before {
-  content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px;
-  background: linear-gradient(90deg, transparent, var(--red), transparent);
-}
-.login-logo {
+.login-brand {
   display: flex; align-items: center; gap: 12px;
-  justify-content: center; margin-bottom: 36px;
+  margin-bottom: 32px;
 }
-.login-logo-icon {
-  width: 52px; height: 52px; border-radius: 16px;
-  background: linear-gradient(135deg, var(--red), #e0162f);
+.login-brand-ico {
+  width: 44px; height: 44px;
+  background: linear-gradient(135deg, var(--red), #a50d24);
+  border-radius: 12px;
   display: flex; align-items: center; justify-content: center;
-  font-size: 24px;
   box-shadow: 0 8px 24px rgba(200,16,46,0.4);
 }
-.login-logo-text { font-size: 26px; font-weight: 900; }
-.login-logo-text span { color: var(--red); }
-.login-subtitle {
-  text-align: center; margin-bottom: 32px;
-}
-.login-subtitle h2 { font-size: 22px; font-weight: 900; margin-bottom: 6px; }
-.login-subtitle p { font-size: 13px; color: var(--text2); }
+.login-brand-ico svg { width: 22px; height: 22px; color: #fff; }
+.login-brand-name { font-size: 18px; font-weight: 900; }
+.login-brand-name span { color: var(--red); }
+.login-brand-sub { font-size: 10px; color: var(--t3); font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; margin-top: 1px; }
 
-.form-group { margin-bottom: 16px; }
-.form-label { display: block; font-size: 11px; font-weight: 800; color: var(--text2); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 8px; }
-.form-input {
-  width: 100%; background: var(--bg3); border: 1px solid var(--border);
-  color: white; padding: 14px 16px; border-radius: 12px;
+.login-h { font-size: 1.5rem; font-weight: 900; margin-bottom: 6px; }
+.login-sub { font-size: 13px; color: var(--t2); margin-bottom: 28px; }
+
+.login-field { margin-bottom: 16px; }
+.login-label { font-size: 11px; font-weight: 800; color: var(--t2); text-transform: uppercase; letter-spacing: 0.08em; display: block; margin-bottom: 8px; }
+.login-input {
+  width: 100%; background: var(--bg3); border: 1px solid var(--border2);
+  color: var(--t0); padding: 13px 16px; border-radius: 12px;
   font-family: var(--font); font-size: 15px; outline: none;
-  transition: all 0.2s; letter-spacing: 2px; text-align: center;
+  transition: all 0.2s; font-weight: 600;
 }
-.form-input:focus { border-color: var(--red); box-shadow: 0 0 0 3px rgba(200,16,46,0.1); }
+.login-input::placeholder { color: var(--t3); }
+.login-input:focus { border-color: var(--red); box-shadow: 0 0 0 3px rgba(200,16,46,0.12); }
+
 .login-btn {
-  width: 100%; padding: 15px; border-radius: 13px;
-  background: linear-gradient(135deg, var(--red), #e0162f);
-  color: white; border: none; font-family: var(--font);
-  font-size: 16px; font-weight: 900; cursor: pointer;
-  transition: all 0.2s; margin-top: 8px;
-  box-shadow: 0 6px 24px rgba(200,16,46,0.35);
+  width: 100%; padding: 14px; border-radius: 13px;
+  background: linear-gradient(135deg, var(--red-h), var(--red));
+  color: #fff; border: none; font-family: var(--font);
+  font-size: 15px; font-weight: 900; cursor: pointer;
+  box-shadow: 0 6px 24px rgba(200,16,46,0.4);
+  transition: all 0.22s var(--ease);
+  display: flex; align-items: center; justify-content: center; gap: 8px;
+  margin-top: 4px;
 }
-.login-btn:hover { transform: translateY(-1px); box-shadow: 0 8px 28px rgba(200,16,46,0.45); }
+.login-btn:hover { transform: translateY(-2px); box-shadow: 0 10px 30px rgba(200,16,46,0.5); }
+.login-btn:active { transform: translateY(0); }
+
 .login-error {
-  margin-top: 14px; padding: 12px 16px; border-radius: 10px;
-  background: rgba(239,68,68,0.1); border: 1px solid rgba(239,68,68,0.3);
-  color: #ef4444; font-size: 13px; font-weight: 700; text-align: center;
-  display: none;
+  display: none; margin-top: 14px;
+  padding: 10px 14px; border-radius: 10px;
+  background: rgba(239,68,68,0.1); border: 1px solid rgba(239,68,68,0.25);
+  color: #f87171; font-size: 13px; font-weight: 700; text-align: center;
 }
 
-/* ══ ADMIN LAYOUT ══ */
+/* ══════════════════════════════════════
+   LAYOUT
+══════════════════════════════════════ */
 #adminPage { display: none; min-height: 100vh; }
 
-/* Sidebar */
+/* ── SIDEBAR ── */
 .sidebar {
-  position: fixed; top: 0; right: 0; bottom: 0; width: 240px;
-  background: var(--bg2); border-left: 1px solid var(--border);
-  z-index: 100; display: flex; flex-direction: column;
-  transition: transform 0.3s;
+  position: fixed; top: 0; right: 0; bottom: 0;
+  width: var(--sidebar-w);
+  background: var(--bg2);
+  border-left: 1px solid var(--border);
+  display: flex; flex-direction: column;
+  z-index: 100;
+  transition: transform 0.3s var(--ease);
 }
-.sidebar-header {
-  padding: 20px 20px 16px;
+
+.sidebar-top {
+  padding: 20px 16px 16px;
   border-bottom: 1px solid var(--border);
-  display: flex; align-items: center; gap: 12px;
 }
-.sidebar-logo {
-  width: 38px; height: 38px; border-radius: 11px;
-  background: linear-gradient(135deg, var(--red), #e0162f);
+.sb-brand {
+  display: flex; align-items: center; gap: 10px;
+}
+.sb-brand-ico {
+  width: 36px; height: 36px; border-radius: 10px;
+  background: linear-gradient(135deg, var(--red-h), var(--red));
   display: flex; align-items: center; justify-content: center;
-  font-size: 18px; flex-shrink: 0;
+  box-shadow: 0 4px 14px rgba(200,16,46,0.4); flex-shrink: 0;
 }
-.sidebar-title { font-size: 15px; font-weight: 900; }
-.sidebar-title span { color: var(--red); display: block; font-size: 10px; color: var(--text3); font-weight: 600; margin-top: 1px; }
+.sb-brand-ico svg { width: 17px; height: 17px; color: #fff; }
+.sb-brand-txt { font-size: 13px; font-weight: 900; line-height: 1.2; }
+.sb-brand-txt small { font-size: 9px; color: var(--t3); font-weight: 600; letter-spacing: 0.08em; display: block; text-transform: uppercase; }
 
 .sidebar-nav { flex: 1; padding: 12px 10px; overflow-y: auto; }
-.nav-section-label {
-  font-size: 10px; font-weight: 800; color: var(--text3);
-  text-transform: uppercase; letter-spacing: 0.12em;
-  padding: 8px 10px 6px;
-}
-.nav-item {
-  display: flex; align-items: center; gap: 10px;
-  padding: 10px 12px; border-radius: 11px;
-  font-size: 13px; font-weight: 700; color: var(--text2);
-  cursor: pointer; transition: all 0.2s; margin-bottom: 2px;
-  border: none; background: none; width: 100%; text-align: right;
-  font-family: var(--font);
-}
-.nav-item:hover { background: rgba(255,255,255,0.05); color: white; }
-.nav-item.active { background: rgba(200,16,46,0.12); color: white; border: 1px solid rgba(200,16,46,0.2); }
-.nav-item .icon { font-size: 16px; flex-shrink: 0; }
-.nav-badge {
-  margin-right: auto; padding: 2px 8px; border-radius: 100px;
-  font-size: 10px; font-weight: 900;
-}
-.badge-red { background: rgba(200,16,46,0.2); color: var(--red); }
-.badge-green { background: rgba(34,197,94,0.15); color: #4ade80; }
-.badge-yellow { background: rgba(234,179,8,0.15); color: #eab308; }
 
-.sidebar-footer {
-  padding: 16px;
+.nav-section {
+  font-size: 9px; font-weight: 800; color: var(--t3);
+  text-transform: uppercase; letter-spacing: 0.12em;
+  padding: 4px 8px 8px;
+  margin-top: 8px;
+}
+.nav-section:first-child { margin-top: 0; }
+
+.nav-item {
+  width: 100%; display: flex; align-items: center; gap: 9px;
+  padding: 9px 10px; border-radius: 10px;
+  background: none; border: 1px solid transparent;
+  color: var(--t2); font-family: var(--font); font-size: 13px;
+  font-weight: 700; cursor: pointer; text-align: right;
+  transition: all 0.18s; position: relative; margin-bottom: 2px;
+}
+.nav-item:hover { background: rgba(255,255,255,0.04); color: var(--t0); }
+.nav-item.active {
+  background: rgba(200,16,46,0.1);
+  border-color: rgba(200,16,46,0.2);
+  color: var(--t0);
+}
+.nav-item.active .nav-ico { color: var(--red); }
+.nav-ico { width: 16px; height: 16px; flex-shrink: 0; }
+.nav-item span:not(.nav-badge):not(.nav-ico) { flex: 1; }
+
+.nav-badge {
+  font-size: 9px; font-weight: 900; padding: 2px 7px;
+  border-radius: 100px; line-height: 1.5;
+}
+.nb-red { background: rgba(200,16,46,0.2); color: #ff5577; border: 1px solid rgba(200,16,46,0.3); }
+.nb-yellow { background: rgba(245,158,11,0.15); color: #fbbf24; border: 1px solid rgba(245,158,11,0.25); }
+
+.sidebar-bottom {
+  padding: 12px;
   border-top: 1px solid var(--border);
 }
 .logout-btn {
-  width: 100%; padding: 10px; border-radius: 10px;
-  background: rgba(239,68,68,0.1); border: 1px solid rgba(239,68,68,0.2);
-  color: #ef4444; font-family: var(--font); font-size: 13px; font-weight: 800;
-  cursor: pointer; transition: all 0.2s;
+  width: 100%; display: flex; align-items: center; gap: 8px;
+  padding: 9px 12px; border-radius: 10px;
+  background: rgba(239,68,68,0.07); border: 1px solid rgba(239,68,68,0.15);
+  color: #f87171; font-family: var(--font); font-size: 12px;
+  font-weight: 800; cursor: pointer; transition: all 0.18s;
 }
-.logout-btn:hover { background: rgba(239,68,68,0.18); }
+.logout-btn:hover { background: rgba(239,68,68,0.14); }
+.logout-btn svg { width: 14px; height: 14px; }
 
-/* Main content */
-.main-content {
-  margin-right: 240px;
+/* ── MAIN ── */
+.main {
+  margin-right: var(--sidebar-w);
   min-height: 100vh;
-  background: var(--bg);
+  display: flex; flex-direction: column;
 }
 
-/* Topbar */
+/* ── TOPBAR ── */
 .topbar {
   position: sticky; top: 0; z-index: 50;
-  background: rgba(5,5,10,0.9); backdrop-filter: blur(20px);
+  height: 58px; padding: 0 24px;
+  background: rgba(5,5,8,0.85);
+  backdrop-filter: blur(20px) saturate(180%);
   border-bottom: 1px solid var(--border);
-  padding: 0 28px; height: 62px;
   display: flex; align-items: center; justify-content: space-between;
+  gap: 16px;
 }
-.topbar-title { font-size: 18px; font-weight: 900; }
+.topbar-left { display: flex; align-items: center; gap: 14px; }
+.mobile-toggle {
+  display: none; width: 36px; height: 36px; border-radius: 9px;
+  background: var(--bg3); border: 1px solid var(--border2);
+  color: var(--t1); cursor: pointer; align-items: center; justify-content: center;
+}
+.mobile-toggle svg { width: 16px; height: 16px; }
+.topbar-title { font-size: 17px; font-weight: 900; }
 .topbar-title span { color: var(--red); }
-.topbar-actions { display: flex; gap: 8px; align-items: center; }
 
+.topbar-right { display: flex; align-items: center; gap: 8px; }
+.tb-time { font-size: 11px; color: var(--t3); font-family: var(--mono); }
+
+/* ── CONTENT ── */
+.page { flex: 1; padding: 24px; display: none; }
+.page.active { display: block; }
+
+/* ══════════════════════════════════════
+   BUTTONS
+══════════════════════════════════════ */
 .btn {
   display: inline-flex; align-items: center; gap: 6px;
-  padding: 8px 18px; border-radius: 10px;
-  font-family: var(--font); font-weight: 800; font-size: 13px;
-  cursor: pointer; border: none; transition: all 0.2s;
+  padding: 8px 16px; border-radius: 9px;
+  font-family: var(--font); font-size: 12px; font-weight: 800;
+  cursor: pointer; border: 1px solid var(--border2);
+  background: rgba(255,255,255,0.05); color: var(--t1);
+  transition: all 0.18s; white-space: nowrap;
 }
-.btn-red { background: linear-gradient(135deg, var(--red), #e0162f); color: white; box-shadow: 0 4px 16px rgba(200,16,46,0.3); }
-.btn-red:hover { transform: translateY(-1px); }
-.btn-ghost { background: rgba(255,255,255,0.06); border: 1px solid var(--border); color: var(--text2); }
-.btn-ghost:hover { color: white; background: rgba(255,255,255,0.1); }
+.btn:hover { background: rgba(255,255,255,0.09); color: var(--t0); }
+.btn svg { width: 13px; height: 13px; }
+.btn-red {
+  background: linear-gradient(135deg, var(--red-h), var(--red));
+  border-color: transparent; color: #fff;
+  box-shadow: 0 3px 12px rgba(200,16,46,0.35);
+}
+.btn-red:hover { box-shadow: 0 6px 20px rgba(200,16,46,0.5); transform: translateY(-1px); color: #fff; }
+.btn-sm { padding: 6px 12px; font-size: 11px; border-radius: 8px; }
 
-/* Page area */
-.page-content { padding: 28px; }
-.page-section { display: none; }
-.page-section.active { display: block; }
-
-/* ══ STATS CARDS ══ */
-.stats-grid {
-  display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-  gap: 16px; margin-bottom: 28px;
+/* ══════════════════════════════════════
+   STATS
+══════════════════════════════════════ */
+.stats-row {
+  display: grid;
+  grid-template-columns: repeat(4,1fr);
+  gap: 14px;
+  margin-bottom: 24px;
 }
 .stat-card {
-  background: var(--card); border: 1px solid var(--border);
-  border-radius: var(--r); padding: 20px;
-  transition: all 0.2s; position: relative; overflow: hidden;
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 18px 20px;
+  position: relative;
+  overflow: hidden;
+  transition: border-color 0.2s, transform 0.2s;
 }
+.stat-card:hover { transform: translateY(-2px); }
 .stat-card::before {
-  content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px;
+  content: '';
+  position: absolute; top: 0; left: 0; right: 0; height: 2px;
 }
-.stat-card.red::before { background: linear-gradient(90deg, transparent, var(--red), transparent); }
-.stat-card.green::before { background: linear-gradient(90deg, transparent, var(--green), transparent); }
-.stat-card.yellow::before { background: linear-gradient(90deg, transparent, var(--yellow), transparent); }
-.stat-card.blue::before { background: linear-gradient(90deg, transparent, var(--blue), transparent); }
-.stat-card:hover { border-color: rgba(255,255,255,0.12); transform: translateY(-2px); }
+.sc-red::before   { background: linear-gradient(90deg, transparent, var(--red), transparent); }
+.sc-green::before { background: linear-gradient(90deg, transparent, var(--green), transparent); }
+.sc-yellow::before{ background: linear-gradient(90deg, transparent, var(--yellow), transparent); }
+.sc-blue::before  { background: linear-gradient(90deg, transparent, var(--blue), transparent); }
+.sc-purple::before{ background: linear-gradient(90deg, transparent, var(--purple), transparent); }
 
-.stat-icon {
-  width: 40px; height: 40px; border-radius: 11px;
+.stat-card:hover.sc-red    { border-color: rgba(200,16,46,0.3); }
+.stat-card:hover.sc-green  { border-color: rgba(34,197,94,0.3); }
+.stat-card:hover.sc-yellow { border-color: rgba(245,158,11,0.3); }
+.stat-card:hover.sc-blue   { border-color: rgba(59,130,246,0.3); }
+
+.stat-ico {
+  width: 36px; height: 36px; border-radius: 10px;
   display: flex; align-items: center; justify-content: center;
-  font-size: 20px; margin-bottom: 14px;
+  margin-bottom: 14px; flex-shrink: 0;
 }
-.stat-icon.red { background: rgba(200,16,46,0.12); }
-.stat-icon.green { background: rgba(34,197,94,0.12); }
-.stat-icon.yellow { background: rgba(234,179,8,0.12); }
-.stat-icon.blue { background: rgba(59,130,246,0.12); }
+.stat-ico svg { width: 17px; height: 17px; }
+.ico-red    { background: rgba(200,16,46,0.12); color: var(--red); }
+.ico-green  { background: rgba(34,197,94,0.1);  color: var(--green); }
+.ico-yellow { background: rgba(245,158,11,0.1); color: var(--yellow); }
+.ico-blue   { background: rgba(59,130,246,0.1); color: var(--blue); }
+.ico-purple { background: rgba(139,92,246,0.1); color: var(--purple); }
+.ico-gold   { background: rgba(212,175,55,0.1); color: var(--gold); }
 
-.stat-value { font-size: 32px; font-weight: 900; line-height: 1; margin-bottom: 6px; }
-.stat-label { font-size: 12px; color: var(--text2); font-weight: 600; }
+.stat-val { font-size: 2rem; font-weight: 900; line-height: 1; margin-bottom: 5px; font-family: var(--mono); }
+.stat-lbl { font-size: 11px; font-weight: 700; color: var(--t2); }
+.stat-sub { font-size: 10px; color: var(--t3); margin-top: 2px; }
 
-/* ══ CARDS ══ */
+/* ══════════════════════════════════════
+   PANELS
+══════════════════════════════════════ */
 .panel {
-  background: var(--card); border: 1px solid var(--border);
-  border-radius: var(--r); overflow: hidden;
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: 18px;
+  overflow: hidden;
+  margin-bottom: 20px;
 }
-.panel-header {
-  padding: 18px 22px; border-bottom: 1px solid var(--border);
-  display: flex; align-items: center; justify-content: space-between;
-}
-.panel-title { font-size: 16px; font-weight: 900; display: flex; align-items: center; gap: 8px; }
-.panel-body { padding: 0; }
-
-/* ══ TABLE ══ */
-.table-wrap { overflow-x: auto; }
-table { width: 100%; border-collapse: collapse; }
-thead { background: rgba(255,255,255,0.03); }
-thead th {
-  padding: 13px 18px; text-align: right;
-  font-size: 11px; font-weight: 800; color: var(--text3);
-  text-transform: uppercase; letter-spacing: 0.08em;
-  border-bottom: 1px solid var(--border); white-space: nowrap;
-}
-tbody tr {
+.panel-head {
+  padding: 16px 20px;
   border-bottom: 1px solid var(--border);
-  transition: background 0.15s;
+  display: flex; align-items: center; justify-content: space-between;
+  gap: 12px; flex-wrap: wrap;
 }
-tbody tr:last-child { border-bottom: none; }
-tbody tr:hover { background: rgba(255,255,255,0.025); }
-tbody td { padding: 14px 18px; font-size: 13px; vertical-align: middle; }
-.cell-id { font-family: monospace; color: var(--red); font-weight: 900; font-size: 12px; }
-.cell-name { font-weight: 800; }
-.cell-sub { font-size: 11px; color: var(--text2); margin-top: 2px; }
-
-/* Status badge */
-.status-badge {
-  display: inline-flex; align-items: center; gap: 5px;
-  padding: 4px 10px; border-radius: 100px;
-  font-size: 11px; font-weight: 800; white-space: nowrap;
+.panel-title {
+  font-size: 14px; font-weight: 900;
+  display: flex; align-items: center; gap: 8px;
 }
-.status-active { background: rgba(34,197,94,0.1); color: #4ade80; border: 1px solid rgba(34,197,94,0.25); }
-.status-pending { background: rgba(234,179,8,0.1); color: #eab308; border: 1px solid rgba(234,179,8,0.25); }
-.status-sold { background: rgba(99,102,241,0.1); color: #818cf8; border: 1px solid rgba(99,102,241,0.25); }
-.status-deleted { background: rgba(239,68,68,0.1); color: #ef4444; border: 1px solid rgba(239,68,68,0.25); }
+.panel-title svg { width: 16px; height: 16px; color: var(--red); }
 
-.status-dot { width: 6px; height: 6px; border-radius: 50%; flex-shrink: 0; }
-.dot-active { background: #4ade80; }
-.dot-pending { background: #eab308; animation: blink 1.5s infinite; }
-.dot-sold { background: #818cf8; }
-@keyframes blink { 0%,100%{opacity:1} 50%{opacity:0.4} }
+.panel-body { padding: 20px; }
 
-/* Action buttons */
-.actions { display: flex; gap: 6px; align-items: center; justify-content: flex-end; }
-.action-btn {
-  width: 32px; height: 32px; border-radius: 9px;
-  display: flex; align-items: center; justify-content: center;
-  cursor: pointer; border: none; font-size: 14px;
-  transition: all 0.2s;
-}
-.action-approve { background: rgba(34,197,94,0.1); border: 1px solid rgba(34,197,94,0.25); color: #4ade80; }
-.action-approve:hover { background: rgba(34,197,94,0.2); }
-.action-sold { background: rgba(99,102,241,0.1); border: 1px solid rgba(99,102,241,0.25); color: #818cf8; }
-.action-sold:hover { background: rgba(99,102,241,0.2); }
-.action-delete { background: rgba(239,68,68,0.1); border: 1px solid rgba(239,68,68,0.25); color: #ef4444; }
-.action-delete:hover { background: rgba(239,68,68,0.2); }
-.action-view { background: rgba(255,255,255,0.06); border: 1px solid var(--border); color: var(--text2); }
-.action-view:hover { background: rgba(255,255,255,0.1); color: white; }
-
-/* ══ FILTER BAR ══ */
+/* ══════════════════════════════════════
+   FILTER BAR
+══════════════════════════════════════ */
 .filter-bar {
-  display: flex; gap: 10px; align-items: center;
-  padding: 16px 20px; background: var(--bg2);
-  border-bottom: 1px solid var(--border); flex-wrap: wrap;
+  padding: 14px 20px;
+  border-bottom: 1px solid var(--border);
+  display: flex; gap: 10px; flex-wrap: wrap; align-items: center;
 }
-.filter-input {
-  flex: 1; min-width: 200px; background: var(--bg3);
-  border: 1px solid var(--border); color: white;
-  padding: 9px 14px; border-radius: 10px; font-family: var(--font);
-  font-size: 13px; outline: none; transition: border-color 0.2s;
+.fi {
+  background: var(--bg3); border: 1px solid var(--border2);
+  color: var(--t1); padding: 8px 13px; border-radius: 10px;
+  font-family: var(--font); font-size: 12px; font-weight: 700; outline: none;
+  transition: border-color 0.18s;
 }
-.filter-input:focus { border-color: var(--red); }
-.filter-input::placeholder { color: var(--text3); }
-.filter-select {
-  background: var(--bg3); border: 1px solid var(--border);
-  color: var(--text2); padding: 9px 12px; border-radius: 10px;
-  font-family: var(--font); font-size: 13px; cursor: pointer; outline: none;
-}
-.filter-select:focus { border-color: var(--red); }
+.fi:focus { border-color: var(--red); }
+.fi::placeholder { color: var(--t3); }
+.fi-search { flex: 1; min-width: 180px; }
 option { background: #111; }
 
-/* ══ MODAL ══ */
-.modal-overlay {
-  position: fixed; inset: 0; z-index: 1000;
-  background: rgba(0,0,0,0.85); backdrop-filter: blur(16px);
-  display: flex; align-items: center; justify-content: center;
-  padding: 20px; opacity: 0; pointer-events: none; transition: opacity 0.25s;
+/* ══════════════════════════════════════
+   TABLE
+══════════════════════════════════════ */
+.tbl-wrap { overflow-x: auto; }
+table { width: 100%; border-collapse: collapse; }
+thead tr { border-bottom: 1px solid var(--border); }
+th {
+  padding: 10px 14px; text-align: right;
+  font-size: 9px; font-weight: 900; color: var(--t3);
+  text-transform: uppercase; letter-spacing: 0.1em;
+  white-space: nowrap;
 }
-.modal-overlay.open { opacity: 1; pointer-events: all; }
-.modal {
-  background: var(--bg2); border: 1px solid var(--border);
-  border-radius: 22px; width: 100%; max-width: 700px;
-  max-height: 90vh; overflow-y: auto;
-  transform: scale(0.96) translateY(16px);
-  transition: transform 0.28s cubic-bezier(0.4,0,0.2,1);
+td {
+  padding: 10px 14px; border-bottom: 1px solid rgba(255,255,255,0.04);
+  vertical-align: middle;
 }
-.modal-overlay.open .modal { transform: scale(1) translateY(0); }
-.modal-header {
-  padding: 20px 24px 16px; border-bottom: 1px solid var(--border);
-  display: flex; align-items: center; justify-content: space-between;
-  position: sticky; top: 0; background: var(--bg2); z-index: 1;
+tbody tr { transition: background 0.15s; }
+tbody tr:last-child td { border-bottom: none; }
+tbody tr:hover { background: rgba(255,255,255,0.025); }
+
+.car-thumb {
+  width: 64px; height: 46px; border-radius: 9px;
+  object-fit: cover; background: var(--bg3);
+  display: block;
 }
-.modal-close {
-  width: 34px; height: 34px; border-radius: 9px;
+.thumb-ph {
+  width: 64px; height: 46px; border-radius: 9px;
   background: var(--bg3); border: 1px solid var(--border);
-  color: var(--text2); font-size: 18px; cursor: pointer;
-  display: flex; align-items: center; justify-content: center; transition: all 0.2s;
+  display: flex; align-items: center; justify-content: center;
+  color: var(--t3);
 }
-.modal-close:hover { color: white; }
-.modal-body { padding: 24px; }
+.thumb-ph svg { width: 22px; height: 22px; }
 
-/* Detail grid */
-.detail-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
-.detail-item { background: var(--bg3); border: 1px solid var(--border); border-radius: 11px; padding: 12px 14px; }
-.detail-item label { font-size: 10px; font-weight: 800; color: var(--text3); text-transform: uppercase; letter-spacing: 0.08em; display: block; margin-bottom: 5px; }
-.detail-item span { font-size: 14px; font-weight: 700; }
-.detail-full { grid-column: 1 / -1; }
-.car-images-preview { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 12px; }
-.car-images-preview img { width: 100px; height: 76px; border-radius: 10px; object-fit: cover; }
+.cell-primary { font-size: 13px; font-weight: 800; }
+.cell-sub     { font-size: 11px; color: var(--t2); margin-top: 2px; }
+.cell-mono    { font-family: var(--mono); font-size: 12px; }
 
-/* ══ EMPTY STATE ══ */
-.empty-state {
-  text-align: center; padding: 70px 24px;
-  color: var(--text2);
+/* STATUS BADGES */
+.stbadge {
+  display: inline-flex; align-items: center; gap: 5px;
+  padding: 3px 9px; border-radius: 100px;
+  font-size: 10px; font-weight: 900; white-space: nowrap;
 }
-.empty-icon { font-size: 56px; margin-bottom: 16px; }
-.empty-state h3 { font-size: 18px; font-weight: 800; color: white; margin-bottom: 8px; }
-
-/* ══ LOADING ══ */
-.loading-row td {
-  text-align: center; padding: 50px;
-  color: var(--text2);
+.stbadge-dot {
+  width: 5px; height: 5px; border-radius: 50%; flex-shrink: 0;
 }
+.st-active  { background: rgba(34,197,94,0.1);  color: #4ade80; border: 1px solid rgba(34,197,94,0.25); }
+.st-pending { background: rgba(245,158,11,0.1); color: #fbbf24; border: 1px solid rgba(245,158,11,0.25); }
+.st-sold    { background: rgba(139,92,246,0.1); color: #a78bfa; border: 1px solid rgba(139,92,246,0.25); }
+.dot-active  { background: var(--green); box-shadow: 0 0 4px var(--green); }
+.dot-pending { background: var(--yellow); box-shadow: 0 0 4px var(--yellow); }
+.dot-sold    { background: var(--purple); }
+
+/* PKG BADGE in table */
+.pkgtag {
+  display: inline-flex; align-items: center; gap: 4px;
+  padding: 2px 8px; border-radius: 100px;
+  font-size: 9px; font-weight: 900; border: 1px solid;
+}
+.pt-free     { color: rgba(255,255,255,0.4); border-color: rgba(255,255,255,0.1); background: rgba(255,255,255,0.04); }
+.pt-pro      { color: #ff5577; border-color: rgba(200,16,46,0.3); background: rgba(200,16,46,0.08); }
+.pt-premium  { color: #a78bfa; border-color: rgba(139,92,246,0.3); background: rgba(139,92,246,0.08); }
+.pt-vip      { color: #f0c84a; border-color: rgba(212,175,55,0.3); background: rgba(212,175,55,0.08); }
+.pt-duo      { color: #38bdf8; border-color: rgba(14,165,233,0.3); background: rgba(14,165,233,0.08); }
+.pt-equipment{ color: #fb923c; border-color: rgba(234,88,12,0.3); background: rgba(234,88,12,0.08); }
+.pt-transport{ color: #34d399; border-color: rgba(16,185,129,0.3); background: rgba(16,185,129,0.08); }
+.pt-business { color: #60a5fa; border-color: rgba(59,130,246,0.3); background: rgba(59,130,246,0.08); }
+
+/* ACTION BUTTONS */
+.acts { display: flex; gap: 5px; align-items: center; }
+.act {
+  width: 30px; height: 30px; border-radius: 8px;
+  border: 1px solid var(--border2); background: rgba(255,255,255,0.04);
+  color: var(--t2); cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  transition: all 0.18s; flex-shrink: 0;
+}
+.act svg { width: 13px; height: 13px; pointer-events: none; }
+.act:hover { background: rgba(255,255,255,0.09); color: var(--t0); }
+.act-approve { border-color: rgba(34,197,94,0.3); }
+.act-approve:hover { background: rgba(34,197,94,0.15); color: var(--green); border-color: rgba(34,197,94,0.5); }
+.act-sold { border-color: rgba(139,92,246,0.3); }
+.act-sold:hover { background: rgba(139,92,246,0.15); color: var(--purple); border-color: rgba(139,92,246,0.5); }
+.act-del { border-color: rgba(239,68,68,0.2); }
+.act-del:hover { background: rgba(239,68,68,0.15); color: #f87171; border-color: rgba(239,68,68,0.5); }
+.act-view:hover { background: rgba(59,130,246,0.1); color: var(--blue); border-color: rgba(59,130,246,0.3); }
+
+/* PKG SELECT in table */
+.pkg-select {
+  background: var(--bg3); border: 1px solid var(--border2);
+  color: var(--t1); padding: 5px 8px; border-radius: 8px;
+  font-family: var(--font); font-size: 11px; font-weight: 700;
+  cursor: pointer; outline: none; transition: border-color 0.18s;
+  max-width: 130px;
+}
+.pkg-select:focus { border-color: var(--red); }
+
+/* ══════════════════════════════════════
+   EMPTY / LOADING
+══════════════════════════════════════ */
+.empty {
+  text-align: center; padding: 60px 24px;
+  color: var(--t2);
+}
+.empty-ico { font-size: 48px; margin-bottom: 14px; }
+.empty h3 { font-size: 16px; font-weight: 900; color: var(--t0); margin-bottom: 6px; }
+.empty p { font-size: 13px; }
+
+.spin-wrap { text-align: center; padding: 50px; }
 .spinner {
-  width: 36px; height: 36px; border-radius: 50%;
-  border: 3px solid var(--border); border-top-color: var(--red);
-  animation: spin 0.8s linear infinite; margin: 0 auto 12px;
+  width: 32px; height: 32px; border-radius: 50%;
+  border: 2.5px solid var(--border2); border-top-color: var(--red);
+  animation: spin 0.75s linear infinite; margin: 0 auto 12px;
 }
 @keyframes spin { to { transform: rotate(360deg); } }
 
-/* ══ TOAST ══ */
+/* ══════════════════════════════════════
+   MODAL
+══════════════════════════════════════ */
+.overlay {
+  position: fixed; inset: 0; z-index: 500;
+  background: rgba(0,0,0,0.85);
+  backdrop-filter: blur(18px);
+  display: flex; align-items: center; justify-content: center;
+  padding: 20px;
+  opacity: 0; pointer-events: none;
+  transition: opacity 0.25s;
+}
+.overlay.open { opacity: 1; pointer-events: all; }
+
+.modal-box {
+  background: var(--bg2); border: 1px solid var(--border2);
+  border-radius: 22px; width: 100%; max-width: 720px;
+  max-height: 92vh; overflow-y: auto;
+  transform: scale(0.95) translateY(20px);
+  transition: transform 0.28s var(--ease);
+  box-shadow: 0 40px 100px rgba(0,0,0,0.7);
+}
+.overlay.open .modal-box { transform: scale(1) translateY(0); }
+
+.modal-hdr {
+  padding: 18px 22px 14px;
+  border-bottom: 1px solid var(--border);
+  display: flex; align-items: center; justify-content: space-between;
+  position: sticky; top: 0; background: var(--bg2); z-index: 1;
+}
+.modal-title { font-size: 15px; font-weight: 900; }
+.modal-close {
+  width: 32px; height: 32px; border-radius: 8px;
+  background: var(--bg3); border: 1px solid var(--border2);
+  color: var(--t2); font-size: 16px; cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  transition: all 0.18s;
+}
+.modal-close:hover { color: var(--t0); background: rgba(255,255,255,0.08); }
+
+.modal-body { padding: 22px; }
+
+/* Image gallery in modal */
+.modal-gallery {
+  display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 20px;
+}
+.modal-gallery img {
+  width: 110px; height: 80px; border-radius: 10px;
+  object-fit: cover; cursor: pointer; border: 1px solid var(--border2);
+  transition: all 0.2s;
+}
+.modal-gallery img:hover { transform: scale(1.04); border-color: var(--red); }
+.modal-gallery img.main-img { width: 100%; height: 220px; border-radius: 14px; }
+
+/* Detail grid */
+.detail-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.det-item {
+  background: var(--bg3); border: 1px solid var(--border);
+  border-radius: 11px; padding: 11px 14px;
+}
+.det-item label { font-size: 9px; font-weight: 900; color: var(--t3); text-transform: uppercase; letter-spacing: 0.1em; display: block; margin-bottom: 4px; }
+.det-item span { font-size: 13px; font-weight: 700; }
+.det-full { grid-column: 1 / -1; }
+
+/* PKG SELECTOR in modal */
+.pkg-picker {
+  display: grid; grid-template-columns: repeat(4,1fr); gap: 8px;
+  margin: 16px 0;
+}
+.pkg-opt {
+  padding: 10px 8px; border-radius: 10px; border: 1.5px solid var(--border);
+  background: var(--bg3); cursor: pointer; text-align: center;
+  transition: all 0.18s; display: flex; flex-direction: column;
+  align-items: center; gap: 4px;
+}
+.pkg-opt-label { font-size: 10px; font-weight: 800; }
+.pkg-opt-dot { width: 8px; height: 8px; border-radius: 50%; }
+.pkg-opt:hover { border-color: rgba(255,255,255,0.2); background: rgba(255,255,255,0.05); }
+.pkg-opt.selected { box-shadow: 0 0 0 2px currentColor; }
+
+/* ══════════════════════════════════════
+   SETTINGS
+══════════════════════════════════════ */
+.settings-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
+.sg { display: flex; flex-direction: column; gap: 7px; }
+.sg-label { font-size: 10px; font-weight: 900; color: var(--t2); text-transform: uppercase; letter-spacing: 0.08em; }
+.sg-input {
+  background: var(--bg3); border: 1px solid var(--border2); color: var(--t0);
+  padding: 11px 14px; border-radius: 11px; font-family: var(--font);
+  font-size: 13px; font-weight: 600; outline: none; transition: all 0.2s;
+}
+.sg-input:focus { border-color: var(--red); box-shadow: 0 0 0 3px rgba(200,16,46,0.1); }
+.sg-input::placeholder { color: var(--t3); }
+.sg-full { grid-column: 1/-1; }
+
+.code-block {
+  background: var(--bg3); border: 1px solid var(--border);
+  border-radius: 12px; padding: 16px;
+  font-family: var(--mono); font-size: 11px; color: #4ade80;
+  white-space: pre-wrap; user-select: all; cursor: text;
+  line-height: 1.7;
+}
+
+/* ══════════════════════════════════════
+   TOAST
+══════════════════════════════════════ */
 .toast {
-  position: fixed; bottom: 24px; right: 50%;
-  transform: translateX(50%) translateY(80px);
-  background: var(--bg2); border: 1px solid var(--border);
-  padding: 12px 24px; border-radius: 100px;
-  font-size: 14px; font-weight: 700; z-index: 9999;
-  transition: transform 0.3s; white-space: nowrap;
-  backdrop-filter: blur(12px);
+  position: fixed; bottom: 24px; left: 50%; z-index: 9999;
+  transform: translateX(-50%) translateY(70px);
+  background: var(--bg2); border: 1px solid var(--border2);
+  padding: 11px 22px; border-radius: 100px;
+  font-size: 13px; font-weight: 800;
+  transition: transform 0.3s var(--ease);
+  backdrop-filter: blur(14px);
+  white-space: nowrap; pointer-events: none;
+  box-shadow: 0 8px 30px rgba(0,0,0,0.5);
 }
-.toast.show { transform: translateX(50%) translateY(0); }
+.toast.show { transform: translateX(-50%) translateY(0); }
 .toast.success { border-color: rgba(74,222,128,0.4); color: #4ade80; }
-.toast.error { border-color: rgba(239,68,68,0.4); color: #ef4444; }
+.toast.error   { border-color: rgba(239,68,68,0.4);  color: #f87171; }
+.toast.info    { border-color: rgba(59,130,246,0.4);  color: #60a5fa; }
 
-/* Car image in table */
-.car-thumb {
-  width: 60px; height: 44px; border-radius: 8px; object-fit: cover;
-  background: var(--bg3);
-}
-
-/* Quick status select */
-.status-select {
-  background: var(--bg3); border: 1px solid var(--border);
-  color: var(--text2); padding: 5px 10px; border-radius: 8px;
-  font-family: var(--font); font-size: 12px; cursor: pointer;
-  outline: none; font-weight: 700;
-}
-.status-select:focus { border-color: var(--red); }
-
-/* ══ RESPONSIVE ══ */
-@media (max-width: 768px) {
+/* ══════════════════════════════════════
+   RESPONSIVE
+══════════════════════════════════════ */
+@media (max-width: 900px) {
   .sidebar { transform: translateX(100%); }
-  .sidebar.open { transform: translateX(0); }
-  .main-content { margin-right: 0; }
-  .stats-grid { grid-template-columns: repeat(2, 1fr); }
+  .sidebar.open { transform: translateX(0); box-shadow: -20px 0 60px rgba(0,0,0,0.5); }
+  .main { margin-right: 0; }
+  .stats-row { grid-template-columns: repeat(2,1fr); }
+  .mobile-toggle { display: flex; }
+  .pkg-picker { grid-template-columns: repeat(3,1fr); }
+  .settings-grid { grid-template-columns: 1fr; }
+}
+@media (max-width: 560px) {
+  .stats-row { grid-template-columns: 1fr 1fr; }
+  .page { padding: 14px; }
   .detail-grid { grid-template-columns: 1fr; }
-  .topbar { padding: 0 16px; }
-  .page-content { padding: 16px; }
+  .pkg-picker { grid-template-columns: repeat(2,1fr); }
 }
 
-/* ══ SETTINGS ══ */
-.settings-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
-.settings-group { display: flex; flex-direction: column; gap: 8px; }
-.settings-label { font-size: 12px; font-weight: 800; color: var(--text2); text-transform: uppercase; letter-spacing: 0.06em; }
-.settings-input {
-  background: var(--bg3); border: 1px solid var(--border);
-  color: white; padding: 12px 14px; border-radius: 11px;
-  font-family: var(--font); font-size: 14px; outline: none; transition: all 0.2s;
+/* ── overlay backdrop for mobile sidebar ── */
+.sb-backdrop {
+  display: none; position: fixed; inset: 0; z-index: 99;
+  background: rgba(0,0,0,0.6);
 }
-.settings-input:focus { border-color: var(--red); box-shadow: 0 0 0 3px rgba(200,16,46,0.1); }
-.settings-full { grid-column: 1 / -1; }
-.save-btn {
-  padding: 14px 32px; border-radius: 12px;
-  background: linear-gradient(135deg, var(--red), #e0162f);
-  color: white; border: none; font-family: var(--font);
-  font-size: 15px; font-weight: 900; cursor: pointer; margin-top: 8px;
-  transition: all 0.2s; box-shadow: 0 4px 20px rgba(200,16,46,0.3);
-}
-.save-btn:hover { transform: translateY(-1px); }
-
-/* ══ MOBILE TOGGLE ══ */
-.mobile-menu-btn {
-  display: none; width: 38px; height: 38px; border-radius: 10px;
-  background: rgba(255,255,255,0.07); border: 1px solid var(--border);
-  cursor: pointer; font-size: 18px; align-items: center; justify-content: center;
-}
-@media (max-width: 768px) { .mobile-menu-btn { display: flex; } }
+.sb-backdrop.show { display: block; }
 </style>
 </head>
 <body>
 
-<!-- ══ LOGIN PAGE ══ -->
+<!-- ══════════════ SVG ICONS ══════════════ -->
+<svg style="display:none" xmlns="http://www.w3.org/2000/svg">
+  <symbol id="i-car" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round">
+    <path d="M5 17H3a2 2 0 0 1-2-2V9l2.5-5h13L19 9v6a2 2 0 0 1-2 2h-2"/>
+    <circle cx="7" cy="17" r="2"/><circle cx="17" cy="17" r="2"/>
+    <path d="M5 9h14"/>
+  </symbol>
+  <symbol id="i-chart" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+    <line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/>
+  </symbol>
+  <symbol id="i-gear" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round">
+    <circle cx="12" cy="12" r="3"/>
+    <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/>
+  </symbol>
+  <symbol id="i-globe" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round">
+    <circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/>
+    <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>
+  </symbol>
+  <symbol id="i-logout" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+    <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/>
+    <polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/>
+  </symbol>
+  <symbol id="i-refresh" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+    <polyline points="23 4 23 10 17 10"/>
+    <path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/>
+  </symbol>
+  <symbol id="i-eye" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+    <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/>
+  </symbol>
+  <symbol id="i-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
+    <polyline points="20 6 9 17 4 12"/>
+  </symbol>
+  <symbol id="i-x" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
+    <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
+  </symbol>
+  <symbol id="i-star" viewBox="0 0 24 24" fill="currentColor">
+    <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+  </symbol>
+  <symbol id="i-clock" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+    <circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/>
+  </symbol>
+  <symbol id="i-db" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round">
+    <ellipse cx="12" cy="5" rx="9" ry="3"/>
+    <path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"/>
+    <path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/>
+  </symbol>
+  <symbol id="i-menu" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+    <line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/>
+  </symbol>
+  <symbol id="i-wa" viewBox="0 0 24 24" fill="currentColor">
+    <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/>
+    <path d="M12 0C5.373 0 0 5.373 0 12c0 2.123.554 4.118 1.523 5.849L.057 23.5a.5.5 0 0 0 .613.612l5.701-1.466A11.952 11.952 0 0 0 12 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.9a9.9 9.9 0 0 1-5.031-1.369l-.361-.214-3.738.96.992-3.648-.235-.375A9.867 9.867 0 0 1 2.1 12C2.1 6.527 6.527 2.1 12 2.1S21.9 6.527 21.9 12 17.473 21.9 12 21.9z"/>
+  </symbol>
+  <symbol id="i-copy" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+    <rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>
+  </symbol>
+</svg>
+
+<!-- ══════════════ LOGIN ══════════════ -->
 <div id="loginPage">
-  <div class="login-card">
-    <div class="login-logo">
-      <div class="login-logo-icon">🚗</div>
-      <div class="login-logo-text"><span>YOUGO</span> ADMIN</div>
+  <div class="login-grid-bg"></div>
+  <div class="login-wrap">
+    <div class="login-card">
+      <div class="login-brand">
+        <div class="login-brand-ico">
+          <svg><use href="#i-car"/></svg>
+        </div>
+        <div>
+          <div class="login-brand-name"><span>YOUGO</span> ADMIN</div>
+          <div class="login-brand-sub">Control Panel v2.0</div>
+        </div>
+      </div>
+      <div class="login-h">ברוך הבא 👋</div>
+      <div class="login-sub">הכנס את סיסמת המנהל כדי להמשיך</div>
+      <div class="login-field">
+        <label class="login-label">סיסמת מנהל</label>
+        <input type="password" id="passInput" class="login-input" placeholder="••••••••"
+          onkeydown="if(event.key==='Enter') doLogin()">
+      </div>
+      <button class="login-btn" onclick="doLogin()">
+        <svg width="15" height="15"><use href="#i-check"/></svg>
+        כניסה למערכת
+      </button>
+      <div class="login-error" id="loginError">❌ סיסמה שגויה — נסה שוב</div>
     </div>
-    <div class="login-subtitle">
-      <h2>לוח בקרה</h2>
-      <p>הכנס את הסיסמה כדי להמשיך</p>
-    </div>
-    <div class="form-group">
-      <label class="form-label">סיסמת מנהל</label>
-      <input type="password" id="passInput" class="form-input" placeholder="••••••••"
-        onkeydown="if(event.key==='Enter') doLogin()">
-    </div>
-    <button class="login-btn" onclick="doLogin()">🔑 כניסה למערכת</button>
-    <div class="login-error" id="loginError">❌ סיסמה שגויה. נסה שוב</div>
   </div>
 </div>
 
-<!-- ══ ADMIN PAGE ══ -->
+<!-- ══════════════ ADMIN ══════════════ -->
 <div id="adminPage">
 
-  <!-- Sidebar -->
-  <div class="sidebar" id="sidebar">
-    <div class="sidebar-header">
-      <div class="sidebar-logo">🚗</div>
-      <div class="sidebar-title">
-        YOUGO ADMIN
-        <span>ניהול מערכת</span>
+  <!-- Sidebar backdrop (mobile) -->
+  <div class="sb-backdrop" id="sbBackdrop" onclick="closeSidebar()"></div>
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-top">
+      <div class="sb-brand">
+        <div class="sb-brand-ico"><svg><use href="#i-car"/></svg></div>
+        <div class="sb-brand-txt">
+          YOUGO ADMIN
+          <small>ניהול מערכת</small>
+        </div>
       </div>
     </div>
 
     <nav class="sidebar-nav">
-      <div class="nav-section-label">ראשי</div>
-      <button class="nav-item active" onclick="showSection('dashboard',this)">
-        <span class="icon">📊</span> לוח בקרה
+      <div class="nav-section">ראשי</div>
+      <button class="nav-item active" onclick="showPage('dashboard',this)">
+        <svg class="nav-ico"><use href="#i-chart"/></svg>
+        <span>לוח בקרה</span>
       </button>
-      <button class="nav-item" onclick="showSection('cars',this)" id="navCars">
-        <span class="icon">🚗</span> ניהול מודעות
-        <span class="nav-badge badge-yellow" id="pendingBadge">0</span>
+      <button class="nav-item" onclick="showPage('cars',this)" id="navCars">
+        <svg class="nav-ico"><use href="#i-car"/></svg>
+        <span>ניהול מודעות</span>
+        <span class="nav-badge nb-yellow" id="pendingBadge">0</span>
       </button>
 
-      <div class="nav-section-label" style="margin-top:12px">הגדרות</div>
-      <button class="nav-item" onclick="showSection('settings',this)">
-        <span class="icon">⚙️</span> הגדרות אתר
+      <div class="nav-section">כלים</div>
+      <button class="nav-item" onclick="showPage('settings',this)">
+        <svg class="nav-ico"><use href="#i-gear"/></svg>
+        <span>הגדרות</span>
       </button>
       <button class="nav-item" onclick="window.open('https://yougo-cars.vercel.app','_blank')">
-        <span class="icon">🌐</span> פתח אתר
+        <svg class="nav-ico"><use href="#i-globe"/></svg>
+        <span>פתח אתר</span>
       </button>
       <button class="nav-item" onclick="window.open('https://supabase.com','_blank')">
-        <span class="icon">🗄️</span> Supabase
+        <svg class="nav-ico"><use href="#i-db"/></svg>
+        <span>Supabase</span>
       </button>
     </nav>
 
-    <div class="sidebar-footer">
-      <button class="logout-btn" onclick="doLogout()">🚪 יציאה</button>
+    <div class="sidebar-bottom">
+      <button class="logout-btn" onclick="doLogout()">
+        <svg><use href="#i-logout"/></svg>
+        יציאה מהמערכת
+      </button>
     </div>
-  </div>
+  </aside>
 
-  <!-- Main content -->
-  <div class="main-content">
+  <!-- MAIN -->
+  <main class="main">
 
-    <!-- Topbar -->
+    <!-- TOPBAR -->
     <div class="topbar">
-      <div style="display:flex;align-items:center;gap:12px">
-        <button class="mobile-menu-btn" onclick="toggleSidebar()">☰</button>
-        <div class="topbar-title" id="topbarTitle">📊 לוח <span>בקרה</span></div>
+      <div class="topbar-left">
+        <button class="mobile-toggle" onclick="openSidebar()">
+          <svg><use href="#i-menu"/></svg>
+        </button>
+        <div class="topbar-title" id="topbarTitle">לוח <span>בקרה</span></div>
       </div>
-      <div class="topbar-actions">
-        <button class="btn btn-ghost" onclick="refreshData()">🔄 רענן</button>
-        <button class="btn btn-red" onclick="window.open('https://yougo-cars.vercel.app','_blank')">🌐 האתר</button>
+      <div class="topbar-right">
+        <div class="tb-time" id="tbTime"></div>
+        <button class="btn" onclick="refreshData()">
+          <svg><use href="#i-refresh"/></svg> רענן
+        </button>
+        <button class="btn btn-red" onclick="window.open('https://yougo-cars.vercel.app','_blank')">
+          <svg><use href="#i-globe"/></svg> האתר
+        </button>
       </div>
     </div>
 
-    <!-- ══ DASHBOARD ══ -->
-    <div class="page-section active page-content" id="section-dashboard">
+    <!-- ══ PAGE: DASHBOARD ══ -->
+    <div class="page active" id="page-dashboard">
 
-      <div class="stats-grid">
-        <div class="stat-card red">
-          <div class="stat-icon red">🚗</div>
-          <div class="stat-value" id="totalCars">—</div>
-          <div class="stat-label">סה"כ מודעות</div>
+      <!-- Stats -->
+      <div class="stats-row">
+        <div class="stat-card sc-red">
+          <div class="stat-ico ico-red"><svg><use href="#i-car"/></svg></div>
+          <div class="stat-val" id="stTotal">—</div>
+          <div class="stat-lbl">סה״כ מודעות</div>
+          <div class="stat-sub">כל הסטטוסים</div>
         </div>
-        <div class="stat-card green">
-          <div class="stat-icon green">✅</div>
-          <div class="stat-value" id="activeCars">—</div>
-          <div class="stat-label">פעילות</div>
+        <div class="stat-card sc-green">
+          <div class="stat-ico ico-green"><svg><use href="#i-check"/></svg></div>
+          <div class="stat-val" id="stActive">—</div>
+          <div class="stat-lbl">פעילות</div>
+          <div class="stat-sub">מפורסמות כרגע</div>
         </div>
-        <div class="stat-card yellow">
-          <div class="stat-icon yellow">⏳</div>
-          <div class="stat-value" id="pendingCars">—</div>
-          <div class="stat-label">ממתינות לאישור</div>
+        <div class="stat-card sc-yellow">
+          <div class="stat-ico ico-yellow"><svg><use href="#i-clock"/></svg></div>
+          <div class="stat-val" id="stPending">—</div>
+          <div class="stat-lbl">ממתינות לאישור</div>
+          <div class="stat-sub">דורשות טיפול</div>
         </div>
-        <div class="stat-card blue">
-          <div class="stat-icon blue">💜</div>
-          <div class="stat-value" id="soldCars">—</div>
-          <div class="stat-label">נמכרו</div>
+        <div class="stat-card sc-blue">
+          <div class="stat-ico ico-purple"><svg><use href="#i-star"/></svg></div>
+          <div class="stat-val" id="stSold">—</div>
+          <div class="stat-lbl">נמכרו</div>
+          <div class="stat-sub">עסקאות שהושלמו</div>
         </div>
       </div>
 
-      <!-- Recent pending -->
+      <!-- Package breakdown -->
+      <div class="panel" style="margin-bottom:20px">
+        <div class="panel-head">
+          <div class="panel-title">
+            <svg><use href="#i-star"/></svg>
+            התפלגות לפי חבילה
+          </div>
+        </div>
+        <div class="panel-body" style="padding:16px 20px">
+          <div id="pkgStats" style="display:grid;grid-template-columns:repeat(4,1fr);gap:10px">
+            <!-- filled by JS -->
+          </div>
+        </div>
+      </div>
+
+      <!-- Pending table -->
       <div class="panel">
-        <div class="panel-header">
-          <div class="panel-title">⏳ ממתינות לאישור</div>
-          <button class="btn btn-ghost" style="font-size:12px;padding:7px 14px" onclick="showSection('cars',document.getElementById('navCars'))">
+        <div class="panel-head">
+          <div class="panel-title">
+            <svg><use href="#i-clock"/></svg>
+            ממתינות לאישור
+          </div>
+          <button class="btn btn-sm" onclick="showPage('cars',document.getElementById('navCars'))">
             כל המודעות →
           </button>
         </div>
-        <div class="table-wrap">
+        <div class="tbl-wrap">
           <table>
             <thead>
               <tr>
-                <th>תמונה</th>
-                <th>רכב</th>
-                <th>מוכר</th>
-                <th>מחיר</th>
-                <th>עיר</th>
-                <th>תאריך</th>
-                <th style="text-align:center">פעולות</th>
+                <th>תמונה</th><th>רכב</th><th>מוכר</th><th>מחיר</th>
+                <th>חבילה</th><th>תאריך</th><th style="text-align:center">פעולות</th>
               </tr>
             </thead>
-            <tbody id="pendingTableBody">
-              <tr class="loading-row"><td colspan="7"><div class="spinner"></div><p>טוען...</p></td></tr>
+            <tbody id="pendingTbody">
+              <tr><td colspan="7"><div class="spin-wrap"><div class="spinner"></div></div></td></tr>
             </tbody>
           </table>
         </div>
       </div>
     </div>
 
-    <!-- ══ CARS MANAGEMENT ══ -->
-    <div class="page-section page-content" id="section-cars">
+    <!-- ══ PAGE: CARS ══ -->
+    <div class="page" id="page-cars">
       <div class="panel">
-        <div class="panel-header">
-          <div class="panel-title">🚗 ניהול מודעות</div>
-          <div style="display:flex;gap:8px">
-            <span class="nav-badge badge-red" id="allCount" style="padding:5px 12px;font-size:12px">0 מודעות</span>
+        <div class="panel-head">
+          <div class="panel-title">
+            <svg><use href="#i-car"/></svg>
+            ניהול מודעות
           </div>
+          <span class="nav-badge nb-red" id="allCount" style="padding:5px 12px;font-size:12px">0</span>
         </div>
         <div class="filter-bar">
-          <input class="filter-input" id="searchInput" placeholder="🔍 חפש לפי יצרן, דגם, עיר..." oninput="filterAndRender()">
-          <select class="filter-select" id="statusFilter" onchange="filterAndRender()">
+          <input class="fi fi-search" id="searchIn" placeholder="🔍 חפש לפי יצרן, דגם, עיר, מוכר..." oninput="filterAndRender()">
+          <select class="fi" id="statusFilter" onchange="filterAndRender()">
             <option value="">כל הסטטוסים</option>
             <option value="active">פעילות ✅</option>
             <option value="pending">ממתינות ⏳</option>
             <option value="sold">נמכרו 💜</option>
           </select>
-          <select class="filter-select" id="sortFilter" onchange="filterAndRender()">
-            <option value="newest">🆕 חדשות קודם</option>
-            <option value="oldest">📅 ישנות קודם</option>
-            <option value="price_asc">💰 מחיר ↑</option>
-            <option value="price_desc">💎 מחיר ↓</option>
+          <select class="fi" id="pkgFilter" onchange="filterAndRender()">
+            <option value="">כל החבילות</option>
+            <option value="free">FREE</option>
+            <option value="pro">PRO</option>
+            <option value="premium">PREMIUM</option>
+            <option value="vip">VIP</option>
+            <option value="duo">DUO</option>
+            <option value="equipment">ציוד</option>
+            <option value="transport">תחבורה</option>
+            <option value="business">BUSINESS</option>
+          </select>
+          <select class="fi" id="sortFilter" onchange="filterAndRender()">
+            <option value="newest">חדשות קודם</option>
+            <option value="oldest">ישנות קודם</option>
+            <option value="price_asc">מחיר ↑</option>
+            <option value="price_desc">מחיר ↓</option>
           </select>
         </div>
-        <div class="table-wrap">
+        <div class="tbl-wrap">
           <table>
             <thead>
               <tr>
-                <th>תמונה</th>
-                <th>#</th>
-                <th>רכב</th>
-                <th>מוכר</th>
-                <th>מחיר</th>
-                <th>סטטוס</th>
-                <th>תאריך</th>
+                <th>תמונה</th><th>#</th><th>רכב</th><th>מוכר</th>
+                <th>מחיר</th><th>חבילה</th><th>סטטוס</th><th>תאריך</th>
                 <th style="text-align:center">פעולות</th>
               </tr>
             </thead>
-            <tbody id="carsTableBody">
-              <tr class="loading-row"><td colspan="8"><div class="spinner"></div><p>טוען...</p></td></tr>
+            <tbody id="carsTbody">
+              <tr><td colspan="9"><div class="spin-wrap"><div class="spinner"></div></div></td></tr>
             </tbody>
           </table>
         </div>
       </div>
     </div>
 
-    <!-- ══ SETTINGS ══ -->
-    <div class="page-section page-content" id="section-settings">
-      <div class="panel">
-        <div class="panel-header">
-          <div class="panel-title">⚙️ הגדרות אתר</div>
+    <!-- ══ PAGE: SETTINGS ══ -->
+    <div class="page" id="page-settings">
+      <div class="panel" style="margin-bottom:20px">
+        <div class="panel-head">
+          <div class="panel-title"><svg><use href="#i-gear"/></svg> הגדרות כלליות</div>
         </div>
-        <div style="padding:24px">
+        <div class="panel-body">
           <div class="settings-grid">
-            <div class="settings-group">
-              <label class="settings-label">טלפון WhatsApp</label>
-              <input type="text" class="settings-input" id="st_phone" placeholder="0546980606">
+            <div class="sg">
+              <div class="sg-label">טלפון WhatsApp</div>
+              <input class="sg-input" id="st_phone" placeholder="0546980606">
             </div>
-            <div class="settings-group">
-              <label class="settings-label">כמות עוקבים Instagram</label>
-              <input type="text" class="settings-input" id="st_followers" placeholder="50K+">
+            <div class="sg">
+              <div class="sg-label">כמות עוקבים</div>
+              <input class="sg-input" id="st_followers" placeholder="50K+">
             </div>
-            <div class="settings-group settings-full">
-              <label class="settings-label">סיסמת Admin (לשינוי)</label>
-              <input type="password" class="settings-input" id="st_newpass" placeholder="השאר ריק לאי-שינוי">
+            <div class="sg sg-full">
+              <div class="sg-label">שינוי סיסמת Admin</div>
+              <input type="password" class="sg-input" id="st_newpass" placeholder="השאר ריק לאי-שינוי">
             </div>
           </div>
-          <div style="margin-top:20px;padding:16px;background:rgba(234,179,8,0.08);border:1px solid rgba(234,179,8,0.2);border-radius:12px">
-            <p style="font-size:13px;color:#eab308;font-weight:700">⚠️ הגדרות אלה נשמרות מקומית בדפדפן. לשינוי קבוע, ערוך את הקוד.</p>
+          <div style="margin-top:16px;padding:14px;background:rgba(245,158,11,0.07);border:1px solid rgba(245,158,11,0.18);border-radius:11px">
+            <p style="font-size:12px;color:#fbbf24;font-weight:700">⚠️ הגדרות נשמרות מקומית בדפדפן בלבד</p>
           </div>
-          <button class="save-btn" onclick="saveSettings()">💾 שמור הגדרות</button>
+          <button class="btn btn-red" style="margin-top:16px;padding:12px 28px;font-size:14px" onclick="saveSettings()">
+            💾 שמור הגדרות
+          </button>
         </div>
       </div>
 
-      <!-- SQL Helper -->
-      <div class="panel" style="margin-top:20px">
-        <div class="panel-header">
-          <div class="panel-title">🗄️ SQL מהיר — Supabase</div>
+      <div class="panel">
+        <div class="panel-head">
+          <div class="panel-title"><svg><use href="#i-db"/></svg> SQL — Supabase</div>
+          <button class="btn btn-sm" onclick="copySQL()">
+            <svg><use href="#i-copy"/></svg> העתק
+          </button>
         </div>
-        <div style="padding:20px">
-          <p style="font-size:13px;color:var(--text2);margin-bottom:16px">הרץ את הפקודה הזו ב-Supabase SQL Editor לתיקון הרשאות:</p>
-          <div style="background:var(--bg3);border:1px solid var(--border);border-radius:12px;padding:16px;font-family:monospace;font-size:12px;color:#4ade80;white-space:pre-wrap;user-select:all;cursor:text" onclick="copySQL()">-- תיקון מלא של הרשאות
+        <div class="panel-body">
+          <p style="font-size:12px;color:var(--t2);margin-bottom:14px">הרץ את הפקודה הזו ב-Supabase SQL Editor לתיקון הרשאות:</p>
+          <div class="code-block" id="sqlBlock">-- תיקון מלא של הרשאות YOUGO CARS
 drop policy if exists "Anyone can insert car listing" on cars;
 drop policy if exists "Anyone can view active cars" on cars;
 drop policy if exists "Anyone can insert" on cars;
@@ -654,52 +986,60 @@ drop policy if exists "public_insert" on cars;
 drop policy if exists "public_update" on cars;
 drop policy if exists "public_delete" on cars;
 
-create policy "public_read" on cars for select using (true);
+create policy "public_read"   on cars for select using (true);
 create policy "public_insert" on cars for insert with check (true);
 create policy "public_update" on cars for update using (true);
 create policy "public_delete" on cars for delete using (true);</div>
-          <button class="btn btn-ghost" style="margin-top:10px" onclick="copySQL()">📋 העתק SQL</button>
         </div>
       </div>
     </div>
 
-  </div><!-- /main-content -->
-</div><!-- /adminPage -->
+  </main>
+</div>
 
-<!-- ══ CAR DETAIL MODAL ══ -->
-<div class="modal-overlay" id="carModal" onclick="closeModal()">
-  <div class="modal" onclick="event.stopPropagation()">
-    <div class="modal-header">
-      <h3 class="modal-title" id="modalTitle">פרטי מודעה</h3>
+<!-- ══════════════ CAR DETAIL MODAL ══════════════ -->
+<div class="overlay" id="carOverlay" onclick="closeModal()">
+  <div class="modal-box" onclick="event.stopPropagation()">
+    <div class="modal-hdr">
+      <div class="modal-title" id="modalTitle">פרטי מודעה</div>
       <button class="modal-close" onclick="closeModal()">×</button>
     </div>
     <div class="modal-body" id="modalBody"></div>
   </div>
 </div>
 
-<!-- ══ TOAST ══ -->
+<!-- TOAST -->
 <div class="toast" id="toast"></div>
 
 <script>
-// ══════════════════════════════════
-// CONFIG
-// ══════════════════════════════════
-const SUPABASE_URL = 'https://arsbodqhmmtmoqqhykep.supabase.co';
-const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImFyc2JvZHFobW10bW9xcWh5a2VwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzIxNTgxMTQsImV4cCI6MjA4NzczNDExNH0.mt_WpPshp5xdbIx23pMmcwq7MhktA0-vWPIstOy1_HM';
-const sb = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
-
+/* ═══════════════════════════════════════
+   CONFIG
+═══════════════════════════════════════ */
+const SB_URL = 'https://arsbodqhmmtmoqqhykep.supabase.co';
+const SB_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImFyc2JvZHFobW10bW9xcWh5a2VwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzIxNTgxMTQsImV4cCI6MjA4NzczNDExNH0.mt_WpPshp5xdbIx23pMmcwq7MhktA0-vWPIstOy1_HM';
+const sb = supabase.createClient(SB_URL, SB_KEY);
 let ADMIN_PASS = 'yougo2026';
-let allCars = [];
-let filteredCars = [];
+let allCars = [], filtered = [];
 
-// ══════════════════════════════════
-// LOGIN
-// ══════════════════════════════════
+/* ═══════════════════════════════════════
+   CLOCK
+═══════════════════════════════════════ */
+function updateClock() {
+  const now = new Date();
+  document.getElementById('tbTime').textContent =
+    now.toLocaleTimeString('he-IL', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+}
+setInterval(updateClock, 1000);
+updateClock();
+
+/* ═══════════════════════════════════════
+   LOGIN
+═══════════════════════════════════════ */
 function doLogin() {
-  const pass = document.getElementById('passInput').value;
-  const savedPass = localStorage.getItem('yougo_admin_pass') || ADMIN_PASS;
-  if (pass === savedPass) {
-    sessionStorage.setItem('yougo_admin_logged', '1');
+  const val = document.getElementById('passInput').value;
+  const saved = localStorage.getItem('yougo_admin_pass') || ADMIN_PASS;
+  if (val === saved) {
+    sessionStorage.setItem('yougo_logged', '1');
     document.getElementById('loginPage').style.display = 'none';
     document.getElementById('adminPage').style.display = 'block';
     loadAll();
@@ -707,244 +1047,367 @@ function doLogin() {
     const err = document.getElementById('loginError');
     err.style.display = 'block';
     document.getElementById('passInput').value = '';
+    document.getElementById('passInput').focus();
     setTimeout(() => err.style.display = 'none', 3000);
   }
 }
 
 function doLogout() {
-  sessionStorage.removeItem('yougo_admin_logged');
+  sessionStorage.removeItem('yougo_logged');
   location.reload();
 }
 
-// Check if already logged in
-if (sessionStorage.getItem('yougo_admin_logged')) {
+if (sessionStorage.getItem('yougo_logged')) {
   document.getElementById('loginPage').style.display = 'none';
   document.getElementById('adminPage').style.display = 'block';
   document.addEventListener('DOMContentLoaded', loadAll);
 }
 
-// ══════════════════════════════════
-// SIDEBAR
-// ══════════════════════════════════
-function showSection(name, btn) {
-  document.querySelectorAll('.page-section').forEach(s => s.classList.remove('active'));
+/* ═══════════════════════════════════════
+   SIDEBAR / NAV
+═══════════════════════════════════════ */
+function openSidebar() {
+  document.getElementById('sidebar').classList.add('open');
+  document.getElementById('sbBackdrop').classList.add('show');
+}
+function closeSidebar() {
+  document.getElementById('sidebar').classList.remove('open');
+  document.getElementById('sbBackdrop').classList.remove('show');
+}
+
+const PAGE_TITLES = {
+  dashboard: 'לוח <span>בקרה</span>',
+  cars:      'ניהול <span>מודעות</span>',
+  settings:  'הגדרות <span>מערכת</span>',
+};
+
+function showPage(name, btn) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
   document.querySelectorAll('.nav-item').forEach(b => b.classList.remove('active'));
-  document.getElementById(`section-${name}`)?.classList.add('active');
+  const pg = document.getElementById('page-' + name);
+  if (pg) pg.classList.add('active');
   if (btn) btn.classList.add('active');
-
-  const titles = { dashboard: '📊 לוח <span>בקרה</span>', cars: '🚗 ניהול <span>מודעות</span>', settings: '⚙️ הגדרות <span>אתר</span>' };
-  document.getElementById('topbarTitle').innerHTML = titles[name] || name;
+  document.getElementById('topbarTitle').innerHTML = PAGE_TITLES[name] || name;
+  closeSidebar();
 }
 
-function toggleSidebar() {
-  document.getElementById('sidebar').classList.toggle('open');
-}
-
-// ══════════════════════════════════
-// LOAD DATA
-// ══════════════════════════════════
+/* ═══════════════════════════════════════
+   DATA
+═══════════════════════════════════════ */
 async function loadAll() {
   try {
     const { data, error } = await sb.from('cars').select('*').order('created_at', { ascending: false });
     if (error) throw error;
     allCars = data || [];
-    filteredCars = [...allCars];
+    filtered = [...allCars];
     renderStats();
+    renderPkgStats();
     renderPending();
     filterAndRender();
   } catch(e) {
-    showToast('❌ שגיאה בטעינה: ' + e.message, 'error');
+    toast('❌ שגיאה: ' + e.message, 'error');
   }
 }
 
 function refreshData() {
-  showToast('🔄 מרענן...', 'info');
+  toast('🔄 מרענן...', 'info');
   loadAll();
 }
 
-// ══════════════════════════════════
-// STATS
-// ══════════════════════════════════
+/* ═══════════════════════════════════════
+   STATS
+═══════════════════════════════════════ */
 function renderStats() {
-  const total = allCars.length;
-  const active = allCars.filter(c => c.status === 'active').length;
+  const total   = allCars.length;
+  const active  = allCars.filter(c => c.status === 'active').length;
   const pending = allCars.filter(c => c.status === 'pending').length;
-  const sold = allCars.filter(c => c.status === 'sold').length;
+  const sold    = allCars.filter(c => c.status === 'sold').length;
 
-  document.getElementById('totalCars').textContent = total;
-  document.getElementById('activeCars').textContent = active;
-  document.getElementById('pendingCars').textContent = pending;
-  document.getElementById('soldCars').textContent = sold;
+  document.getElementById('stTotal').textContent   = total;
+  document.getElementById('stActive').textContent  = active;
+  document.getElementById('stPending').textContent = pending;
+  document.getElementById('stSold').textContent    = sold;
   document.getElementById('pendingBadge').textContent = pending;
-  document.getElementById('allCount').textContent = total + ' מודעות';
+  document.getElementById('allCount').textContent  = total + ' מודעות';
 }
 
-// ══════════════════════════════════
-// PENDING TABLE
-// ══════════════════════════════════
+const PKG_META = {
+  free:      { label: 'FREE',      color: 'rgba(255,255,255,0.4)', bg: 'rgba(255,255,255,0.05)' },
+  pro:       { label: 'PRO',       color: '#ff5577', bg: 'rgba(200,16,46,0.08)' },
+  premium:   { label: 'PREMIUM',   color: '#a78bfa', bg: 'rgba(139,92,246,0.08)' },
+  vip:       { label: 'VIP',       color: '#f0c84a', bg: 'rgba(212,175,55,0.08)' },
+  duo:       { label: 'DUO',       color: '#38bdf8', bg: 'rgba(14,165,233,0.08)' },
+  equipment: { label: 'ציוד',      color: '#fb923c', bg: 'rgba(234,88,12,0.08)' },
+  transport: { label: 'תחבורה',    color: '#34d399', bg: 'rgba(16,185,129,0.08)' },
+  business:  { label: 'BUSINESS',  color: '#60a5fa', bg: 'rgba(59,130,246,0.08)' },
+};
+
+function renderPkgStats() {
+  const counts = {};
+  allCars.forEach(c => {
+    const p = c.package || 'free';
+    counts[p] = (counts[p] || 0) + 1;
+  });
+  const el = document.getElementById('pkgStats');
+  el.innerHTML = Object.entries(PKG_META).map(([key, m]) => {
+    const n = counts[key] || 0;
+    if (!n) return '';
+    return `
+      <div style="background:${m.bg};border:1px solid ${m.color}22;border-radius:12px;padding:12px 14px;display:flex;align-items:center;gap:10px">
+        <div style="width:8px;height:8px;border-radius:50%;background:${m.color};flex-shrink:0;box-shadow:0 0 6px ${m.color}"></div>
+        <div>
+          <div style="font-size:10px;font-weight:900;color:${m.color};letter-spacing:.06em">${m.label}</div>
+          <div style="font-size:18px;font-weight:900;font-family:var(--mono)">${n}</div>
+        </div>
+      </div>`;
+  }).join('');
+}
+
+/* ═══════════════════════════════════════
+   PENDING TABLE
+═══════════════════════════════════════ */
 function renderPending() {
   const pending = allCars.filter(c => c.status === 'pending');
-  const tbody = document.getElementById('pendingTableBody');
-
+  const tbody = document.getElementById('pendingTbody');
   if (!pending.length) {
-    tbody.innerHTML = `<tr><td colspan="7"><div class="empty-state"><div class="empty-icon">✅</div><h3>אין מודעות ממתינות</h3><p>כל המודעות אושרו</p></div></td></tr>`;
+    tbody.innerHTML = `<tr><td colspan="7"><div class="empty"><div class="empty-ico">✅</div><h3>אין ממתינות</h3><p>כל המודעות אושרו</p></div></td></tr>`;
     return;
   }
-
-  tbody.innerHTML = pending.map(car => carRow(car, false)).join('');
+  tbody.innerHTML = pending.map(c => carRow(c, false)).join('');
 }
 
-// ══════════════════════════════════
-// ALL CARS TABLE
-// ══════════════════════════════════
+/* ═══════════════════════════════════════
+   CARS TABLE
+═══════════════════════════════════════ */
 function filterAndRender() {
-  const search = document.getElementById('searchInput')?.value.toLowerCase() || '';
+  const search = (document.getElementById('searchIn')?.value || '').toLowerCase();
   const status = document.getElementById('statusFilter')?.value || '';
-  const sort = document.getElementById('sortFilter')?.value || 'newest';
+  const pkg    = document.getElementById('pkgFilter')?.value || '';
+  const sort   = document.getElementById('sortFilter')?.value || 'newest';
 
-  filteredCars = allCars.filter(car => {
-    if (status && car.status !== status) return false;
-    if (search && !`${car.make} ${car.model} ${car.seller_city} ${car.seller_name}`.toLowerCase().includes(search)) return false;
+  filtered = allCars.filter(c => {
+    if (status && c.status !== status) return false;
+    if (pkg && (c.package || 'free') !== pkg) return false;
+    if (search) {
+      const hay = `${c.make} ${c.model} ${c.year} ${c.seller_city} ${c.seller_name} ${c.seller_phone}`.toLowerCase();
+      if (!hay.includes(search)) return false;
+    }
     return true;
   });
 
-  if (sort === 'newest') filteredCars.sort((a,b) => new Date(b.created_at) - new Date(a.created_at));
-  else if (sort === 'oldest') filteredCars.sort((a,b) => new Date(a.created_at) - new Date(b.created_at));
-  else if (sort === 'price_asc') filteredCars.sort((a,b) => a.price - b.price);
-  else if (sort === 'price_desc') filteredCars.sort((a,b) => b.price - a.price);
+  if (sort === 'newest')    filtered.sort((a,b) => new Date(b.created_at) - new Date(a.created_at));
+  else if (sort === 'oldest')    filtered.sort((a,b) => new Date(a.created_at) - new Date(b.created_at));
+  else if (sort === 'price_asc') filtered.sort((a,b) => a.price - b.price);
+  else if (sort === 'price_desc')filtered.sort((a,b) => b.price - a.price);
 
-  const tbody = document.getElementById('carsTableBody');
-  if (!filteredCars.length) {
-    tbody.innerHTML = `<tr><td colspan="8"><div class="empty-state"><div class="empty-icon">🔍</div><h3>לא נמצאו מודעות</h3><p>נסה לשנות את הפילטרים</p></div></td></tr>`;
+  const tbody = document.getElementById('carsTbody');
+  if (!filtered.length) {
+    tbody.innerHTML = `<tr><td colspan="9"><div class="empty"><div class="empty-ico">🔍</div><h3>לא נמצאו תוצאות</h3><p>שנה את הפילטרים</p></div></td></tr>`;
     return;
   }
-  tbody.innerHTML = filteredCars.map(car => carRow(car, true)).join('');
+  tbody.innerHTML = filtered.map((c, i) => carRow(c, true, i + 1)).join('');
 }
 
-// ══════════════════════════════════
-// CAR ROW
-// ══════════════════════════════════
-function carRow(car, showSerial) {
-  const imgs = car.images || [];
-  const img = car.main_image || imgs[0];
-  const imgHtml = img
-    ? `<img class="car-thumb" src="${img}" alt="${car.make} ${car.model}">`
-    : `<div class="car-thumb" style="display:flex;align-items:center;justify-content:center;font-size:22px;background:var(--bg3)">🚗</div>`;
+/* ═══════════════════════════════════════
+   CAR ROW
+═══════════════════════════════════════ */
+function pkgTag(pkg) {
+  const cls = { free:'pt-free', pro:'pt-pro', premium:'pt-premium', vip:'pt-vip', duo:'pt-duo', equipment:'pt-equipment', transport:'pt-transport', business:'pt-business' };
+  const lbl = PKG_META[pkg]?.label || pkg.toUpperCase();
+  return `<span class="pkgtag ${cls[pkg] || 'pt-free'}">${lbl}</span>`;
+}
 
-  const statusMap = {
-    active: `<span class="status-badge status-active"><span class="status-dot dot-active"></span>פעילה</span>`,
-    pending: `<span class="status-badge status-pending"><span class="status-dot dot-pending"></span>ממתינה</span>`,
-    sold: `<span class="status-badge status-sold"><span class="status-dot"></span>נמכרה</span>`,
+function statusBadge(status) {
+  const map = {
+    active:  `<span class="stbadge st-active"><span class="stbadge-dot dot-active"></span>פעילה</span>`,
+    pending: `<span class="stbadge st-pending"><span class="stbadge-dot dot-pending"></span>ממתינה</span>`,
+    sold:    `<span class="stbadge st-sold"><span class="stbadge-dot dot-sold"></span>נמכרה</span>`,
   };
+  return map[status] || status;
+}
+
+function carRow(car, showSerial, serial) {
+  const img = car.main_image || (car.images || [])[0];
+  const thumb = img
+    ? `<img class="car-thumb" src="${img}" alt="${car.make} ${car.model}" loading="lazy">`
+    : `<div class="thumb-ph"><svg><use href="#i-car"/></svg></div>`;
 
   const date = new Date(car.created_at).toLocaleDateString('he-IL', { day:'2-digit', month:'2-digit', year:'2-digit' });
-
-  const approveBtn = car.status === 'pending'
-    ? `<button class="action-btn action-approve" onclick="updateStatus('${car.id}','active')" title="אשר">✓</button>` : '';
-  const soldBtn = car.status === 'active'
-    ? `<button class="action-btn action-sold" onclick="updateStatus('${car.id}','sold')" title="נמכר">💜</button>` : '';
+  const pkg  = car.package || 'free';
 
   const serialCol = showSerial
-    ? `<td class="cell-id">#${String(filteredCars.indexOf(car)+1).padStart(3,'0')}</td>` : '';
+    ? `<td><span style="font-family:var(--mono);font-size:11px;color:var(--t3)">#${String(serial).padStart(3,'0')}</span></td>`
+    : '';
+
+  const approveBtn = car.status === 'pending'
+    ? `<button class="act act-approve" onclick="updateStatus('${car.id}','active');event.stopPropagation()" title="אשר"><svg><use href="#i-check"/></svg></button>` : '';
+  const soldBtn = car.status === 'active'
+    ? `<button class="act act-sold" onclick="updateStatus('${car.id}','sold');event.stopPropagation()" title="נמכר"><svg><use href="#i-star"/></svg></button>` : '';
+
+  /* Package dropdown — admin can change it inline */
+  const pkgOpts = Object.entries(PKG_META).map(([k, m]) =>
+    `<option value="${k}" ${pkg === k ? 'selected' : ''}>${m.label}</option>`
+  ).join('');
 
   return `<tr>
-    <td style="width:72px">${imgHtml}</td>
+    <td style="width:74px">${thumb}</td>
     ${serialCol}
     <td>
-      <div class="cell-name">${car.make} ${car.model}</div>
-      <div class="cell-sub">${car.year} • ${car.gear_type || ''} • ${car.fuel_type || ''}</div>
+      <div class="cell-primary">${car.make} ${car.model}</div>
+      <div class="cell-sub">${car.year} · ${car.gear_type || ''} · ${car.fuel_type || ''}</div>
     </td>
     <td>
-      <div class="cell-name">${car.seller_name || '—'}</div>
+      <div class="cell-primary">${car.seller_name || '—'}</div>
       <div class="cell-sub">📞 ${car.seller_phone || '—'}</div>
     </td>
-    <td><strong>₪${Number(car.price || 0).toLocaleString()}</strong></td>
-    <td>${statusMap[car.status] || car.status}</td>
-    <td style="color:var(--text2);font-size:12px">${date}</td>
     <td>
-      <div class="actions">
+      <strong class="cell-mono">₪${Number(car.price || 0).toLocaleString()}</strong>
+    </td>
+    <td>
+      <select class="pkg-select" onchange="updatePkg('${car.id}',this.value)" onclick="event.stopPropagation()" title="שנה חבילה">
+        ${pkgOpts}
+      </select>
+    </td>
+    <td>${statusBadge(car.status)}</td>
+    <td style="color:var(--t2);font-size:12px;font-family:var(--mono)">${date}</td>
+    <td>
+      <div class="acts">
         ${approveBtn}
         ${soldBtn}
-        <button class="action-btn action-view" onclick="openCarModal('${car.id}')" title="פרטים">👁</button>
-        <button class="action-btn action-delete" onclick="deleteCar('${car.id}')" title="מחק">✕</button>
+        <button class="act act-view" onclick="openModal('${car.id}');event.stopPropagation()" title="פרטים">
+          <svg><use href="#i-eye"/></svg>
+        </button>
+        <button class="act act-del" onclick="deleteCar('${car.id}');event.stopPropagation()" title="מחק">
+          <svg><use href="#i-x"/></svg>
+        </button>
       </div>
     </td>
   </tr>`;
 }
 
-// ══════════════════════════════════
-// ACTIONS
-// ══════════════════════════════════
+/* ═══════════════════════════════════════
+   ACTIONS
+═══════════════════════════════════════ */
 async function updateStatus(id, status) {
-  const labels = { active: 'אושרה ✅', pending: 'הוחזרה לממתין ⏳', sold: 'סומנה כנמכרה 💜' };
+  const labels = { active:'אושרה ✅', sold:'סומנה כנמכרה 💜', pending:'הוחזרה לממתין' };
   const { error } = await sb.from('cars').update({ status }).eq('id', id);
-  if (!error) {
-    showToast(`✅ המודעה ${labels[status]}`, 'success');
-    await loadAll();
-  } else {
-    showToast('❌ שגיאה: ' + error.message, 'error');
-  }
+  if (!error) { toast(`${labels[status]}`, 'success'); await loadAll(); }
+  else toast('❌ ' + error.message, 'error');
+}
+
+async function updatePkg(id, pkg) {
+  const { error } = await sb.from('cars').update({ package: pkg }).eq('id', id);
+  if (!error) { toast(`✅ חבילה עודכנה: ${PKG_META[pkg]?.label || pkg}`, 'success'); await loadAll(); }
+  else toast('❌ ' + error.message, 'error');
 }
 
 async function deleteCar(id) {
   if (!confirm('למחוק מודעה זו לצמיתות?\n\nלא ניתן לשחזר!')) return;
   const { error } = await sb.from('cars').delete().eq('id', id);
-  if (!error) {
-    showToast('🗑️ המודעה נמחקה', 'success');
-    await loadAll();
-  } else {
-    showToast('❌ שגיאה: ' + error.message, 'error');
-  }
+  if (!error) { toast('🗑️ נמחקה', 'success'); await loadAll(); }
+  else toast('❌ ' + error.message, 'error');
 }
 
-// ══════════════════════════════════
-// CAR DETAIL MODAL
-// ══════════════════════════════════
-function openCarModal(id) {
+/* ═══════════════════════════════════════
+   MODAL
+═══════════════════════════════════════ */
+function openModal(id) {
   const car = allCars.find(c => c.id === id);
   if (!car) return;
 
   const imgs = car.images || [];
-  const imgsHtml = imgs.length
-    ? `<div class="car-images-preview">${imgs.map(s => `<img src="${s}" alt="תמונה">`).join('')}</div>`
-    : '<p style="color:var(--text3);font-size:13px">אין תמונות</p>';
+  const mainImg = car.main_image || imgs[0];
+
+  const galleryHtml = imgs.length
+    ? `<div class="modal-gallery">
+        ${mainImg ? `<img class="main-img" src="${mainImg}" alt="${car.make}">` : ''}
+        ${imgs.filter(i => i !== mainImg).map(s => `<img src="${s}" alt="תמונה" onclick="this.parentElement.querySelector('.main-img').src='${s}'">`).join('')}
+      </div>`
+    : '<p style="color:var(--t3);font-size:13px;margin-bottom:16px">אין תמונות</p>';
+
+  const pkg = car.package || 'free';
+  const pkgOpts = Object.entries(PKG_META).map(([k, m]) =>
+    `<option value="${k}" ${pkg === k ? 'selected' : ''}>${m.label}</option>`
+  ).join('');
 
   document.getElementById('modalTitle').textContent = `${car.make} ${car.model} ${car.year}`;
   document.getElementById('modalBody').innerHTML = `
-    ${imgsHtml}
-    <div class="detail-grid" style="margin-top:18px">
-      <div class="detail-item"><label>יצרן</label><span>${car.make}</span></div>
-      <div class="detail-item"><label>דגם</label><span>${car.model}</span></div>
-      <div class="detail-item"><label>שנה</label><span>${car.year}</span></div>
-      <div class="detail-item"><label>מחיר</label><span>₪${Number(car.price||0).toLocaleString()}</span></div>
-      <div class="detail-item"><label>קילומטראז'</label><span>${Number(car.mileage||0).toLocaleString()} ק"מ</span></div>
-      <div class="detail-item"><label>יד</label><span>יד ${car.hand||'—'}</span></div>
-      <div class="detail-item"><label>גיר</label><span>${car.gear_type||'—'}</span></div>
-      <div class="detail-item"><label>דלק</label><span>${car.fuel_type||'—'}</span></div>
-      <div class="detail-item"><label>צבע</label><span>${car.color||'—'}</span></div>
-      <div class="detail-item"><label>מנוע</label><span>${car.engine_size ? car.engine_size+'L' : '—'}</span></div>
-      <div class="detail-item"><label>מוכר</label><span>${car.seller_name||'—'}</span></div>
-      <div class="detail-item"><label>טלפון</label><span>${car.seller_phone||'—'}</span></div>
-      <div class="detail-item detail-full"><label>עיר</label><span>${car.seller_city||'—'}</span></div>
-      ${car.description_he ? `<div class="detail-item detail-full"><label>תיאור</label><span style="font-weight:500;color:var(--text2)">${car.description_he}</span></div>` : ''}
+    ${galleryHtml}
+
+    <div style="margin-bottom:16px;display:flex;gap:10px;align-items:center;flex-wrap:wrap">
+      ${statusBadge(car.status)}
+      ${pkgTag(pkg)}
     </div>
+
+    <!-- Package selector -->
+    <div style="background:var(--bg3);border:1px solid var(--border);border-radius:12px;padding:14px;margin-bottom:16px">
+      <div style="font-size:10px;font-weight:900;color:var(--t2);text-transform:uppercase;letter-spacing:.08em;margin-bottom:10px">שינוי חבילה</div>
+      <div id="pkgPickerModal" style="display:grid;grid-template-columns:repeat(4,1fr);gap:6px">
+        ${Object.entries(PKG_META).map(([k, m]) => `
+          <button onclick="setPkgModal('${car.id}','${k}',this)"
+            style="padding:8px 6px;border-radius:8px;border:1.5px solid ${k===pkg?m.color:'var(--border)'};
+            background:${k===pkg?m.bg:'var(--bg4)'};cursor:pointer;font-family:var(--font);
+            font-size:9px;font-weight:900;color:${m.color};transition:all .18s;display:flex;
+            flex-direction:column;align-items:center;gap:4px" data-pkg="${k}">
+            <div style="width:8px;height:8px;border-radius:50%;background:${m.color}"></div>
+            ${m.label}
+          </button>`).join('')}
+      </div>
+    </div>
+
+    <div class="detail-grid">
+      <div class="det-item"><label>יצרן</label><span>${car.make}</span></div>
+      <div class="det-item"><label>דגם</label><span>${car.model}</span></div>
+      <div class="det-item"><label>שנה</label><span>${car.year}</span></div>
+      <div class="det-item"><label>מחיר</label><span>₪${Number(car.price||0).toLocaleString()}</span></div>
+      <div class="det-item"><label>קילומטרים</label><span>${Number(car.mileage||0).toLocaleString()} ק״מ</span></div>
+      <div class="det-item"><label>יד</label><span>יד ${car.hand||'—'}</span></div>
+      <div class="det-item"><label>גיר</label><span>${car.gear_type||'—'}</span></div>
+      <div class="det-item"><label>דלק</label><span>${car.fuel_type||'—'}</span></div>
+      <div class="det-item"><label>צבע</label><span>${car.color||'—'}</span></div>
+      <div class="det-item"><label>מנוע</label><span>${car.engine_size ? car.engine_size+'L' : '—'}</span></div>
+      <div class="det-item"><label>מוכר</label><span>${car.seller_name||'—'}</span></div>
+      <div class="det-item"><label>טלפון</label><span>${car.seller_phone||'—'}</span></div>
+      <div class="det-item det-full"><label>עיר</label><span>${car.seller_city||'—'}</span></div>
+      ${car.description_he ? `<div class="det-item det-full"><label>תיאור עברית</label><span style="color:var(--t2);font-weight:500">${car.description_he}</span></div>` : ''}
+      ${car.description_ar ? `<div class="det-item det-full"><label>تفاصيل عربي</label><span style="color:var(--t2);font-weight:500;direction:rtl">${car.description_ar}</span></div>` : ''}
+    </div>
+
     <div style="display:flex;gap:8px;margin-top:18px;flex-wrap:wrap">
-      ${car.status==='pending' ? `<button class="btn btn-red" onclick="updateStatus('${car.id}','active');closeModal()">✓ אשר פרסום</button>` : ''}
-      ${car.status==='active' ? `<button class="btn" style="background:rgba(99,102,241,0.15);border:1px solid rgba(99,102,241,0.3);color:#818cf8" onclick="updateStatus('${car.id}','sold');closeModal()">💜 סמן כנמכר</button>` : ''}
-      <a class="btn btn-ghost" href="https://wa.me/972${(car.seller_phone||'').replace(/\D/g,'').replace(/^0/,'')}" target="_blank">💬 WhatsApp</a>
-      <button class="btn" style="background:rgba(239,68,68,0.1);border:1px solid rgba(239,68,68,0.3);color:#ef4444" onclick="deleteCar('${car.id}');closeModal()">🗑 מחק</button>
+      ${car.status==='pending' ? `<button class="btn btn-red" onclick="updateStatus('${car.id}','active');closeModal()"><svg width="13" height="13"><use href="#i-check"/></svg> אשר פרסום</button>` : ''}
+      ${car.status==='active'  ? `<button class="btn" style="background:rgba(139,92,246,0.12);border-color:rgba(139,92,246,0.3);color:#a78bfa" onclick="updateStatus('${car.id}','sold');closeModal()"><svg width="13" height="13"><use href="#i-star"/></svg> סמן כנמכר</button>` : ''}
+      <a class="btn" href="https://wa.me/972${(car.seller_phone||'').replace(/\D/g,'').replace(/^0/,'')}" target="_blank" style="color:#4ade80;border-color:rgba(34,197,94,0.25)">
+        <svg width="13" height="13"><use href="#i-wa"/></svg> WhatsApp
+      </a>
+      <button class="btn" style="color:#f87171;border-color:rgba(239,68,68,0.25)" onclick="deleteCar('${car.id}');closeModal()">
+        <svg width="13" height="13"><use href="#i-x"/></svg> מחק
+      </button>
     </div>`;
 
-  document.getElementById('carModal').classList.add('open');
+  document.getElementById('carOverlay').classList.add('open');
+}
+
+async function setPkgModal(id, pkg, btn) {
+  // Update UI instantly
+  document.querySelectorAll('#pkgPickerModal button').forEach(b => {
+    const k = b.dataset.pkg;
+    const m = PKG_META[k];
+    b.style.borderColor = 'var(--border)';
+    b.style.background  = 'var(--bg4)';
+  });
+  const m = PKG_META[pkg];
+  btn.style.borderColor = m.color;
+  btn.style.background  = m.bg;
+  await updatePkg(id, pkg);
 }
 
 function closeModal() {
-  document.getElementById('carModal').classList.remove('open');
+  document.getElementById('carOverlay').classList.remove('open');
 }
 
-// ══════════════════════════════════
-// SETTINGS
-// ══════════════════════════════════
+/* ═══════════════════════════════════════
+   SETTINGS
+═══════════════════════════════════════ */
 function saveSettings() {
   const newPass = document.getElementById('st_newpass').value;
   if (newPass) {
@@ -952,32 +1415,27 @@ function saveSettings() {
     ADMIN_PASS = newPass;
     document.getElementById('st_newpass').value = '';
   }
-  showToast('✅ הגדרות נשמרו!', 'success');
+  toast('✅ הגדרות נשמרו!', 'success');
 }
 
 function copySQL() {
-  const sql = document.querySelector('[onclick="copySQL()"]').previousElementSibling?.textContent ||
-    document.querySelector('.settings-input + div + div pre')?.textContent || '';
-  const el = document.querySelector('[style*="color:#4ade80"]');
-  if (el) {
-    navigator.clipboard.writeText(el.textContent.trim());
-    showToast('📋 SQL הועתק!', 'success');
-  }
+  const text = document.getElementById('sqlBlock').textContent;
+  navigator.clipboard.writeText(text.trim()).then(() => toast('📋 SQL הועתק!', 'success'));
 }
 
-// ══════════════════════════════════
-// TOAST
-// ══════════════════════════════════
-function showToast(msg, type = 'success') {
+/* ═══════════════════════════════════════
+   TOAST
+═══════════════════════════════════════ */
+function toast(msg, type = 'success') {
   const el = document.getElementById('toast');
   el.textContent = msg;
   el.className = `toast ${type} show`;
-  setTimeout(() => el.classList.remove('show'), 3500);
+  setTimeout(() => el.classList.remove('show'), 3200);
 }
 
-// ══════════════════════════════════
-// ESC
-// ══════════════════════════════════
+/* ═══════════════════════════════════════
+   KEYBOARD
+═══════════════════════════════════════ */
 document.addEventListener('keydown', e => {
   if (e.key === 'Escape') closeModal();
   if (e.key === 'Enter' && document.getElementById('loginPage').style.display !== 'none') doLogin();
