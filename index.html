@@ -337,10 +337,58 @@ footer{background:#1d1d1f;border-top:1px solid rgba(255,255,255,0.06);padding:52
 #toast.ok{border-color:rgba(52,199,89,0.35);color:#1a7a37}
 #toast.err{border-color:rgba(255,59,48,0.35);color:#cc1a14}
 
-@media(max-width:1100px){.cars-grid{grid-template-columns:repeat(3,1fr)}.why-grid{grid-template-columns:repeat(3,1fr)}.steps{grid-template-columns:repeat(2,1fr)}.steps::before{display:none}.foot-grid{grid-template-columns:1fr 1fr 1fr}}
-@media(max-width:780px){.cars-grid{grid-template-columns:repeat(2,1fr)}.why-grid{grid-template-columns:repeat(2,1fr)}.hero-stats{grid-template-columns:repeat(3,1fr)}.testi-grid{grid-template-columns:1fr 1fr}.d-specs{grid-template-columns:repeat(2,1fr)}.fg3{grid-template-columns:1fr 1fr}.foot-grid{grid-template-columns:1fr 1fr}}
-@media(max-width:560px){.nav-mid{display:none}.cars-grid{grid-template-columns:1fr 1fr}.why-grid{grid-template-columns:1fr 1fr}.hero-stats{grid-template-columns:1fr;max-width:280px;margin:0 auto}.hero h1{letter-spacing:-2px}.testi-grid{grid-template-columns:1fr}.foot-grid{grid-template-columns:1fr}.d-ctas{flex-direction:column}.steps{grid-template-columns:1fr 1fr}.hero-btns{flex-direction:column;align-items:center}}
-@media(max-width:380px){.cars-grid{grid-template-columns:1fr}}
+/* ACCORDION SECTIONS */
+.acc-section{background:#fff;overflow:hidden}
+.acc-section.alt{background:var(--bg)}
+.acc-trigger{width:100%;display:flex;align-items:center;justify-content:space-between;padding:26px 32px;cursor:pointer;border:none;background:none;text-align:right;gap:16px;transition:background .2s}
+.acc-trigger:hover{background:rgba(0,0,0,0.015)}
+.acc-trigger-right{display:flex;flex-direction:column;align-items:flex-end;gap:4px}
+.acc-eyebrow{display:flex;align-items:center;gap:8px;margin-bottom:2px}
+.acc-ey-line{width:18px;height:2px;background:var(--red);border-radius:2px}
+.acc-ey-txt{font-size:10px;font-weight:700;color:var(--red);text-transform:uppercase;letter-spacing:.14em}
+.acc-trigger h2{font-family:var(--font-d);font-size:clamp(1.25rem,2.5vw,1.75rem);font-weight:800;color:var(--t0);letter-spacing:-1px;line-height:1.1;text-align:right}
+.acc-trigger p{font-size:12.5px;color:var(--t2);line-height:1.5;max-width:360px;text-align:right;margin-top:4px}
+.acc-arrow{width:40px;height:40px;border-radius:50%;border:1.5px solid rgba(0,0,0,0.1);background:#fff;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all .35s var(--ease);box-shadow:0 2px 8px rgba(0,0,0,0.06)}
+.acc-arrow svg{width:16px;height:16px;color:var(--t2);transition:transform .35s var(--ease),color .2s}
+.acc-trigger:hover .acc-arrow{border-color:rgba(208,10,31,0.25);box-shadow:0 4px 14px rgba(208,10,31,0.12)}
+.acc-trigger:hover .acc-arrow svg{color:var(--red)}
+.acc-section.open .acc-arrow{background:var(--red);border-color:var(--red);box-shadow:0 4px 14px rgba(208,10,31,0.35)}
+.acc-section.open .acc-arrow svg{color:#fff;transform:rotate(180deg)}
+.acc-body{max-height:0;overflow:hidden;transition:max-height .5s cubic-bezier(0.4,0,0.2,1),padding .4s}
+.acc-section.open .acc-body{max-height:1200px}
+.acc-body-inner{padding:0 32px 36px}
+.acc-divider{height:1px;background:var(--border);margin:0 32px}
+
+/* CATEGORY GRID */
+.cat-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:10px}
+.cat-btn{display:flex;flex-direction:column;align-items:center;gap:8px;padding:16px 12px;border-radius:14px;border:1.5px solid rgba(0,0,0,0.08);background:#fff;cursor:pointer;transition:all .22s var(--ease);position:relative;overflow:hidden}
+.cat-btn::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:var(--cat-color,var(--red));opacity:0;transition:opacity .22s}
+.cat-btn:hover{border-color:var(--cat-color,var(--red));transform:translateY(-3px);box-shadow:0 10px 28px rgba(0,0,0,0.09)}
+.cat-btn:hover::before,.cat-btn.on::before{opacity:1}
+.cat-btn.on{border-color:var(--cat-color,var(--red));background:rgba(208,10,31,0.03);box-shadow:0 4px 16px rgba(208,10,31,0.1)}
+.cat-ico{width:40px;height:40px;border-radius:12px;display:flex;align-items:center;justify-content:center;background:rgba(0,0,0,0.05);transition:background .22s,transform .22s var(--spring);color:var(--cat-color,var(--t2))}
+.cat-btn:hover .cat-ico,.cat-btn.on .cat-ico{background:rgba(208,10,31,0.09);transform:scale(1.08)}
+.cat-lbl{font-size:11.5px;font-weight:700;color:var(--t0);text-align:center;letter-spacing:-.1px}
+.cat-cnt{font-size:10px;color:var(--t3);font-weight:600}
+.sort-pills{display:flex;gap:5px;flex-wrap:wrap;align-items:center;margin-bottom:6px}
+
+/* NAV MOBILE — compact */
+@media(max-width:680px){
+  #nav{padding:0 14px;gap:4px}
+  .nav-ghost{padding:6px 10px;font-size:11px}
+  .nav-cta{padding:7px 13px;font-size:12px}
+  .logo-text{font-size:14px}
+  .logo-mark{width:28px;height:28px;border-radius:7px}
+}
+@media(max-width:430px){
+  .nav-ghost#langGhost{display:none}
+  .nav-ghost.pkg-link{display:none}
+}
+
+@media(max-width:1100px){.cars-grid{grid-template-columns:repeat(3,1fr)}.why-grid{grid-template-columns:repeat(3,1fr)}.steps{grid-template-columns:repeat(2,1fr)}.steps::before{display:none}.foot-grid{grid-template-columns:1fr 1fr 1fr}.cat-grid{grid-template-columns:repeat(4,1fr)}}
+@media(max-width:780px){.cars-grid{grid-template-columns:repeat(2,1fr)}.why-grid{grid-template-columns:repeat(2,1fr)}.hero-stats{grid-template-columns:repeat(3,1fr)}.testi-grid{grid-template-columns:1fr 1fr}.d-specs{grid-template-columns:repeat(2,1fr)}.fg3{grid-template-columns:1fr 1fr}.foot-grid{grid-template-columns:1fr 1fr}.cat-grid{grid-template-columns:repeat(2,1fr)}.acc-body-inner{padding:0 20px 28px}.acc-trigger{padding:20px}.acc-divider{margin:0 20px}}
+@media(max-width:560px){.nav-mid{display:none}.cars-grid{grid-template-columns:1fr 1fr}.why-grid{grid-template-columns:1fr 1fr}.hero-stats{grid-template-columns:1fr;max-width:280px;margin:0 auto}.hero h1{letter-spacing:-2px}.testi-grid{grid-template-columns:1fr}.foot-grid{grid-template-columns:1fr}.d-ctas{flex-direction:column}.steps{grid-template-columns:1fr 1fr}.hero-btns{flex-direction:column;align-items:center}.cat-grid{grid-template-columns:repeat(2,1fr)}.sort-pills{gap:4px}}
+@media(max-width:380px){.cars-grid{grid-template-columns:1fr}.cat-grid{grid-template-columns:repeat(2,1fr)}}
 </style>
 </head>
 <body>
@@ -385,8 +433,8 @@ footer{background:#1d1d1f;border-top:1px solid rgba(255,255,255,0.06);padding:52
     <button class="nav-link" onclick="open('https://yougo-roan.vercel.app','_blank')"><svg width="12" height="12" style="display:inline;margin-left:5px"><use href="#i-globe"/></svg> YOUGO ISRAEL</button>
   </div>
   <div class="nav-end">
-    <button class="nav-ghost" onclick="cycleLang()" id="langBtn"><span id="langIco">HE</span><span id="langTxt">עברית</span></button>
-    <a class="nav-ghost" href="https://yougo-roan.vercel.app" target="_blank"><svg width="12" height="12"><use href="#i-brief"/></svg> חבילות</a>
+    <button class="nav-ghost" id="langGhost" onclick="cycleLang()"><span id="langIco">HE</span><span id="langTxt">עברית</span></button>
+    <a class="nav-ghost pkg-link" href="https://yougo-roan.vercel.app" target="_blank"><svg width="12" height="12"><use href="#i-brief"/></svg> חבילות</a>
     <button class="nav-cta" onclick="openAdd()"><svg width="13" height="13"><use href="#i-plus"/></svg><span id="navTxt">פרסם רכב</span></button>
   </div>
 </nav>
@@ -419,34 +467,57 @@ footer{background:#1d1d1f;border-top:1px solid rgba(255,255,255,0.06);padding:52
   <div class="ti">✦ פרסום חינמי מיידי</div><div class="ti">⚡ פרסום ב-60 שניות</div><div class="ti">💬 פנייה ישירה ב-WhatsApp</div><div class="ti">🔒 מאובטח ובטוח</div><div class="ti">🌐 עברית · عربية</div><div class="ti">👥 50K+ עוקבים</div><div class="ti">📈 אלפי גולשים יומיים</div><div class="ti">🏆 +1,000 עסקאות</div>
 </div></div>
 
-<section class="why-sec" id="whySec">
-  <div class="why-inner">
-    <div class="section-ey"><div class="ey-line"></div><span class="ey-txt">למה YOUGO CARS</span></div>
-    <h2 class="sec-title">הפלטפורמה שמוכרת<br>רכבים באמת</h2>
-    <p class="sec-sub">יותר מ-50,000 עוקבים, 2M+ צפיות שנתיות ומעל 1,000 עסקאות מוצלחות.</p>
-    <div class="why-grid">
-      <div class="why-card"><div class="why-ico"><svg width="22" height="22"><use href="#i-flash"/></svg></div><div class="why-title">פרסום מיידי</div><div class="why-desc">תוך 60 שניות הרכב שלך חי ומוצג לאלפי קונים פוטנציאליים. ללא המתנה, ללא בירוקרטיה.</div></div>
-      <div class="why-card"><div class="why-ico"><svg width="22" height="22"><use href="#i-eye"/></svg></div><div class="why-title">חשיפה מקסימלית</div><div class="why-desc">נוכחות בכל הרשתות — אינסטגרם, פייסבוק, טיקטוק ו-WhatsApp. הרכב שלך מגיע לכולם.</div></div>
-      <div class="why-card"><div class="why-ico"><svg width="22" height="22"><use href="#i-shield"/></svg></div><div class="why-title">מאובטח ואמין</div><div class="why-desc">כל מודעה עוברת אימות. שקיפות מלאה. הנתונים שלך מוגנים ולא עוברים לצד שלישי.</div></div>
-      <div class="why-card"><div class="why-ico"><svg width="22" height="22"><use href="#i-smile"/></svg></div><div class="why-title">קל לשימוש</div><div class="why-desc">ממשק פשוט. מעלים תמונות, ממלאים פרטים — וזהו. כל השאר אנחנו מטפלים.</div></div>
-      <div class="why-card"><div class="why-ico"><svg width="22" height="22"><use href="#i-globe"/></svg></div><div class="why-title">עברית ועברית</div><div class="why-desc">הפלטפורמה פועלת במלואה בעברית ובערבית — לכולם בשפתם.</div></div>
-      <div class="why-card"><div class="why-ico"><svg width="22" height="22"><use href="#i-brief"/></svg></div><div class="why-title">חבילות לכל צורך</div><div class="why-desc">מחינמי ועד VIP — רכב פרטי, ציוד, תחבורה ועסקים. יש פתרון לכולם.</div></div>
+<!-- ACCORDION: למה YOUGO -->
+<div class="acc-section" id="whySec">
+  <button class="acc-trigger" onclick="toggleAcc(this.closest('.acc-section'))" aria-expanded="false">
+    <div class="acc-arrow">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="6 9 12 15 18 9"/></svg>
+    </div>
+    <div class="acc-trigger-right">
+      <div class="acc-eyebrow"><div class="acc-ey-line"></div><span class="acc-ey-txt">למה YOUGO CARS</span></div>
+      <h2>הפלטפורמה שמוכרת רכבים באמת</h2>
+      <p>יותר מ-50,000 עוקבים, 2M+ צפיות שנתיות ומעל 1,000 עסקאות מוצלחות</p>
+    </div>
+  </button>
+  <div class="acc-divider"></div>
+  <div class="acc-body">
+    <div class="acc-body-inner">
+      <div class="why-grid" style="margin-top:24px">
+        <div class="why-card"><div class="why-ico"><svg width="22" height="22"><use href="#i-flash"/></svg></div><div class="why-title">פרסום מיידי</div><div class="why-desc">תוך 60 שניות הרכב שלך חי ומוצג לאלפי קונים פוטנציאליים. ללא המתנה, ללא בירוקרטיה.</div></div>
+        <div class="why-card"><div class="why-ico"><svg width="22" height="22"><use href="#i-eye"/></svg></div><div class="why-title">חשיפה מקסימלית</div><div class="why-desc">נוכחות בכל הרשתות — אינסטגרם, פייסבוק, טיקטוק ו-WhatsApp. הרכב שלך מגיע לכולם.</div></div>
+        <div class="why-card"><div class="why-ico"><svg width="22" height="22"><use href="#i-shield"/></svg></div><div class="why-title">מאובטח ואמין</div><div class="why-desc">כל מודעה עוברת אימות. שקיפות מלאה. הנתונים שלך מוגנים ולא עוברים לצד שלישי.</div></div>
+        <div class="why-card"><div class="why-ico"><svg width="22" height="22"><use href="#i-smile"/></svg></div><div class="why-title">קל לשימוש</div><div class="why-desc">ממשק פשוט. מעלים תמונות, ממלאים פרטים — וזהו. כל השאר אנחנו מטפלים.</div></div>
+        <div class="why-card"><div class="why-ico"><svg width="22" height="22"><use href="#i-globe"/></svg></div><div class="why-title">עברית וערבית</div><div class="why-desc">הפלטפורמה פועלת במלואה בעברית ובערבית — כדי שכולם יוכלו לקנות ולמכור בשפתם.</div></div>
+        <div class="why-card"><div class="why-ico"><svg width="22" height="22"><use href="#i-brief"/></svg></div><div class="why-title">חבילות לכל צורך</div><div class="why-desc">מחינמי ועד VIP — רכב פרטי, ציוד, תחבורה ועסקים. יש פתרון לכולם.</div></div>
+      </div>
     </div>
   </div>
-</section>
+</div>
 
-<section class="how-sec" id="howSec">
-  <div class="how-inner">
-    <div class="section-ey"><div class="ey-line"></div><span class="ey-txt">איך זה עובד</span></div>
-    <h2 class="sec-title">4 צעדים פשוטים<br>עד לעסקה</h2>
-    <div class="steps">
-      <div class="step"><div class="step-num">1</div><div class="step-title">בחר חבילה</div><div class="step-desc">מחינמי ועד VIP — בחר את החבילה המתאימה לצרכיך</div></div>
-      <div class="step"><div class="step-num">2</div><div class="step-title">העלה פרטים</div><div class="step-desc">מלא פרטי הרכב והעלה תמונות איכותיות — תוך דקה</div></div>
-      <div class="step"><div class="step-num">3</div><div class="step-title">קבל פניות</div><div class="step-desc">קונים יפנו ישירות ב-WhatsApp — מהרגע הראשון</div></div>
-      <div class="step"><div class="step-num">4</div><div class="step-title">סגור עסקה</div><div class="step-desc">נלווה אותך עד לסגירת העסקה המוצלחת שלך</div></div>
+<!-- ACCORDION: איך זה עובד -->
+<div class="acc-section alt" id="howSec">
+  <button class="acc-trigger" onclick="toggleAcc(this.closest('.acc-section'))" aria-expanded="false">
+    <div class="acc-arrow">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="6 9 12 15 18 9"/></svg>
+    </div>
+    <div class="acc-trigger-right">
+      <div class="acc-eyebrow"><div class="acc-ey-line"></div><span class="acc-ey-txt">איך זה עובד</span></div>
+      <h2>4 צעדים פשוטים עד לעסקה</h2>
+      <p>מהרשמה ועד לסגירת עסקה מוצלחת — תהליך מהיר, ברור ופשוט לכולם</p>
+    </div>
+  </button>
+  <div class="acc-divider"></div>
+  <div class="acc-body">
+    <div class="acc-body-inner">
+      <div class="steps" style="margin-top:24px">
+        <div class="step"><div class="step-num">1</div><div class="step-title">בחר חבילה</div><div class="step-desc">מחינמי ועד VIP — בחר את החבילה המתאימה לצרכיך</div></div>
+        <div class="step"><div class="step-num">2</div><div class="step-title">העלה פרטים</div><div class="step-desc">מלא פרטי הרכב והעלה תמונות איכותיות — תוך דקה</div></div>
+        <div class="step"><div class="step-num">3</div><div class="step-title">קבל פניות</div><div class="step-desc">קונים יפנו ישירות ב-WhatsApp — מהרגע הראשון</div></div>
+        <div class="step"><div class="step-num">4</div><div class="step-title">סגור עסקה</div><div class="step-desc">נלווה אותך עד לסגירת העסקה המוצלחת שלך</div></div>
+      </div>
     </div>
   </div>
-</section>
+</div>
 
 <div class="search-sec" id="searchSec">
   <div style="max-width:920px;margin:0 auto;padding:0 0 0 0">
@@ -476,16 +547,37 @@ footer{background:#1d1d1f;border-top:1px solid rgba(255,255,255,0.06);padding:52
     <h2 class="list-title" id="listTitle">מודעות <span class="r">פעילות</span></h2>
     <span class="cnt-pill" id="cntBadge">טוען...</span>
   </div>
-  <div class="sort-row">
-    <button class="sort-btn on" onclick="doSort('newest',this)"><svg width="12" height="12"><use href="#i-plus"/></svg> החדשים</button>
-    <button class="sort-btn" onclick="doSort('price_asc',this)"><svg width="12" height="12"><use href="#i-arrow"/></svg> מחיר נמוך</button>
-    <button class="sort-btn" onclick="doSort('price_desc',this)"><svg width="12" height="12"><use href="#i-star"/></svg> מחיר גבוה</button>
-    <button class="sort-btn" onclick="doSort('km_asc',this)"><svg width="12" height="12"><use href="#i-km"/></svg> ק"מ נמוך</button>
+  <!-- Category grid -->
+  <div class="cat-grid" style="margin-bottom:14px">
+    <button class="cat-btn on" style="--cat-color:#d00a1f" onclick="setCat('newest',this)">
+      <div class="cat-ico"><svg width="18" height="18"><use href="#i-flash"/></svg></div>
+      <div class="cat-lbl">כל המודעות</div>
+      <div class="cat-cnt" id="catCntAll">טוען...</div>
+    </button>
+    <button class="cat-btn" style="--cat-color:#3b82f6" onclick="setCat('cat_private',this)">
+      <div class="cat-ico"><svg width="18" height="18"><use href="#i-car"/></svg></div>
+      <div class="cat-lbl">רכב פרטי</div>
+      <div class="cat-cnt" id="catCntPri">רכב פרטי</div>
+    </button>
+    <button class="cat-btn" style="--cat-color:#ea580c" onclick="setCat('cat_equipment',this)">
+      <div class="cat-ico"><svg width="18" height="18"><use href="#i-gear"/></svg></div>
+      <div class="cat-lbl">ציוד כבד</div>
+      <div class="cat-cnt" id="catCntEq">ציוד ומכונות</div>
+    </button>
+    <button class="cat-btn" style="--cat-color:#10b981" onclick="setCat('cat_transport',this)">
+      <div class="cat-ico"><svg width="18" height="18"><use href="#i-truck"/></svg></div>
+      <div class="cat-lbl">תחבורה</div>
+      <div class="cat-cnt" id="catCntTr">משאיות ואוטובוסים</div>
+    </button>
+  </div>
+  <!-- Sort pills -->
+  <div class="sort-pills">
+    <button class="sort-btn on" data-sort="newest" onclick="doSort('newest',this)"><svg width="12" height="12"><use href="#i-clock"/></svg> החדשים</button>
+    <button class="sort-btn" data-sort="price_asc" onclick="doSort('price_asc',this)"><svg width="12" height="12"><use href="#i-arrow"/></svg> מחיר נמוך</button>
+    <button class="sort-btn" data-sort="price_desc" onclick="doSort('price_desc',this)"><svg width="12" height="12"><use href="#i-star"/></svg> מחיר גבוה</button>
+    <button class="sort-btn" data-sort="km_asc" onclick="doSort('km_asc',this)"><svg width="12" height="12"><use href="#i-km"/></svg> ק״מ נמוך</button>
     <div class="sort-sep"></div>
-    <button class="sort-btn" onclick="doSort('cat_private',this)"><svg width="12" height="12"><use href="#i-car"/></svg> רכב פרטי</button>
-    <button class="sort-btn" onclick="doSort('cat_equipment',this)"><svg width="12" height="12"><use href="#i-gear"/></svg> ציוד</button>
-    <button class="sort-btn" onclick="doSort('cat_transport',this)"><svg width="12" height="12"><use href="#i-truck"/></svg> תחבורה</button>
-    <button class="sort-btn" onclick="doSort('cat_featured',this)"><svg width="12" height="12"><use href="#i-star"/></svg> מומלץ</button>
+    <button class="sort-btn" data-sort="cat_featured" onclick="doSort('cat_featured',this)"><svg width="12" height="12"><use href="#i-star"/></svg> מומלץ</button>
   </div>
   <div id="carsBox"><div class="loading-box"><div class="spin"></div><p style="color:var(--t2);font-size:13px;font-weight:600">טוען מודעות...</p></div></div>
 </div>
@@ -870,12 +962,15 @@ function applyLang() {
     if(fFuel.options[4]) fFuel.options[4].text = L.fuelElectric;
   }
 
-  // Sort buttons
-  const sortBtns = document.querySelectorAll('.sort-btn');
-  if(sortBtns[0]) sortBtns[0].innerHTML = `<svg width="13" height="13"><use href="#ico-new"/></svg> ${L.sortNew}`;
-  if(sortBtns[1]) sortBtns[1].innerHTML = `<svg width="13" height="13"><use href="#ico-arrow-left"/></svg> ${L.sortPasc}`;
-  if(sortBtns[2]) sortBtns[2].innerHTML = `<svg width="13" height="13"><use href="#ico-star"/></svg> ${L.sortPdesc}`;
-  if(sortBtns[3]) sortBtns[3].innerHTML = `<svg width="13" height="13"><use href="#ico-km"/></svg> ${L.sortKm}`;
+  // Sort buttons — use data-sort attribute
+  const sNewest = document.querySelector('.sort-btn[data-sort="newest"]');
+  if(sNewest) sNewest.innerHTML = `<svg width="13" height="13"><use href="#i-clock"/></svg> ${L.sortNew}`;
+  const sPasc = document.querySelector('.sort-btn[data-sort="price_asc"]');
+  if(sPasc) sPasc.innerHTML = `<svg width="13" height="13"><use href="#i-arrow"/></svg> ${L.sortPasc}`;
+  const sPdesc = document.querySelector('.sort-btn[data-sort="price_desc"]');
+  if(sPdesc) sPdesc.innerHTML = `<svg width="13" height="13"><use href="#i-star"/></svg> ${L.sortPdesc}`;
+  const sKm = document.querySelector('.sort-btn[data-sort="km_asc"]');
+  if(sKm) sKm.innerHTML = `<svg width="13" height="13"><use href="#i-km"/></svg> ${L.sortKm}`;
 
   // Listings title
   const lTEl = document.getElementById('listTitle');
@@ -1666,6 +1761,34 @@ function showHome() {
   filtered = [...all];
   doSort(sort);
   window.scrollTo({top:0, behavior:'smooth'});
+}
+
+// ACCORDION
+function toggleAcc(section) {
+  const isOpen = section.classList.contains('open');
+  // close all accordions first
+  document.querySelectorAll('.acc-section.open').forEach(s => {
+    s.classList.remove('open');
+    const btn = s.querySelector('.acc-trigger');
+    if(btn) btn.setAttribute('aria-expanded','false');
+  });
+  if(!isOpen) {
+    section.classList.add('open');
+    const btn = section.querySelector('.acc-trigger');
+    if(btn) btn.setAttribute('aria-expanded','true');
+  }
+}
+
+// CATEGORY BUTTONS
+function setCat(cat, el) {
+  document.querySelectorAll('.cat-btn').forEach(b => b.classList.remove('on'));
+  el.classList.add('on');
+  // Also reset sort pills to newest
+  document.querySelectorAll('.sort-btn').forEach(b => b.classList.remove('on'));
+  const firstSort = document.querySelector('.sort-btn[data-sort="newest"]');
+  if(firstSort) firstSort.classList.add('on');
+  // Apply filter
+  doSort(cat, el);
 }
 
 document.addEventListener('keydown', e => {
