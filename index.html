@@ -48,7 +48,6 @@
 }
 
 html {
-  scroll-behavior: smooth;
   -webkit-text-size-adjust: 100%;
 }
 
@@ -3684,7 +3683,7 @@ html[dir="ltr"] .foot-pkg-tile:first-child { border-right: none; }
 }
 
 *,*::before,*::after { margin:0; padding:0; box-sizing:border-box; }
-html { scroll-behavior:smooth; -webkit-text-size-adjust:100%; }
+html { -webkit-text-size-adjust:100%; }
 body { font-family:var(--font); background:var(--bg); color:#fff; overflow-x:hidden; -webkit-font-smoothing:antialiased; -moz-osx-font-smoothing:grayscale; }
 img { display:block; max-width:100%; }
 a { color:inherit; text-decoration:none; }
@@ -6259,7 +6258,7 @@ html[dir="ltr"] .foot-acc-arrow { margin-left:auto; margin-right:0; }
           <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg>
           פנה אלינו ונבנה לך חבילה מותאמת
         </button>
-        <p style="font-size:12px;color:var(--t2);margin-top:14px;">✉️ info@yougo.co.il &nbsp;|&nbsp; 📞 050-YOUGO-IL</p>
+        <p style="font-size:12px;color:var(--t2);margin-top:14px;">✉️ <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="99f0f7fff6d9e0f6ecfef6b7faf6b7f0f5">[email&#160;protected]</a> &nbsp;|&nbsp; 📞 050-YOUGO-IL</p>
       </div>
     </div>
   </div>
@@ -6436,7 +6435,7 @@ html[dir="ltr"] .foot-acc-arrow { margin-left:auto; margin-right:0; }
 
 <div id="toast"></div>
 
-<script>
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
 // ═══════════════════════════════════════
 // CONFIG
 // ═══════════════════════════════════════
@@ -6452,6 +6451,12 @@ const ADMIN_PW  = 'yougo2026';
 // ═══════════════════════════════════════
 function debounce(fn, ms) { let t; return (...a) => { clearTimeout(t); t = setTimeout(() => fn(...a), ms); }; }
 const doFilterDebounced = debounce(() => doFilter(), 200);
+
+// Cloudinary image optimization — injects w, quality, format transforms
+function clImg(url, w) {
+  if (!url || !url.includes('res.cloudinary.com')) return url;
+  return url.replace('/upload/', `/upload/w_${w},c_fill,q_auto,f_auto/`);
+}
 
 // ═══════════════════════════════════════
 // STATE
@@ -6802,7 +6807,7 @@ function carCard(car) {
   </div>`:'';
   return `<div class="car-card ${pkgClass}" onclick="openDetail('${car.id}')">
     <div class="car-img-wrap">
-      ${im?`<img class="car-img" src="${im}" alt="${car.make} ${car.model}" loading="lazy" decoding="async">`
+      ${im?`<img class="car-img" src="${clImg(im,600)}" alt="${car.make} ${car.model}" loading="lazy" decoding="async">`
           :`<div class="car-placeholder"><svg width="52" height="52" opacity=".15"><use href="#ico-car"/></svg></div>`}
       ${pkgBadge}
       <div class="car-badges">${badges.join('')}</div>
@@ -6845,11 +6850,11 @@ function openDetail(id) {
   const gallery=document.getElementById('dGallery'),dmImg=document.getElementById('dmImg');
   const dThumbs=document.getElementById('dThumbs'),dCounter=document.getElementById('dCounter');
   if(_dImgs.length>0){
-    gallery.style.display='';dmImg.src=_dImgs[0];dmImg.alt=car.make+' '+car.model;
+    gallery.style.display='';dmImg.src=clImg(_dImgs[0],1200);dmImg.alt=car.make+' '+car.model;
     dCounter.textContent='1 / '+_dImgs.length;
     if(_dImgs.length>1){
       dThumbs.style.display='';
-      dThumbs.innerHTML=_dImgs.map((s,i)=>`<img class="d-thumb ${i===0?'on':''}" src="${s}" onclick="dGoTo(${i})" loading="lazy" decoding="async">`).join('');
+      dThumbs.innerHTML=_dImgs.map((s,i)=>`<img class="d-thumb ${i===0?'on':''}" src="${clImg(s,200)}" onclick="dGoTo(${i})" loading="lazy" decoding="async">`).join('');
       document.getElementById('dPrev').classList.remove('hidden');document.getElementById('dNext').classList.remove('hidden');
     }else{dThumbs.style.display='none';dThumbs.innerHTML='';document.getElementById('dPrev').classList.add('hidden');document.getElementById('dNext').classList.add('hidden');}
   }else{gallery.style.display='none';}
@@ -6903,7 +6908,7 @@ function openDetail(id) {
   document.getElementById('detailOvl').classList.add('open');
   document.body.style.overflow='hidden';
 }
-function dGoTo(i){if(i<0||i>=_dImgs.length)return;_dIdx=i;const img=document.getElementById('dmImg');img.style.opacity='0';setTimeout(()=>{img.src=_dImgs[i];img.style.opacity='1';},200);document.getElementById('dCounter').textContent=(i+1)+' / '+_dImgs.length;document.querySelectorAll('.d-thumb').forEach((th,j)=>th.classList.toggle('on',j===i));}
+function dGoTo(i){if(i<0||i>=_dImgs.length)return;_dIdx=i;const img=document.getElementById('dmImg');img.style.opacity='0';setTimeout(()=>{img.src=clImg(_dImgs[i],1200);img.style.opacity='1';},200);document.getElementById('dCounter').textContent=(i+1)+' / '+_dImgs.length;document.querySelectorAll('.d-thumb').forEach((th,j)=>th.classList.toggle('on',j===i));}
 function dNav(dir){dGoTo(_dIdx+dir);}
 function closeDetail(){document.getElementById('detailOvl').classList.remove('open');document.body.style.overflow='';}
 
@@ -7133,11 +7138,4 @@ function submitContact(){
   const msg=document.getElementById('cMsg').value.trim();
   const txt=`שלום! אני ${name} מ${city||'ישראל'}, מעוניין/ת בפרסום (${_contactType==='garage'?'מוסך':'השכרת רכב'}).${msg?' הודעה: '+msg:''}`;
   // WhatsApp YOUGO
-  window.open('https://wa.me/972500000000?text='+encodeURIComponent(txt),'_blank');
-  closeContactModal();
-  showToast('✓ פנייתך נשלחה!');
-}
-document.getElementById('contactModal')?.addEventListener('click',function(e){if(e.target===this)closeContactModal();});
-</script>
-</body>
-</html>
+  window.open('https://wa.me/972500000000?text='+encodeURIComponent(txt),
