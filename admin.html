@@ -2374,11 +2374,11 @@ function openBizModal(data=null) {
   document.getElementById('bf-sponsored').checked = data?.is_sponsored||false;
   document.getElementById('bf-verified').checked  = data?.is_verified!==false;
   document.getElementById('bf-status').value   = data?.status||'active';
-  document.getElementById('bizOverlay').style.display='flex';
+  document.getElementById('bizOverlay').classList.add('open');
   document.body.style.overflow='hidden';
 }
 function closeBizModal() {
-  document.getElementById('bizOverlay').style.display='none';
+  document.getElementById('bizOverlay').classList.remove('open');
   document.body.style.overflow='';
 }
 function editBiz(id) {
@@ -2451,11 +2451,11 @@ function openRentModal(data=null) {
   document.getElementById('rf-specs').value       = sp;
   document.getElementById('rf-badge').value       = data?.badge||'available';
   document.getElementById('rf-status').value      = data?.status||'active';
-  document.getElementById('rentOverlay').style.display='flex';
+  document.getElementById('rentOverlay').classList.add('open');
   document.body.style.overflow='hidden';
 }
 function closeRentModal() {
-  document.getElementById('rentOverlay').style.display='none';
+  document.getElementById('rentOverlay').classList.remove('open');
   document.body.style.overflow='';
 }
 function editRent(id) {
@@ -2661,11 +2661,11 @@ function viewAdReq(id) {
     ${r.status==='pending'?`<button class="btn btn-sm btn-green" onclick="approveAdReq('${r.id}');closeAdReqModal()">✅ אשר בקשה</button><button class="btn btn-sm" style="background:rgba(239,68,68,.15);color:#f87171;" onclick="rejectAdReq('${r.id}');closeAdReqModal()">❌ דחה</button>`:''}
     ${r.status==='approved'||r.status==='paid'?`<button class="btn btn-sm btn-red" onclick="publishAdReq('${r.id}')">🚀 פרסם עכשיו</button>`:''}
   `;
-  document.getElementById('adReqOverlay').style.display='flex';
+  document.getElementById('adReqOverlay').classList.add('open');
   document.body.style.overflow='hidden';
 }
 function closeAdReqModal() {
-  document.getElementById('adReqOverlay').style.display='none';
+  document.getElementById('adReqOverlay').classList.remove('open');
   document.body.style.overflow='';
 }
 
@@ -2754,7 +2754,7 @@ const BIZ_CAT_LABEL = {mosek:'מוסך רכב',migrash:'מגרש מכוניות'
 
 </script>
 <!-- ══════════════ AD REQUEST DETAIL MODAL ══════════════ -->
-<div class="overlay" id="adReqOverlay" onclick="closeAdReqModal()" style="display:none;">
+<div class="overlay" id="adReqOverlay" onclick="closeAdReqModal()">
   <div class="modal-box" onclick="event.stopPropagation()" style="max-width:600px;width:95%;">
     <div class="modal-hdr">
       <div class="modal-title" id="adReqModalTitle">פרטי בקשת פרסום</div>
