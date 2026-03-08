@@ -626,8 +626,114 @@ tbody tr:hover { background: rgba(255,255,255,0.025); }
 .toast.info    { border-color: rgba(59,130,246,0.4);  color: #60a5fa; }
 
 /* ══════════════════════════════════════
-   RESPONSIVE
+   RESPONSIVE — FULL MOBILE SUPPORT
 ══════════════════════════════════════ */
+
+/* ── Bottom Nav (mobile only) ── */
+.bottom-nav {
+  display: none;
+  position: fixed; bottom: 0; left: 0; right: 0; z-index: 200;
+  background: rgba(9,9,14,0.97);
+  backdrop-filter: blur(24px) saturate(180%);
+  border-top: 1px solid rgba(255,255,255,0.07);
+  padding: 8px 4px calc(8px + env(safe-area-inset-bottom));
+  display: none;
+  grid-template-columns: repeat(5,1fr);
+  gap: 0;
+}
+.bn-item {
+  display: flex; flex-direction: column; align-items: center; gap: 3px;
+  padding: 6px 4px; cursor: pointer;
+  background: none; border: none; font-family: var(--font);
+  color: var(--t3); transition: color 0.2s;
+  font-size: 9px; font-weight: 800;
+  text-transform: uppercase; letter-spacing: 0.04em;
+}
+.bn-item.active { color: var(--red); }
+.bn-item svg { width: 20px; height: 20px; }
+.bn-dot {
+  width: 4px; height: 4px; border-radius: 50%;
+  background: var(--red); margin: 0 auto;
+  opacity: 0; transition: opacity 0.2s;
+}
+.bn-item.active .bn-dot { opacity: 1; }
+
+/* Card view for mobile tables */
+.mobile-cards { display: none; padding: 14px; }
+.m-card {
+  background: var(--bg2); border: 1px solid var(--border);
+  border-radius: 14px; padding: 14px 16px;
+  margin-bottom: 10px; position: relative;
+}
+.m-card-head { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; }
+.m-card-thumb {
+  width: 52px; height: 40px; border-radius: 8px;
+  object-fit: cover; background: var(--bg3); flex-shrink: 0;
+}
+.m-card-thumb-ph {
+  width: 52px; height: 40px; border-radius: 8px;
+  background: var(--bg3); border: 1px solid var(--border);
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0; color: var(--t3);
+}
+.m-card-title { font-size: 14px; font-weight: 800; flex: 1; }
+.m-card-sub { font-size: 11px; color: var(--t2); margin-top: 2px; }
+.m-card-row { display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px; font-size: 12px; }
+.m-card-row:last-child { margin-bottom: 0; }
+.m-card-label { color: var(--t3); font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; }
+.m-card-val { font-weight: 700; color: var(--t1); }
+.m-card-acts { display: flex; gap: 6px; margin-top: 12px; flex-wrap: wrap; }
+.m-card-acts .btn { flex: 1; justify-content: center; min-width: 80px; }
+.m-card-badge {
+  position: absolute; top: 12px; left: 12px;
+}
+
+/* Pull-to-refresh indicator */
+.ptr-indicator {
+  text-align: center; padding: 8px; color: var(--t3);
+  font-size: 11px; font-weight: 700;
+  display: none;
+}
+
+/* Mobile stat cards - horizontal scroll */
+.stats-scroll {
+  display: none;
+  overflow-x: auto; gap: 10px;
+  padding: 0 14px 4px;
+  margin-bottom: 16px;
+  scrollbar-width: none;
+  -webkit-overflow-scrolling: touch;
+}
+.stats-scroll::-webkit-scrollbar { display: none; }
+.stats-scroll .stat-card {
+  min-width: 140px; flex-shrink: 0;
+  padding: 14px 16px;
+}
+.stats-scroll .stat-val { font-size: 1.6rem; }
+.stats-scroll .stat-lbl { font-size: 10px; }
+.stats-scroll .stat-ico { width: 28px; height: 28px; margin-bottom: 8px; }
+.stats-scroll .stat-ico svg { width: 13px; height: 13px; }
+
+/* Mobile filter bar */
+.filter-scroll {
+  display: none;
+  overflow-x: auto; gap: 8px; padding: 10px 14px;
+  border-bottom: 1px solid var(--border);
+  scrollbar-width: none;
+  -webkit-overflow-scrolling: touch;
+}
+.filter-scroll::-webkit-scrollbar { display: none; }
+.filter-chip {
+  flex-shrink: 0; padding: 7px 14px; border-radius: 100px;
+  background: var(--bg3); border: 1px solid var(--border2);
+  color: var(--t2); font-family: var(--font); font-size: 11px;
+  font-weight: 800; cursor: pointer; white-space: nowrap;
+  transition: all 0.18s;
+}
+.filter-chip.active {
+  background: var(--red-dim); border-color: rgba(200,16,46,0.4); color: #fff;
+}
+
 @media (max-width: 900px) {
   .sidebar { transform: translateX(100%); }
   .sidebar.open { transform: translateX(0); box-shadow: -20px 0 60px rgba(0,0,0,0.5); }
@@ -637,12 +743,75 @@ tbody tr:hover { background: rgba(255,255,255,0.025); }
   .pkg-picker { grid-template-columns: repeat(3,1fr); }
   .settings-grid { grid-template-columns: 1fr; }
 }
-@media (max-width: 560px) {
-  .stats-row { grid-template-columns: 1fr 1fr; }
-  .page { padding: 14px; }
+
+@media (max-width: 640px) {
+  /* Layout */
+  .main { padding-bottom: 70px; }
+  .page { padding: 12px; }
+  .topbar { padding: 0 14px; height: 52px; }
+  .topbar-title { font-size: 15px; }
+  .tb-time { display: none; }
+
+  /* Stats - switch to horizontal scroll */
+  .stats-row { display: none; }
+  .stats-scroll { display: flex; }
+
+  /* Tables - switch to card view */
+  .tbl-wrap { display: none; }
+  .mobile-cards { display: block; }
+
+  /* Filter bar - switch to chips */
+  .filter-bar { display: none; }
+  .filter-scroll { display: flex; }
+
+  /* Bottom nav */
+  .bottom-nav { display: grid; }
+
+  /* Panel head */
+  .panel-head { padding: 12px 14px; }
+  .panel-title { font-size: 13px; }
+
+  /* Pkg stats grid */
+  #pkgStats { grid-template-columns: 1fr 1fr !important; }
+
+  /* Modal */
+  .overlay { padding: 0; align-items: flex-end; }
+  .modal-box {
+    border-radius: 22px 22px 0 0;
+    max-height: 90vh;
+    transform: translateY(100%);
+    transition: transform 0.32s cubic-bezier(0.32,0,0.15,1);
+  }
+  .overlay.open .modal-box { transform: translateY(0); }
+  .modal-hdr { padding: 14px 18px; }
+  .modal-body { padding: 16px 18px; }
+
+  /* Detail grid */
   .detail-grid { grid-template-columns: 1fr; }
   .pkg-picker { grid-template-columns: repeat(2,1fr); }
+  .settings-grid { grid-template-columns: 1fr; }
+
+  /* Ad request overlay */
+  #adReqOverlay .modal-box { max-width: 100% !important; border-radius: 22px 22px 0 0; }
+
+  /* Topbar right - hide some */
+  .topbar-right .btn:not(.btn-red) { display: none; }
+
+  /* Panel body */
+  .panel-body { padding: 14px; }
+
+  /* Biz / Rent form grids */
+  .modal-body [style*="grid-template-columns:1fr 1fr"] {
+    display: flex !important; flex-direction: column;
+  }
 }
+
+@media (max-width: 400px) {
+  .stats-scroll .stat-card { min-width: 120px; }
+  .page { padding: 10px; }
+}
+
+/* ── overlay backdrop for mobile sidebar ── */
 
 /* ── overlay backdrop for mobile sidebar ── */
 .sb-backdrop {
@@ -848,7 +1017,7 @@ tbody tr:hover { background: rgba(255,255,255,0.025); }
     <!-- ══ PAGE: DASHBOARD ══ -->
     <div class="page active" id="page-dashboard">
 
-      <!-- Stats -->
+      <!-- Stats (desktop grid) -->
       <div class="stats-row">
         <div class="stat-card sc-red">
           <div class="stat-ico ico-red"><svg><use href="#i-car"/></svg></div>
@@ -873,6 +1042,29 @@ tbody tr:hover { background: rgba(255,255,255,0.025); }
           <div class="stat-val" id="stSold">—</div>
           <div class="stat-lbl">נמכרו</div>
           <div class="stat-sub">עסקאות שהושלמו</div>
+        </div>
+      </div>
+      <!-- Stats (mobile scroll) -->
+      <div class="stats-scroll">
+        <div class="stat-card sc-red">
+          <div class="stat-ico ico-red"><svg><use href="#i-car"/></svg></div>
+          <div class="stat-val" id="stTotal2">—</div>
+          <div class="stat-lbl">מודעות</div>
+        </div>
+        <div class="stat-card sc-green">
+          <div class="stat-ico ico-green"><svg><use href="#i-check"/></svg></div>
+          <div class="stat-val" id="stActive2">—</div>
+          <div class="stat-lbl">פעילות</div>
+        </div>
+        <div class="stat-card sc-yellow">
+          <div class="stat-ico ico-yellow"><svg><use href="#i-clock"/></svg></div>
+          <div class="stat-val" id="stPending2">—</div>
+          <div class="stat-lbl">ממתינות</div>
+        </div>
+        <div class="stat-card sc-blue">
+          <div class="stat-ico ico-purple"><svg><use href="#i-star"/></svg></div>
+          <div class="stat-val" id="stSold2">—</div>
+          <div class="stat-lbl">נמכרו</div>
         </div>
       </div>
 
@@ -915,6 +1107,7 @@ tbody tr:hover { background: rgba(255,255,255,0.025); }
             </tbody>
           </table>
         </div>
+        <div class="mobile-cards" id="pendingMobileCards"></div>
       </div>
     </div>
 
@@ -967,6 +1160,10 @@ tbody tr:hover { background: rgba(255,255,255,0.025); }
               <tr><td colspan="9"><div class="spin-wrap"><div class="spinner"></div></div></td></tr>
             </tbody>
           </table>
+        </div>
+        <!-- Mobile cards view -->
+        <div class="mobile-cards" id="carsMobileCards">
+          <div class="spin-wrap"><div class="spinner"></div></div>
         </div>
       </div>
     </div>
@@ -1144,6 +1341,7 @@ create policy "public_delete" on cars for delete using (true);</div>
             </tbody>
           </table>
         </div>
+        <div class="mobile-cards" id="aq-mobile-cards"></div>
       </div>
     </div>
 
@@ -1198,6 +1396,7 @@ create policy "public_delete" on cars for delete using (true);</div>
             </tbody>
           </table>
         </div>
+        <div class="mobile-cards" id="biz-mobile-cards"></div>
       </div>
     </div>
 
@@ -1246,6 +1445,7 @@ create policy "public_delete" on cars for delete using (true);</div>
             </tbody>
           </table>
         </div>
+        <div class="mobile-cards" id="rent-mobile-cards"></div>
       </div>
     </div>
 
@@ -1431,6 +1631,35 @@ create policy "public_delete" on cars for delete using (true);</div>
 </div>
 
 
+<!-- BOTTOM NAV (mobile) -->
+<nav class="bottom-nav" id="bottomNav">
+  <button class="bn-item active" onclick="showPage('dashboard',null);setActiveBottomNav(this)" data-page="dashboard">
+    <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+    ראשי
+    <div class="bn-dot"></div>
+  </button>
+  <button class="bn-item" onclick="showPage('cars',null);setActiveBottomNav(this)" data-page="cars">
+    <svg fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M5 17H3a2 2 0 0 1-2-2V9l2.5-5h13L19 9v6a2 2 0 0 1-2 2h-2"/><circle cx="7" cy="17" r="2"/><circle cx="17" cy="17" r="2"/><path d="M5 9h14"/></svg>
+    מודעות
+    <div class="bn-dot"></div>
+  </button>
+  <button class="bn-item" onclick="showPage('ad_requests',null);setActiveBottomNav(this)" data-page="ad_requests">
+    <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+    פרסום
+    <div class="bn-dot"></div>
+  </button>
+  <button class="bn-item" onclick="showPage('businesses',null);setActiveBottomNav(this)" data-page="businesses">
+    <svg fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M3 9l1-6h16l1 6"/><path d="M3 9a2 2 0 0 0 2 2 2 2 0 0 0 2-2 2 2 0 0 0 2 2 2 2 0 0 0 2-2 2 2 0 0 0 2 2 2 2 0 0 0 2-2"/><path d="M5 21V11m14 10V11"/><rect x="9" y="15" width="6" height="6"/></svg>
+    עסקים
+    <div class="bn-dot"></div>
+  </button>
+  <button class="bn-item" onclick="showPage('rentals',null);setActiveBottomNav(this)" data-page="rentals">
+    <svg fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><rect x="1" y="3" width="15" height="13" rx="2"/><path d="M16 8h4l3 4v4h-7V8z"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>
+    השכרות
+    <div class="bn-dot"></div>
+  </button>
+</nav>
+
 <!-- TOAST -->
 <div class="toast" id="toast"></div>
 
@@ -1520,6 +1749,12 @@ function showPage(name, btn) {
   if (btn) btn.classList.add('active');
   document.getElementById('topbarTitle').innerHTML = PAGE_TITLES[name] || name;
   closeSidebar();
+  window.scrollTo({top:0,behavior:'instant'});
+}
+
+function setActiveBottomNav(el) {
+  document.querySelectorAll('.bn-item').forEach(b=>b.classList.remove('active'));
+  if(el) el.classList.add('active');
 }
 
 /* ═══════════════════════════════════════
@@ -1560,6 +1795,11 @@ function renderStats() {
   document.getElementById('stActive').textContent  = active;
   document.getElementById('stPending').textContent = pending;
   document.getElementById('stSold').textContent    = sold;
+  // Mobile scroll stats
+  const el2=document.getElementById('stTotal2'); if(el2) el2.textContent=total;
+  const el3=document.getElementById('stActive2'); if(el3) el3.textContent=active;
+  const el4=document.getElementById('stPending2'); if(el4) el4.textContent=pending;
+  const el5=document.getElementById('stSold2'); if(el5) el5.textContent=sold;
   document.getElementById('pendingBadge').textContent = pending;
   document.getElementById('allCount').textContent  = total + ' מודעות';
 }
@@ -1604,9 +1844,12 @@ function renderPending() {
   const tbody = document.getElementById('pendingTbody');
   if (!pending.length) {
     tbody.innerHTML = `<tr><td colspan="7"><div class="empty"><div class="empty-ico">✅</div><h3>אין ממתינות</h3><p>כל המודעות אושרו</p></div></td></tr>`;
+    const mc = document.getElementById('pendingMobileCards');
+    if(mc) mc.innerHTML = `<div class="empty"><div class="empty-ico">✅</div><h3>אין ממתינות</h3><p>כל המודעות אושרו</p></div>`;
     return;
   }
   tbody.innerHTML = pending.map(c => carRow(c, false)).join('');
+  renderMobileCards(pending, 'pendingMobileCards', true);
 }
 
 /* ═══════════════════════════════════════
@@ -1639,6 +1882,9 @@ function filterAndRender() {
     return;
   }
   tbody.innerHTML = filtered.map((c, i) => carRow(c, true, i + 1)).join('');
+
+  // Also render mobile cards
+  renderMobileCards(filtered, 'carsMobileCards');
 }
 
 /* ═══════════════════════════════════════
@@ -1867,6 +2113,59 @@ function toast(msg, type = 'success') {
 }
 
 /* ═══════════════════════════════════════
+   MOBILE CARD RENDERERS
+═══════════════════════════════════════ */
+function renderMobileCards(cars, containerId, isPending=false) {
+  const el = document.getElementById(containerId); if(!el) return;
+  if(!cars.length) { el.innerHTML=''; return; }
+  const stColors = {active:'#4ade80',pending:'#fbbf24',sold:'#a78bfa'};
+  const stLabels = {active:'✅ פעיל',pending:'⏳ ממתין',sold:'💜 נמכר'};
+  el.innerHTML = cars.map(c => {
+    const thumb = c.images?.[0]
+      ? `<img class="m-card-thumb" src="${c.images[0]}" loading="lazy">`
+      : `<div class="m-card-thumb-ph"><svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M5 17H3a2 2 0 0 1-2-2V9l2.5-5h13L19 9v6a2 2 0 0 1-2 2h-2"/><circle cx="7" cy="17" r="2"/><circle cx="17" cy="17" r="2"/></svg></div>`;
+    const price = c.price ? '₪'+Number(c.price).toLocaleString() : '—';
+    const pkg = c.package||'free';
+    const pkgColors = {free:'rgba(255,255,255,0.4)',pro:'#ff5577',premium:'#a78bfa',vip:'#f0c84a',duo:'#38bdf8',equipment:'#fb923c',transport:'#34d399',business:'#60a5fa'};
+    const col = pkgColors[pkg]||'#fff';
+    const st = c.status||'pending';
+    const date = c.created_at ? new Date(c.created_at).toLocaleDateString('he-IL') : '';
+    return `
+    <div class="m-card">
+      <div class="m-card-head">
+        ${thumb}
+        <div style="flex:1;min-width:0">
+          <div class="m-card-title" style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${c.make||''} ${c.model||'—'}</div>
+          <div class="m-card-sub">${c.seller_name||c.city||''}</div>
+        </div>
+        <div style="font-size:18px;font-weight:900;color:#fff;flex-shrink:0">${price}</div>
+      </div>
+      <div class="m-card-row">
+        <span class="m-card-label">חבילה</span>
+        <span style="color:${col};font-weight:800;font-size:11px">${pkg.toUpperCase()}</span>
+      </div>
+      <div class="m-card-row">
+        <span class="m-card-label">סטטוס</span>
+        <span style="color:${stColors[st]||'#fff'};font-weight:800;font-size:11px">${stLabels[st]||st}</span>
+      </div>
+      <div class="m-card-row">
+        <span class="m-card-label">תאריך</span>
+        <span class="m-card-val" style="font-size:11px">${date}</span>
+      </div>
+      <div class="m-card-acts">
+        <button class="btn btn-sm" onclick="viewCar('${c.id}')" style="flex:1">👁 פרטים</button>
+        ${st==='pending'?`<button class="btn btn-sm" onclick="approve('${c.id}')" style="background:rgba(34,197,94,.15);color:#4ade80;flex:1">✅ אשר</button>`:''}
+        ${st==='active'?`<button class="btn btn-sm" onclick="markSold('${c.id}')" style="background:rgba(139,92,246,.15);color:#a78bfa;flex:1">💜 מכור</button>`:''}
+        <button class="btn btn-sm" onclick="deleteCar('${c.id}')" style="background:rgba(239,68,68,.12);color:#f87171">🗑</button>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+/* Force website to refresh biz/rent cache after publish */
+let _bizCache_invalidated = false;
+
+/* ═══════════════════════════════════════
    KEYBOARD
 ═══════════════════════════════════════ */
 document.addEventListener('keydown', e => {
@@ -1989,6 +2288,33 @@ function renderBizTable() {
         </div>
       </td>
     </tr>`).join('');
+  // Mobile cards
+  const bizMob = document.getElementById('biz-mobile-cards');
+  if(bizMob) {
+    if(!filteredBiz.length){ bizMob.innerHTML=`<div class="empty"><div class="empty-ico">🏢</div><h3>אין עסקים</h3></div>`; }
+    else bizMob.innerHTML = filteredBiz.map(b=>`
+      <div class="m-card">
+        <div class="m-card-head">
+          <div style="font-size:28px;flex-shrink:0">${{mosek:'🔧',migrash:'🚗',mimun:'💰',grira:'🚛',pach:'🎨'}[b.category]||'🏢'}</div>
+          <div style="flex:1;min-width:0">
+            <div class="m-card-title">${b.name||'—'}</div>
+            <div class="m-card-sub">${b.city||''} ${b.is_sponsored?'💎':''}${b.is_verified?'✓':''}</div>
+          </div>
+          <span style="color:${b.status==='active'?'#4ade80':'var(--t3)'};font-size:10px;font-weight:800">${b.status==='active'?'✅ פעיל':'⏸ מושבת'}</span>
+        </div>
+        <div class="m-card-row">
+          <span class="m-card-label">טלפון</span>
+          <a href="tel:${b.phone}" style="color:var(--red);font-weight:700">${b.phone||'—'}</a>
+        </div>
+        <div class="m-card-acts">
+          <button class="btn btn-sm" onclick="editBiz('${b.id}')" style="flex:1">✏️ עריכה</button>
+          <button class="btn btn-sm" onclick="toggleBizStatus('${b.id}','${b.status==='active'?'inactive':'active'}')" style="flex:1;background:${b.status==='active'?'rgba(245,158,11,.15)':'rgba(34,197,94,.15)'};color:${b.status==='active'?'var(--yellow)':'var(--green)'}">
+            ${b.status==='active'?'⏸ השהה':'▶️ הפעל'}
+          </button>
+          <button class="btn btn-sm" onclick="deleteBiz('${b.id}')" style="background:rgba(239,68,68,.12);color:#f87171">🗑</button>
+        </div>
+      </div>`).join('');
+  }
 }
 
 function renderRentTable() {
@@ -2219,6 +2545,43 @@ function filterAdReq() {
     (!st || r.status===st) && (!tp || r.page_type===tp)
   );
   renderAdReqTable();
+  renderAdReqMobileCards();
+}
+
+function renderAdReqMobileCards() {
+  const el = document.getElementById('aq-mobile-cards'); if(!el) return;
+  if(!filteredAdReq.length){ el.innerHTML=''; return; }
+  const stColors = {pending:'#fbbf24',approved:'#4ade80',paid:'#4ade80',rejected:'#f87171'};
+  const stLabels = {pending:'⏳ ממתינה',approved:'✅ אושרה',paid:'💳 שולם',rejected:'❌ נדחה'};
+  const typeLbl = {garage:'🔧 עסק',rental:'🚗 השכרה'};
+  const pkgLbl  = {basic:'בסיסי',sponsored:'ממומן ⭐',vip:'VIP 👑'};
+  el.innerHTML = filteredAdReq.map(r => `
+    <div class="m-card">
+      <div class="m-card-head">
+        <div style="flex:1;min-width:0">
+          <div class="m-card-title">${r.business_name||'—'}</div>
+          <div class="m-card-sub">${r.owner_name||''}</div>
+        </div>
+        <span style="color:${stColors[r.status]||'#fff'};font-size:11px;font-weight:800">${stLabels[r.status]||r.status}</span>
+      </div>
+      <div class="m-card-row">
+        <span class="m-card-label">סוג</span>
+        <span class="m-card-val">${typeLbl[r.page_type]||r.page_type}</span>
+      </div>
+      <div class="m-card-row">
+        <span class="m-card-label">חבילה</span>
+        <span style="color:var(--gold);font-weight:800;font-size:11px">${pkgLbl[r.package]||r.package||'—'}</span>
+      </div>
+      <div class="m-card-row">
+        <span class="m-card-label">טלפון</span>
+        <a href="tel:${r.phone}" style="color:var(--red);font-weight:700;font-size:12px">${r.phone||'—'}</a>
+      </div>
+      <div class="m-card-acts">
+        <button class="btn btn-sm" onclick="viewAdReq('${r.id}')" style="flex:2">👁 פרטים</button>
+        ${r.status==='pending'?`<button class="btn btn-sm" onclick="approveAdReq('${r.id}')" style="background:rgba(34,197,94,.15);color:#4ade80;flex:1">✅</button><button class="btn btn-sm" onclick="rejectAdReq('${r.id}')" style="background:rgba(239,68,68,.15);color:#f87171;flex:1">❌</button>`:''}
+        ${r.status==='approved'||r.status==='paid'?`<button class="btn btn-sm btn-red" onclick="publishAdReq('${r.id}')" style="flex:1">🚀 פרסם</button>`:''}
+      </div>
+    </div>`).join('');
 }
 
 function renderAdReqTable() {
@@ -2330,16 +2693,23 @@ async function saveAdReqNotes(id) {
 
 async function publishAdReq(id) {
   const r = allAdReq.find(x=>x.id===id); if(!r) return;
+  if(!confirm('לפרסם את "'+r.business_name+'" באתר?')) return;
   try {
     if(r.page_type === 'garage') {
+      // Check if already published (avoid duplicates)
+      const {data:existing} = await sb.from('businesses').select('id').eq('name',r.business_name).eq('phone',r.phone||'');
+      if(existing && existing.length > 0) {
+        toast('⚠️ העסק כבר פורסם באתר','info');
+        return;
+      }
       const payload = {
         name: r.business_name,
-        phone: r.phone,
+        phone: r.phone||'',
         whatsapp: r.whatsapp||'',
         category: r.category||'mosek',
         region: r.region||'center',
         city: r.city||'',
-        type_label: r.description||'',
+        type_label: r.description||BIZ_CAT_LABEL[r.category||'mosek']||'',
         is_sponsored: r.package==='sponsored'||r.package==='vip',
         is_verified: true,
         is_open: true,
@@ -2347,30 +2717,40 @@ async function publishAdReq(id) {
         rating: 4.5,
         review_count: 0,
       };
-      await sb.from('businesses').insert(payload);
+      const {error:bizErr} = await sb.from('businesses').insert(payload);
+      if(bizErr) throw bizErr;
     } else {
+      const {data:existing} = await sb.from('rentals').select('id').eq('company_name',r.business_name).eq('phone',r.phone||'');
+      if(existing && existing.length > 0) {
+        toast('⚠️ ההשכרה כבר פורסמה באתר','info');
+        return;
+      }
       const payload = {
         company_name: r.business_name,
-        phone: r.phone,
+        phone: r.phone||'',
         whatsapp: r.whatsapp||'',
         car_name: r.car_name||'—',
+        car_emoji: '🚗',
         price_per_day: r.price_per_day||0,
         region: r.region||'center',
         city: r.city||'',
         badge: r.package==='vip'?'premium':'available',
         status: 'active',
-        logo_url: r.logo_url||'',
+        specs: [],
       };
-      await sb.from('rentals').insert(payload);
+      const {error:rentErr} = await sb.from('rentals').insert(payload);
+      if(rentErr) throw rentErr;
     }
-    await sb.from('ad_requests').update({status:'paid'}).eq('id',id);
-    toast('פורסם בהצלחה 🚀');
+    await sb.from('ad_requests').update({status:'paid', published_at: new Date().toISOString()}).eq('id',id);
+    toast('🚀 פורסם בהצלחה! יופיע באתר תוך שניות');
     closeAdReqModal();
     await loadAdRequests();
     await loadBizAdmin();
     await loadRentAdmin();
   } catch(e) { toast('שגיאה: '+e.message,'error'); }
 }
+
+const BIZ_CAT_LABEL = {mosek:'מוסך רכב',migrash:'מגרש מכוניות',mimun:'מימון רכב',grira:'שירות גרירה',pach:'פח וצבע'};
 
 </script>
 <!-- ══════════════ AD REQUEST DETAIL MODAL ══════════════ -->
