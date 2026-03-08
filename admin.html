@@ -3151,19 +3151,31 @@ async function publishAdReq(id) {
         toast('⚠️ העסק כבר פורסם באתר','info');
         return;
       }
+      // Parse description into type_label + services
+      const descParts = (r.description||'').split('|').map(s=>s.trim()).filter(Boolean);
+      const typeLabel = descParts[0] || BIZ_CAT_LABEL[r.category||'mosek'] || '';
+      const bizServices = descParts.slice(1);
+
       const payload = {
-        name: r.business_name,
-        phone: r.phone||'',
-        whatsapp: r.whatsapp||'',
-        category: r.category||'mosek',
-        region: r.region||'center',
-        city: r.city||'',
-        type_label: r.description||BIZ_CAT_LABEL[r.category||'mosek']||'',
+        name:         r.business_name,
+        phone:        r.phone||'',
+        whatsapp:     r.whatsapp||'',
+        email:        r.email||'',
+        category:     r.category||'mosek',
+        region:       r.region||'center',
+        city:         r.city||'',
+        address:      r.address||null,
+        website:      r.website||null,
+        type_label:   typeLabel,
+        services:     bizServices,
+        description:  r.description||null,
+        logo_url:     r.logo_url||null,
+        images:       Array.isArray(r.images) ? r.images : [],
         is_sponsored: r.package==='sponsored'||r.package==='vip',
-        is_verified: true,
-        is_open: true,
-        status: 'active',
-        rating: 4.5,
+        is_verified:  true,
+        is_open:      true,
+        status:       'active',
+        rating:       4.5,
         review_count: 0,
       };
       const {error:bizErr} = await sb.from('businesses').insert(payload);
@@ -3174,18 +3186,46 @@ async function publishAdReq(id) {
         toast('⚠️ ההשכרה כבר פורסמה באתר','info');
         return;
       }
+      // Parse specs from ad_request (stored as array or JSON)
+      let rentSpecsParsed = [];
+      try {
+        rentSpecsParsed = Array.isArray(r.specs) ? r.specs
+          : (r.specs ? JSON.parse(r.specs) : []);
+      } catch(e) { rentSpecsParsed = []; }
+
+      // Detect car emoji from car_group or car_name
+      const carGroupEmoji = (()=>{
+        const g = (r.car_group||r.car_name||'').toLowerCase();
+        if(g.includes('קטנ')||g.includes('small'))  return '🚗';
+        if(g.includes('בינוני')||g.includes('mid'))  return '🚙';
+        if(g.includes('גדול')||g.includes('large'))  return '🚐';
+        if(g.includes('SUV')||g.includes('suv'))     return '🚕';
+        if(g.includes('יוקר')||g.includes('luxury')) return '🏎️';
+        if(g.includes('מסחר'))                       return '🚚';
+        return '🚗';
+      })();
+
       const payload = {
-        company_name: r.business_name,
-        phone: r.phone||'',
-        whatsapp: r.whatsapp||'',
-        car_name: r.car_name||'—',
-        car_emoji: '🚗',
-        price_per_day: r.price_per_day||0,
-        region: r.region||'center',
-        city: r.city||'',
-        badge: r.package==='vip'?'premium':'available',
-        status: 'active',
-        specs: [],
+        company_name:    r.business_name,
+        phone:           r.phone||'',
+        whatsapp:        r.whatsapp||'',
+        email:           r.email||'',
+        car_name:        r.car_name||'—',
+        car_emoji:       carGroupEmoji,
+        car_group:       r.car_group||null,
+        car_year:        r.car_year||null,
+        price_per_day:   r.price_per_day||0,
+        price_per_week:  r.price_per_week||null,
+        price_per_month: r.price_per_month||null,
+        region:          r.region||'center',
+        city:            r.city||'',
+        website:         r.website||null,
+        description:     r.description||null,
+        badge:           r.package==='vip'?'premium':'available',
+        status:          'active',
+        specs:           rentSpecsParsed,
+        images:          Array.isArray(r.images) ? r.images : [],
+        logo_url:        r.logo_url||null,
       };
       const {error:rentErr} = await sb.from('rentals').insert(payload);
       if(rentErr) throw rentErr;
