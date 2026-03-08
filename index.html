@@ -7147,20 +7147,128 @@ html[dir="ltr"] .foot-acc-arrow { margin-left:auto; margin-right:0; }
 <!-- ═══════════════════════════════════════════════════════
      MODAL: Contact Form
      ═══════════════════════════════════════════════════════ -->
-<div id="contactModal" style="display:none;position:fixed;inset:0;z-index:1100;background:rgba(0,0,0,.75);backdrop-filter:blur(8px);align-items:center;justify-content:center;padding:20px;">
-  <div style="background:var(--card2);border:1.5px solid rgba(255,255,255,.1);border-radius:24px;padding:36px;max-width:460px;width:100%;position:relative;animation:svcFadeIn .3s var(--ease);">
-    <button onclick="closeContactModal()" style="position:absolute;top:16px;left:16px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);color:var(--t1);width:32px;height:32px;border-radius:8px;cursor:pointer;display:flex;align-items:center;justify-content:center;font-family:var(--font);">✕</button>
-    <div id="contactModalTitle" style="font-size:20px;font-weight:900;color:#fff;margin-bottom:6px;"></div>
-    <p style="font-size:13px;color:var(--t2);margin-bottom:24px;">מלא פרטים ונחזור אליך תוך 24 שעות</p>
-    <div style="display:flex;flex-direction:column;gap:12px;">
-      <input id="cName" placeholder="שם העסק" style="padding:12px 16px;border-radius:12px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);color:#fff;font-family:var(--font);font-size:14px;outline:none;direction:rtl;" />
-      <input id="cPhone" placeholder="טלפון ליצירת קשר" style="padding:12px 16px;border-radius:12px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);color:#fff;font-family:var(--font);font-size:14px;outline:none;direction:rtl;" />
-      <input id="cCity" placeholder="עיר / אזור" style="padding:12px 16px;border-radius:12px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);color:#fff;font-family:var(--font);font-size:14px;outline:none;direction:rtl;" />
-      <textarea id="cMsg" placeholder="הודעה נוספת (אופציונלי)" rows="3" style="padding:12px 16px;border-radius:12px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);color:#fff;font-family:var(--font);font-size:14px;outline:none;resize:none;direction:rtl;"></textarea>
-      <button id="cSubmit" onclick="submitContact()" class="btn btn-red" style="font-size:15px;padding:14px;">
-        <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12 19.79 19.79 0 0 1 1.61 3.41 2 2 0 0 1 3.6 1.21h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 10.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 17.92z"/></svg>
-        שלח פנייה — נחזור תוך 24 שעות
-      </button>
+<div id="contactModal" style="display:none;position:fixed;inset:0;z-index:1100;background:rgba(0,0,0,.82);backdrop-filter:blur(12px);align-items:flex-start;justify-content:center;padding:20px;overflow-y:auto;">
+  <div style="background:var(--card2);border:1.5px solid rgba(255,255,255,.1);border-radius:24px;max-width:520px;width:100%;position:relative;animation:svcFadeIn .3s var(--ease);margin:auto;">
+    <!-- Header -->
+    <div style="padding:24px 28px 0;display:flex;align-items:center;justify-content:space-between;">
+      <div>
+        <div id="contactModalTitle" style="font-size:20px;font-weight:900;color:#fff;"></div>
+        <p style="font-size:12px;color:var(--t2);margin-top:4px;">מלא פרטים מלאים — נחזור אליך תוך 24 שעות</p>
+      </div>
+      <button onclick="closeContactModal()" style="background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);color:var(--t1);width:34px;height:34px;border-radius:10px;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;">✕</button>
+    </div>
+
+    <!-- Steps indicator -->
+    <div style="display:flex;gap:0;margin:20px 28px 0;border-radius:12px;overflow:hidden;border:1px solid rgba(255,255,255,.08);">
+      <div id="cStep1Ind" style="flex:1;padding:8px;text-align:center;font-size:11px;font-weight:700;background:rgba(232,17,46,.15);color:var(--red);border-left:1px solid rgba(255,255,255,.08);">1 · פרטי העסק</div>
+      <div id="cStep2Ind" style="flex:1;padding:8px;text-align:center;font-size:11px;font-weight:700;color:var(--t2);">2 · תמונות ולוגו</div>
+      <div id="cStep3Ind" style="flex:1;padding:8px;text-align:center;font-size:11px;font-weight:700;color:var(--t2);">3 · חבילה</div>
+    </div>
+
+    <div style="padding:20px 28px 28px;">
+
+      <!-- STEP 1: פרטי העסק -->
+      <div id="cStep1">
+        <div style="display:flex;flex-direction:column;gap:10px;">
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
+            <input id="cBizName" placeholder="* שם העסק" style="padding:11px 14px;border-radius:11px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);color:#fff;font-family:var(--font);font-size:13px;outline:none;direction:rtl;" />
+            <input id="cOwnerName" placeholder="* שם הבעלים" style="padding:11px 14px;border-radius:11px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);color:#fff;font-family:var(--font);font-size:13px;outline:none;direction:rtl;" />
+          </div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
+            <input id="cPhone" placeholder="* טלפון" style="padding:11px 14px;border-radius:11px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);color:#fff;font-family:var(--font);font-size:13px;outline:none;direction:rtl;" />
+            <input id="cWhatsapp" placeholder="וואטסאפ" style="padding:11px 14px;border-radius:11px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);color:#fff;font-family:var(--font);font-size:13px;outline:none;direction:rtl;" />
+          </div>
+          <input id="cEmail" placeholder="אימייל" style="padding:11px 14px;border-radius:11px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);color:#fff;font-family:var(--font);font-size:13px;outline:none;direction:rtl;" />
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
+            <input id="cCity" placeholder="* עיר" style="padding:11px 14px;border-radius:11px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);color:#fff;font-family:var(--font);font-size:13px;outline:none;direction:rtl;" />
+            <select id="cRegion" style="padding:11px 14px;border-radius:11px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);color:#fff;font-family:var(--font);font-size:13px;outline:none;direction:rtl;">
+              <option value="">* בחר אזור</option>
+              <option value="north">צפון</option>
+              <option value="center">מרכז</option>
+              <option value="south">דרום</option>
+            </select>
+          </div>
+          <div id="cCatRow" style="display:none;">
+            <select id="cCategory" style="width:100%;padding:11px 14px;border-radius:11px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);color:#fff;font-family:var(--font);font-size:13px;outline:none;direction:rtl;">
+              <option value="mosek">מוסך</option>
+              <option value="migrash">מגרש רכבים</option>
+              <option value="mimun">מימון</option>
+              <option value="grira">גרירה</option>
+              <option value="pach">פח וצבע</option>
+            </select>
+          </div>
+          <div id="cRentalRow" style="display:none;display:grid;grid-template-columns:1fr 1fr;gap:10px;">
+            <input id="cCarName" placeholder="שם הרכב / דגם" style="padding:11px 14px;border-radius:11px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);color:#fff;font-family:var(--font);font-size:13px;outline:none;direction:rtl;" />
+            <input id="cPriceDay" placeholder="מחיר ליום (₪)" type="number" style="padding:11px 14px;border-radius:11px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);color:#fff;font-family:var(--font);font-size:13px;outline:none;direction:rtl;" />
+          </div>
+          <textarea id="cDesc" placeholder="תיאור קצר של העסק" rows="3" style="padding:11px 14px;border-radius:11px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);color:#fff;font-family:var(--font);font-size:13px;outline:none;resize:none;direction:rtl;"></textarea>
+          <input id="cWebsite" placeholder="אתר אינטרנט (אופציונלי)" style="padding:11px 14px;border-radius:11px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);color:#fff;font-family:var(--font);font-size:13px;outline:none;direction:rtl;" />
+        </div>
+        <button onclick="cGoStep2()" class="btn btn-red" style="width:100%;margin-top:16px;font-size:14px;padding:13px;">המשך לתמונות ←</button>
+      </div>
+
+      <!-- STEP 2: תמונות -->
+      <div id="cStep2" style="display:none;">
+        <!-- לוגו -->
+        <div style="margin-bottom:16px;">
+          <div style="font-size:12px;color:var(--t2);margin-bottom:8px;font-weight:700;">לוגו העסק</div>
+          <div id="cLogoZone" onclick="document.getElementById('cLogoInput').click()" style="border:2px dashed rgba(255,255,255,.15);border-radius:14px;padding:24px;text-align:center;cursor:pointer;transition:all .2s;background:rgba(255,255,255,.03);">
+            <div id="cLogoPreview" style="display:none;"><img id="cLogoImg" style="height:70px;border-radius:10px;margin:0 auto;display:block;"></div>
+            <div id="cLogoPlaceholder"><svg width="28" height="28" fill="none" stroke="rgba(255,255,255,.3)" stroke-width="1.5" viewBox="0 0 24 24" style="margin:0 auto 8px;display:block;"><rect x="3" y="3" width="18" height="18" rx="3"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg><div style="font-size:12px;color:rgba(255,255,255,.35);">לחץ להעלאת לוגו</div></div>
+          </div>
+          <input id="cLogoInput" type="file" accept="image/*" style="display:none;" onchange="cUploadLogo(this)">
+        </div>
+        <!-- תמונות -->
+        <div>
+          <div style="font-size:12px;color:var(--t2);margin-bottom:8px;font-weight:700;">תמונות העסק (עד 4)</div>
+          <div id="cImgsGrid" style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:10px;"></div>
+          <div id="cAddImgBtn" onclick="document.getElementById('cImgInput').click()" style="border:2px dashed rgba(255,255,255,.12);border-radius:12px;padding:16px;text-align:center;cursor:pointer;font-size:12px;color:rgba(255,255,255,.35);transition:all .2s;">
+            <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24" style="margin:0 auto 6px;display:block;opacity:.4;"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+            הוסף תמונה
+          </div>
+          <input id="cImgInput" type="file" accept="image/*" style="display:none;" onchange="cUploadImage(this)">
+        </div>
+        <div style="display:flex;gap:10px;margin-top:16px;">
+          <button onclick="cGoStep1()" style="flex:1;padding:12px;border-radius:12px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);color:var(--t1);cursor:pointer;font-family:var(--font);font-size:13px;">→ חזרה</button>
+          <button onclick="cGoStep3()" class="btn btn-red" style="flex:2;font-size:14px;padding:12px;">המשך לחבילה ←</button>
+        </div>
+      </div>
+
+      <!-- STEP 3: חבילה -->
+      <div id="cStep3" style="display:none;">
+        <div style="display:flex;flex-direction:column;gap:10px;">
+          <div id="cPkgBasic" onclick="cSelectPkg('basic')" style="border:2px solid rgba(232,17,46,.4);border-radius:14px;padding:16px;cursor:pointer;transition:all .2s;background:rgba(232,17,46,.08);">
+            <div style="display:flex;justify-content:space-between;align-items:center;">
+              <div><div style="font-weight:800;color:#fff;font-size:14px;">בסיסי</div><div style="font-size:12px;color:var(--t2);margin-top:3px;">פרסום רגיל בקטגוריה ובאזור שלך</div></div>
+              <div style="font-size:18px;font-weight:900;color:var(--red);">חינם<small style="font-size:11px;font-weight:400;color:var(--t2);"> לחודש ראשון</small></div>
+            </div>
+          </div>
+          <div id="cPkgSponsored" onclick="cSelectPkg('sponsored')" style="border:1.5px solid rgba(255,255,255,.08);border-radius:14px;padding:16px;cursor:pointer;transition:all .2s;">
+            <div style="display:flex;justify-content:space-between;align-items:center;">
+              <div><div style="font-weight:800;color:#fff;font-size:14px;">⭐ ממומן</div><div style="font-size:12px;color:var(--t2);margin-top:3px;">מופיע ראשון בתוצאות + תווית ממומן</div></div>
+              <div style="font-size:18px;font-weight:900;color:var(--gold);">₪199<small style="font-size:11px;color:var(--t2)">/חודש</small></div>
+            </div>
+          </div>
+          <div id="cPkgVip" onclick="cSelectPkg('vip')" style="border:1.5px solid rgba(255,255,255,.08);border-radius:14px;padding:16px;cursor:pointer;transition:all .2s;">
+            <div style="display:flex;justify-content:space-between;align-items:center;">
+              <div><div style="font-weight:800;color:#fff;font-size:14px;">👑 VIP</div><div style="font-size:12px;color:var(--t2);margin-top:3px;">כרטיס מורחב + עדיפות מקסימלית</div></div>
+              <div style="font-size:18px;font-weight:900;color:#a78bfa)">₪349<small style="font-size:11px;color:var(--t2)">/חודש</small></div>
+            </div>
+          </div>
+        </div>
+        <div id="cUploadProgress" style="display:none;margin-top:14px;text-align:center;font-size:13px;color:var(--t2);">
+          <div class="spinner" style="margin:0 auto 8px;"></div>
+          מעלה תמונות...
+        </div>
+        <div style="display:flex;gap:10px;margin-top:16px;">
+          <button onclick="cGoStep2()" style="flex:1;padding:12px;border-radius:12px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);color:var(--t1);cursor:pointer;font-family:var(--font);font-size:13px;">→ חזרה</button>
+          <button id="cSubmit" onclick="submitContact()" class="btn btn-red" style="flex:2;font-size:14px;padding:12px;">
+            <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12 19.79 19.79 0 0 1 1.61 3.41 2 2 0 0 1 3.6 1.21h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 10.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 17.92z"/></svg>
+            שלח בקשת פרסום
+          </button>
+        </div>
+      </div>
+
     </div>
   </div>
 </div>
@@ -8393,10 +8501,29 @@ function switchRegion(r){
 }
 
 let _contactType='';
+let _cLogoUrl='', _cImgUrls=[], _cPkg='basic';
+
 function showContactModal(type){
   _contactType=type;
-  const titles={garage:'פרסם את המוסך שלך',rental:'פרסם את עסק ההשכרה שלך'};
+  _cLogoUrl=''; _cImgUrls=[]; _cPkg='basic';
+  const titles={garage:'פרסם את העסק שלך',rental:'פרסם את עסק ההשכרה שלך'};
   document.getElementById('contactModalTitle').textContent=titles[type]||'צור קשר';
+  // show/hide type-specific fields
+  document.getElementById('cCatRow').style.display = type==='garage'?'block':'none';
+  document.getElementById('cRentalRow').style.display = type==='rental'?'grid':'none';
+  // reset steps
+  cGoStep1();
+  // reset images
+  document.getElementById('cLogoPreview').style.display='none';
+  document.getElementById('cLogoPlaceholder').style.display='block';
+  document.getElementById('cImgsGrid').innerHTML='';
+  document.getElementById('cAddImgBtn').style.display='block';
+  // reset pkg
+  cSelectPkg('basic');
+  // clear fields
+  ['cBizName','cOwnerName','cPhone','cWhatsapp','cEmail','cCity','cDesc','cWebsite','cCarName','cPriceDay'].forEach(id=>{
+    const el=document.getElementById(id); if(el) el.value='';
+  });
   const m=document.getElementById('contactModal');
   m.style.display='flex';
   document.body.style.overflow='hidden';
@@ -8405,16 +8532,137 @@ function closeContactModal(){
   document.getElementById('contactModal').style.display='none';
   document.body.style.overflow='';
 }
-function submitContact(){
-  const name=document.getElementById('cName').value.trim();
+
+function cGoStep1(){
+  document.getElementById('cStep1').style.display='block';
+  document.getElementById('cStep2').style.display='none';
+  document.getElementById('cStep3').style.display='none';
+  document.getElementById('cStep1Ind').style.background='rgba(232,17,46,.15)';
+  document.getElementById('cStep1Ind').style.color='var(--red)';
+  document.getElementById('cStep2Ind').style.background='';
+  document.getElementById('cStep2Ind').style.color='var(--t2)';
+  document.getElementById('cStep3Ind').style.background='';
+  document.getElementById('cStep3Ind').style.color='var(--t2)';
+}
+function cGoStep2(){
+  const name=document.getElementById('cBizName').value.trim();
+  const phone=document.getElementById('cPhone').value.trim();
+  const region=document.getElementById('cRegion').value;
+  if(!name||!phone||!region){showToast('נא למלא שם, טלפון ואזור');return;}
+  document.getElementById('cStep1').style.display='none';
+  document.getElementById('cStep2').style.display='block';
+  document.getElementById('cStep3').style.display='none';
+  document.getElementById('cStep1Ind').style.background='rgba(34,197,94,.1)';
+  document.getElementById('cStep1Ind').style.color='#4ade80';
+  document.getElementById('cStep2Ind').style.background='rgba(232,17,46,.15)';
+  document.getElementById('cStep2Ind').style.color='var(--red)';
+  document.getElementById('cStep3Ind').style.background='';
+  document.getElementById('cStep3Ind').style.color='var(--t2)';
+}
+function cGoStep3(){
+  document.getElementById('cStep1').style.display='none';
+  document.getElementById('cStep2').style.display='none';
+  document.getElementById('cStep3').style.display='block';
+  document.getElementById('cStep2Ind').style.background='rgba(34,197,94,.1)';
+  document.getElementById('cStep2Ind').style.color='#4ade80';
+  document.getElementById('cStep3Ind').style.background='rgba(232,17,46,.15)';
+  document.getElementById('cStep3Ind').style.color='var(--red)';
+}
+
+function cSelectPkg(pkg){
+  _cPkg=pkg;
+  ['basic','sponsored','vip'].forEach(p=>{
+    const el=document.getElementById('cPkg'+p.charAt(0).toUpperCase()+p.slice(1));
+    if(el) el.style.borderColor = p===pkg?'rgba(232,17,46,.5)':'rgba(255,255,255,.08)';
+    if(el) el.style.background  = p===pkg?'rgba(232,17,46,.08)':'';
+  });
+}
+
+async function cUploadLogo(input){
+  if(!input.files[0]) return;
+  const url = await cCloudinaryUpload(input.files[0]);
+  if(!url) return;
+  _cLogoUrl = url;
+  document.getElementById('cLogoImg').src=url;
+  document.getElementById('cLogoPreview').style.display='block';
+  document.getElementById('cLogoPlaceholder').style.display='none';
+}
+
+async function cUploadImage(input){
+  if(!input.files[0]) return;
+  if(_cImgUrls.length>=4){showToast('מקסימום 4 תמונות');return;}
+  const url = await cCloudinaryUpload(input.files[0]);
+  if(!url) return;
+  _cImgUrls.push(url);
+  renderCImgsGrid();
+  if(_cImgUrls.length>=4) document.getElementById('cAddImgBtn').style.display='none';
+}
+
+function renderCImgsGrid(){
+  const grid=document.getElementById('cImgsGrid');
+  grid.innerHTML=_cImgUrls.map((u,i)=>`
+    <div style="position:relative;border-radius:10px;overflow:hidden;">
+      <img src="${u}" style="width:100%;height:90px;object-fit:cover;display:block;">
+      <button onclick="cRemoveImg(${i})" style="position:absolute;top:4px;left:4px;width:22px;height:22px;border-radius:50%;background:rgba(0,0,0,.7);border:none;color:#fff;cursor:pointer;font-size:14px;line-height:1;display:flex;align-items:center;justify-content:center;">×</button>
+    </div>
+  `).join('');
+  if(_cImgUrls.length<4) document.getElementById('cAddImgBtn').style.display='block';
+}
+function cRemoveImg(i){ _cImgUrls.splice(i,1); renderCImgsGrid(); }
+
+async function cCloudinaryUpload(file){
+  try {
+    const fd=new FormData();
+    fd.append('file',file);
+    fd.append('upload_preset',CL_PRESET);
+    const r=await fetch(`https://api.cloudinary.com/v1_1/${CL_NAME}/image/upload`,{method:'POST',body:fd});
+    const d=await r.json();
+    return d.secure_url||null;
+  } catch(e){ showToast('שגיאה בהעלאת תמונה'); return null; }
+}
+
+async function submitContact(){
+  const name=document.getElementById('cBizName').value.trim();
   const phone=document.getElementById('cPhone').value.trim();
   if(!name||!phone){showToast('נא למלא שם וטלפון');return;}
-  const city=document.getElementById('cCity').value.trim();
-  const msg=document.getElementById('cMsg').value.trim();
-  const txt=`שלום! אני ${name} מ${city||'ישראל'}, מעוניין/ת בפרסום (${_contactType==='garage'?'מוסך':'השכרת רכב'}).${msg?' הודעה: '+msg:''}`;
-  // WhatsApp YOUGO
-  window.open('https://wa.me/972546980606?text='+encodeURIComponent(txt),'_blank');
+  const btn=document.getElementById('cSubmit');
+  const prog=document.getElementById('cUploadProgress');
+  btn.disabled=true; btn.textContent='שולח...';
+  prog.style.display='block';
+  try {
+    const payload={
+      page_type: _contactType,
+      business_name: name,
+      owner_name: document.getElementById('cOwnerName').value.trim(),
+      phone,
+      whatsapp: document.getElementById('cWhatsapp').value.trim(),
+      email: document.getElementById('cEmail').value.trim(),
+      city: document.getElementById('cCity').value.trim(),
+      region: document.getElementById('cRegion').value,
+      description: document.getElementById('cDesc').value.trim(),
+      website: document.getElementById('cWebsite').value.trim(),
+      category: _contactType==='garage'?document.getElementById('cCategory').value:null,
+      car_name: _contactType==='rental'?document.getElementById('cCarName').value.trim():null,
+      price_per_day: _contactType==='rental'?parseFloat(document.getElementById('cPriceDay').value)||null:null,
+      logo_url: _cLogoUrl||null,
+      images: _cImgUrls,
+      package: _cPkg,
+      status: 'pending',
+    };
+    const {error}=await sb.from('ad_requests').insert(payload);
+    if(error) throw error;
+    prog.style.display='none';
+    closeContactModal();
+    showToast('הבקשה נשלחה! נחזור אליך תוך 24 שעות 🎉');
+  } catch(e){
+    prog.style.display='none';
+    showToast('שגיאה: '+e.message);
+  } finally {
+    btn.disabled=false; btn.textContent='שלח בקשת פרסום';
+  }
 }
+
+
 
 </script>
 
