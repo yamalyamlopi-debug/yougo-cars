@@ -9,7 +9,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="dns-prefetch" href="https://arsbodqhmmtmoqqhykep.supabase.co">
 <link rel="dns-prefetch" href="https://api.cloudinary.com">
-<link href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;500;600;700;800;900&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Heebo:wght@500;700;900&family=Plus+Jakarta+Sans:wght@600;800&display=swap" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
 <style>
 
@@ -48,6 +48,7 @@
 }
 
 html {
+  scroll-behavior: smooth;
   -webkit-text-size-adjust: 100%;
 }
 
@@ -1720,8 +1721,33 @@ footer::before {
 .foot-card-desc {
   font-size: 12px;
   font-weight: 500;
-  color: rgba(255,255,255,0.4);
-  line-height: 1.8;
+  color: rgba(255,255,255,0.5);
+  line-height: 1.85;
+  background: rgba(255,255,255,0.03);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 10px;
+  padding: 12px 14px;
+  position: relative;
+}
+.foot-card-desc::before {
+  content: '';
+  position: absolute;
+  top: 12px; bottom: 12px; right: 0;
+  width: 2px;
+  background: linear-gradient(180deg, transparent, rgba(232,17,46,0.5), transparent);
+  border-radius: 0 2px 2px 0;
+}
+
+/* feat-list label */
+.foot-feat-list-label {
+  font-family: var(--font-display);
+  font-size: 8.5px;
+  font-weight: 700;
+  color: rgba(255,255,255,0.25);
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+  padding: 8px 12px 6px;
+  border-bottom: 1px solid rgba(255,255,255,0.06);
 }
 
 /* ─── Feature List ─── */
@@ -3683,7 +3709,7 @@ html[dir="ltr"] .foot-pkg-tile:first-child { border-right: none; }
 }
 
 *,*::before,*::after { margin:0; padding:0; box-sizing:border-box; }
-html { -webkit-text-size-adjust:100%; }
+html { scroll-behavior:smooth; -webkit-text-size-adjust:100%; }
 body { font-family:var(--font); background:var(--bg); color:#fff; overflow-x:hidden; -webkit-font-smoothing:antialiased; -moz-osx-font-smoothing:grayscale; }
 img { display:block; max-width:100%; }
 a { color:inherit; text-decoration:none; }
@@ -4839,6 +4865,696 @@ html[dir="ltr"] .foot-acc-arrow { margin-left:auto; margin-right:0; }
 }
 .biz-btn-ghost:hover { background:rgba(255,255,255,.1); }
 
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   BUSINESS DIRECTORY — CATEGORY SYSTEM
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+
+/* Category selector tabs */
+.biz-cat-wrap {
+  max-width:1100px;
+  margin:0 auto 36px;
+  padding:0 24px;
+}
+.biz-cat-tabs {
+  display:flex;
+  gap:8px;
+  background:rgba(255,255,255,0.03);
+  border:1px solid rgba(255,255,255,0.07);
+  border-radius:18px;
+  padding:6px;
+  overflow-x:auto;
+  scrollbar-width:none;
+}
+.biz-cat-tabs::-webkit-scrollbar { display:none; }
+
+.biz-cat-tab {
+  display:flex;
+  align-items:center;
+  gap:9px;
+  padding:12px 20px;
+  border-radius:12px;
+  font-family:var(--font-display);
+  font-size:13px;
+  font-weight:700;
+  color:rgba(255,255,255,0.45);
+  border:none;
+  background:transparent;
+  cursor:pointer;
+  transition:all 0.22s;
+  white-space:nowrap;
+  flex-shrink:0;
+}
+.biz-cat-tab .cat-icon {
+  width:32px; height:32px;
+  border-radius:9px;
+  background:rgba(255,255,255,0.05);
+  border:1px solid rgba(255,255,255,0.08);
+  display:flex; align-items:center; justify-content:center;
+  font-size:15px;
+  transition:all 0.22s;
+  flex-shrink:0;
+}
+.biz-cat-tab .cat-count {
+  font-size:10px;
+  font-weight:700;
+  padding:2px 7px;
+  border-radius:20px;
+  background:rgba(255,255,255,0.06);
+  color:rgba(255,255,255,0.3);
+  transition:all 0.22s;
+}
+.biz-cat-tab:hover {
+  color:rgba(255,255,255,0.75);
+  background:rgba(255,255,255,0.04);
+}
+.biz-cat-tab.active {
+  color:#fff;
+  background:rgba(232,17,46,0.12);
+  border:1px solid rgba(232,17,46,0.25);
+}
+.biz-cat-tab.active .cat-icon {
+  background:rgba(232,17,46,0.18);
+  border-color:rgba(232,17,46,0.35);
+}
+.biz-cat-tab.active .cat-count {
+  background:rgba(232,17,46,0.15);
+  color:#ff5577;
+}
+
+/* Category panel */
+.biz-cat-panel { display:none; }
+.biz-cat-panel.active { display:block; animation:svcFadeIn .3s var(--ease) both; }
+
+/* Enhanced biz-card with rating */
+.biz-card-top-badge {
+  position:absolute;
+  top:14px;
+  left:14px;
+  font-family:var(--font-display);
+  font-size:9px;
+  font-weight:700;
+  letter-spacing:0.08em;
+  text-transform:uppercase;
+  padding:3px 9px;
+  border-radius:20px;
+  display:flex;
+  align-items:center;
+  gap:4px;
+}
+.biz-card-top-badge.sponsored {
+  background:rgba(240,200,74,0.12);
+  border:1px solid rgba(240,200,74,0.28);
+  color:var(--gold);
+}
+.biz-card-top-badge.verified {
+  background:rgba(74,222,128,0.1);
+  border:1px solid rgba(74,222,128,0.22);
+  color:#4ade80;
+}
+.biz-rating {
+  display:flex;
+  align-items:center;
+  gap:5px;
+  margin-bottom:14px;
+}
+.biz-stars {
+  display:flex;
+  gap:2px;
+  color:var(--gold);
+  font-size:12px;
+}
+.biz-rating-num {
+  font-size:12px;
+  font-weight:700;
+  color:rgba(255,255,255,0.7);
+}
+.biz-rating-cnt {
+  font-size:11px;
+  color:rgba(255,255,255,0.3);
+}
+.biz-hours {
+  display:inline-flex;
+  align-items:center;
+  gap:5px;
+  font-size:11px;
+  font-weight:600;
+  padding:3px 9px;
+  border-radius:8px;
+  margin-bottom:14px;
+}
+.biz-hours.open {
+  background:rgba(74,222,128,0.08);
+  border:1px solid rgba(74,222,128,0.2);
+  color:#4ade80;
+}
+.biz-hours.closed {
+  background:rgba(239,68,68,0.08);
+  border:1px solid rgba(239,68,68,0.2);
+  color:#f87171;
+}
+
+/* ADD-BIZ card (dashed placeholder) */
+.add-biz-card {
+  background:rgba(232,17,46,0.03);
+  border:1.5px dashed rgba(232,17,46,0.28);
+  border-radius:20px;
+  padding:32px 22px;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  text-align:center;
+  gap:12px;
+  min-height:220px;
+  cursor:pointer;
+  transition:all 0.22s;
+}
+.add-biz-card:hover {
+  background:rgba(232,17,46,0.06);
+  border-color:rgba(232,17,46,0.45);
+  transform:translateY(-2px);
+}
+.add-biz-icon {
+  width:52px; height:52px;
+  border-radius:16px;
+  background:rgba(232,17,46,0.1);
+  border:1px solid rgba(232,17,46,0.22);
+  display:flex; align-items:center; justify-content:center;
+  color:var(--red);
+  font-size:22px;
+}
+.add-biz-title {
+  font-size:15px;
+  font-weight:800;
+  color:#fff;
+}
+.add-biz-sub {
+  font-size:12px;
+  color:rgba(255,255,255,0.4);
+  line-height:1.65;
+}
+
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   RENTAL PAGE — CONSUMER CAR FINDER
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+.rental-card {
+  background:rgba(255,255,255,0.03);
+  border:1px solid rgba(255,255,255,0.08);
+  border-radius:20px;
+  overflow:hidden;
+  transition:all 0.25s var(--ease);
+  cursor:pointer;
+  position:relative;
+}
+.rental-card:hover {
+  border-color:rgba(232,17,46,0.3);
+  transform:translateY(-4px);
+  box-shadow:0 20px 50px rgba(0,0,0,0.4), 0 0 0 1px rgba(232,17,46,0.12);
+}
+.rental-card-img {
+  height:140px;
+  background:linear-gradient(135deg, rgba(232,17,46,0.08) 0%, rgba(10,10,20,0.8) 100%);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:64px;
+  position:relative;
+  border-bottom:1px solid rgba(255,255,255,0.06);
+}
+.rental-card-badge {
+  position:absolute;
+  top:12px;
+  right:12px;
+  font-family:var(--font-display);
+  font-size:9px;
+  font-weight:700;
+  letter-spacing:0.07em;
+  text-transform:uppercase;
+  padding:3px 9px;
+  border-radius:20px;
+}
+.rental-card-badge.available {
+  background:rgba(74,222,128,0.12);
+  border:1px solid rgba(74,222,128,0.28);
+  color:#4ade80;
+}
+.rental-card-badge.premium {
+  background:rgba(240,200,74,0.12);
+  border:1px solid rgba(240,200,74,0.28);
+  color:var(--gold);
+}
+.rental-card-price {
+  position:absolute;
+  bottom:12px;
+  left:12px;
+  background:rgba(0,0,0,0.65);
+  backdrop-filter:blur(8px);
+  border:1px solid rgba(255,255,255,0.12);
+  border-radius:10px;
+  padding:5px 12px;
+  font-family:var(--font-display);
+  font-size:16px;
+  font-weight:800;
+  color:#fff;
+}
+.rental-card-price small {
+  font-size:11px;
+  font-weight:500;
+  color:rgba(255,255,255,0.55);
+}
+.rental-card-body {
+  padding:18px;
+}
+.rental-card-name {
+  font-family:var(--font-display);
+  font-size:15px;
+  font-weight:800;
+  color:#fff;
+  margin-bottom:4px;
+}
+.rental-card-company {
+  font-size:12px;
+  color:rgba(255,255,255,0.4);
+  margin-bottom:12px;
+}
+.rental-card-specs {
+  display:flex;
+  flex-wrap:wrap;
+  gap:5px;
+  margin-bottom:14px;
+}
+.rental-spec {
+  font-size:11px;
+  font-weight:600;
+  color:rgba(255,255,255,0.5);
+  padding:3px 9px;
+  border-radius:7px;
+  background:rgba(255,255,255,0.05);
+  border:1px solid rgba(255,255,255,0.07);
+}
+.rental-card-foot {
+  display:flex;
+  gap:8px;
+}
+.rental-btn {
+  flex:1;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:6px;
+  padding:10px;
+  border-radius:11px;
+  font-size:13px;
+  font-weight:800;
+  cursor:pointer;
+  font-family:var(--font);
+  transition:all 0.2s;
+  text-decoration:none;
+  border:none;
+}
+.rental-btn-primary { background:var(--red); color:#fff; }
+.rental-btn-primary:hover { background:var(--red2); }
+.rental-btn-wa {
+  background:rgba(37,211,102,0.12);
+  border:1px solid rgba(37,211,102,0.25);
+  color:#25d366;
+}
+.rental-btn-wa:hover { background:rgba(37,211,102,0.2); }
+
+/* Rental filter bar */
+.rental-filter-bar {
+  display:flex;
+  gap:8px;
+  flex-wrap:wrap;
+  margin-bottom:24px;
+}
+.rental-filter-btn {
+  padding:7px 16px;
+  border-radius:10px;
+  font-size:12px;
+  font-weight:700;
+  background:rgba(255,255,255,0.04);
+  border:1px solid rgba(255,255,255,0.08);
+  color:rgba(255,255,255,0.5);
+  cursor:pointer;
+  transition:all 0.18s;
+  font-family:var(--font-display);
+}
+.rental-filter-btn.active, .rental-filter-btn:hover {
+  background:rgba(232,17,46,0.1);
+  border-color:rgba(232,17,46,0.25);
+  color:#fff;
+}
+
+/* CTA join bar for businesses */
+.biz-join-bar {
+  background:linear-gradient(135deg, rgba(232,17,46,0.1), rgba(10,10,25,0.9));
+  border:1px solid rgba(232,17,46,0.22);
+  border-radius:20px;
+  padding:28px 32px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:20px;
+  flex-wrap:wrap;
+  margin-top:48px;
+}
+.biz-join-bar-text h3 {
+  font-family:var(--font-display);
+  font-size:18px;
+  font-weight:800;
+  color:#fff;
+  margin-bottom:5px;
+}
+.biz-join-bar-text p {
+  font-size:13px;
+  color:rgba(255,255,255,0.5);
+}
+
+
+
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   BIZ-CARD2 — Premium Business Card (dynamic)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+@keyframes biz-shimmer {
+  0%   { background-position:200% center; }
+  100% { background-position:-200% center; }
+}
+@keyframes pulseGreen { 0%,100% { opacity:1; } 50% { opacity:.45; } }
+
+.biz-card2 {
+  background: linear-gradient(145deg, rgba(14,14,26,.92), rgba(10,10,20,.95));
+  backdrop-filter: blur(24px);
+  border: 1px solid rgba(255,255,255,.07);
+  border-radius: 22px;
+  overflow: hidden;
+  position: relative;
+  transition: transform .3s cubic-bezier(.25,0,0,1), box-shadow .3s, border-color .3s;
+  display: flex;
+  flex-direction: column;
+}
+.biz-card2::after {
+  content:'';
+  position:absolute; top:0; left:0; right:0; height:3px;
+  background: linear-gradient(90deg, var(--red) 0%, rgba(232,17,46,.0) 70%);
+  opacity:0; transition:opacity .3s;
+}
+.biz-card2:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 28px 64px rgba(0,0,0,.55), 0 0 0 1px rgba(232,17,46,.14);
+  border-color: rgba(232,17,46,.22);
+}
+.biz-card2:hover::after { opacity:1; }
+
+/* Sponsored variant */
+.biz-card2.sponsored {
+  border-color: rgba(240,200,74,.18);
+  background: linear-gradient(145deg, rgba(28,22,8,.92), rgba(14,14,26,.95));
+}
+.biz-card2.sponsored::after {
+  background: linear-gradient(90deg, var(--gold) 0%, rgba(240,200,74,0) 70%);
+  opacity:1;
+}
+.biz-card2.sponsored:hover { border-color: rgba(240,200,74,.35); }
+
+/* Card header */
+.bc2-head {
+  padding: 20px 20px 14px;
+  display: flex;
+  gap: 14px;
+  align-items: flex-start;
+  position: relative;
+}
+.bc2-logo {
+  width: 54px; height: 54px;
+  border-radius: 16px;
+  background: rgba(232,17,46,.1);
+  border: 1px solid rgba(232,17,46,.22);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 24px;
+  flex-shrink: 0;
+  transition: all .25s;
+}
+.bc2-logo.gold { background:rgba(240,200,74,.1); border-color:rgba(240,200,74,.22); }
+.bc2-logo.blue { background:rgba(96,165,250,.1); border-color:rgba(96,165,250,.22); }
+.bc2-logo.green { background:rgba(74,222,128,.1); border-color:rgba(74,222,128,.22); }
+.biz-card2:hover .bc2-logo { transform:scale(1.07); }
+
+.bc2-info { flex:1; min-width:0; }
+.bc2-name {
+  font-family: var(--font-display);
+  font-size: 15px; font-weight: 800;
+  color: #fff; line-height: 1.25;
+  margin-bottom: 3px;
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+.bc2-type {
+  font-size: 11px; font-weight: 700;
+  color: var(--red); text-transform: uppercase; letter-spacing:.05em;
+}
+.bc2-type.gold { color: var(--gold); }
+.bc2-type.blue { color:#60a5fa; }
+
+.bc2-badge {
+  position: absolute; top: 0; left: 0;
+  font-size: 9px; font-weight: 700;
+  letter-spacing: .07em; text-transform: uppercase;
+  padding: 3px 10px; border-radius: 0 0 12px 12px;
+}
+.bc2-badge.sponsored-b {
+  background: rgba(240,200,74,.15);
+  border: 1px solid rgba(240,200,74,.28);
+  border-top: none; color: var(--gold);
+}
+.bc2-badge.verified-b {
+  background: rgba(74,222,128,.1);
+  border: 1px solid rgba(74,222,128,.22);
+  border-top: none; color: #4ade80;
+}
+
+/* Card body */
+.bc2-body { padding: 0 20px 16px; flex:1; }
+
+.bc2-rating {
+  display: flex; align-items: center; gap: 7px;
+  margin-bottom: 10px;
+}
+.bc2-stars { color: var(--gold); font-size: 13px; letter-spacing:1px; }
+.bc2-score { font-size: 12px; font-weight: 700; color: rgba(255,255,255,.75); }
+.bc2-rcnt  { font-size: 11px; color: rgba(255,255,255,.3); }
+
+.bc2-status {
+  display: inline-flex; align-items: center; gap: 6px;
+  font-size: 11px; font-weight: 700;
+  padding: 4px 11px; border-radius: 20px;
+  margin-bottom: 12px;
+}
+.bc2-status.open  { background:rgba(74,222,128,.08); border:1px solid rgba(74,222,128,.2); color:#4ade80; }
+.bc2-status.closed{ background:rgba(239,68,68,.08);  border:1px solid rgba(239,68,68,.2);  color:#f87171; }
+.bc2-dot {
+  width:7px; height:7px; border-radius:50%;
+  background: currentColor;
+}
+.bc2-status.open .bc2-dot { animation: pulseGreen 1.6s ease infinite; }
+
+.bc2-rows { display:flex; flex-direction:column; gap:6px; margin-bottom:12px; }
+.bc2-row {
+  display:flex; align-items:center; gap:8px;
+  font-size:12.5px; color:rgba(255,255,255,.55);
+}
+.bc2-row svg { flex-shrink:0; opacity:.6; }
+.bc2-row span { color:rgba(255,255,255,.8); }
+
+.bc2-tags {
+  display:flex; flex-wrap:wrap; gap:5px; margin-bottom:16px;
+}
+.bc2-tag {
+  font-size:10.5px; font-weight:600;
+  padding:3px 9px; border-radius:8px;
+  background:rgba(255,255,255,.04);
+  border:1px solid rgba(255,255,255,.08);
+  color:rgba(255,255,255,.55);
+  transition:all .18s;
+}
+.bc2-tag:hover { background:rgba(232,17,46,.1); border-color:rgba(232,17,46,.22); color:#fff; }
+
+/* Card footer buttons */
+.bc2-foot {
+  padding: 0 16px 16px;
+  display: flex; gap: 8px;
+}
+.bc2-btn {
+  flex:1; display:flex; align-items:center; justify-content:center; gap:6px;
+  padding: 10px 12px; border-radius:12px;
+  font-size:13px; font-weight:800;
+  cursor:pointer; font-family:var(--font);
+  transition:all .2s; text-decoration:none; border:none;
+}
+.bc2-btn-call { background:var(--red); color:#fff; }
+.bc2-btn-call:hover { background:var(--red2); transform:scale(1.02); }
+.bc2-btn-wa {
+  background:rgba(37,211,102,.1);
+  border:1px solid rgba(37,211,102,.22);
+  color:#25d366;
+}
+.bc2-btn-wa:hover { background:rgba(37,211,102,.2); }
+
+/* Empty state */
+.biz-empty {
+  grid-column: 1/-1;
+  text-align:center; padding:52px 20px;
+  border:1.5px dashed rgba(255,255,255,.08);
+  border-radius:20px;
+}
+.biz-empty-icon { font-size:42px; margin-bottom:14px; opacity:.5; }
+.biz-empty-title { font-size:16px; font-weight:800; color:rgba(255,255,255,.5); margin-bottom:6px; }
+.biz-empty-sub   { font-size:12px; color:rgba(255,255,255,.25); margin-bottom:20px; }
+
+/* Loading skeleton */
+.biz-skeleton {
+  background: linear-gradient(90deg, rgba(255,255,255,.04) 25%, rgba(255,255,255,.07) 50%, rgba(255,255,255,.04) 75%);
+  background-size: 200% 100%;
+  animation: biz-shimmer 1.4s linear infinite;
+  border-radius:22px; height:260px;
+}
+
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   RENTAL-CARD2 — Premium Rental Card (dynamic)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+.rental-card2 {
+  background: linear-gradient(145deg, rgba(14,14,26,.92), rgba(10,10,20,.95));
+  border: 1px solid rgba(255,255,255,.07);
+  border-radius: 22px;
+  overflow: hidden;
+  position: relative;
+  transition: transform .3s cubic-bezier(.25,0,0,1), box-shadow .3s, border-color .3s;
+  display:flex; flex-direction:column;
+}
+.rental-card2:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 28px 64px rgba(0,0,0,.55);
+  border-color: rgba(240,200,74,.25);
+}
+.rc2-img {
+  height: 150px;
+  display:flex; align-items:center; justify-content:center;
+  font-size:72px;
+  position:relative;
+  background: linear-gradient(135deg, rgba(232,17,46,.06), rgba(10,10,20,.9));
+  border-bottom: 1px solid rgba(255,255,255,.05);
+  overflow: hidden;
+}
+.rc2-img::before {
+  content:'';
+  position:absolute; inset:0;
+  background: radial-gradient(ellipse 60% 80% at 50% 60%, rgba(232,17,46,.08), transparent);
+}
+.rc2-avail {
+  position:absolute; top:12px; right:12px;
+  font-size:9px; font-weight:700; letter-spacing:.07em; text-transform:uppercase;
+  padding:4px 10px; border-radius:20px;
+}
+.rc2-avail.available { background:rgba(74,222,128,.12); border:1px solid rgba(74,222,128,.28); color:#4ade80; }
+.rc2-avail.premium   { background:rgba(240,200,74,.12);  border:1px solid rgba(240,200,74,.28);  color:var(--gold); }
+.rc2-avail.sold_out  { background:rgba(239,68,68,.12);   border:1px solid rgba(239,68,68,.28);   color:#f87171; }
+.rc2-price {
+  position:absolute; bottom:12px; left:12px;
+  background:rgba(0,0,0,.7); backdrop-filter:blur(10px);
+  border:1px solid rgba(255,255,255,.12); border-radius:12px;
+  padding:5px 12px;
+  font-family:var(--font-display); font-size:17px; font-weight:900; color:#fff;
+}
+.rc2-price small { font-size:11px; font-weight:500; color:rgba(255,255,255,.5); }
+
+.rc2-body { padding:16px 18px; flex:1; }
+.rc2-car  { font-family:var(--font-display); font-size:15px; font-weight:800; color:#fff; margin-bottom:3px; }
+.rc2-co   { font-size:12px; color:rgba(255,255,255,.4); margin-bottom:11px; }
+.rc2-specs{ display:flex; flex-wrap:wrap; gap:5px; margin-bottom:14px; }
+.rc2-spec {
+  font-size:11px; font-weight:600; padding:3px 9px; border-radius:8px;
+  background:rgba(255,255,255,.05); border:1px solid rgba(255,255,255,.08);
+  color:rgba(255,255,255,.55);
+}
+
+.rc2-foot { padding:0 14px 14px; display:flex; gap:8px; }
+.rc2-btn {
+  flex:1; display:flex; align-items:center; justify-content:center; gap:6px;
+  padding:10px; border-radius:11px; font-size:13px; font-weight:800;
+  cursor:pointer; font-family:var(--font); transition:all .2s;
+  text-decoration:none; border:none;
+}
+.rc2-btn-call { background:var(--red); color:#fff; }
+.rc2-btn-call:hover { background:var(--red2); transform:scale(1.02); }
+.rc2-btn-wa { background:rgba(37,211,102,.1); border:1px solid rgba(37,211,102,.22); color:#25d366; }
+.rc2-btn-wa:hover { background:rgba(37,211,102,.2); }
+
+/* ── Hero v2 enhancements ── */
+.svc-hero {
+  padding: 52px 24px 44px;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+  max-width: 900px;
+  margin: 0 auto;
+}
+.svc-hero::before {
+  content:'';
+  position:absolute; top:-80px; left:50%; transform:translateX(-50%);
+  width:500px; height:300px;
+  background:radial-gradient(ellipse, rgba(232,17,46,.08), transparent 70%);
+  pointer-events:none;
+}
+.svc-hero h1 {
+  font-family: var(--font-display);
+  font-size: clamp(26px,5vw,44px);
+  font-weight: 900; line-height: 1.15;
+  color: #fff; margin-bottom: 14px;
+}
+.svc-hero p { font-size: 15px; color: rgba(255,255,255,.5); line-height: 1.7; max-width: 520px; margin: 0 auto; }
+
+/* ── Enhanced stats strip ── */
+.svc-stats-strip {
+  display: grid;
+  grid-template-columns: repeat(4,1fr);
+  gap: 1px;
+  background: rgba(255,255,255,.05);
+  border-top: 1px solid rgba(255,255,255,.05);
+  border-bottom: 1px solid rgba(255,255,255,.05);
+  margin-bottom: 36px;
+}
+.svc-stat-item {
+  padding: 20px 16px; text-align:center;
+  background: rgba(10,10,18,.9);
+}
+.svc-stat-num {
+  font-family:var(--font-display); font-size:22px; font-weight:900;
+  color:#fff; margin-bottom:4px; line-height:1;
+}
+.svc-stat-num .r { color:var(--red); }
+.svc-stat-num .g { color:#4ade80; }
+.svc-stat-lab { font-size:11px; color:rgba(255,255,255,.38); text-transform:uppercase; letter-spacing:.06em; }
+
+/* ── Cat count pill ── */
+.cat-count { font-size:9.5px; }
+
+/* ── Section wrapper ── */
+.svc-section {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 24px 60px;
+}
+
+/* ── Responsive ── */
+@media(max-width:700px){
+  .svc-stats-strip { grid-template-columns:repeat(2,1fr); }
+  .biz-join-bar { flex-direction:column; text-align:center; }
+}
+@media(max-width:480px){
+  .bc2-head { gap:10px; }
+  .bc2-logo { width:44px; height:44px; font-size:20px; border-radius:13px; }
+}
+
+
 /* ── ADVERTISE CTA Banner ── */
 .adv-banner {
   background:linear-gradient(135deg, rgba(15,5,20,.98), rgba(8,5,18,.98));
@@ -5618,6 +6334,7 @@ html[dir="ltr"] .foot-acc-arrow { margin-left:auto; margin-right:0; }
 
       <div class="foot-col">
         <div class="foot-col-title" data-i18n="footCol1">מידע</div>
+
         <div class="foot-item accordion" onclick="toggleFootAcc(this)">
           <div class="foot-card-head">
             <div class="foot-card-num">01</div>
@@ -5625,16 +6342,18 @@ html[dir="ltr"] .foot-acc-arrow { margin-left:auto; margin-right:0; }
             <span class="foot-acc-arrow"><svg><use href="#ico-chevron-down"/></svg></span>
           </div>
           <div class="foot-card-body">
-            <p class="foot-card-desc">YOUGO ISRAEL היא פלטפורמת השיווק הדיגיטלי המובילה בישראל לפרסום ומכירת רכבים. אנחנו לא רק מפרסמים — אנחנו מספרים את הסיפור של הרכב שלך.</p>
+            <p class="foot-card-desc">YOUGO ISRAEL היא פלטפורמת השיווק הדיגיטלי המובילה בישראל לפרסום ומכירת רכבים. אנחנו לא רק מפרסמים — אנחנו מספרים את הסיפור של הרכב שלך בצורה שמושכת קונים אמיתיים. הצוות שלנו מורכב ממומחי שיווק דיגיטלי, צלמים ועורכי תוכן שמכירים את שוק הרכב הישראלי לעומק.</p>
             <div class="foot-feat-list">
-              <div class="foot-feat">פועלים מ-2021 עם מוניטין מוכח</div>
-              <div class="foot-feat">מעל 50,000 עוקבים פעילים</div>
-              <div class="foot-feat">מעל 1,000 עסקאות מוצלחות</div>
+              <div class="foot-feat-list-label">מספרים שמדברים</div>
+              <div class="foot-feat">פועלים מ-2021 עם מוניטין מוכח ומתועד</div>
+              <div class="foot-feat">70,000+ עוקבים פעילים בכל הרשתות</div>
+              <div class="foot-feat">3,000+ עסקאות רכב מוצלחות</div>
               <div class="foot-feat">2 מיליון+ צפיות אורגניות בשנה</div>
               <div class="foot-feat">פעילים מאילת עד קריית שמונה</div>
             </div>
           </div>
         </div>
+
         <div class="foot-item accordion" onclick="toggleFootAcc(this)">
           <div class="foot-card-head">
             <div class="foot-card-num">02</div>
@@ -5642,15 +6361,18 @@ html[dir="ltr"] .foot-acc-arrow { margin-left:auto; margin-right:0; }
             <span class="foot-acc-arrow"><svg><use href="#ico-chevron-down"/></svg></span>
           </div>
           <div class="foot-card-body">
-            <p class="foot-card-desc">התהליך פשוט, מהיר ושקוף לחלוטין. מרגע הפנייה ועד העלאה לאוויר — פחות מ-24 שעות.</p>
+            <p class="foot-card-desc">התהליך שלנו פשוט, מהיר ושקוף לחלוטין — ללא בירוקרטיה. מרגע הפנייה ועד שהמודעה עולה לאוויר עוברות פחות מ-24 שעות. אנחנו מלווים אותך בכל שלב ומדווחים על כל פנייה עד לסגירת העסקה.</p>
             <div class="foot-feat-list">
-              <div class="foot-feat">שלב 1 — בחירת חבילה מתאימה</div>
-              <div class="foot-feat">שלב 2 — שליחת תמונות ב-WhatsApp</div>
-              <div class="foot-feat">שלב 3 — עלייה לאוויר בכל הפלטפורמות</div>
-              <div class="foot-feat">שלב 4 — ליווי עד סגירת העסקה</div>
+              <div class="foot-feat-list-label">5 שלבים פשוטים</div>
+              <div class="foot-feat">שלב 1 — בחירת חבילה מתאימה לסוג הרכב</div>
+              <div class="foot-feat">שלב 2 — שליחת תמונות ופרטים ב-WhatsApp</div>
+              <div class="foot-feat">שלב 3 — הצוות מכין תוכן שיווקי מקצועי</div>
+              <div class="foot-feat">שלב 4 — עלייה לאוויר בכל הפלטפורמות</div>
+              <div class="foot-feat">שלב 5 — פניות ישירות + ליווי עד הסגירה</div>
             </div>
           </div>
         </div>
+
         <div class="foot-item accordion" onclick="toggleFootAcc(this)">
           <div class="foot-card-head">
             <div class="foot-card-num">03</div>
@@ -5658,11 +6380,13 @@ html[dir="ltr"] .foot-acc-arrow { margin-left:auto; margin-right:0; }
             <span class="foot-acc-arrow"><svg><use href="#ico-chevron-down"/></svg></span>
           </div>
           <div class="foot-card-body">
-            <p class="foot-card-desc">תוכנית השותפים פתוחה לכולם. הפנה לקוח — קבל עמלה. פשוט כמו שזה נשמע.</p>
+            <p class="foot-card-desc">תוכנית השותפים של YOUGO פתוחה לכולם — מכונאים, ברוקרים, יוצרי תוכן ואנשים פרטיים. אין עלות הצטרפות, אין מינימום. הפנה לקוח — קבל עמלה ישירה לחשבון.</p>
             <div class="foot-feat-list">
-              <div class="foot-feat">עמלה תחרותית על כל לקוח</div>
-              <div class="foot-feat">תשלום חודשי ישיר לחשבון</div>
-              <div class="foot-feat">הצטרפות חינמית — מהיום הראשון</div>
+              <div class="foot-feat-list-label">מה מקבלים</div>
+              <div class="foot-feat">עמלה תחרותית על כל הפנייה שנסגרה</div>
+              <div class="foot-feat">דשבורד אישי למעקב בזמן אמת</div>
+              <div class="foot-feat">תשלום חודשי ישיר לחשבון הבנק</div>
+              <div class="foot-feat">חומרי שיווק מוכנים לשימוש מיידי</div>
             </div>
           </div>
         </div>
@@ -5670,6 +6394,7 @@ html[dir="ltr"] .foot-acc-arrow { margin-left:auto; margin-right:0; }
 
       <div class="foot-col">
         <div class="foot-col-title" data-i18n="footCol2">חבילות פרסום</div>
+
         <a class="foot-item accordion" href="https://yougo-roan.vercel.app" target="_blank" onclick="toggleFootAcc(this);return false;">
           <div class="foot-card-head">
             <div class="foot-card-num">01</div>
@@ -5677,15 +6402,19 @@ html[dir="ltr"] .foot-acc-arrow { margin-left:auto; margin-right:0; }
             <span class="foot-acc-arrow"><svg><use href="#ico-chevron-down"/></svg></span>
           </div>
           <div class="foot-card-body">
-            <p class="foot-card-desc">הפתרון הבסיסי והכי פופולרי — לאדם הפרטי שרוצה למכור מהר.</p>
+            <p class="foot-card-desc">הפתרון הבסיסי והכי פופולרי — לאדם הפרטי שרוצה למכור מהר ובמחיר הטוב ביותר. אנחנו מטפלים בכל תהליך השיווק עבורך, מהתמונה הראשונה ועד הלקוח הראשון.</p>
             <div class="foot-feat-list">
-              <div class="foot-feat">פרסום בכל הרשתות החברתיות</div>
-              <div class="foot-feat">עד 10 תמונות מעובדות</div>
-              <div class="foot-feat">שיתוף ב-50+ קהילות רכב</div>
+              <div class="foot-feat-list-label">כלול בחבילה</div>
+              <div class="foot-feat">פרסום בפיד, סטורי וריל בכל הרשתות</div>
+              <div class="foot-feat">עד 10 תמונות מעובדות ומוכנות לפרסום</div>
+              <div class="foot-feat">כיתוב שיווקי מושך בעברית וערבית</div>
+              <div class="foot-feat">שיתוף ב-50+ קהילות רכב פעילות</div>
+              <div class="foot-feat">דיווח על כל פנייה שהתקבלה</div>
             </div>
             <div class="foot-pkg-tag popular">הכי פופולרי</div>
           </div>
         </a>
+
         <a class="foot-item accordion" href="https://yougo-roan.vercel.app" target="_blank" onclick="toggleFootAcc(this);return false;">
           <div class="foot-card-head">
             <div class="foot-card-num gold">02</div>
@@ -5693,15 +6422,19 @@ html[dir="ltr"] .foot-acc-arrow { margin-left:auto; margin-right:0; }
             <span class="foot-acc-arrow"><svg><use href="#ico-chevron-down"/></svg></span>
           </div>
           <div class="foot-card-body">
-            <p class="foot-card-desc">לרכבי יוקרה — BMW, Mercedes, Porsche. פרסום ברמה אחרת.</p>
+            <p class="foot-card-desc">חבילת הפרמיום לרכבי יוקרה — BMW, Mercedes, Porsche, Audi ועוד. כי רכב שעולה מאות אלפי שקלים מגיע לפרסום ברמה אחרת לחלוטין, עם תשומת לב לכל פרט.</p>
             <div class="foot-feat-list">
-              <div class="foot-feat">סרטון סינמטי + עריכה מקצועית</div>
-              <div class="foot-feat">קידום ממומן ממוקד</div>
-              <div class="foot-feat">מנהל קמפיין אישי</div>
+              <div class="foot-feat-list-label">כלול בחבילה</div>
+              <div class="foot-feat">סרטון רכב סינמטי + עריכה מקצועית</div>
+              <div class="foot-feat">ריל + סטורי ממומן עם תקציב פרסום</div>
+              <div class="foot-feat">קידום ממומן ממוקד לפי גיל ואזור</div>
+              <div class="foot-feat">מנהל קמפיין אישי עד המכירה</div>
+              <div class="foot-feat">דוח ביצועים שבועי מפורט</div>
             </div>
             <div class="foot-pkg-tag premium">פרמיום</div>
           </div>
         </a>
+
         <a class="foot-item accordion" href="https://yougo-roan.vercel.app" target="_blank" onclick="toggleFootAcc(this);return false;">
           <div class="foot-card-head">
             <div class="foot-card-num">03</div>
@@ -5709,14 +6442,18 @@ html[dir="ltr"] .foot-acc-arrow { margin-left:auto; margin-right:0; }
             <span class="foot-acc-arrow"><svg><use href="#ico-chevron-down"/></svg></span>
           </div>
           <div class="foot-card-body">
-            <p class="foot-card-desc">שני רכבים? פרסום מלא לשניהם בחיסכון של עד 35%.</p>
+            <p class="foot-card-desc">מוכרים שני רכבים? פרסום מלא לשניהם במחיר שמשתלם בהרבה מרכישת שתי חבילות נפרדות. אידיאלי לזוגות ומשפחות.</p>
             <div class="foot-feat-list">
-              <div class="foot-feat">פרסום מלא לשני הרכבים</div>
-              <div class="foot-feat">חיסכון עד 35%</div>
+              <div class="foot-feat-list-label">כלול בחבילה</div>
+              <div class="foot-feat">פרסום מלא ומקצועי לכל אחד מהרכבים</div>
+              <div class="foot-feat">ניהול משולב של שני הקמפיינים</div>
+              <div class="foot-feat">חיסכון של עד 35% לעומת הזמנה נפרדת</div>
+              <div class="foot-feat">מעקב ודיווח משולב על שני הרכבים</div>
             </div>
             <div class="foot-pkg-tag deal">חסכוני</div>
           </div>
         </a>
+
         <a class="foot-item accordion" href="https://yougo-roan.vercel.app" target="_blank" onclick="toggleFootAcc(this);return false;">
           <div class="foot-card-head">
             <div class="foot-card-num">04</div>
@@ -5724,14 +6461,18 @@ html[dir="ltr"] .foot-acc-arrow { margin-left:auto; margin-right:0; }
             <span class="foot-acc-arrow"><svg><use href="#ico-chevron-down"/></svg></span>
           </div>
           <div class="foot-card-body">
-            <p class="foot-card-desc">מסלול לסוכנויות ויבואנים — פתרון שמחליף מחלקת שיווק.</p>
+            <p class="foot-card-desc">מסלול ייעודי לסוכנויות רכב, יבואנים ועוסקים — פתרון אחד שמחליף מחלקת שיווק שלמה בעלות חסכונית ותוצאות מוכחות.</p>
             <div class="foot-feat-list">
-              <div class="foot-feat">פרסום בלתי מוגבל</div>
-              <div class="foot-feat">מנהל תיק לקוח 24/7</div>
+              <div class="foot-feat-list-label">כלול במסלול</div>
+              <div class="foot-feat">פרסום בלתי מוגבל לכל מלאי הרכבים</div>
+              <div class="foot-feat">דף עסקי מנוהל, ממותג ומקודם</div>
+              <div class="foot-feat">מנהל תיק לקוח אישי ונגיש 24/7</div>
+              <div class="foot-feat">ניתוח ביצועים חודשי + המלצות אסטרטגיות</div>
             </div>
             <div class="foot-pkg-tag biz">לעסקים</div>
           </div>
         </a>
+
         <a class="foot-item accordion" href="https://yougo-roan.vercel.app" target="_blank" onclick="toggleFootAcc(this);return false;">
           <div class="foot-card-head">
             <div class="foot-card-num">05</div>
@@ -5739,10 +6480,12 @@ html[dir="ltr"] .foot-acc-arrow { margin-left:auto; margin-right:0; }
             <span class="foot-acc-arrow"><svg><use href="#ico-chevron-down"/></svg></span>
           </div>
           <div class="foot-card-body">
-            <p class="foot-card-desc">משאיות, טרקטורים, ציוד כבד — פרסום לקהל המקצועי.</p>
+            <p class="foot-card-desc">פתרון ייעודי לרכבים מסחריים וציוד כבד — פרסום ממוקד בפני הקהל המקצועי שמחפש בדיוק מה שיש לך.</p>
             <div class="foot-feat-list">
-              <div class="foot-feat">30+ קהילות מקצועיות</div>
-              <div class="foot-feat">חשיפה לרוכשי צי עסקיים</div>
+              <div class="foot-feat-list-label">מה מכוסה</div>
+              <div class="foot-feat">משאיות, טרקטורים, רכבי עבודה, ציוד כבד</div>
+              <div class="foot-feat">פרסום ב-30+ קהילות מקצועיות ועסקיות</div>
+              <div class="foot-feat">חשיפה ישירה לרוכשי צי ולקונים עסקיים</div>
             </div>
           </div>
         </a>
@@ -5750,6 +6493,7 @@ html[dir="ltr"] .foot-acc-arrow { margin-left:auto; margin-right:0; }
 
       <div class="foot-col">
         <div class="foot-col-title" data-i18n="footCol3">משפטי ואחר</div>
+
         <div class="foot-item accordion" onclick="toggleFootAcc(this)">
           <div class="foot-card-head">
             <div class="foot-card-num">01</div>
@@ -5757,14 +6501,17 @@ html[dir="ltr"] .foot-acc-arrow { margin-left:auto; margin-right:0; }
             <span class="foot-acc-arrow"><svg><use href="#ico-chevron-down"/></svg></span>
           </div>
           <div class="foot-card-body">
-            <p class="foot-card-desc">תנאי השימוש המחייבים — הגדרה ברורה של מה מותר ומה אסור.</p>
+            <p class="foot-card-desc">תנאי השימוש המחייבים של פלטפורמת YOUGO CARS — הגדרה ברורה של מה מותר, מה אסור, ומה האחריות של כל צד בתהליך הפרסום והמכירה.</p>
             <div class="foot-feat-list">
-              <div class="foot-feat">כללי פרסום ותוכן מותר</div>
-              <div class="foot-feat">מדיניות ביטול והחזרים</div>
+              <div class="foot-feat-list-label">מה מכוסה</div>
+              <div class="foot-feat">כללי פרסום ותוכן מותר בפלטפורמה</div>
+              <div class="foot-feat">מדיניות ביטול עסקה והחזרים כספיים</div>
               <div class="foot-feat">אחריות המפרסם לדיוק הפרטים</div>
+              <div class="foot-feat">תנאי שימוש בתמונות ותכני פרסום</div>
             </div>
           </div>
         </div>
+
         <div class="foot-item accordion" onclick="toggleFootAcc(this)">
           <div class="foot-card-head">
             <div class="foot-card-num">02</div>
@@ -5772,14 +6519,17 @@ html[dir="ltr"] .foot-acc-arrow { margin-left:auto; margin-right:0; }
             <span class="foot-acc-arrow"><svg><use href="#ico-chevron-down"/></svg></span>
           </div>
           <div class="foot-card-body">
-            <p class="foot-card-desc">הפרטיות שלך חשובה לנו. כל מידע מוצפן ולא מועבר לגורמים חיצוניים.</p>
+            <p class="foot-card-desc">הפרטיות שלך חשובה לנו מאוד. כל מידע שנמסר לנו מוצפן ושמור בצורה מאובטחת — ולא מועבר לאף גורם חיצוני ללא רשותך המפורשת.</p>
             <div class="foot-feat-list">
-              <div class="foot-feat">עמידה בתקן GDPR</div>
-              <div class="foot-feat">הצפנה מקצה לקצה</div>
-              <div class="foot-feat">זכות מחיקה בכל עת</div>
+              <div class="foot-feat-list-label">ההתחייבויות שלנו</div>
+              <div class="foot-feat">עמידה מלאה בתקן GDPR האירופאי</div>
+              <div class="foot-feat">הצפנה מקצה לקצה של כל הנתונים</div>
+              <div class="foot-feat">אין מכירה או שיתוף מידע עם שלישיים</div>
+              <div class="foot-feat">זכות מחיקה מלאה של הנתונים בכל עת</div>
             </div>
           </div>
         </div>
+
         <div class="foot-item accordion" onclick="toggleFootAcc(this)">
           <div class="foot-card-head">
             <div class="foot-card-num">03</div>
@@ -5787,14 +6537,17 @@ html[dir="ltr"] .foot-acc-arrow { margin-left:auto; margin-right:0; }
             <span class="foot-acc-arrow"><svg><use href="#ico-chevron-down"/></svg></span>
           </div>
           <div class="foot-card-body">
-            <p class="foot-card-desc">מעדכנים אותך בכל שלב — מרגע ההגשה ועד סגירת העסקה.</p>
+            <p class="foot-card-desc">פרסמת רכב ורוצה לדעת מה קורה? אנחנו שקופים לחלוטין ומעדכנים אותך בכל שלב — מרגע ההגשה ועד לסגירת העסקה.</p>
             <div class="foot-feat-list">
-              <div class="foot-feat">עדכון מיידי ב-WhatsApp</div>
-              <div class="foot-feat">נתוני צפיות בזמן אמת</div>
-              <div class="foot-feat">אפשרות עדכון בכל עת</div>
+              <div class="foot-feat-list-label">מה תקבל</div>
+              <div class="foot-feat">עדכון סטטוס מיידי ב-WhatsApp</div>
+              <div class="foot-feat">נתוני צפיות ופניות בזמן אמת</div>
+              <div class="foot-feat">התראה אוטומטית על כל פנייה חדשה</div>
+              <div class="foot-feat">סיכום שבועי של ביצועי הפרסום שלך</div>
             </div>
           </div>
         </div>
+
         <div class="foot-item accordion" onclick="toggleFootAcc(this);adminLogin()">
           <div class="foot-card-head">
             <div class="foot-card-num">04</div>
@@ -5802,10 +6555,13 @@ html[dir="ltr"] .foot-acc-arrow { margin-left:auto; margin-right:0; }
             <span class="foot-acc-arrow"><svg><use href="#ico-chevron-down"/></svg></span>
           </div>
           <div class="foot-card-body">
-            <p class="foot-card-desc">ממשק ניהול מאובטח למנהלי המערכת.</p>
+            <p class="foot-card-desc">ממשק ניהול מאובטח ומתקדם עבור מנהלי המערכת — שליטה מלאה וריכוזית על כל פעילות הפלטפורמה בזמן אמת.</p>
             <div class="foot-feat-list">
-              <div class="foot-feat">אישור ועריכת מודעות</div>
-              <div class="foot-feat">כניסה מאובטחת</div>
+              <div class="foot-feat-list-label">הרשאות מנהל</div>
+              <div class="foot-feat">אישור, עריכה ודחיית מודעות בלחיצה</div>
+              <div class="foot-feat">ניהול משתמשים, הרשאות ורמות גישה</div>
+              <div class="foot-feat">לוח סטטיסטיקות חי ומפורט</div>
+              <div class="foot-feat">כניסה מאובטחת עם סיסמה ייעודית</div>
             </div>
           </div>
         </div>
@@ -5829,440 +6585,315 @@ html[dir="ltr"] .foot-acc-arrow { margin-left:auto; margin-right:0; }
      ═══════════════════════════════════════════════════════ -->
 <div class="svc-page" id="pageGarage">
   <button class="svc-back" onclick="closeSvcPage('pageGarage')">
-    <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M15 18l-6-6 6-6"/></svg>
-    חזרה לעמוד הראשי
+    <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"/></svg> חזרה לעמוד הראשי
   </button>
 
-  <!-- Hero -->
   <div class="svc-hero">
     <div class="svc-hero-badge">
-      <svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>
-      מדריך מוסכים מומלצים
+      <svg width="11" height="11" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>
+      מדריך עסקי רכב
     </div>
-    <h1>מצא את <span class="accent">המוסך הכי טוב</span><br>באזורך</h1>
-    <p>רשימת מוסכים מאומתים ומומלצים מכל רחבי ישראל — בחר את האזור שלך ומצא מקצוענים אמיתיים</p>
-    <div class="region-tabs">
-      <button class="region-tab active" onclick="switchRegion('north')">
-        <div class="rtab-icon">🌲</div>
-        <span>צפון</span>
-        <span class="rtab-count">12 מוסכים</span>
-      </button>
-      <button class="region-tab" onclick="switchRegion('center')">
-        <div class="rtab-icon">🏙️</div>
-        <span>מרכז</span>
-        <span class="rtab-count">28 מוסכים</span>
-      </button>
-      <button class="region-tab" onclick="switchRegion('south')">
-        <div class="rtab-icon">🌵</div>
-        <span>דרום</span>
-        <span class="rtab-count">9 מוסכים</span>
-      </button>
-    </div>
+    <h1>מצא עסקי רכב <span class="accent">מומלצים</span><br>באזורך</h1>
+    <p>מוסכים, מגרשים, מימון, גרירה ועוד — כל שירותי הרכב שאתה צריך, מסודרים לפי קטגוריה ואזור</p>
   </div>
 
-  <!-- Stats Strip -->
   <div class="svc-stats-strip">
-    <div class="svc-stat-item">
-      <div class="svc-stat-num"><span class="r">49</span>+</div>
-      <div class="svc-stat-lab">מוסכים רשומים</div>
-    </div>
-    <div class="svc-stat-item">
-      <div class="svc-stat-num"><span class="r">3</span> אזורים</div>
-      <div class="svc-stat-lab">בכל הארץ</div>
-    </div>
-    <div class="svc-stat-item">
-      <div class="svc-stat-num">✓ <span class="r">100%</span></div>
-      <div class="svc-stat-lab">מוסכים מאומתים</div>
-    </div>
-    <div class="svc-stat-item">
-      <div class="svc-stat-num"><span class="g">24/7</span></div>
-      <div class="svc-stat-lab">שירות חירום</div>
+    <div class="svc-stat-item"><div class="svc-stat-num" id="biz-stat-total"><span class="r">—</span></div><div class="svc-stat-lab">עסקים רשומים</div></div>
+    <div class="svc-stat-item"><div class="svc-stat-num"><span class="g">5</span></div><div class="svc-stat-lab">קטגוריות</div></div>
+    <div class="svc-stat-item"><div class="svc-stat-num">✓ <span class="r">100%</span></div><div class="svc-stat-lab">מאומתים</div></div>
+    <div class="svc-stat-item"><div class="svc-stat-num"><span class="g">3</span></div><div class="svc-stat-lab">אזורים</div></div>
+  </div>
+
+  <!-- CATEGORY TABS -->
+  <div class="biz-cat-wrap">
+    <div class="biz-cat-tabs" id="bizCatTabs">
+      <button class="biz-cat-tab active" onclick="switchBizCat2('mosek')">
+        <div class="cat-icon">🔧</div><span>מוסכים</span>
+        <span class="cat-count" id="cnt-mosek">—</span>
+      </button>
+      <button class="biz-cat-tab" onclick="switchBizCat2('migrash')">
+        <div class="cat-icon">🚗</div><span>מגרשים</span>
+        <span class="cat-count" id="cnt-migrash">—</span>
+      </button>
+      <button class="biz-cat-tab" onclick="switchBizCat2('mimun')">
+        <div class="cat-icon">💰</div><span>מימון</span>
+        <span class="cat-count" id="cnt-mimun">—</span>
+      </button>
+      <button class="biz-cat-tab" onclick="switchBizCat2('grira')">
+        <div class="cat-icon">🚛</div><span>גרירה</span>
+        <span class="cat-count" id="cnt-grira">—</span>
+      </button>
+      <button class="biz-cat-tab" onclick="switchBizCat2('pach')">
+        <div class="cat-icon">🎨</div><span>פח וצבע</span>
+        <span class="cat-count" id="cnt-pach">—</span>
+      </button>
     </div>
   </div>
 
-  <!-- North Region -->
   <div class="svc-section">
-    <div class="region-panel active" id="region-north">
-      <div class="svc-sec-title">🌲 מוסכים — צפון הארץ</div>
-      <div class="svc-grid">
-        <div class="biz-card">
-          <div class="biz-card-header">
-            <div class="biz-logo"><svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg></div>
-            <div><div class="biz-name">מוסך חיפה פרמיום</div><div class="biz-type">טיפול כללי · פחחות</div></div>
-          </div>
-          <div class="biz-info">
-            <div class="biz-info-row"><svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg><span>רחוב הנמל 14, חיפה</span></div>
-            <div class="biz-info-row"><svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12 19.79 19.79 0 0 1 1.61 3.41 2 2 0 0 1 3.6 1.21h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 10.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 17.92z"/></svg><span>050-000-0001</span></div>
-          </div>
-          <div class="biz-tags"><span class="biz-tag">טיפולים שוטפים</span><span class="biz-tag">פחחות צבע</span><span class="biz-tag">מיזוג אוויר</span></div>
-          <div class="biz-actions">
-            <a class="biz-btn biz-btn-primary" href="tel:0500000001"><svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12 19.79 19.79 0 0 1 1.61 3.41 2 2 0 0 1 3.6 1.21h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 10.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 17.92z"/></svg> התקשר</a>
-            <a class="biz-btn biz-btn-ghost" href="https://wa.me/9720500000001" target="_blank"><svg width="13" height="13" fill="currentColor" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.127.558 4.122 1.532 5.856L.057 23.49a.5.5 0 0 0 .617.608l5.76-1.504A11.943 11.943 0 0 0 12 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 22c-1.99 0-3.85-.552-5.44-1.51l-.39-.23-4.04 1.056 1.072-3.924-.253-.404A10 10 0 0 1 2 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10z"/></svg> וואטסאפ</a>
-          </div>
-        </div>
-
-        <div class="biz-card">
-          <div class="biz-card-header">
-            <div class="biz-logo gold-logo"><svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg></div>
-            <div><div class="biz-name">מוסך נצרת אקספרס</div><div class="biz-type gold-type">מומחה מנועים · בדיקת רכב</div></div>
-          </div>
-          <div class="biz-info">
-            <div class="biz-info-row"><svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg><span>האתר התעשייתי, נצרת</span></div>
-            <div class="biz-info-row"><svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12 19.79 19.79 0 0 1 1.61 3.41 2 2 0 0 1 3.6 1.21h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 10.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 17.92z"/></svg><span>052-000-0002</span></div>
-          </div>
-          <div class="biz-tags"><span class="biz-tag">מנועים</span><span class="biz-tag">בדיקה לפני קנייה</span><span class="biz-tag">חשמל רכב</span></div>
-          <div class="biz-actions">
-            <a class="biz-btn biz-btn-primary" href="tel:0520000002"><svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12 19.79 19.79 0 0 1 1.61 3.41 2 2 0 0 1 3.6 1.21h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 10.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 17.92z"/></svg> התקשר</a>
-            <a class="biz-btn biz-btn-ghost" href="https://wa.me/9720520000002" target="_blank"><svg width="13" height="13" fill="currentColor" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.127.558 4.122 1.532 5.856L.057 23.49a.5.5 0 0 0 .617.608l5.76-1.504A11.943 11.943 0 0 0 12 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 22c-1.99 0-3.85-.552-5.44-1.51l-.39-.23-4.04 1.056 1.072-3.924-.253-.404A10 10 0 0 1 2 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10z"/></svg> וואטסאפ</a>
-          </div>
-        </div>
-
-        <div class="biz-card" style="border-style:dashed;border-color:rgba(232,17,46,.3);background:rgba(232,17,46,.03);cursor:default;">
-          <div style="text-align:center;padding:20px 0;">
-            <div style="width:52px;height:52px;border-radius:16px;background:rgba(232,17,46,.1);display:flex;align-items:center;justify-content:center;margin:0 auto 14px;color:var(--red);">
-              <svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg>
-            </div>
-            <div style="font-size:15px;font-weight:800;color:#fff;margin-bottom:6px;">פרסם את המוסך שלך</div>
-            <div style="font-size:12px;color:var(--t2);line-height:1.6;margin-bottom:16px;">הגע ללקוחות חדשים באזורך<br>החל מ־<strong style="color:var(--red)">₪990</strong> / חודש</div>
-            <button class="biz-btn biz-btn-primary" onclick="showContactModal('garage')" style="margin:0 auto;max-width:160px;">
-              <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg> הצטרף עכשיו
-            </button>
-          </div>
-        </div>
-      </div>
-
-      <!-- Advertise Banner -->
-      <div class="adv-banner">
-        <div class="adv-banner-badge">🏆 פרסום עסקי</div>
-        <h2>יש לך <span class="accent">מוסך?</span> פרסם אותו פה!</h2>
-        <p>הגע לאלפי לקוחות פוטנציאלים שמחפשים מוסך באזורך. מחיר קבוע ללא הפתעות.</p>
-        <div class="pricing-grid">
-          <div class="price-card">
-            <div class="pkg-name">בסיסי</div>
-            <div class="pkg-price">₪<span style="font-size:34px;color:#fff">990</span></div>
-            <div class="pkg-period">לחודש</div>
-            <ul>
-              <li>כרטיס עסק בבסיסי</li>
-              <li>כפתור התקשרות</li>
-              <li>הצגה בחיפוש אזורי</li>
-              <li>עד 3 תמונות</li>
-            </ul>
-          </div>
-          <div class="price-card featured">
-            <div class="feat-badge">🔥 הכי פופולרי</div>
-            <div class="pkg-name">פרו</div>
-            <div class="pkg-price">₪<span style="font-size:34px;color:#fff">1,500</span></div>
-            <div class="pkg-period">לחודש</div>
-            <ul>
-              <li>כרטיס עסק מורחב</li>
-              <li>וואטסאפ ישיר</li>
-              <li>עדיפות בתוצאות</li>
-              <li>עד 10 תמונות</li>
-              <li>לוגו + תיאור עסק</li>
-            </ul>
-          </div>
-          <div class="price-card">
-            <div class="pkg-name">שנתי</div>
-            <div class="pkg-price">₪<span style="font-size:34px;color:#fff">1,200</span></div>
-            <div class="pkg-period">לחודש · חיוב שנתי</div>
-            <ul>
-              <li>כל מה שב-פרו</li>
-              <li>חיסכון של 20%</li>
-              <li>תג "מומלץ"</li>
-              <li>סטטיסטיקות חשיפה</li>
-            </ul>
-          </div>
-        </div>
-        <button class="btn btn-red" onclick="showContactModal('garage')" style="font-size:15px;padding:14px 36px;">
-          <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg>
-          פרסם את המוסך שלך עכשיו
-        </button>
+    
+  <div class="biz-cat-panel active" id="cat-mosek">
+    <div class="region-tabs">
+      <button class="region-tab active" onclick="switchBizRegion2('mosek','north')">
+        <div class="rtab-icon">🌲</div><span>צפון</span>
+      </button>
+      <button class="region-tab" onclick="switchBizRegion2('mosek','center')">
+        <div class="rtab-icon">🏙️</div><span>מרכז</span>
+      </button>
+      <button class="region-tab" onclick="switchBizRegion2('mosek','south')">
+        <div class="rtab-icon">🌵</div><span>דרום</span>
+      </button>
+    </div>
+    
+    <div class="region-panel active" id="biz-panel-mosek-north">
+      <div class="svc-sec-title">🌲 צפון הארץ</div>
+      <div class="svc-grid" id="biz-grid-mosek-north">
+        <div class="biz-skeleton"></div><div class="biz-skeleton"></div><div class="biz-skeleton"></div>
       </div>
     </div>
-
-    <!-- Center Region -->
-    <div class="region-panel" id="region-center">
-      <div class="svc-sec-title">🏙️ מוסכים — מרכז הארץ</div>
-      <div class="svc-grid">
-        <div class="biz-card">
-          <div class="biz-card-header">
-            <div class="biz-logo"><svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg></div>
-            <div><div class="biz-name">מוסך תל אביב מרכז</div><div class="biz-type">טיפול כללי · בדיקת רכב</div></div>
-          </div>
-          <div class="biz-info">
-            <div class="biz-info-row"><svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg><span>רחוב קרליבך 18, ת"א</span></div>
-            <div class="biz-info-row"><svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12 19.79 19.79 0 0 1 1.61 3.41 2 2 0 0 1 3.6 1.21h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 10.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 17.92z"/></svg><span>054-000-0010</span></div>
-          </div>
-          <div class="biz-tags"><span class="biz-tag">טיפולים שוטפים</span><span class="biz-tag">בדיקה לפני קנייה</span><span class="biz-tag">ABS/ESP</span></div>
-          <div class="biz-actions">
-            <a class="biz-btn biz-btn-primary" href="tel:0540000010"><svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12 19.79 19.79 0 0 1 1.61 3.41 2 2 0 0 1 3.6 1.21h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 10.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 17.92z"/></svg> התקשר</a>
-            <a class="biz-btn biz-btn-ghost" href="https://wa.me/9720540000010" target="_blank"><svg width="13" height="13" fill="currentColor" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.127.558 4.122 1.532 5.856L.057 23.49a.5.5 0 0 0 .617.608l5.76-1.504A11.943 11.943 0 0 0 12 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 22c-1.99 0-3.85-.552-5.44-1.51l-.39-.23-4.04 1.056 1.072-3.924-.253-.404A10 10 0 0 1 2 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10z"/></svg> וואטסאפ</a>
-          </div>
-        </div>
-
-        <div class="biz-card">
-          <div class="biz-card-header">
-            <div class="biz-logo blue-logo"><svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg></div>
-            <div><div class="biz-name">מוסך רמת גן טק</div><div class="biz-type blue-type">היברידי · חשמלי · קיאה/יונדאי</div></div>
-          </div>
-          <div class="biz-info">
-            <div class="biz-info-row"><svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg><span>רחוב ז'בוטינסקי 32, רמת גן</span></div>
-            <div class="biz-info-row"><svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12 19.79 19.79 0 0 1 1.61 3.41 2 2 0 0 1 3.6 1.21h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 10.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 17.92z"/></svg><span>058-000-0011</span></div>
-          </div>
-          <div class="biz-tags"><span class="biz-tag">רכב חשמלי</span><span class="biz-tag">היברידי</span><span class="biz-tag">אבחון ממוחשב</span></div>
-          <div class="biz-actions">
-            <a class="biz-btn biz-btn-primary" href="tel:0580000011"><svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12 19.79 19.79 0 0 1 1.61 3.41 2 2 0 0 1 3.6 1.21h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 10.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 17.92z"/></svg> התקשר</a>
-            <a class="biz-btn biz-btn-ghost" href="https://wa.me/9720580000011" target="_blank"><svg width="13" height="13" fill="currentColor" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.127.558 4.122 1.532 5.856L.057 23.49a.5.5 0 0 0 .617.608l5.76-1.504A11.943 11.943 0 0 0 12 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 22c-1.99 0-3.85-.552-5.44-1.51l-.39-.23-4.04 1.056 1.072-3.924-.253-.404A10 10 0 0 1 2 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10z"/></svg> וואטסאפ</a>
-          </div>
-        </div>
-
-        <div class="biz-card" style="border-style:dashed;border-color:rgba(232,17,46,.3);background:rgba(232,17,46,.03);cursor:default;">
-          <div style="text-align:center;padding:20px 0;">
-            <div style="width:52px;height:52px;border-radius:16px;background:rgba(232,17,46,.1);display:flex;align-items:center;justify-content:center;margin:0 auto 14px;color:var(--red);">
-              <svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg>
-            </div>
-            <div style="font-size:15px;font-weight:800;color:#fff;margin-bottom:6px;">פרסם את המוסך שלך</div>
-            <div style="font-size:12px;color:var(--t2);line-height:1.6;margin-bottom:16px;">הגע ללקוחות חדשים באזורך<br>החל מ־<strong style="color:var(--red)">₪990</strong> / חודש</div>
-            <button class="biz-btn biz-btn-primary" onclick="showContactModal('garage')" style="margin:0 auto;max-width:160px;">
-              <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg> הצטרף עכשיו
-            </button>
-          </div>
-        </div>
-      </div>
-
-      <div class="adv-banner">
-        <div class="adv-banner-badge">🏆 פרסום עסקי</div>
-        <h2>יש לך <span class="accent">מוסך?</span> פרסם אותו פה!</h2>
-        <p>הגע לאלפי לקוחות פוטנציאלים שמחפשים מוסך באזורך. מחיר קבוע ללא הפתעות.</p>
-        <div class="pricing-grid">
-          <div class="price-card"><div class="pkg-name">בסיסי</div><div class="pkg-price">₪<span style="font-size:34px;color:#fff">990</span></div><div class="pkg-period">לחודש</div><ul><li>כרטיס עסק בסיסי</li><li>כפתור התקשרות</li><li>הצגה בחיפוש אזורי</li><li>עד 3 תמונות</li></ul></div>
-          <div class="price-card featured"><div class="feat-badge">🔥 הכי פופולרי</div><div class="pkg-name">פרו</div><div class="pkg-price">₪<span style="font-size:34px;color:#fff">1,500</span></div><div class="pkg-period">לחודש</div><ul><li>כרטיס עסק מורחב</li><li>וואטסאפ ישיר</li><li>עדיפות בתוצאות</li><li>עד 10 תמונות</li><li>לוגו + תיאור עסק</li></ul></div>
-          <div class="price-card"><div class="pkg-name">שנתי</div><div class="pkg-price">₪<span style="font-size:34px;color:#fff">1,200</span></div><div class="pkg-period">לחודש · חיוב שנתי</div><ul><li>כל מה שב-פרו</li><li>חיסכון של 20%</li><li>תג "מומלץ"</li><li>סטטיסטיקות חשיפה</li></ul></div>
-        </div>
-        <button class="btn btn-red" onclick="showContactModal('garage')" style="font-size:15px;padding:14px 36px;">
-          <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg> פרסם את המוסך שלך עכשיו
-        </button>
+    
+    <div class="region-panel " id="biz-panel-mosek-center">
+      <div class="svc-sec-title">🏙️ מרכז הארץ</div>
+      <div class="svc-grid" id="biz-grid-mosek-center">
+        <div class="biz-skeleton"></div><div class="biz-skeleton"></div><div class="biz-skeleton"></div>
       </div>
     </div>
-
-    <!-- South Region -->
-    <div class="region-panel" id="region-south">
-      <div class="svc-sec-title">🌵 מוסכים — דרום הארץ</div>
-      <div class="svc-grid">
-        <div class="biz-card">
-          <div class="biz-card-header">
-            <div class="biz-logo gold-logo"><svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg></div>
-            <div><div class="biz-name">מוסך באר שבע פלוס</div><div class="biz-type gold-type">טיפול כללי · פגושים</div></div>
-          </div>
-          <div class="biz-info">
-            <div class="biz-info-row"><svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg><span>רחוב הנגב 5, באר שבע</span></div>
-            <div class="biz-info-row"><svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12 19.79 19.79 0 0 1 1.61 3.41 2 2 0 0 1 3.6 1.21h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 10.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 17.92z"/></svg><span>056-000-0020</span></div>
-          </div>
-          <div class="biz-tags"><span class="biz-tag">פגושים</span><span class="biz-tag">טיפולים</span><span class="biz-tag">מיזוג אוויר</span></div>
-          <div class="biz-actions">
-            <a class="biz-btn biz-btn-primary" href="tel:0560000020"><svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12 19.79 19.79 0 0 1 1.61 3.41 2 2 0 0 1 3.6 1.21h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 10.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 17.92z"/></svg> התקשר</a>
-            <a class="biz-btn biz-btn-ghost" href="https://wa.me/9720560000020" target="_blank"><svg width="13" height="13" fill="currentColor" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.127.558 4.122 1.532 5.856L.057 23.49a.5.5 0 0 0 .617.608l5.76-1.504A11.943 11.943 0 0 0 12 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 22c-1.99 0-3.85-.552-5.44-1.51l-.39-.23-4.04 1.056 1.072-3.924-.253-.404A10 10 0 0 1 2 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10z"/></svg> וואטסאפ</a>
-          </div>
-        </div>
-
-        <div class="biz-card" style="border-style:dashed;border-color:rgba(232,17,46,.3);background:rgba(232,17,46,.03);cursor:default;">
-          <div style="text-align:center;padding:20px 0;">
-            <div style="width:52px;height:52px;border-radius:16px;background:rgba(232,17,46,.1);display:flex;align-items:center;justify-content:center;margin:0 auto 14px;color:var(--red);">
-              <svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg>
-            </div>
-            <div style="font-size:15px;font-weight:800;color:#fff;margin-bottom:6px;">פרסם את המוסך שלך</div>
-            <div style="font-size:12px;color:var(--t2);line-height:1.6;margin-bottom:16px;">הגע ללקוחות חדשים באזורך<br>החל מ־<strong style="color:var(--red)">₪990</strong> / חודש</div>
-            <button class="biz-btn biz-btn-primary" onclick="showContactModal('garage')" style="margin:0 auto;max-width:160px;">
-              <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg> הצטרף עכשיו
-            </button>
-          </div>
-        </div>
+    
+    <div class="region-panel " id="biz-panel-mosek-south">
+      <div class="svc-sec-title">🌵 דרום הארץ</div>
+      <div class="svc-grid" id="biz-grid-mosek-south">
+        <div class="biz-skeleton"></div><div class="biz-skeleton"></div><div class="biz-skeleton"></div>
       </div>
-      <div class="adv-banner">
-        <div class="adv-banner-badge">🏆 פרסום עסקי</div>
-        <h2>יש לך <span class="accent">מוסך?</span> פרסם אותו פה!</h2>
-        <p>הגע לאלפי לקוחות פוטנציאלים שמחפשים מוסך באזורך. מחיר קבוע ללא הפתעות.</p>
-        <div class="pricing-grid">
-          <div class="price-card"><div class="pkg-name">בסיסי</div><div class="pkg-price">₪<span style="font-size:34px;color:#fff">990</span></div><div class="pkg-period">לחודש</div><ul><li>כרטיס עסק בסיסי</li><li>כפתור התקשרות</li><li>הצגה בחיפוש אזורי</li><li>עד 3 תמונות</li></ul></div>
-          <div class="price-card featured"><div class="feat-badge">🔥 הכי פופולרי</div><div class="pkg-name">פרו</div><div class="pkg-price">₪<span style="font-size:34px;color:#fff">1,500</span></div><div class="pkg-period">לחודש</div><ul><li>כרטיס עסק מורחב</li><li>וואטסאפ ישיר</li><li>עדיפות בתוצאות</li><li>עד 10 תמונות</li><li>לוגו + תיאור עסק</li></ul></div>
-          <div class="price-card"><div class="pkg-name">שנתי</div><div class="pkg-price">₪<span style="font-size:34px;color:#fff">1,200</span></div><div class="pkg-period">לחודש · חיוב שנתי</div><ul><li>כל מה שב-פרו</li><li>חיסכון של 20%</li><li>תג "מומלץ"</li><li>סטטיסטיקות חשיפה</li></ul></div>
-        </div>
-        <button class="btn btn-red" onclick="showContactModal('garage')" style="font-size:15px;padding:14px 36px;">
-          <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg> פרסם את המוסך שלך עכשיו
-        </button>
+    </div>
+  </div>
+    
+  <div class="biz-cat-panel " id="cat-migrash">
+    <div class="region-tabs">
+      <button class="region-tab active" onclick="switchBizRegion2('migrash','north')">
+        <div class="rtab-icon">🌲</div><span>צפון</span>
+      </button>
+      <button class="region-tab" onclick="switchBizRegion2('migrash','center')">
+        <div class="rtab-icon">🏙️</div><span>מרכז</span>
+      </button>
+      <button class="region-tab" onclick="switchBizRegion2('migrash','south')">
+        <div class="rtab-icon">🌵</div><span>דרום</span>
+      </button>
+    </div>
+    
+    <div class="region-panel active" id="biz-panel-migrash-north">
+      <div class="svc-sec-title">🌲 צפון הארץ</div>
+      <div class="svc-grid" id="biz-grid-migrash-north">
+        <div class="biz-skeleton"></div><div class="biz-skeleton"></div><div class="biz-skeleton"></div>
       </div>
+    </div>
+    
+    <div class="region-panel " id="biz-panel-migrash-center">
+      <div class="svc-sec-title">🏙️ מרכז הארץ</div>
+      <div class="svc-grid" id="biz-grid-migrash-center">
+        <div class="biz-skeleton"></div><div class="biz-skeleton"></div><div class="biz-skeleton"></div>
+      </div>
+    </div>
+    
+    <div class="region-panel " id="biz-panel-migrash-south">
+      <div class="svc-sec-title">🌵 דרום הארץ</div>
+      <div class="svc-grid" id="biz-grid-migrash-south">
+        <div class="biz-skeleton"></div><div class="biz-skeleton"></div><div class="biz-skeleton"></div>
+      </div>
+    </div>
+  </div>
+    
+  <div class="biz-cat-panel " id="cat-mimun">
+    <div class="region-tabs">
+      <button class="region-tab active" onclick="switchBizRegion2('mimun','north')">
+        <div class="rtab-icon">🌲</div><span>צפון</span>
+      </button>
+      <button class="region-tab" onclick="switchBizRegion2('mimun','center')">
+        <div class="rtab-icon">🏙️</div><span>מרכז</span>
+      </button>
+      <button class="region-tab" onclick="switchBizRegion2('mimun','south')">
+        <div class="rtab-icon">🌵</div><span>דרום</span>
+      </button>
+    </div>
+    
+    <div class="region-panel active" id="biz-panel-mimun-north">
+      <div class="svc-sec-title">🌲 צפון הארץ</div>
+      <div class="svc-grid" id="biz-grid-mimun-north">
+        <div class="biz-skeleton"></div><div class="biz-skeleton"></div><div class="biz-skeleton"></div>
+      </div>
+    </div>
+    
+    <div class="region-panel " id="biz-panel-mimun-center">
+      <div class="svc-sec-title">🏙️ מרכז הארץ</div>
+      <div class="svc-grid" id="biz-grid-mimun-center">
+        <div class="biz-skeleton"></div><div class="biz-skeleton"></div><div class="biz-skeleton"></div>
+      </div>
+    </div>
+    
+    <div class="region-panel " id="biz-panel-mimun-south">
+      <div class="svc-sec-title">🌵 דרום הארץ</div>
+      <div class="svc-grid" id="biz-grid-mimun-south">
+        <div class="biz-skeleton"></div><div class="biz-skeleton"></div><div class="biz-skeleton"></div>
+      </div>
+    </div>
+  </div>
+    
+  <div class="biz-cat-panel " id="cat-grira">
+    <div class="region-tabs">
+      <button class="region-tab active" onclick="switchBizRegion2('grira','north')">
+        <div class="rtab-icon">🌲</div><span>צפון</span>
+      </button>
+      <button class="region-tab" onclick="switchBizRegion2('grira','center')">
+        <div class="rtab-icon">🏙️</div><span>מרכז</span>
+      </button>
+      <button class="region-tab" onclick="switchBizRegion2('grira','south')">
+        <div class="rtab-icon">🌵</div><span>דרום</span>
+      </button>
+    </div>
+    
+    <div class="region-panel active" id="biz-panel-grira-north">
+      <div class="svc-sec-title">🌲 צפון הארץ</div>
+      <div class="svc-grid" id="biz-grid-grira-north">
+        <div class="biz-skeleton"></div><div class="biz-skeleton"></div><div class="biz-skeleton"></div>
+      </div>
+    </div>
+    
+    <div class="region-panel " id="biz-panel-grira-center">
+      <div class="svc-sec-title">🏙️ מרכז הארץ</div>
+      <div class="svc-grid" id="biz-grid-grira-center">
+        <div class="biz-skeleton"></div><div class="biz-skeleton"></div><div class="biz-skeleton"></div>
+      </div>
+    </div>
+    
+    <div class="region-panel " id="biz-panel-grira-south">
+      <div class="svc-sec-title">🌵 דרום הארץ</div>
+      <div class="svc-grid" id="biz-grid-grira-south">
+        <div class="biz-skeleton"></div><div class="biz-skeleton"></div><div class="biz-skeleton"></div>
+      </div>
+    </div>
+  </div>
+    
+  <div class="biz-cat-panel " id="cat-pach">
+    <div class="region-tabs">
+      <button class="region-tab active" onclick="switchBizRegion2('pach','north')">
+        <div class="rtab-icon">🌲</div><span>צפון</span>
+      </button>
+      <button class="region-tab" onclick="switchBizRegion2('pach','center')">
+        <div class="rtab-icon">🏙️</div><span>מרכז</span>
+      </button>
+      <button class="region-tab" onclick="switchBizRegion2('pach','south')">
+        <div class="rtab-icon">🌵</div><span>דרום</span>
+      </button>
+    </div>
+    
+    <div class="region-panel active" id="biz-panel-pach-north">
+      <div class="svc-sec-title">🌲 צפון הארץ</div>
+      <div class="svc-grid" id="biz-grid-pach-north">
+        <div class="biz-skeleton"></div><div class="biz-skeleton"></div><div class="biz-skeleton"></div>
+      </div>
+    </div>
+    
+    <div class="region-panel " id="biz-panel-pach-center">
+      <div class="svc-sec-title">🏙️ מרכז הארץ</div>
+      <div class="svc-grid" id="biz-grid-pach-center">
+        <div class="biz-skeleton"></div><div class="biz-skeleton"></div><div class="biz-skeleton"></div>
+      </div>
+    </div>
+    
+    <div class="region-panel " id="biz-panel-pach-south">
+      <div class="svc-sec-title">🌵 דרום הארץ</div>
+      <div class="svc-grid" id="biz-grid-pach-south">
+        <div class="biz-skeleton"></div><div class="biz-skeleton"></div><div class="biz-skeleton"></div>
+      </div>
+    </div>
+  </div>
+  </div>
+
+  <div class="svc-section" style="padding-top:0">
+    <div class="biz-join-bar">
+      <div class="biz-join-bar-text">
+        <h3>יש לך עסק קשור לרכב? 🚘</h3>
+        <p>הגע לאלפי לקוחות מדי חודש — פרסם ב-YOUGO עסקים. הצעת מחיר תוך 24 שעות</p>
+      </div>
+      <button class="btn btn-red" onclick="showContactModal('garage')" style="flex-shrink:0;font-size:14px;padding:13px 28px;">
+        + פרסם את העסק שלך
+      </button>
     </div>
   </div>
 </div>
 
-<!-- ═══════════════════════════════════════════════════════
-     PAGE: השכרת רכב לעסקים — RENTAL PAGE
-     ═══════════════════════════════════════════════════════ -->
+
 <div class="svc-page" id="pageRental">
   <button class="svc-back" onclick="closeSvcPage('pageRental')">
-    <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M15 18l-6-6 6-6"/></svg>
-    חזרה לעמוד הראשי
+    <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"/></svg> חזרה לעמוד הראשי
   </button>
 
-  <!-- Hero -->
   <div class="svc-hero">
     <div class="svc-hero-badge" style="background:rgba(240,200,74,.1);border-color:rgba(240,200,74,.3);color:var(--gold);">
       <svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"/></svg>
-      פרסום לחברות השכרה
+      השכרת רכב קרוב אליך
     </div>
-    <h1>פרסם את <span class="gold-accent">עסק ההשכרה</span><br>שלך ב-YOUGO</h1>
-    <p>הגע לאלפי לקוחות עסקיים מדי יום. פלטפורמת הפרסום המובילה לחברות השכרת רכב בישראל</p>
-    <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap;">
-      <button class="btn btn-red" onclick="showContactModal('rental')" style="font-size:15px;padding:14px 28px;">
-        <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg>
-        פרסם עכשיו — קבל הצעה
-      </button>
-      <button class="btn-ghost btn" onclick="document.getElementById('rentalPricing').scrollIntoView({behavior:'smooth'})" style="font-size:15px;padding:14px 24px;">
-        <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg>
-        מחירים וחבילות
-      </button>
-    </div>
+    <h1>מצא <span class="gold-accent">רכב להשכרה</span><br>באזורך</h1>
+    <p>רכבים זמינים מחברות השכרה מאומתות — בחר את האזור שלך, התקשר וצא לדרך</p>
   </div>
 
-  <!-- Stats Strip -->
   <div class="svc-stats-strip">
-    <div class="svc-stat-item"><div class="svc-stat-num"><span class="g">2M+</span></div><div class="svc-stat-lab">צפיות בחודש</div></div>
-    <div class="svc-stat-item"><div class="svc-stat-num"><span class="r">1,500+</span></div><div class="svc-stat-lab">מודעות פעילות</div></div>
-    <div class="svc-stat-item"><div class="svc-stat-num"><span class="g">70K+</span></div><div class="svc-stat-lab">עוקבים ברשתות</div></div>
-    <div class="svc-stat-item"><div class="svc-stat-num"><span class="r">3</span> שנים</div><div class="svc-stat-lab">ניסיון בשוק</div></div>
+    <div class="svc-stat-item"><div class="svc-stat-num" id="rent-stat-total"><span class="r">—</span></div><div class="svc-stat-lab">רכבים זמינים</div></div>
+    <div class="svc-stat-item"><div class="svc-stat-num" id="rent-stat-companies"><span class="g">—</span></div><div class="svc-stat-lab">חברות השכרה</div></div>
+    <div class="svc-stat-item"><div class="svc-stat-num">₪<span class="r" id="rent-stat-minprice">—</span></div><div class="svc-stat-lab">החל מ/יום</div></div>
+    <div class="svc-stat-item"><div class="svc-stat-num"><span class="g">3</span></div><div class="svc-stat-lab">אזורים</div></div>
   </div>
 
   <div class="svc-section">
-    <!-- Why Advertise -->
-    <div class="svc-sec-title">למה לפרסם ב-YOUGO?</div>
-    <div class="why-grid">
-      <div class="why-card">
-        <div class="why-icon"><svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></div>
-        <h4>קהל ממוקד</h4>
-        <p>לקוחות שמחפשים להשכיר רכב עכשיו — עסקים, תיירים ופרטיים</p>
+    <div class="region-tabs">
+      <button class="region-tab active" onclick="switchRentRegion2('north')">
+        <div class="rtab-icon">🌲</div><span>צפון</span>
+        <span class="rtab-count" id="rcnt-north">—</span>
+      </button>
+      <button class="region-tab" onclick="switchRentRegion2('center')">
+        <div class="rtab-icon">🏙️</div><span>מרכז</span>
+        <span class="rtab-count" id="rcnt-center">—</span>
+      </button>
+      <button class="region-tab" onclick="switchRentRegion2('south')">
+        <div class="rtab-icon">🌵</div><span>דרום</span>
+        <span class="rtab-count" id="rcnt-south">—</span>
+      </button>
+    </div>
+
+    
+    <div class="region-panel active" id="rent-panel-north">
+      <div class="svc-sec-title">🌲 השכרת רכב — צפון הארץ</div>
+      <div class="svc-grid" id="rent-grid-north">
+        <div class="biz-skeleton"></div><div class="biz-skeleton"></div><div class="biz-skeleton"></div>
       </div>
-      <div class="why-card">
-        <div class="why-icon" style="background:rgba(240,200,74,.1);border-color:rgba(240,200,74,.2);color:var(--gold);"><svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/><polyline points="16 7 22 7 22 13"/></svg></div>
-        <h4>חשיפה מקסימלית</h4>
-        <p>הרכבים שלך יופיעו בחיפוש, בבאנרים ובניוזלטר השבועי</p>
+    </div>
+    
+    <div class="region-panel " id="rent-panel-center">
+      <div class="svc-sec-title">🏙️ השכרת רכב — מרכז הארץ</div>
+      <div class="svc-grid" id="rent-grid-center">
+        <div class="biz-skeleton"></div><div class="biz-skeleton"></div><div class="biz-skeleton"></div>
       </div>
-      <div class="why-card">
-        <div class="why-icon" style="background:rgba(96,165,250,.1);border-color:rgba(96,165,250,.2);color:#60a5fa;"><svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div>
-        <h4>אמינות ובטחון</h4>
-        <p>פלטפורמה מאומתת עם אלפי משתמשים פעילים מדי יום</p>
-      </div>
-      <div class="why-card">
-        <div class="why-icon"><svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5M2 12l10 5 10-5"/></svg></div>
-        <h4>מחיר קבוע</h4>
-        <p>ללא עמלות על הזמנות, ללא הפתעות — מחיר חודשי קבוע ברור</p>
+    </div>
+    
+    <div class="region-panel " id="rent-panel-south">
+      <div class="svc-sec-title">🌵 השכרת רכב — דרום הארץ</div>
+      <div class="svc-grid" id="rent-grid-south">
+        <div class="biz-skeleton"></div><div class="biz-skeleton"></div><div class="biz-skeleton"></div>
       </div>
     </div>
 
-    <!-- Featured Rental Companies -->
-    <div class="svc-sec-title">חברות השכרה מובילות</div>
-    <div class="svc-grid" style="margin-bottom:48px;">
-      <div class="fleet-card">
-        <div class="fleet-img">🚗<span class="fleet-badge">פעיל</span></div>
-        <div class="fleet-body">
-          <div class="fleet-name">רנטל ישראל — צי הרכבים</div>
-          <div class="fleet-specs">
-            <span class="fleet-spec">יונדאי i10</span>
-            <span class="fleet-spec">טויוטה קורולה</span>
-            <span class="fleet-spec">קיאה ספורטאז'</span>
-          </div>
-          <div class="fleet-price-row">
-            <div class="fleet-price">₪150 <small>/ יום</small></div>
-            <a class="biz-btn biz-btn-primary" href="https://wa.me/972500000030" target="_blank" style="flex:0;padding:8px 14px;font-size:12px;">וואטסאפ</a>
-          </div>
-        </div>
+    <div class="biz-join-bar" style="border-color:rgba(240,200,74,.22);background:linear-gradient(135deg,rgba(240,200,74,.07),rgba(10,10,25,.9));">
+      <div class="biz-join-bar-text">
+        <h3 style="color:var(--gold)">יש לך חברת השכרה? 🚙</h3>
+        <p>פרסם את הצי שלך ב-YOUGO והגע לאלפי לקוחות מחפשי השכרה מדי יום</p>
       </div>
-
-      <div class="fleet-card">
-        <div class="fleet-img" style="background:linear-gradient(135deg,rgba(96,165,250,.08),rgba(232,17,46,.04));">🚙<span class="fleet-badge" style="background:rgba(96,165,250,.15);border-color:rgba(96,165,250,.3);color:#60a5fa;">פרמיום</span></div>
-        <div class="fleet-body">
-          <div class="fleet-name">VIP RENT — רכבי יוקרה</div>
-          <div class="fleet-specs">
-            <span class="fleet-spec">BMW 5</span>
-            <span class="fleet-spec">מרצדס C</span>
-            <span class="fleet-spec">אאודי A6</span>
-          </div>
-          <div class="fleet-price-row">
-            <div class="fleet-price">₪450 <small>/ יום</small></div>
-            <a class="biz-btn biz-btn-primary" href="https://wa.me/972500000031" target="_blank" style="flex:0;padding:8px 14px;font-size:12px;">וואטסאפ</a>
-          </div>
-        </div>
-      </div>
-
-      <div class="fleet-card" style="border-style:dashed;border-color:rgba(240,200,74,.3);">
-        <div class="fleet-img" style="background:rgba(240,200,74,.04);">
-          <div style="text-align:center;">
-            <div style="font-size:36px;margin-bottom:8px;">+</div>
-            <div style="font-size:13px;color:var(--gold);font-weight:800;">הצטרף לרשימה</div>
-          </div>
-        </div>
-        <div class="fleet-body">
-          <div class="fleet-name">פרסם את הצי שלך</div>
-          <div class="fleet-specs"><span class="fleet-spec">כל סוגי הרכבים</span><span class="fleet-spec">כל האזורים</span></div>
-          <div class="fleet-price-row">
-            <div class="fleet-price" style="font-size:16px;">החל מ-₪1,500 <small>/ חודש</small></div>
-            <button class="biz-btn biz-btn-primary" onclick="showContactModal('rental')" style="flex:0;padding:8px 14px;font-size:12px;">הצטרף</button>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- Pricing Section -->
-    <div id="rentalPricing">
-      <div class="adv-banner">
-        <div class="adv-banner-badge">💼 חבילות לעסקים</div>
-        <h2>בחר את <span class="accent">חבילת הפרסום</span> שמתאימה לך</h2>
-        <p>מחירים שקופים, ללא עמלות נסתרות. כל חבילה כוללת כפתורי יצירת קשר ישיר עם הלקוח.</p>
-        <div class="pricing-grid">
-          <div class="price-card">
-            <div class="pkg-name">סטארטר</div>
-            <div class="pkg-price">₪<span style="font-size:34px;color:#fff">1,500</span></div>
-            <div class="pkg-period">לחודש</div>
-            <ul>
-              <li>עד 5 רכבים מוצגים</li>
-              <li>כפתור וואטסאפ/טלפון</li>
-              <li>הצגה בחיפוש כללי</li>
-              <li>לוגו עסק</li>
-            </ul>
-          </div>
-          <div class="price-card featured">
-            <div class="feat-badge">⭐ הכי מומלץ</div>
-            <div class="pkg-name">עסקי</div>
-            <div class="pkg-price">₪<span style="font-size:34px;color:#fff">2,500</span></div>
-            <div class="pkg-period">לחודש</div>
-            <ul>
-              <li>עד 20 רכבים מוצגים</li>
-              <li>עדיפות בתוצאות חיפוש</li>
-              <li>באנר בעמוד הבית</li>
-              <li>סטטיסטיקות מלאות</li>
-              <li>תמיכה אישית</li>
-            </ul>
-          </div>
-          <div class="price-card">
-            <div class="pkg-name">פרמיום שנתי</div>
-            <div class="pkg-price">₪<span style="font-size:34px;color:#fff">1,990</span></div>
-            <div class="pkg-period">לחודש · חיוב שנתי</div>
-            <ul>
-              <li>צי ללא הגבלה</li>
-              <li>דף עסק ייחודי</li>
-              <li>חיסכון של 20%</li>
-              <li>אינטגרציה מלאה</li>
-            </ul>
-          </div>
-        </div>
-        <button class="btn btn-red" onclick="showContactModal('rental')" style="font-size:15px;padding:14px 36px;">
-          <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg>
-          פנה אלינו ונבנה לך חבילה מותאמת
-        </button>
-        <p style="font-size:12px;color:var(--t2);margin-top:14px;">✉️ <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="99f0f7fff6d9e0f6ecfef6b7faf6b7f0f5">[email&#160;protected]</a> &nbsp;|&nbsp; 📞 050-YOUGO-IL</p>
-      </div>
+      <button class="btn btn-red" onclick="showContactModal('rental')" style="flex-shrink:0;font-size:14px;padding:13px 28px;">
+        + פרסם את הצי שלך
+      </button>
     </div>
   </div>
 </div>
+
+
 
 <!-- ═══════════════════════════════════════════════════════
      MODAL: Contact Form
@@ -6451,12 +7082,6 @@ const ADMIN_PW  = 'yougo2026';
 // ═══════════════════════════════════════
 function debounce(fn, ms) { let t; return (...a) => { clearTimeout(t); t = setTimeout(() => fn(...a), ms); }; }
 const doFilterDebounced = debounce(() => doFilter(), 200);
-
-// Cloudinary image optimization — injects w, quality, format transforms
-function clImg(url, w) {
-  if (!url || !url.includes('res.cloudinary.com')) return url;
-  return url.replace('/upload/', `/upload/w_${w},c_fill,q_auto,f_auto/`);
-}
 
 // ═══════════════════════════════════════
 // STATE
@@ -6656,7 +7281,7 @@ async function loadCars() {
   document.getElementById('carsBox').innerHTML =
     `<div class="loading-box"><div class="spin"></div><p style="color:var(--t1);font-weight:600">${t('loading')}</p></div>`;
   try {
-    let query = sb.from('cars').select('*').order('created_at',{ascending:false});
+    let query = sb.from('cars').select('id,make,model,year,price,mileage,hand,gear_type,fuel_type,color,engine_size,seller_name,seller_phone,seller_city,images,main_image,status,package,featured,created_at,description_he,description_ar').order('created_at',{ascending:false});
     if (!isAdmin) query = query.eq('status','active');
     const {data,error} = await query;
     if (error) {
@@ -6766,8 +7391,14 @@ function renderCars(cars) {
   c.innerHTML=`<div class="cars-grid">${cars.map(carCard).join('')}</div>`;
 }
 
+function optimizeImg(url, w) {
+  if (!url) return url;
+  // Cloudinary auto-format + auto-quality + resize
+  return url.replace('/upload/', `/upload/f_auto,q_auto:good,w_${w||600},c_limit/`);
+}
+
 function carCard(car) {
-  const is=car.images||[],im=car.main_image||is[0];
+  const is=car.images||[],im=optimizeImg(car.main_image||is[0], 600);
   const ph2=(car.seller_phone||'').replace(/\D/g,'').replace(/^0/,'');
   const isNew=(Date.now()-new Date(car.created_at))<86400000*3&&car.status!=='sold';
   const pkg=car.package||'free';
@@ -6807,7 +7438,7 @@ function carCard(car) {
   </div>`:'';
   return `<div class="car-card ${pkgClass}" onclick="openDetail('${car.id}')">
     <div class="car-img-wrap">
-      ${im?`<img class="car-img" src="${clImg(im,600)}" alt="${car.make} ${car.model}" loading="lazy" decoding="async">`
+      ${im?`<img class="car-img" src="${im}" alt="${car.make} ${car.model}" loading="lazy" decoding="async">`
           :`<div class="car-placeholder"><svg width="52" height="52" opacity=".15"><use href="#ico-car"/></svg></div>`}
       ${pkgBadge}
       <div class="car-badges">${badges.join('')}</div>
@@ -6844,17 +7475,17 @@ function carCard(car) {
 let _dImgs=[],_dIdx=0;
 function openDetail(id) {
   const car=all.find(c=>c.id===id); if(!car)return;
-  _dImgs=car.images?.length?car.images:(car.main_image?[car.main_image]:[]);
+  _dImgs=(car.images?.length?car.images:(car.main_image?[car.main_image]:[])).map(u=>optimizeImg(u,1200));
   _dIdx=0;
   const ph2=(car.seller_phone||'').replace(/\D/g,'').replace(/^0/,'');
   const gallery=document.getElementById('dGallery'),dmImg=document.getElementById('dmImg');
   const dThumbs=document.getElementById('dThumbs'),dCounter=document.getElementById('dCounter');
   if(_dImgs.length>0){
-    gallery.style.display='';dmImg.src=clImg(_dImgs[0],1200);dmImg.alt=car.make+' '+car.model;
+    gallery.style.display='';dmImg.src=_dImgs[0];dmImg.alt=car.make+' '+car.model;
     dCounter.textContent='1 / '+_dImgs.length;
     if(_dImgs.length>1){
       dThumbs.style.display='';
-      dThumbs.innerHTML=_dImgs.map((s,i)=>`<img class="d-thumb ${i===0?'on':''}" src="${clImg(s,200)}" onclick="dGoTo(${i})" loading="lazy" decoding="async">`).join('');
+      dThumbs.innerHTML=_dImgs.map((s,i)=>`<img class="d-thumb ${i===0?'on':''}" src="${s}" onclick="dGoTo(${i})" loading="lazy" decoding="async">`).join('');
       document.getElementById('dPrev').classList.remove('hidden');document.getElementById('dNext').classList.remove('hidden');
     }else{dThumbs.style.display='none';dThumbs.innerHTML='';document.getElementById('dPrev').classList.add('hidden');document.getElementById('dNext').classList.add('hidden');}
   }else{gallery.style.display='none';}
@@ -6908,7 +7539,7 @@ function openDetail(id) {
   document.getElementById('detailOvl').classList.add('open');
   document.body.style.overflow='hidden';
 }
-function dGoTo(i){if(i<0||i>=_dImgs.length)return;_dIdx=i;const img=document.getElementById('dmImg');img.style.opacity='0';setTimeout(()=>{img.src=clImg(_dImgs[i],1200);img.style.opacity='1';},200);document.getElementById('dCounter').textContent=(i+1)+' / '+_dImgs.length;document.querySelectorAll('.d-thumb').forEach((th,j)=>th.classList.toggle('on',j===i));}
+function dGoTo(i){if(i<0||i>=_dImgs.length)return;_dIdx=i;const img=document.getElementById('dmImg');img.style.opacity='0';setTimeout(()=>{img.src=_dImgs[i];img.style.opacity='1';},200);document.getElementById('dCounter').textContent=(i+1)+' / '+_dImgs.length;document.querySelectorAll('.d-thumb').forEach((th,j)=>th.classList.toggle('on',j===i));}
 function dNav(dir){dGoTo(_dIdx+dir);}
 function closeDetail(){document.getElementById('detailOvl').classList.remove('open');document.body.style.overflow='';}
 
@@ -7096,11 +7727,294 @@ function translateFooterSections() {
 }
 
 
-/* ═══ SERVICE PAGES ═══ */
+/* ═══ SERVICE PAGES — SUPABASE DYNAMIC ═══ */
+
+const BIZ_ICO_PHONE = '<svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12 19.79 19.79 0 0 1 1.61 3.41 2 2 0 0 1 3.6 1.21h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 10.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 17.92z"/></svg>';
+const BIZ_ICO_WA    = '<svg width="13" height="13" fill="currentColor" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51a5.404 5.404 0 0 0-.57-.01c-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.127.558 4.122 1.532 5.856L.057 23.49a.5.5 0 0 0 .617.608l5.76-1.504A11.943 11.943 0 0 0 12 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 22c-1.99 0-3.85-.552-5.44-1.51l-.39-.23-4.04 1.056 1.072-3.924-.253-.404A10 10 0 0 1 2 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10z"/></svg>';
+const BIZ_ICO_PIN   = '<svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>';
+
+// ── Data cache
+let _bizCache = null;
+let _rentCache = null;
+let _bizLoading = false;
+let _rentLoading = false;
+
+// ── Category config
+const BIZ_CAT_NAMES = {mosek:'מוסכים',migrash:'מגרשים',mimun:'מימון',grira:'גרירה',pach:'פח וצבע'};
+const BIZ_CAT_EMOJI = {mosek:'🔧',migrash:'🚗',mimun:'💰',grira:'🚛',pach:'🎨'};
+const BIZ_CAT_COLOR = {mosek:'',migrash:'',mimun:'gold',grira:'blue',pach:'green'};
+
+// ── Stars renderer
+function renderStars(n) {
+  const full = Math.round(n||4.5);
+  return Array.from({length:5},(_,i)=>`<span style="color:${i<full?'var(--gold)':'rgba(255,255,255,.15)'}">★</span>`).join('');
+}
+
+// ── Business card HTML
+function bizCard2(b) {
+  const wa = (b.whatsapp||b.phone||'').replace(/\D/g,'').replace(/^0/,'972');
+  const ph = (b.phone||'').replace(/\D/g,'');
+  const tags = Array.isArray(b.services) ? b.services : (b.services ? JSON.parse(b.services||'[]') : []);
+  const logoColor = BIZ_CAT_COLOR[b.category] || '';
+  const typeColor = b.is_sponsored ? 'gold' : '';
+  const isOpen = b.is_open !== false;
+  const rating  = Number(b.rating||4.5).toFixed(1);
+  const rcount  = b.review_count||0;
+  const badge   = b.is_sponsored
+    ? '<div class="bc2-badge sponsored-b">💎 ממומן</div>'
+    : (b.is_verified ? '<div class="bc2-badge verified-b">✓ מאומת</div>' : '');
+  const logoEmoji = BIZ_CAT_EMOJI[b.category]||'🏢';
+
+  return `
+  <div class="biz-card2 ${b.is_sponsored?'sponsored':''}">
+    ${badge}
+    <div class="bc2-head" style="${b.is_sponsored||b.is_verified?'padding-top:30px':''}">
+      <div class="bc2-logo ${logoColor}">${logoEmoji}</div>
+      <div class="bc2-info">
+        <div class="bc2-name">${b.name||'—'}</div>
+        <div class="bc2-type ${typeColor}">${b.type_label||BIZ_CAT_NAMES[b.category]||''}</div>
+      </div>
+    </div>
+    <div class="bc2-body">
+      <div class="bc2-rating">
+        <div class="bc2-stars">${renderStars(rating)}</div>
+        <span class="bc2-score">${rating}</span>
+        ${rcount ? `<span class="bc2-rcnt">(${rcount} ביקורות)</span>` : ''}
+      </div>
+      <div class="bc2-status ${isOpen?'open':'closed'}">
+        <div class="bc2-dot"></div>
+        ${isOpen ? 'פתוח עכשיו' : 'סגור כעת'}
+      </div>
+      <div class="bc2-rows">
+        ${b.city ? `<div class="bc2-row">${BIZ_ICO_PIN}<span>${b.city}${b.address?` — ${b.address}`:''}</span></div>` : ''}
+        ${b.phone ? `<div class="bc2-row">${BIZ_ICO_PHONE}<span>${b.phone}</span></div>` : ''}
+      </div>
+      ${tags.length ? `<div class="bc2-tags">${tags.map(t=>`<span class="bc2-tag">${t}</span>`).join('')}</div>` : ''}
+    </div>
+    <div class="bc2-foot">
+      ${ph ? `<a class="bc2-btn bc2-btn-call" href="tel:0${ph.slice(3)||ph}">${BIZ_ICO_PHONE} התקשר</a>` : ''}
+      ${wa ? `<a class="bc2-btn bc2-btn-wa" href="https://wa.me/${wa}" target="_blank">${BIZ_ICO_WA} וואטסאפ</a>` : ''}
+    </div>
+  </div>`;
+}
+
+// ── Add-business placeholder card
+function addBizCard2(cat) {
+  return `
+  <div class="add-biz-card" onclick="showContactModal('garage')">
+    <div class="add-biz-icon">${BIZ_CAT_EMOJI[cat]||'+'}</div>
+    <div class="add-biz-title">פרסם את העסק שלך כאן</div>
+    <div class="add-biz-sub">הגע לאלפי לקוחות<br>מדי חודש באזורך</div>
+    <button class="biz-btn biz-btn-primary" style="margin-top:6px;max-width:140px">הצטרף עכשיו</button>
+  </div>`;
+}
+
+// ── Rental card HTML
+function rentalCard2(r) {
+  const wa = (r.whatsapp||r.phone||'').replace(/\D/g,'').replace(/^0/,'972');
+  const ph = (r.phone||'').replace(/\D/g,'');
+  const specs = Array.isArray(r.specs) ? r.specs : (r.specs ? JSON.parse(r.specs||'[]') : []);
+  const badge = r.badge||'available';
+  const badgeLabel = {available:'🟢 זמין',premium:'👑 פרמיום',sold_out:'❌ אזל'}[badge]||'זמין';
+  const emoji = r.car_emoji||'🚗';
+  return `
+  <div class="rental-card2">
+    <div class="rc2-img">
+      <span style="position:relative;z-index:1">${emoji}</span>
+      <div class="rc2-avail ${badge}">${badgeLabel}</div>
+      <div class="rc2-price">₪${Number(r.price_per_day).toLocaleString()}<small>/יום</small></div>
+    </div>
+    <div class="rc2-body">
+      <div class="rc2-car">${r.car_name||'—'}</div>
+      <div class="rc2-co">${r.company_name||''} · ${r.city||''}</div>
+      ${specs.length ? `<div class="rc2-specs">${specs.map(s=>`<span class="rc2-spec">${s}</span>`).join('')}</div>` : ''}
+    </div>
+    <div class="rc2-foot">
+      ${ph ? `<a class="rc2-btn rc2-btn-call" href="tel:0${ph.slice(3)||ph}">${BIZ_ICO_PHONE} התקשר</a>` : ''}
+      ${wa ? `<a class="rc2-btn rc2-btn-wa" href="https://wa.me/${wa}" target="_blank">${BIZ_ICO_WA} וואטסאפ</a>` : ''}
+    </div>
+  </div>`;
+}
+
+function addRentCard2() {
+  return `
+  <div class="add-biz-card" onclick="showContactModal('rental')">
+    <div class="add-biz-icon">🚙</div>
+    <div class="add-biz-title">פרסם רכבים להשכרה</div>
+    <div class="add-biz-sub">חברת השכרה? הגע ללקוחות<br>חדשים באזורך</div>
+    <button class="biz-btn biz-btn-primary" style="margin-top:6px;max-width:160px">הצטרף עכשיו</button>
+  </div>`;
+}
+
+// ── Empty state
+function emptyBizState(cat) {
+  return `<div class="biz-empty" style="grid-column:1/-1">
+    <div class="biz-empty-icon">${BIZ_CAT_EMOJI[cat]||'🏢'}</div>
+    <div class="biz-empty-title">אין עסקים עדיין באזור זה</div>
+    <div class="biz-empty-sub">היה הראשון לפרסם!</div>
+    <button class="btn btn-red" onclick="showContactModal('garage')">+ פרסם עכשיו</button>
+  </div>`;
+}
+
+// ── Load businesses from Supabase
+async function loadBizIfNeeded() {
+  if (_bizCache !== null) { renderAllBizGrids(); return; }
+  if (_bizLoading) return;
+  _bizLoading = true;
+  try {
+    const {data, error} = await sb.from('businesses').select('*').eq('status','active')
+      .order('is_sponsored',{ascending:false}).order('created_at',{ascending:false});
+    _bizCache = data || [];
+    renderAllBizGrids();
+    updateBizStats();
+  } catch(e) {
+    _bizCache = [];
+    renderAllBizGrids();
+  } finally { _bizLoading = false; }
+}
+
+// ── Load rentals from Supabase
+async function loadRentIfNeeded() {
+  if (_rentCache !== null) { renderAllRentGrids(); return; }
+  if (_rentLoading) return;
+  _rentLoading = true;
+  try {
+    const {data, error} = await sb.from('rentals').select('*').eq('status','active')
+      .order('created_at',{ascending:false});
+    _rentCache = data || [];
+    renderAllRentGrids();
+    updateRentStats();
+  } catch(e) {
+    _rentCache = [];
+    renderAllRentGrids();
+  } finally { _rentLoading = false; }
+}
+
+// ── Render all grids
+function renderAllBizGrids() {
+  const cats=['mosek','migrash','mimun','grira','pach'];
+  const regs=['north','center','south'];
+  cats.forEach(c=>regs.forEach(r=>renderBizGrid(c,r)));
+}
+function renderBizGrid(cat,region) {
+  const el=document.getElementById(`biz-grid-${cat}-${region}`); if(!el)return;
+  const items=(_bizCache||[]).filter(b=>b.category===cat&&b.region===region);
+  el.innerHTML = items.length
+    ? items.map(bizCard2).join('') + addBizCard2(cat)
+    : emptyBizState(cat) + addBizCard2(cat);
+}
+
+function renderAllRentGrids() {
+  ['north','center','south'].forEach(r=>renderRentGrid(r));
+}
+function renderRentGrid(region) {
+  const el=document.getElementById(`rent-grid-${region}`); if(!el)return;
+  const items=(_rentCache||[]).filter(r=>r.region===region);
+  el.innerHTML = items.length
+    ? items.map(rentalCard2).join('') + addRentCard2()
+    : `<div class="biz-empty" style="grid-column:1/-1"><div class="biz-empty-icon">🚗</div><div class="biz-empty-title">אין רכבים זמינים</div><div class="biz-empty-sub">בקרוב!</div><button class="btn btn-red" onclick="showContactModal('rental')">פרסם עכשיו</button></div>` + addRentCard2();
+}
+
+// ── Update stats
+function updateBizStats() {
+  const total = (_bizCache||[]).length;
+  const el = document.getElementById('biz-stat-total');
+  if(el) el.innerHTML = `<span class="r">${total}</span>`;
+  const cats=['mosek','migrash','mimun','grira','pach'];
+  cats.forEach(c=>{
+    const el2=document.getElementById('cnt-'+c);
+    const n=(_bizCache||[]).filter(b=>b.category===c).length;
+    if(el2) el2.textContent=n;
+  });
+}
+function updateRentStats() {
+  const items = _rentCache||[];
+  const tel=document.getElementById('rent-stat-total');
+  const cel=document.getElementById('rent-stat-companies');
+  const pel=document.getElementById('rent-stat-minprice');
+  if(tel) tel.innerHTML=`<span class="r">${items.length}</span>`;
+  const cos = new Set(items.map(r=>r.company_name)).size;
+  if(cel) cel.innerHTML=`<span class="g">${cos}</span>`;
+  const min = items.length ? Math.min(...items.map(r=>r.price_per_day)) : '—';
+  if(pel) pel.textContent=min;
+  ['north','center','south'].forEach(r=>{
+    const el=document.getElementById('rcnt-'+r);
+    if(el) el.textContent=items.filter(x=>x.region===r).length+' רכבים';
+  });
+}
+
+// ── Category/region switching
+function switchBizCat2(cat) {
+  document.querySelectorAll('.biz-cat-tab').forEach(t=>t.classList.remove('active'));
+  document.querySelectorAll('.biz-cat-panel').forEach(p=>p.classList.remove('active'));
+  document.getElementById('cat-'+cat)?.classList.add('active');
+  const cats=['mosek','migrash','mimun','grira','pach'];
+  const tabs=document.querySelectorAll('.biz-cat-tab');
+  if(tabs[cats.indexOf(cat)]) tabs[cats.indexOf(cat)].classList.add('active');
+  switchBizRegion2(cat,'north');
+}
+function switchBizRegion2(cat, region) {
+  const panel=document.getElementById('cat-'+cat); if(!panel)return;
+  panel.querySelectorAll('.region-panel').forEach(p=>p.classList.remove('active'));
+  panel.querySelectorAll('.region-tab').forEach(t=>t.classList.remove('active'));
+  panel.querySelector(`#biz-panel-${cat}-${region}`)?.classList.add('active');
+  const tabs=panel.querySelectorAll('.region-tab');
+  const idx=['north','center','south'].indexOf(region);
+  if(tabs[idx]) tabs[idx].classList.add('active');
+}
+function switchRentRegion2(region) {
+  document.querySelectorAll('[id^="rent-panel-"]').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('#pageRental .region-tab').forEach(t=>t.classList.remove('active'));
+  document.getElementById('rent-panel-'+region)?.classList.add('active');
+  const tabs=document.querySelectorAll('#pageRental .region-tab');
+  const idx=['north','center','south'].indexOf(region);
+  if(tabs[idx]) tabs[idx].classList.add('active');
+}
+
+// ── Old region switching (legacy, kept for compatibility)
+function switchBizCat(cat)   { switchBizCat2(cat); }
+function switchBizRegion(c,r){ switchBizRegion2(c,r); }
+function switchRentRegion(r) { switchRentRegion2(r); }
+
+
+function switchBizCat(cat) {
+  // deactivate all tabs
+  document.querySelectorAll('.biz-cat-tab').forEach(t=>t.classList.remove('active'));
+  document.querySelectorAll('.biz-cat-panel').forEach(p=>p.classList.remove('active'));
+  // activate selected
+  document.getElementById('cat-'+cat)?.classList.add('active');
+  const tabs = document.querySelectorAll('.biz-cat-tab');
+  const cats = ['mosek','migrash','mimun','grira','pach'];
+  const idx = cats.indexOf(cat);
+  if(tabs[idx]) tabs[idx].classList.add('active');
+  // reset region to north
+  switchBizRegion(cat,'north');
+}
+function switchBizRegion(cat, region) {
+  const panel = document.getElementById('cat-'+cat);
+  if(!panel) return;
+  panel.querySelectorAll('.region-panel').forEach(p=>p.classList.remove('active'));
+  panel.querySelectorAll('.region-tab').forEach(t=>t.classList.remove('active'));
+  panel.querySelector('#bizreg-'+region)?.classList.add('active');
+  const tabs = panel.querySelectorAll('.region-tab');
+  const idx = ['north','center','south'].indexOf(region);
+  if(tabs[idx]) tabs[idx].classList.add('active');
+}
+function switchRentRegion(region) {
+  document.querySelectorAll('[id^="rentreg-"]').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('#pageRental .region-tab').forEach(t=>t.classList.remove('active'));
+  document.getElementById('rentreg-'+region)?.classList.add('active');
+  const tabs = document.querySelectorAll('#pageRental .region-tab');
+  const idx = ['north','center','south'].indexOf(region);
+  if(tabs[idx]) tabs[idx].classList.add('active');
+}
+
 function showSvcPage(id){
   document.querySelectorAll('.svc-page').forEach(p=>p.classList.remove('active'));
   const pg=document.getElementById(id);
   if(pg){pg.classList.add('active');window.scrollTo({top:0,behavior:'instant'});}
+  if(id==='pageGarage') loadBizIfNeeded();
+  if(id==='pageRental') loadRentIfNeeded();
 }
 function closeSvcPage(id){
   const pg=document.getElementById(id);
@@ -7138,4 +8052,9 @@ function submitContact(){
   const msg=document.getElementById('cMsg').value.trim();
   const txt=`שלום! אני ${name} מ${city||'ישראל'}, מעוניין/ת בפרסום (${_contactType==='garage'?'מוסך':'השכרת רכב'}).${msg?' הודעה: '+msg:''}`;
   // WhatsApp YOUGO
-  window.open('https://wa.me/972500000000?text='+encodeURIComponent(txt),
+  window.open('https://wa.me/972546980606?text='+encodeURIComponent(txt),'_blank');
+}
+
+</script>
+</body>
+</html>
