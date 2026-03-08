@@ -1871,6 +1871,8 @@ function toast(msg, type = 'success') {
 ═══════════════════════════════════════ */
 document.addEventListener('keydown', e => {
   if (e.key === 'Escape') closeModal();
+  if (e.key === 'Enter' && document.getElementById('loginPage').style.display !== 'none') doLogin();
+});
 
 /* ═══════════════════════════════════════
    BUSINESSES MANAGEMENT
@@ -2370,8 +2372,6 @@ async function publishAdReq(id) {
   } catch(e) { toast('שגיאה: '+e.message,'error'); }
 }
 
-    if (e.key === 'Enter' && document.getElementById('loginPage').style.display !== 'none') doLogin();
-});
 </script>
 <!-- ══════════════ AD REQUEST DETAIL MODAL ══════════════ -->
 <div class="overlay" id="adReqOverlay" onclick="closeAdReqModal()" style="display:none;">
