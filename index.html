@@ -7167,44 +7167,390 @@ html[dir="ltr"] .foot-acc-arrow { margin-left:auto; margin-right:0; }
 
     <div style="padding:20px 28px 28px;">
 
-      <!-- STEP 1: פרטי העסק -->
+<style id="smart-form-css">
+/* ── Smart contact form ── */
+.sf-inp {
+  width:100%; padding:11px 14px; border-radius:11px;
+  background:rgba(255,255,255,.05); border:1px solid rgba(255,255,255,.1);
+  color:#fff; font-family:var(--font); font-size:13px;
+  outline:none; direction:rtl; box-sizing:border-box;
+  transition:border-color .18s;
+}
+.sf-inp:focus { border-color:rgba(200,16,46,.6); }
+.sf-inp::placeholder { color:rgba(255,255,255,.3); }
+.sf-label {
+  font-size:10px; font-weight:900; color:rgba(255,255,255,.4);
+  text-transform:uppercase; letter-spacing:.08em;
+  margin-bottom:5px; display:block;
+}
+.sf-sec {
+  background:rgba(255,255,255,.03); border:1px solid rgba(255,255,255,.07);
+  border-radius:14px; padding:14px; margin-bottom:12px;
+}
+.sf-sec-title {
+  font-size:11px; font-weight:900; color:rgba(255,255,255,.5);
+  text-transform:uppercase; letter-spacing:.1em;
+  margin-bottom:12px; display:flex; align-items:center; gap:6px;
+}
+.sf-sec-title::before {
+  content:''; width:3px; height:11px;
+  background:rgba(200,16,46,.8); border-radius:2px; flex-shrink:0;
+}
+.sf-cat-grid {
+  display:grid; grid-template-columns:repeat(5,1fr); gap:7px; margin-bottom:14px;
+}
+@media(max-width:480px){ .sf-cat-grid { grid-template-columns:repeat(3,1fr); } }
+.sf-cat-item {
+  display:flex; flex-direction:column; align-items:center; gap:4px;
+  padding:10px 5px; border-radius:12px;
+  border:1.5px solid rgba(255,255,255,.09);
+  background:rgba(255,255,255,.03);
+  cursor:pointer; transition:all .18s;
+  font-size:10px; font-weight:800; color:rgba(255,255,255,.5);
+  text-align:center;
+}
+.sf-cat-item:hover { border-color:rgba(255,255,255,.2); color:#fff; }
+.sf-cat-item.sel {
+  border-color:rgba(200,16,46,.6);
+  background:rgba(200,16,46,.1); color:#fff;
+}
+.sf-cat-item .ico { font-size:20px; }
+.sf-check-grid { display:grid; grid-template-columns:1fr 1fr; gap:7px; }
+.sf-check {
+  display:flex; align-items:center; gap:8px;
+  padding:9px 11px; border-radius:10px;
+  background:rgba(255,255,255,.04); border:1px solid rgba(255,255,255,.08);
+  cursor:pointer; transition:border-color .18s;
+}
+.sf-check:hover { border-color:rgba(255,255,255,.15); }
+.sf-check input[type=checkbox] { width:15px; height:15px; accent-color:var(--red); cursor:pointer; }
+.sf-check label { font-size:11px; font-weight:700; color:rgba(255,255,255,.8); cursor:pointer; flex:1; }
+.cf-fields { display:none; }
+.cf-fields.active { display:block; }
+</style>
+      <!-- STEP 1: פרטי העסק — Smart Dynamic -->
       <div id="cStep1">
-        <div style="display:flex;flex-direction:column;gap:10px;">
-          <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
-            <input id="cBizName" placeholder="* שם העסק" style="padding:11px 14px;border-radius:11px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);color:#fff;font-family:var(--font);font-size:13px;outline:none;direction:rtl;" />
-            <input id="cOwnerName" placeholder="* שם הבעלים" style="padding:11px 14px;border-radius:11px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);color:#fff;font-family:var(--font);font-size:13px;outline:none;direction:rtl;" />
+
+        <!-- BASE FIELDS always shown -->
+        <div style="display:flex;flex-direction:column;gap:9px;margin-bottom:12px;">
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:9px;">
+            <div><label class="sf-label">שם העסק *</label><input id="cBizName" class="sf-inp" placeholder="הכנס שם..."></div>
+            <div><label class="sf-label">שם הבעלים *</label><input id="cOwnerName" class="sf-inp" placeholder="שמך המלא..."></div>
           </div>
-          <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
-            <input id="cPhone" placeholder="* טלפון" style="padding:11px 14px;border-radius:11px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);color:#fff;font-family:var(--font);font-size:13px;outline:none;direction:rtl;" />
-            <input id="cWhatsapp" placeholder="וואטסאפ" style="padding:11px 14px;border-radius:11px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);color:#fff;font-family:var(--font);font-size:13px;outline:none;direction:rtl;" />
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:9px;">
+            <div><label class="sf-label">טלפון *</label><input id="cPhone" class="sf-inp" placeholder="050-000-0000" type="tel"></div>
+            <div><label class="sf-label">WhatsApp</label><input id="cWhatsapp" class="sf-inp" placeholder="050-000-0000" type="tel"></div>
           </div>
-          <input id="cEmail" placeholder="אימייל" style="padding:11px 14px;border-radius:11px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);color:#fff;font-family:var(--font);font-size:13px;outline:none;direction:rtl;" />
-          <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
-            <input id="cCity" placeholder="* עיר" style="padding:11px 14px;border-radius:11px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);color:#fff;font-family:var(--font);font-size:13px;outline:none;direction:rtl;" />
-            <select id="cRegion" style="padding:11px 14px;border-radius:11px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);color:#fff;font-family:var(--font);font-size:13px;outline:none;direction:rtl;">
-              <option value="">* בחר אזור</option>
-              <option value="north">צפון</option>
-              <option value="center">מרכז</option>
-              <option value="south">דרום</option>
-            </select>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:9px;">
+            <div><label class="sf-label">עיר *</label><input id="cCity" class="sf-inp" placeholder="עיר..."></div>
+            <div>
+              <label class="sf-label">אזור *</label>
+              <select id="cRegion" class="sf-inp">
+                <option value="">בחר אזור</option>
+                <option value="north">🌲 צפון</option>
+                <option value="center">🏙️ מרכז</option>
+                <option value="south">🌵 דרום</option>
+              </select>
+            </div>
           </div>
-          <div id="cCatRow" style="display:none;">
-            <select id="cCategory" style="width:100%;padding:11px 14px;border-radius:11px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);color:#fff;font-family:var(--font);font-size:13px;outline:none;direction:rtl;">
-              <option value="mosek">מוסך</option>
-              <option value="migrash">מגרש רכבים</option>
-              <option value="mimun">מימון</option>
-              <option value="grira">גרירה</option>
-              <option value="pach">פח וצבע</option>
-            </select>
-          </div>
-          <div id="cRentalRow" style="display:none;display:grid;grid-template-columns:1fr 1fr;gap:10px;">
-            <input id="cCarName" placeholder="שם הרכב / דגם" style="padding:11px 14px;border-radius:11px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);color:#fff;font-family:var(--font);font-size:13px;outline:none;direction:rtl;" />
-            <input id="cPriceDay" placeholder="מחיר ליום (₪)" type="number" style="padding:11px 14px;border-radius:11px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);color:#fff;font-family:var(--font);font-size:13px;outline:none;direction:rtl;" />
-          </div>
-          <textarea id="cDesc" placeholder="תיאור קצר של העסק" rows="3" style="padding:11px 14px;border-radius:11px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);color:#fff;font-family:var(--font);font-size:13px;outline:none;resize:none;direction:rtl;"></textarea>
-          <input id="cWebsite" placeholder="אתר אינטרנט (אופציונלי)" style="padding:11px 14px;border-radius:11px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);color:#fff;font-family:var(--font);font-size:13px;outline:none;direction:rtl;" />
+          <div><label class="sf-label">אימייל</label><input id="cEmail" class="sf-inp" placeholder="your@email.com" type="email"></div>
+          <div><label class="sf-label">אתר אינטרנט</label><input id="cWebsite" class="sf-inp" placeholder="https://..." type="url"></div>
         </div>
-        <button onclick="cGoStep2()" class="btn btn-red" style="width:100%;margin-top:16px;font-size:14px;padding:13px;">המשך לתמונות ←</button>
+
+        <!-- GARAGE: category picker + specific fields -->
+        <div id="cCatRow">
+          <div style="font-size:12px;font-weight:800;color:rgba(255,255,255,.7);margin-bottom:10px;">בחר קטגוריה *</div>
+          <div class="sf-cat-grid">
+            <div class="sf-cat-item" onclick="cSelectCat('mosek',this)"><div class="ico">🔧</div>מוסך</div>
+            <div class="sf-cat-item" onclick="cSelectCat('migrash',this)"><div class="ico">🚗</div>מגרש</div>
+            <div class="sf-cat-item" onclick="cSelectCat('mimun',this)"><div class="ico">💰</div>מימון</div>
+            <div class="sf-cat-item" onclick="cSelectCat('grira',this)"><div class="ico">🚛</div>גרירה</div>
+            <div class="sf-cat-item" onclick="cSelectCat('pach',this)"><div class="ico">🎨</div>פח וצבע</div>
+          </div>
+          <input type="hidden" id="cCategory">
+
+          <!-- 🔧 MOSEK -->
+          <div class="cf-fields" id="ccf-mosek">
+            <div class="sf-sec">
+              <div style="display:flex;align-items:center;gap:10px;margin-bottom:14px"><svg width="32" height="32" viewBox="0 0 32 32" fill="none"><rect width="32" height="32" rx="10" fill="rgba(200,16,46,0.15)"/><path d="M22 8c-2.5 0-4.5 2-4.5 4.5 0 .6.1 1.2.3 1.7L8.5 23.5a1.5 1.5 0 0 0 0 2.1 1.5 1.5 0 0 0 2.1 0L20 16.2c.5.2 1.1.3 1.7.3 2.5 0 4.5-2 4.5-4.5 0-.6-.1-1.2-.3-1.7l-2.6 2.6-1.8-1.8 2.6-2.6C23.6 8.4 22.8 8 22 8z" fill="#ff3355"/><circle cx="10.5" cy="24.5" r="1.5" fill="#ff3355"/></svg><div><div style="font-size:11px;font-weight:900;color:rgba(255,255,255,.85);text-transform:uppercase;letter-spacing:.07em;line-height:1.2">פרטי המוסך</div><div style="font-size:10px;color:rgba(255,255,255,.38);margin-top:2px;font-weight:600">סוג השירות • שעות פעילות</div></div></div>
+              <div style="display:flex;flex-direction:column;gap:9px;">
+                <div>
+                  <label class="sf-label">סוג המוסך</label>
+                  <select class="sf-inp" id="c-mosek-type">
+                    <option value="מוסך כללי">🔧 מוסך כללי</option>
+                    <option value="חשמל רכב">⚡ חשמל רכב</option>
+                    <option value="מוסך דיזל">🛢️ דיזל</option>
+                    <option value="בדיקת רישוי">📋 בדיקת רישוי</option>
+                    <option value="רכבי שטח">🏔️ רכבי שטח</option>
+                    <option value="ביצועים">🏎️ ביצועים וטיונינג</option>
+                  </select>
+                </div>
+                <div>
+                  <label class="sf-label">שעות פעילות</label>
+                  <input class="sf-inp" id="c-mosek-hours" placeholder="א׳-ה׳ 8:00-18:00, ו׳ 8:00-13:00">
+                </div>
+                <div>
+                  <label class="sf-label">על אילו דגמים עובדים? (הפרד בפסיק)</label>
+                  <input class="sf-inp" id="c-mosek-brands" placeholder="טויוטה, יונדאי, קיה, כל הדגמים...">
+                </div>
+              </div>
+            </div>
+            <div class="sf-sec">
+              <div style="display:flex;align-items:center;gap:10px;margin-bottom:14px"><svg width="32" height="32" viewBox="0 0 32 32" fill="none"><rect width="32" height="32" rx="10" fill="rgba(200,16,46,0.15)"/><circle cx="16" cy="16" r="5" stroke="#ff3355" stroke-width="1.6" fill="none"/><path d="M16 7v2M16 23v2M7 16h2M23 16h2M9.5 9.5l1.4 1.4M21.1 21.1l1.4 1.4M9.5 22.5l1.4-1.4M21.1 10.9l1.4-1.4" stroke="#ff3355" stroke-width="1.6" stroke-linecap="round"/><circle cx="16" cy="16" r="2" fill="#ff3355"/></svg><div><div style="font-size:11px;font-weight:900;color:rgba(255,255,255,.85);text-transform:uppercase;letter-spacing:.07em;line-height:1.2">שירותים מוצעים</div><div style="font-size:10px;color:rgba(255,255,255,.38);margin-top:2px;font-weight:600">סמן את כל השירותים שלך</div></div></div>
+              <div class="sf-check-grid">
+                <div class="sf-check"><input type="checkbox" id="cm-tip"><label for="cm-tip">🔧 טיפול שוטף</label></div>
+                <div class="sf-check"><input type="checkbox" id="cm-brake"><label for="cm-brake">🛑 בלמים</label></div>
+                <div class="sf-check"><input type="checkbox" id="cm-ac"><label for="cm-ac">❄️ מיזוג אוויר</label></div>
+                <div class="sf-check"><input type="checkbox" id="cm-elec"><label for="cm-elec">⚡ חשמל</label></div>
+                <div class="sf-check"><input type="checkbox" id="cm-gear"><label for="cm-gear">⚙️ גיר אוטומטי</label></div>
+                <div class="sf-check"><input type="checkbox" id="cm-diag"><label for="cm-diag">💻 דיאגנוסטיקה</label></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 🚗 MIGRASH -->
+          <div class="cf-fields" id="ccf-migrash">
+            <div class="sf-sec">
+              <div style="display:flex;align-items:center;gap:10px;margin-bottom:14px"><svg width="32" height="32" viewBox="0 0 32 32" fill="none"><rect width="32" height="32" rx="10" fill="rgba(200,16,46,0.15)"/><rect x="6" y="10" width="20" height="10" rx="2" stroke="#ff3355" stroke-width="1.6" fill="none"/><path d="M6 14h20" stroke="#ff3355" stroke-width="1.4"/><circle cx="10" cy="22" r="2" stroke="#ff3355" stroke-width="1.6" fill="none"/><circle cx="22" cy="22" r="2" stroke="#ff3355" stroke-width="1.6" fill="none"/><path d="M12 22h8" stroke="#ff3355" stroke-width="1.6" stroke-linecap="round"/></svg><div><div style="font-size:11px;font-weight:900;color:rgba(255,255,255,.85);text-transform:uppercase;letter-spacing:.07em;line-height:1.2">פרטי המגרש</div><div style="font-size:10px;color:rgba(255,255,255,.38);margin-top:2px;font-weight:600">סוג פעילות • מלאי • מחירים</div></div></div>
+              <div style="display:flex;flex-direction:column;gap:9px;">
+                <div style="display:grid;grid-template-columns:1fr 1fr;gap:9px;">
+                  <div>
+                    <label class="sf-label">סוג פעילות</label>
+                    <select class="sf-inp" id="c-mg-type">
+                      <option value="מכירה">מכירת רכבים</option>
+                      <option value="קנייה">קניית רכבים</option>
+                      <option value="מכירה וקנייה">מכירה + קנייה</option>
+                      <option value="ייבוא אישי">ייבוא אישי</option>
+                    </select>
+                  </div>
+                  <div>
+                    <label class="sf-label">כמות רכבים במלאי</label>
+                    <select class="sf-inp" id="c-mg-stock">
+                      <option value="1-10">1–10 רכבים</option>
+                      <option value="10-30">10–30 רכבים</option>
+                      <option value="30-50">30–50 רכבים</option>
+                      <option value="50+">50+ רכבים</option>
+                    </select>
+                  </div>
+                </div>
+                <div style="display:grid;grid-template-columns:1fr 1fr;gap:9px;">
+                  <div><label class="sf-label">מחיר מינימלי (₪)</label><input class="sf-inp" id="c-mg-minprice" type="number" placeholder="30000"></div>
+                  <div><label class="sf-label">שנה מינימלית</label><input class="sf-inp" id="c-mg-minyear" type="number" placeholder="2015"></div>
+                </div>
+                <div><label class="sf-label">יצרנים עיקריים במלאי</label><input class="sf-inp" id="c-mg-brands" placeholder="יונדאי, קיה, טויוטה..."></div>
+              </div>
+            </div>
+            <div class="sf-sec">
+              <div style="display:flex;align-items:center;gap:10px;margin-bottom:14px"><svg width="32" height="32" viewBox="0 0 32 32" fill="none"><rect width="32" height="32" rx="10" fill="rgba(200,16,46,0.15)"/><rect x="8" y="9" width="16" height="14" rx="2" stroke="#ff3355" stroke-width="1.6" fill="none"/><path d="M8 14h16M13 9V7M19 9V7" stroke="#ff3355" stroke-width="1.5" stroke-linecap="round"/><path d="M12 18l2 2 4-4" stroke="#ff3355" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg><div><div style="font-size:11px;font-weight:900;color:rgba(255,255,255,.85);text-transform:uppercase;letter-spacing:.07em;line-height:1.2">שירותים נוספים</div><div style="font-size:10px;color:rgba(255,255,255,.38);margin-top:2px;font-weight:600">מה מציע המגרש שלך?</div></div></div>
+              <div class="sf-check-grid">
+                <div class="sf-check"><input type="checkbox" id="cmg-fin"><label for="cmg-fin">💰 מימון זמין</label></div>
+                <div class="sf-check"><input type="checkbox" id="cmg-trd"><label for="cmg-trd">🔄 טרייד-אין</label></div>
+                <div class="sf-check"><input type="checkbox" id="cmg-war"><label for="cmg-war">🛡️ אחריות</label></div>
+                <div class="sf-check"><input type="checkbox" id="cmg-tst"><label for="cmg-tst">🚘 נסיעת מבחן</label></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 💰 MIMUN -->
+          <div class="cf-fields" id="ccf-mimun">
+            <div class="sf-sec">
+              <div style="display:flex;align-items:center;gap:10px;margin-bottom:14px"><svg width="32" height="32" viewBox="0 0 32 32" fill="none"><rect width="32" height="32" rx="10" fill="rgba(200,16,46,0.15)"/><rect x="7" y="10" width="18" height="13" rx="2.5" stroke="#ff3355" stroke-width="1.6" fill="none"/><path d="M7 15h18" stroke="#ff3355" stroke-width="1.5"/><circle cx="16" cy="20" r="3" stroke="#ff3355" stroke-width="1.5" fill="none"/><path d="M16 18.5v1.5l1 1" stroke="#ff3355" stroke-width="1.3" stroke-linecap="round"/></svg><div><div style="font-size:11px;font-weight:900;color:rgba(255,255,255,.85);text-transform:uppercase;letter-spacing:.07em;line-height:1.2">פרטי שירות המימון</div><div style="font-size:10px;color:rgba(255,255,255,.38);margin-top:2px;font-weight:600">סכומים • ריבית • תקופות</div></div></div>
+              <div style="display:flex;flex-direction:column;gap:9px;">
+                <div>
+                  <label class="sf-label">סוג הגוף המממן</label>
+                  <select class="sf-inp" id="c-mm-type">
+                    <option value="חברת מימון">🏢 חברת מימון</option>
+                    <option value="סוכן מימון">👤 סוכן עצמאי</option>
+                    <option value="בנק">🏦 בנק</option>
+                    <option value="מימון פרטי">💼 גוף פרטי</option>
+                  </select>
+                </div>
+                <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:9px;">
+                  <div><label class="sf-label">מינימום (₪)</label><input class="sf-inp" id="c-mm-min" type="number" placeholder="20000"></div>
+                  <div><label class="sf-label">מקסימום (₪)</label><input class="sf-inp" id="c-mm-max" type="number" placeholder="300000"></div>
+                  <div><label class="sf-label">ריבית %</label><input class="sf-inp" id="c-mm-rate" type="number" step="0.1" placeholder="4.5"></div>
+                </div>
+                <div>
+                  <label class="sf-label">תקופת החזר</label>
+                  <select class="sf-inp" id="c-mm-period">
+                    <option value="עד 24 חודש">עד 24 חודש</option>
+                    <option value="עד 48 חודש">עד 48 חודש</option>
+                    <option value="עד 72 חודש">עד 72 חודש</option>
+                    <option value="עד 84 חודש">עד 84 חודש</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+            <div class="sf-sec">
+              <div style="display:flex;align-items:center;gap:10px;margin-bottom:14px"><svg width="32" height="32" viewBox="0 0 32 32" fill="none"><rect width="32" height="32" rx="10" fill="rgba(200,16,46,0.15)"/><path d="M16 7l2.5 5 5.5.8-4 3.9.94 5.5L16 19.5l-4.94 2.7.94-5.5L8 12.8l5.5-.8L16 7z" stroke="#ff3355" stroke-width="1.5" fill="rgba(200,16,46,0.2)" stroke-linejoin="round"/><path d="M13 17l2 2 4-4" stroke="#ff3355" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg><div><div style="font-size:11px;font-weight:900;color:rgba(255,255,255,.85);text-transform:uppercase;letter-spacing:.07em;line-height:1.2">יתרונות השירות</div><div style="font-size:10px;color:rgba(255,255,255,.38);margin-top:2px;font-weight:600">מה מייחד אותך?</div></div></div>
+              <div class="sf-check-grid">
+                <div class="sf-check"><input type="checkbox" id="cmm-nd"><label for="cmm-nd">📄 ללא תלושי שכר</label></div>
+                <div class="sf-check"><input type="checkbox" id="cmm-fa"><label for="cmm-fa">⚡ אישור מהיר</label></div>
+                <div class="sf-check"><input type="checkbox" id="cmm-bc"><label for="cmm-bc">🟡 דירוג נמוך OK</label></div>
+                <div class="sf-check"><input type="checkbox" id="cmm-on"><label for="cmm-on">💻 טיפול מקוון</label></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 🚛 GRIRA -->
+          <div class="cf-fields" id="ccf-grira">
+            <div class="sf-sec">
+              <div style="display:flex;align-items:center;gap:10px;margin-bottom:14px"><svg width="32" height="32" viewBox="0 0 32 32" fill="none"><rect width="32" height="32" rx="10" fill="rgba(200,16,46,0.15)"/><rect x="14" y="10" width="11" height="8" rx="1.5" stroke="#ff3355" stroke-width="1.5" fill="none"/><path d="M7 13h7M7 16h7" stroke="#ff3355" stroke-width="1.3" stroke-linecap="round" opacity=".6"/><rect x="5" y="18" width="22" height="3" rx="1" fill="rgba(200,16,46,0.25)" stroke="#ff3355" stroke-width="1.4"/><circle cx="9" cy="24" r="2" stroke="#ff3355" stroke-width="1.5" fill="none"/><circle cx="23" cy="24" r="2" stroke="#ff3355" stroke-width="1.5" fill="none"/><path d="M17 10V8l-3 2" stroke="#ff3355" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg><div><div style="font-size:11px;font-weight:900;color:rgba(255,255,255,.85);text-transform:uppercase;letter-spacing:.07em;line-height:1.2">פרטי שירות הגרירה</div><div style="font-size:10px;color:rgba(255,255,255,.38);margin-top:2px;font-weight:600">סוג גרר • זמן הגעה • אזור</div></div></div>
+              <div style="display:flex;flex-direction:column;gap:9px;">
+                <div style="display:grid;grid-template-columns:1fr 1fr;gap:9px;">
+                  <div>
+                    <label class="sf-label">סוג גרר</label>
+                    <select class="sf-inp" id="c-gr-type">
+                      <option value="גרר מנוף">🏗️ גרר מנוף</option>
+                      <option value="גרר שטוח">🚛 גרר שטוח</option>
+                      <option value="גרר קל">🚐 גרר קל</option>
+                      <option value="גרר כבד">⚙️ גרר כבד</option>
+                      <option value="גרר אופנועים">🏍️ אופנועים</option>
+                    </select>
+                  </div>
+                  <div>
+                    <label class="sf-label">זמן הגעה ממוצע</label>
+                    <select class="sf-inp" id="c-gr-eta">
+                      <option value="עד 20 דקות">⚡ עד 20 דקות</option>
+                      <option value="עד 30 דקות">🕐 עד 30 דקות</option>
+                      <option value="עד 45 דקות">🕑 עד 45 דקות</option>
+                      <option value="עד שעה">🕒 עד שעה</option>
+                    </select>
+                  </div>
+                </div>
+                <div style="display:grid;grid-template-columns:1fr 1fr;gap:9px;">
+                  <div><label class="sf-label">מחיר מינימלי (₪)</label><input class="sf-inp" id="c-gr-price" type="number" placeholder="250"></div>
+                  <div><label class="sf-label">אזור כיסוי</label><input class="sf-inp" id="c-gr-coverage" placeholder="חיפה, קריות..."></div>
+                </div>
+              </div>
+            </div>
+            <div class="sf-sec">
+              <div style="display:flex;align-items:center;gap:10px;margin-bottom:14px"><svg width="32" height="32" viewBox="0 0 32 32" fill="none"><rect width="32" height="32" rx="10" fill="rgba(200,16,46,0.15)"/><circle cx="16" cy="16" r="8" stroke="#ff3355" stroke-width="1.6" fill="none"/><path d="M16 10v6l4 2" stroke="#ff3355" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/><path d="M8 8l2 2M22 22l2 2M8 24l2-2M22 10l2-2" stroke="#ff3355" stroke-width="1.2" stroke-linecap="round" opacity=".5"/></svg><div><div style="font-size:11px;font-weight:900;color:rgba(255,255,255,.85);text-transform:uppercase;letter-spacing:.07em;line-height:1.2">זמינות ושירותים</div><div style="font-size:10px;color:rgba(255,255,255,.38);margin-top:2px;font-weight:600">מתי ואיפה אתה זמין?</div></div></div>
+              <div class="sf-check-grid">
+                <div class="sf-check"><input type="checkbox" id="cgr-247"><label for="cgr-247">🌙 שירות 24/7</label></div>
+                <div class="sf-check"><input type="checkbox" id="cgr-shb"><label for="cgr-shb">✡️ שבת וחג</label></div>
+                <div class="sf-check"><input type="checkbox" id="cgr-hwy"><label for="cgr-hwy">🛣️ אוטוסטרדה</label></div>
+                <div class="sf-check"><input type="checkbox" id="cgr-ins"><label for="cgr-ins">📋 עם ביטוח</label></div>
+                <div class="sf-check"><input type="checkbox" id="cgr-lck"><label for="cgr-lck">🔑 פתיחת נעילה</label></div>
+                <div class="sf-check"><input type="checkbox" id="cgr-abrод"><label for="cgr-abrод">🌍 גרירה לחו"ל</label></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 🎨 PACH -->
+          <div class="cf-fields" id="ccf-pach">
+            <div class="sf-sec">
+              <div style="display:flex;align-items:center;gap:10px;margin-bottom:14px"><svg width="32" height="32" viewBox="0 0 32 32" fill="none"><rect width="32" height="32" rx="10" fill="rgba(200,16,46,0.15)"/><path d="M10 22c0-3.3 2.7-6 6-6s6 2.7 6 6" stroke="#ff3355" stroke-width="1.6" fill="none" stroke-linecap="round"/><path d="M16 16V9" stroke="#ff3355" stroke-width="1.6" stroke-linecap="round"/><circle cx="16" cy="8" r="2.5" fill="rgba(200,16,46,0.4)" stroke="#ff3355" stroke-width="1.4"/><path d="M8 22h16" stroke="#ff3355" stroke-width="1.5" stroke-linecap="round"/></svg><div><div style="font-size:11px;font-weight:900;color:rgba(255,255,255,.85);text-transform:uppercase;letter-spacing:.07em;line-height:1.2">פרטי מוסך פח וצבע</div><div style="font-size:10px;color:rgba(255,255,255,.38);margin-top:2px;font-weight:600">סוג • מותג צבע • אחריות</div></div></div>
+              <div style="display:flex;flex-direction:column;gap:9px;">
+                <div style="display:grid;grid-template-columns:1fr 1fr;gap:9px;">
+                  <div>
+                    <label class="sf-label">סוג מוסך</label>
+                    <select class="sf-inp" id="c-pa-type">
+                      <option value="פח וצבע כללי">🎨 פח וצבע כללי</option>
+                      <option value="צבע בלבד">🖌️ צבע בלבד</option>
+                      <option value="פח ויישור">🔨 פח ויישור</option>
+                      <option value="תיקוני ברד PDR">🌧️ תיקוני ברד PDR</option>
+                    </select>
+                  </div>
+                  <div>
+                    <label class="sf-label">מותג צבע</label>
+                    <select class="sf-inp" id="c-pa-paint">
+                      <option value="">לא צוין</option>
+                      <option value="PPG">PPG</option>
+                      <option value="Sikkens">Sikkens</option>
+                      <option value="Spies Hecker">Spies Hecker</option>
+                      <option value="Standox">Standox</option>
+                      <option value="אחר">אחר</option>
+                    </select>
+                  </div>
+                </div>
+                <div>
+                  <label class="sf-label">אחריות על עבודה</label>
+                  <select class="sf-inp" id="c-pa-warranty">
+                    <option value="">ללא אחריות מוגדרת</option>
+                    <option value="6 חודשים">6 חודשים</option>
+                    <option value="שנה">שנה</option>
+                    <option value="שנתיים">שנתיים</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+            <div class="sf-sec">
+              <div style="display:flex;align-items:center;gap:10px;margin-bottom:14px"><svg width="32" height="32" viewBox="0 0 32 32" fill="none"><rect width="32" height="32" rx="10" fill="rgba(200,16,46,0.15)"/><path d="M9 21l5-5 3 3 5-7" stroke="#ff3355" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" fill="none"/><path d="M20 8l3 1-1 3" stroke="#ff3355" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/><path d="M7 25h18" stroke="#ff3355" stroke-width="1.4" stroke-linecap="round" opacity=".5"/></svg><div><div style="font-size:11px;font-weight:900;color:rgba(255,255,255,.85);text-transform:uppercase;letter-spacing:.07em;line-height:1.2">שירותים מוצעים</div><div style="font-size:10px;color:rgba(255,255,255,.38);margin-top:2px;font-weight:600">מה אתה מציע?</div></div></div>
+              <div class="sf-check-grid">
+                <div class="sf-check"><input type="checkbox" id="cpa-ful"><label for="cpa-ful">✨ צביעה מלאה</label></div>
+                <div class="sf-check"><input type="checkbox" id="cpa-par"><label for="cpa-par">🎯 צביעה חלקית</label></div>
+                <div class="sf-check"><input type="checkbox" id="cpa-pdr"><label for="cpa-pdr">🌧️ תיקון ברד PDR</label></div>
+                <div class="sf-check"><input type="checkbox" id="cpa-wrp"><label for="cpa-wrp">🎁 PPF/ויניל</label></div>
+                <div class="sf-check"><input type="checkbox" id="cpa-pol"><label for="cpa-pol">💎 פוליש מלא</label></div>
+                <div class="sf-check"><input type="checkbox" id="cpa-est"><label for="cpa-est">📋 הערכת נזקים</label></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- RENTAL specific fields -->
+        <div id="cRentalRow" style="display:none">
+          <div class="sf-sec">
+            <div style="display:flex;align-items:center;gap:10px;margin-bottom:14px"><svg width="32" height="32" viewBox="0 0 32 32" fill="none"><rect width="32" height="32" rx="10" fill="rgba(200,16,46,0.15)"/><path d="M6 19h2l2-5h12l2 5h2v3H6v-3z" stroke="#ff3355" stroke-width="1.5" fill="rgba(200,16,46,0.15)" stroke-linejoin="round"/><path d="M10 14l1.5-4h9L22 14" stroke="#ff3355" stroke-width="1.4" fill="none" stroke-linejoin="round"/><circle cx="10.5" cy="22.5" r="2" stroke="#ff3355" stroke-width="1.5" fill="none"/><circle cx="21.5" cy="22.5" r="2" stroke="#ff3355" stroke-width="1.5" fill="none"/></svg><div><div style="font-size:11px;font-weight:900;color:rgba(255,255,255,.85);text-transform:uppercase;letter-spacing:.07em;line-height:1.2">פרטי הרכב</div><div style="font-size:10px;color:rgba(255,255,255,.38);margin-top:2px;font-weight:600">יצרן • דגם • שנה • קטגוריה</div></div></div>
+            <div style="display:flex;flex-direction:column;gap:9px;">
+              <div style="display:grid;grid-template-columns:1fr 1fr;gap:9px;">
+                <div>
+                  <label class="sf-label">יצרן הרכב *</label>
+                  <select class="sf-inp" id="c-rent-maker">
+                    <option value="יונדאי">יונדאי</option>
+                    <option value="קיה">קיה</option>
+                    <option value="טויוטה">טויוטה</option>
+                    <option value="מאזדה">מאזדה</option>
+                    <option value="סקודה">סקודה</option>
+                    <option value="פולקסווגן">פולקסווגן</option>
+                    <option value="רנו">רנו</option>
+                    <option value="פיג'ו">פיג'ו</option>
+                    <option value="אחר">אחר</option>
+                  </select>
+                </div>
+                <div><label class="sf-label">דגם *</label><input class="sf-inp" id="cCarName" placeholder="i10, Clio..."></div>
+              </div>
+              <div style="display:grid;grid-template-columns:1fr 1fr;gap:9px;">
+                <div><label class="sf-label">שנת ייצור</label><input class="sf-inp" id="c-rent-year" type="number" placeholder="2022"></div>
+                <div>
+                  <label class="sf-label">קטגוריה</label>
+                  <select class="sf-inp" id="c-rent-group">
+                    <option value="קטנה">🚗 קטנה</option>
+                    <option value="בינונית">🚙 בינונית</option>
+                    <option value="משפחתית">🚐 משפחתית</option>
+                    <option value="SUV">🛻 SUV / ג'יפ</option>
+                    <option value="חשמלי">⚡ חשמלי</option>
+                    <option value="יוקרה">🏎️ יוקרה</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="sf-sec">
+            <div style="display:flex;align-items:center;gap:10px;margin-bottom:14px"><svg width="32" height="32" viewBox="0 0 32 32" fill="none"><rect width="32" height="32" rx="10" fill="rgba(200,16,46,0.15)"/><rect x="7" y="9" width="18" height="14" rx="2.5" stroke="#ff3355" stroke-width="1.5" fill="none"/><path d="M7 14h18" stroke="#ff3355" stroke-width="1.4"/><path d="M14 18.5h4M16 17v3" stroke="#ff3355" stroke-width="1.6" stroke-linecap="round"/><circle cx="10.5" cy="11.5" r="1" fill="#ff3355"/><circle cx="13.5" cy="11.5" r="1" fill="#ff3355"/></svg><div><div style="font-size:11px;font-weight:900;color:rgba(255,255,255,.85);text-transform:uppercase;letter-spacing:.07em;line-height:1.2">תמחור</div><div style="font-size:10px;color:rgba(255,255,255,.38);margin-top:2px;font-weight:600">יומי • שבועי • חודשי</div></div></div>
+            <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:9px;">
+              <div><label class="sf-label">מחיר יומי (₪) *</label><input class="sf-inp" id="cPriceDay" type="number" placeholder="150"></div>
+              <div><label class="sf-label">מחיר שבועי (₪)</label><input class="sf-inp" id="c-rent-week" type="number" placeholder="800"></div>
+              <div><label class="sf-label">מחיר חודשי (₪)</label><input class="sf-inp" id="c-rent-month" type="number" placeholder="2500"></div>
+            </div>
+          </div>
+          <div class="sf-sec">
+            <div style="display:flex;align-items:center;gap:10px;margin-bottom:14px"><svg width="32" height="32" viewBox="0 0 32 32" fill="none"><rect width="32" height="32" rx="10" fill="rgba(200,16,46,0.15)"/><circle cx="16" cy="16" r="5" stroke="#ff3355" stroke-width="1.5" fill="none"/><circle cx="16" cy="16" r="1.5" fill="#ff3355"/><path d="M16 8v2M16 22v2M8 16h2M22 16h2" stroke="#ff3355" stroke-width="1.5" stroke-linecap="round"/><path d="M10.3 10.3l1.4 1.4M20.3 20.3l1.4 1.4M10.3 21.7l1.4-1.4M20.3 11.7l1.4-1.4" stroke="#ff3355" stroke-width="1.3" stroke-linecap="round" opacity=".6"/></svg><div><div style="font-size:11px;font-weight:900;color:rgba(255,255,255,.85);text-transform:uppercase;letter-spacing:.07em;line-height:1.2">מפרט ותנאים</div><div style="font-size:10px;color:rgba(255,255,255,.38);margin-top:2px;font-weight:600">ציוד • תנאי השכרה</div></div></div>
+            <div class="sf-check-grid">
+              <div class="sf-check"><input type="checkbox" id="cr-auto"><label for="cr-auto">🔄 גיר אוטומטי</label></div>
+              <div class="sf-check"><input type="checkbox" id="cr-ac"><label for="cr-ac">❄️ מיזוג אוויר</label></div>
+              <div class="sf-check"><input type="checkbox" id="cr-ins"><label for="cr-ins">🛡️ ביטוח כלול</label></div>
+              <div class="sf-check"><input type="checkbox" id="cr-del"><label for="cr-del">🚚 משלוח לכתובת</label></div>
+              <div class="sf-check"><input type="checkbox" id="cr-km"><label for="cr-km">♾️ ק"מ חופשי</label></div>
+              <div class="sf-check"><input type="checkbox" id="cr-yng"><label for="cr-yng">👶 נהג צעיר 18+</label></div>
+            </div>
+          </div>
+          <div style="margin-bottom:0"><label class="sf-label">תיאור נוסף</label><textarea class="sf-inp" id="cDesc" rows="2" placeholder="פרטים נוספים על הרכב..." style="resize:none;"></textarea></div>
+          <input type="hidden" id="cWebsite" value="">
+        </div>
+
+        <button onclick="cGoStep2()" class="btn btn-red" style="width:100%;margin-top:14px;font-size:14px;padding:13px;">המשך לתמונות ←</button>
       </div>
 
       <!-- STEP 2: תמונות -->
@@ -8503,14 +8849,34 @@ function switchRegion(r){
 let _contactType='';
 let _cLogoUrl='', _cImgUrls=[], _cPkg='basic';
 
+// ── Category selection for smart form ──
+let _selectedGarageCat = '';
+function cSelectCat(cat, el) {
+  _selectedGarageCat = cat;
+  document.querySelectorAll('.sf-cat-item').forEach(b => b.classList.remove('sel'));
+  if (el) el.classList.add('sel');
+  document.getElementById('cCategory').value = cat;
+  // Show/hide category-specific fields
+  document.querySelectorAll('.cf-fields').forEach(f => f.classList.remove('active'));
+  const cf = document.getElementById('ccf-' + cat);
+  if (cf) cf.classList.add('active');
+}
+
 function showContactModal(type){
   _contactType=type;
   _cLogoUrl=''; _cImgUrls=[]; _cPkg='basic';
+  _selectedGarageCat='';
   const titles={garage:'פרסם את העסק שלך',rental:'פרסם את עסק ההשכרה שלך'};
   document.getElementById('contactModalTitle').textContent=titles[type]||'צור קשר';
-  // show/hide type-specific fields
-  document.getElementById('cCatRow').style.display = type==='garage'?'block':'none';
-  document.getElementById('cRentalRow').style.display = type==='rental'?'grid':'none';
+  // show/hide type-specific sections
+  const catRow = document.getElementById('cCatRow');
+  const rentRow = document.getElementById('cRentalRow');
+  if(catRow)  catRow.style.display  = type==='garage'?'block':'none';
+  if(rentRow) rentRow.style.display = type==='rental'?'block':'none';
+  // Reset cat selection
+  document.querySelectorAll('.sf-cat-item').forEach(b=>b.classList.remove('sel'));
+  document.querySelectorAll('.cf-fields').forEach(f=>f.classList.remove('active'));
+  if(document.getElementById('cCategory')) document.getElementById('cCategory').value='';
   // reset steps
   cGoStep1();
   // reset images
@@ -8621,29 +8987,126 @@ async function cCloudinaryUpload(file){
   } catch(e){ showToast('שגיאה בהעלאת תמונה'); return null; }
 }
 
+function _getChecked(id){ return document.getElementById(id)?.checked||false; }
+function _getVal(id){ return document.getElementById(id)?.value?.trim()||''; }
+
+function buildContactDescription() {
+  if (_contactType === 'garage') {
+    const cat = _getVal('cCategory');
+    let parts = [];
+    if (cat === 'mosek') {
+      parts.push(_getVal('c-mosek-type'));
+      const hrs = _getVal('c-mosek-hours'); if(hrs) parts.push('שעות: '+hrs);
+      const brands = _getVal('c-mosek-brands'); if(brands) parts.push('דגמים: '+brands);
+      const svcs = [];
+      if(_getChecked('cm-tip'))  svcs.push('טיפול שוטף');
+      if(_getChecked('cm-brake')) svcs.push('בלמים');
+      if(_getChecked('cm-ac'))   svcs.push('מיזוג');
+      if(_getChecked('cm-elec')) svcs.push('חשמל');
+      if(_getChecked('cm-gear')) svcs.push('גיר אוטומטי');
+      if(_getChecked('cm-diag')) svcs.push('דיאגנוסטיקה');
+      if(svcs.length) parts.push('שירותים: '+svcs.join(', '));
+    } else if (cat === 'migrash') {
+      parts.push(_getVal('c-mg-type'));
+      parts.push('מלאי: '+_getVal('c-mg-stock'));
+      const mp=_getVal('c-mg-minprice'); if(mp) parts.push('מ-₪'+mp);
+      const yr=_getVal('c-mg-minyear'); if(yr) parts.push('מ-'+yr);
+      const br=_getVal('c-mg-brands'); if(br) parts.push('יצרנים: '+br);
+      const ex=[];
+      if(_getChecked('cmg-fin')) ex.push('מימון');
+      if(_getChecked('cmg-trd')) ex.push('טרייד-אין');
+      if(_getChecked('cmg-war')) ex.push('אחריות');
+      if(_getChecked('cmg-tst')) ex.push('נסיעת מבחן');
+      if(ex.length) parts.push(ex.join(', '));
+    } else if (cat === 'mimun') {
+      parts.push(_getVal('c-mm-type'));
+      const mn=_getVal('c-mm-min'), mx=_getVal('c-mm-max'), rt=_getVal('c-mm-rate');
+      if(mn||mx) parts.push('₪'+mn+' – ₪'+mx);
+      if(rt) parts.push('ריבית '+rt+'%');
+      parts.push(_getVal('c-mm-period'));
+      const ad=[];
+      if(_getChecked('cmm-nd')) ad.push('ללא תלושים');
+      if(_getChecked('cmm-fa')) ad.push('אישור מהיר');
+      if(_getChecked('cmm-bc')) ad.push('דירוג נמוך OK');
+      if(_getChecked('cmm-on')) ad.push('מקוון');
+      if(ad.length) parts.push(ad.join(', '));
+    } else if (cat === 'grira') {
+      parts.push(_getVal('c-gr-type'));
+      parts.push(_getVal('c-gr-eta'));
+      const p=_getVal('c-gr-price'); if(p) parts.push('מ-₪'+p);
+      const cov=_getVal('c-gr-coverage'); if(cov) parts.push('כיסוי: '+cov);
+      const sv=[];
+      if(_getChecked('cgr-247')) sv.push('24/7');
+      if(_getChecked('cgr-shb')) sv.push('שבת');
+      if(_getChecked('cgr-hwy')) sv.push('אוטוסטרדה');
+      if(_getChecked('cgr-ins')) sv.push('עם ביטוח');
+      if(_getChecked('cgr-lck')) sv.push('פתיחת נעילה');
+      if(sv.length) parts.push(sv.join(', '));
+    } else if (cat === 'pach') {
+      parts.push(_getVal('c-pa-type'));
+      const pb=_getVal('c-pa-paint'); if(pb) parts.push('צבע: '+pb);
+      const pw=_getVal('c-pa-warranty'); if(pw) parts.push('אחריות: '+pw);
+      const sv=[];
+      if(_getChecked('cpa-ful')) sv.push('צביעה מלאה');
+      if(_getChecked('cpa-pdr')) sv.push('ברד PDR');
+      if(_getChecked('cpa-wrp')) sv.push('PPF');
+      if(_getChecked('cpa-pol')) sv.push('פוליש');
+      if(sv.length) parts.push(sv.join(', '));
+    }
+    return parts.filter(Boolean).join(' | ');
+  } else {
+    // rental
+    const maker=_getVal('c-rent-maker'), model=_getVal('cCarName');
+    const yr=_getVal('c-rent-year'), grp=_getVal('c-rent-group');
+    const wk=_getVal('c-rent-week'), mo=_getVal('c-rent-month');
+    const parts=[maker+' '+model, grp];
+    if(yr) parts.push('שנת '+yr);
+    if(wk) parts.push('שבועי: ₪'+wk);
+    if(mo) parts.push('חודשי: ₪'+mo);
+    const sv=[];
+    if(_getChecked('cr-auto')) sv.push('אוטומטי');
+    if(_getChecked('cr-ac'))   sv.push('מיזוג');
+    if(_getChecked('cr-ins'))  sv.push('ביטוח כלול');
+    if(_getChecked('cr-del'))  sv.push('משלוח');
+    if(_getChecked('cr-km'))   sv.push('ק"מ חופשי');
+    if(_getChecked('cr-yng'))  sv.push('נהג צעיר');
+    if(sv.length) parts.push(sv.join(', '));
+    const extra=_getVal('cDesc'); if(extra) parts.push(extra);
+    return parts.filter(Boolean).join(' | ');
+  }
+}
+
 async function submitContact(){
   const name=document.getElementById('cBizName').value.trim();
   const phone=document.getElementById('cPhone').value.trim();
+  const region=document.getElementById('cRegion').value;
   if(!name||!phone){showToast('נא למלא שם וטלפון');return;}
+  if(_contactType==='garage' && !_getVal('cCategory')){showToast('נא לבחור קטגוריה');return;}
   const btn=document.getElementById('cSubmit');
   const prog=document.getElementById('cUploadProgress');
   btn.disabled=true; btn.textContent='שולח...';
   prog.style.display='block';
   try {
+    // Build car_name for rental
+    let carName = null;
+    if(_contactType==='rental'){
+      const maker=_getVal('c-rent-maker'), model=_getVal('cCarName'), yr=_getVal('c-rent-year');
+      carName = (maker+' '+model+(yr?' ('+yr+')':'')).trim();
+    }
     const payload={
       page_type: _contactType,
       business_name: name,
-      owner_name: document.getElementById('cOwnerName').value.trim(),
+      owner_name: _getVal('cOwnerName'),
       phone,
-      whatsapp: document.getElementById('cWhatsapp').value.trim(),
-      email: document.getElementById('cEmail').value.trim(),
-      city: document.getElementById('cCity').value.trim(),
-      region: document.getElementById('cRegion').value,
-      description: document.getElementById('cDesc').value.trim(),
-      website: document.getElementById('cWebsite').value.trim(),
-      category: _contactType==='garage'?document.getElementById('cCategory').value:null,
-      car_name: _contactType==='rental'?document.getElementById('cCarName').value.trim():null,
-      price_per_day: _contactType==='rental'?parseFloat(document.getElementById('cPriceDay').value)||null:null,
+      whatsapp: _getVal('cWhatsapp'),
+      email: _getVal('cEmail'),
+      city: _getVal('cCity'),
+      region: region||null,
+      description: buildContactDescription(),
+      website: _getVal('cWebsite'),
+      category: _contactType==='garage'?_getVal('cCategory'):null,
+      car_name: carName,
+      price_per_day: _contactType==='rental'?parseFloat(document.getElementById('cPriceDay')?.value)||null:null,
       logo_url: _cLogoUrl||null,
       images: _cImgUrls,
       package: _cPkg,
