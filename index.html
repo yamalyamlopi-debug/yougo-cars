@@ -5969,18 +5969,15 @@ html[dir="ltr"] .foot-acc-arrow { margin-left:auto; margin-right:0; }
 
 /* Fix svc-page so sticky back button works */
 .svc-page.active {
-  display: flex !important;
-  flex-direction: column !important;
+  display: block !important;
 }
 .svc-page.active > .svc-back {
-  flex-shrink: 0 !important;
   position: sticky !important;
   top: 0 !important;
   z-index: 200 !important;
+  display: flex !important;
 }
-.svc-page.active > *:not(.svc-back) {
-  flex-shrink: 0 !important;
-}
+
 
 /* ══ BACK BUTTON — STICKY NAVBAR ══ */
 .svc-back {
@@ -9041,38 +9038,6 @@ function switchBizCat(cat)   { switchBizCat2(cat); }
 function switchBizRegion(c,r){ switchBizRegion2(c,r); }
 function switchRentRegion(r) { switchRentRegion2(r); }
 
-
-function switchBizCat(cat) {
-  // deactivate all tabs
-  document.querySelectorAll('.biz-cat-tab').forEach(t=>t.classList.remove('active'));
-  document.querySelectorAll('.biz-cat-panel').forEach(p=>p.classList.remove('active'));
-  // activate selected
-  document.getElementById('cat-'+cat)?.classList.add('active');
-  const tabs = document.querySelectorAll('.biz-cat-tab');
-  const cats = ['mosek','migrash','mimun','grira','pach'];
-  const idx = cats.indexOf(cat);
-  if(tabs[idx]) tabs[idx].classList.add('active');
-  // reset region to north
-  switchBizRegion(cat,'north');
-}
-function switchBizRegion(cat, region) {
-  const panel = document.getElementById('cat-'+cat);
-  if(!panel) return;
-  panel.querySelectorAll('.region-panel').forEach(p=>p.classList.remove('active'));
-  panel.querySelectorAll('.region-tab').forEach(t=>t.classList.remove('active'));
-  panel.querySelector('#bizreg-'+region)?.classList.add('active');
-  const tabs = panel.querySelectorAll('.region-tab');
-  const idx = ['north','center','south'].indexOf(region);
-  if(tabs[idx]) tabs[idx].classList.add('active');
-}
-function switchRentRegion(region) {
-  document.querySelectorAll('[id^="rentreg-"]').forEach(p=>p.classList.remove('active'));
-  document.querySelectorAll('#pageRental .region-tab').forEach(t=>t.classList.remove('active'));
-  document.getElementById('rentreg-'+region)?.classList.add('active');
-  const tabs = document.querySelectorAll('#pageRental .region-tab');
-  const idx = ['north','center','south'].indexOf(region);
-  if(tabs[idx]) tabs[idx].classList.add('active');
-}
 
 function showSvcPage(id){
   document.querySelectorAll('.svc-page').forEach(p=>p.classList.remove('active'));
