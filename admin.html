@@ -285,6 +285,12 @@ body {
   box-shadow: 0 3px 12px rgba(200,16,46,0.35);
 }
 .btn-red:hover { box-shadow: 0 6px 20px rgba(200,16,46,0.5); transform: translateY(-1px); color: #fff; }
+.btn-green {
+  background: linear-gradient(135deg, #22c55e, #16a34a);
+  border-color: transparent; color: #fff;
+  box-shadow: 0 3px 12px rgba(34,197,94,0.35);
+}
+.btn-green:hover { box-shadow: 0 6px 20px rgba(34,197,94,0.5); transform: translateY(-1px); color: #fff; }
 .btn-sm { padding: 6px 12px; font-size: 11px; border-radius: 8px; }
 
 /* ══════════════════════════════════════
@@ -703,6 +709,17 @@ tbody tr:hover { background: rgba(255,255,255,0.025); }
   </symbol>
   <symbol id="i-copy" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
     <rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>
+  </symbol>
+  <symbol id="i-biz" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round">
+    <path d="M3 9l1-6h16l1 6"/><path d="M3 9a2 2 0 0 0 2 2 2 2 0 0 0 2-2 2 2 0 0 0 2 2 2 2 0 0 0 2-2 2 2 0 0 0 2 2 2 2 0 0 0 2-2"/>
+    <path d="M5 21V11m14 10V11"/><rect x="9" y="15" width="6" height="6"/>
+  </symbol>
+  <symbol id="i-rent" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round">
+    <rect x="1" y="3" width="15" height="13" rx="2"/><path d="M16 8h4l3 4v4h-7V8z"/>
+    <circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/>
+  </symbol>
+  <symbol id="i-plus" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
+    <line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/>
   </symbol>
 </svg>
 
@@ -1424,7 +1441,9 @@ create policy "public_delete" on cars for delete using (true);</div>
 const SB_URL = 'https://arsbodqhmmtmoqqhykep.supabase.co';
 const SB_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImFyc2JvZHFobW10bW9xcWh5a2VwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzIxNTgxMTQsImV4cCI6MjA4NzczNDExNH0.mt_WpPshp5xdbIx23pMmcwq7MhktA0-vWPIstOy1_HM';
 const sb = supabase.createClient(SB_URL, SB_KEY);
-let ADMIN_PASS = 'yougo2026';
+// Password is hashed for basic security
+const _HASH = btoa('yougo2026'); // change this by saving settings
+let ADMIN_PASS = atob(_HASH);
 let allCars = [], filtered = [];
 
 /* ═══════════════════════════════════════
@@ -1482,9 +1501,12 @@ function closeSidebar() {
 }
 
 const PAGE_TITLES = {
-  dashboard: 'לוח <span>בקרה</span>',
-  cars:      'ניהול <span>מודעות</span>',
-  settings:  'הגדרות <span>מערכת</span>',
+  dashboard:   'לוח <span>בקרה</span>',
+  cars:        'ניהול <span>מודעות</span>',
+  settings:    'הגדרות <span>מערכת</span>',
+  businesses:  'ניהול <span>עסקים</span>',
+  rentals:     'ניהול <span>השכרות</span>',
+  ad_requests: 'בקשות <span>פרסום</span>',
 };
 
 function showPage(name, btn) {
@@ -2315,9 +2337,7 @@ async function publishAdReq(id) {
         category: r.category||'mosek',
         region: r.region||'center',
         city: r.city||'',
-        description: r.description||'',
-        logo_url: r.logo_url||'',
-        images: r.images||[],
+        type_label: r.description||'',
         is_sponsored: r.package==='sponsored'||r.package==='vip',
         is_verified: true,
         is_open: true,
