@@ -1464,167 +1464,616 @@ create policy "public_delete" on cars for delete using (true);</div>
   </div>
 </div>
 
-<!-- ══ MODAL: Business ══ -->
+<!-- ══ MODAL: Business (Smart Dynamic Form) ══ -->
+<style>
+.biz-cat-picker { display:grid; grid-template-columns:repeat(5,1fr); gap:8px; margin-bottom:20px; }
+@media(max-width:560px){ .biz-cat-picker { grid-template-columns:repeat(3,1fr); } }
+.bcp-item {
+  display:flex; flex-direction:column; align-items:center; gap:5px;
+  padding:10px 6px; border-radius:12px; border:1.5px solid var(--border);
+  background:var(--bg3); cursor:pointer; transition:all 0.18s;
+  font-size:10px; font-weight:800; color:var(--t2); text-align:center;
+}
+.bcp-item:hover { border-color:rgba(255,255,255,0.2); color:var(--t0); }
+.bcp-item.selected { border-color:var(--red); background:var(--red-dim); color:#fff; }
+.bcp-item .bcp-ico { font-size:22px; }
+.biz-section {
+  background:rgba(255,255,255,0.025); border:1px solid var(--border);
+  border-radius:14px; padding:16px; margin-bottom:14px;
+}
+.biz-section-title {
+  font-size:10px; font-weight:900; color:var(--t3); text-transform:uppercase;
+  letter-spacing:0.1em; margin-bottom:12px; display:flex; align-items:center; gap:6px;
+}
+.biz-section-title::before {
+  content:''; width:3px; height:12px; background:var(--red); border-radius:2px; flex-shrink:0;
+}
+.cat-fields { display:none; }
+.cat-fields.active { display:block; }
+.tags-input-wrap { display:flex; flex-wrap:wrap; gap:6px; padding:8px; background:var(--bg3); border:1px solid var(--border2); border-radius:11px; min-height:44px; cursor:text; }
+.tag-chip { display:inline-flex; align-items:center; gap:4px; background:var(--red-dim); border:1px solid rgba(200,16,46,0.3); color:#fff; padding:3px 10px; border-radius:100px; font-size:11px; font-weight:800; }
+.tag-chip-x { cursor:pointer; color:rgba(255,255,255,0.5); font-size:13px; line-height:1; }
+.tag-chip-x:hover { color:#fff; }
+.tags-text-input { background:none; border:none; outline:none; color:var(--t0); font-family:var(--font); font-size:12px; font-weight:700; min-width:80px; flex:1; }
+.tags-text-input::placeholder { color:var(--t3); }
+.checkbox-row { display:flex; align-items:center; gap:10px; padding:10px 12px; background:var(--bg3); border:1px solid var(--border); border-radius:10px; cursor:pointer; transition:border-color 0.18s; }
+.checkbox-row:hover { border-color:var(--border2); }
+.checkbox-row input[type=checkbox] { width:18px; height:18px; cursor:pointer; accent-color:var(--red); }
+.checkbox-row label { font-size:12px; font-weight:800; cursor:pointer; flex:1; }
+.step-indicator { display:flex; align-items:center; gap:0; margin-bottom:20px; }
+.step-dot { width:28px; height:28px; border-radius:50%; border:2px solid var(--border2); display:flex; align-items:center; justify-content:center; font-size:11px; font-weight:900; color:var(--t3); flex-shrink:0; transition:all 0.2s; }
+.step-dot.done { background:rgba(34,197,94,0.15); border-color:#4ade80; color:#4ade80; }
+.step-dot.active { background:var(--red-dim); border-color:var(--red); color:#fff; }
+.step-line { flex:1; height:2px; background:var(--border); transition:background 0.2s; }
+.step-line.done { background:#4ade80; }
+</style>
+
 <div class="overlay" id="bizOverlay" onclick="if(event.target.id==='bizOverlay')closeBizModal()">
-  <div class="modal-box" onclick="event.stopPropagation()" style="max-width:680px">
+  <div class="modal-box" onclick="event.stopPropagation()" style="max-width:700px">
     <div class="modal-hdr">
-      <div class="modal-title" id="bizModalTitle">עסק חדש</div>
+      <div>
+        <div class="modal-title" id="bizModalTitle">עסק חדש</div>
+        <div style="font-size:10px;color:var(--t3);margin-top:2px" id="bizModalSub">בחר קטגוריה להתחיל</div>
+      </div>
       <button class="modal-close" onclick="closeBizModal()">×</button>
     </div>
     <div class="modal-body">
       <input type="hidden" id="biz-edit-id">
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
-        <div class="sg sg-full" style="grid-column:1/-1">
-          <div class="sg-label">שם העסק *</div>
-          <input class="sg-input" id="bf-name" placeholder="מוסך הדר חיפה">
+      <input type="hidden" id="biz-selected-cat" value="mosek">
+
+      <!-- Step indicator -->
+      <div class="step-indicator">
+        <div class="step-dot active" id="bstep1">1</div>
+        <div class="step-line" id="bline1"></div>
+        <div class="step-dot" id="bstep2">2</div>
+        <div class="step-line" id="bline2"></div>
+        <div class="step-dot" id="bstep3">3</div>
+      </div>
+
+      <!-- STEP 1: Category picker -->
+      <div id="biz-step-1">
+        <div style="font-size:13px;font-weight:800;color:var(--t1);margin-bottom:14px">באיזה תחום העסק?</div>
+        <div class="biz-cat-picker">
+          <div class="bcp-item" onclick="selectBizCat('mosek',this)">
+            <div class="bcp-ico">🔧</div>
+            <div>מוסך</div>
+          </div>
+          <div class="bcp-item" onclick="selectBizCat('migrash',this)">
+            <div class="bcp-ico">🚗</div>
+            <div>מגרש</div>
+          </div>
+          <div class="bcp-item" onclick="selectBizCat('mimun',this)">
+            <div class="bcp-ico">💰</div>
+            <div>מימון</div>
+          </div>
+          <div class="bcp-item" onclick="selectBizCat('grira',this)">
+            <div class="bcp-ico">🚛</div>
+            <div>גרירה</div>
+          </div>
+          <div class="bcp-item" onclick="selectBizCat('pach',this)">
+            <div class="bcp-ico">🎨</div>
+            <div>פח וצבע</div>
+          </div>
         </div>
-        <div class="sg">
-          <div class="sg-label">קטגוריה *</div>
-          <select class="sg-input" id="bf-cat">
-            <option value="mosek">🔧 מוסכים</option>
-            <option value="migrash">🚗 מגרשים</option>
-            <option value="mimun">💰 מימון</option>
-            <option value="grira">🚛 גרירה</option>
-            <option value="pach">🎨 פח וצבע</option>
-          </select>
-        </div>
-        <div class="sg">
-          <div class="sg-label">אזור *</div>
-          <select class="sg-input" id="bf-region">
-            <option value="north">🌲 צפון</option>
-            <option value="center">🏙️ מרכז</option>
-            <option value="south">🌵 דרום</option>
-          </select>
-        </div>
-        <div class="sg">
-          <div class="sg-label">עיר</div>
-          <input class="sg-input" id="bf-city" placeholder="חיפה">
-        </div>
-        <div class="sg">
-          <div class="sg-label">כתובת</div>
-          <input class="sg-input" id="bf-address" placeholder="רחוב הנמל 14">
-        </div>
-        <div class="sg">
-          <div class="sg-label">טלפון *</div>
-          <input class="sg-input" id="bf-phone" placeholder="04-800-0001">
-        </div>
-        <div class="sg">
-          <div class="sg-label">WhatsApp</div>
-          <input class="sg-input" id="bf-wa" placeholder="050-800-0001">
-        </div>
-        <div class="sg">
-          <div class="sg-label">תיאור הקטגוריה (label)</div>
-          <input class="sg-input" id="bf-label" placeholder="טיפול כללי · פחחות">
-        </div>
-        <div class="sg">
-          <div class="sg-label">דירוג (1-5)</div>
-          <input class="sg-input" id="bf-rating" type="number" min="1" max="5" step="0.1" value="4.5">
-        </div>
-        <div class="sg">
-          <div class="sg-label">מספר ביקורות</div>
-          <input class="sg-input" id="bf-reviews" type="number" value="0">
-        </div>
-        <div class="sg sg-full" style="grid-column:1/-1">
-          <div class="sg-label">שירותים (מופרד בפסיק)</div>
-          <input class="sg-input" id="bf-services" placeholder="טיפולים שוטפים, פחחות צבע, מיזוג אוויר">
-        </div>
-        <div class="sg" style="display:flex;align-items:center;gap:10px">
-          <input type="checkbox" id="bf-open" checked style="width:18px;height:18px;cursor:pointer">
-          <div class="sg-label" style="margin:0;cursor:pointer" onclick="document.getElementById('bf-open').click()">פתוח עכשיו</div>
-        </div>
-        <div class="sg" style="display:flex;align-items:center;gap:10px">
-          <input type="checkbox" id="bf-sponsored" style="width:18px;height:18px;cursor:pointer">
-          <div class="sg-label" style="margin:0;cursor:pointer;color:var(--gold)" onclick="document.getElementById('bf-sponsored').click()">💎 ממומן</div>
-        </div>
-        <div class="sg" style="display:flex;align-items:center;gap:10px">
-          <input type="checkbox" id="bf-verified" checked style="width:18px;height:18px;cursor:pointer">
-          <div class="sg-label" style="margin:0;cursor:pointer;color:#4ade80" onclick="document.getElementById('bf-verified').click()">✓ מאומת</div>
-        </div>
-        <div class="sg">
-          <div class="sg-label">סטטוס</div>
-          <select class="sg-input" id="bf-status">
-            <option value="active">פעיל ✅</option>
-            <option value="inactive">מושבת ⏸</option>
-          </select>
+        <div style="margin-top:16px;display:flex;justify-content:flex-end">
+          <button class="btn btn-red" id="biz-step1-next" onclick="bizGoStep2()" disabled style="opacity:0.4">הבא ←</button>
         </div>
       </div>
-      <div style="margin-top:20px;display:flex;gap:10px;justify-content:flex-end">
-        <button class="btn" onclick="closeBizModal()">ביטול</button>
-        <button class="btn btn-red" id="biz-save-btn" onclick="saveBiz()">💾 שמור עסק</button>
+
+      <!-- STEP 2: Category-specific fields -->
+      <div id="biz-step-2" style="display:none">
+
+        <!-- BASE INFO (always shown) -->
+        <div class="biz-section">
+          <div style="display:flex;align-items:center;gap:10px;margin-bottom:12px"><svg width="32" height="32" viewBox="0 0 32 32" fill="none"><rect width="32" height="32" rx="10" fill="rgba(200,16,46,0.15)"/><circle cx="16" cy="12" r="4" stroke="#ff3355" stroke-width="1.6" fill="none"/><path d="M9 25c0-3.9 3.1-7 7-7s7 3.1 7 7" stroke="#ff3355" stroke-width="1.6" stroke-linecap="round" fill="none"/></svg><div><div style="font-size:10px;font-weight:900;color:rgba(240,240,248,.85);text-transform:uppercase;letter-spacing:.07em;line-height:1.3">פרטי העסק הבסיסיים</div><div style="font-size:9px;color:rgba(240,240,248,.35);margin-top:2px;font-weight:600">שם • טלפון • מיקום</div></div></div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+            <div class="sg" style="grid-column:1/-1">
+              <div class="sg-label">שם העסק *</div>
+              <input class="sg-input" id="bf-name" placeholder="הכנס שם...">
+            </div>
+            <div class="sg">
+              <div class="sg-label">טלפון *</div>
+              <input class="sg-input" id="bf-phone" placeholder="050-000-0000" type="tel">
+            </div>
+            <div class="sg">
+              <div class="sg-label">WhatsApp</div>
+              <input class="sg-input" id="bf-wa" placeholder="050-000-0000" type="tel">
+            </div>
+            <div class="sg">
+              <div class="sg-label">אזור *</div>
+              <select class="sg-input" id="bf-region">
+                <option value="north">🌲 צפון</option>
+                <option value="center">🏙️ מרכז</option>
+                <option value="south">🌵 דרום</option>
+              </select>
+            </div>
+            <div class="sg">
+              <div class="sg-label">עיר</div>
+              <input class="sg-input" id="bf-city" placeholder="עיר...">
+            </div>
+            <div class="sg" style="grid-column:1/-1">
+              <div class="sg-label">כתובת מדויקת</div>
+              <input class="sg-input" id="bf-address" placeholder="רחוב ומספר...">
+            </div>
+          </div>
+        </div>
+
+        <!-- 🔧 MOSEK fields -->
+        <div class="cat-fields" id="cf-mosek">
+          <div class="biz-section">
+            <div style="display:flex;align-items:center;gap:10px;margin-bottom:12px"><svg width="32" height="32" viewBox="0 0 32 32" fill="none"><rect width="32" height="32" rx="10" fill="rgba(200,16,46,0.15)"/><path d="M22 8c-2.5 0-4.5 2-4.5 4.5 0 .6.1 1.2.3 1.7L8.5 23.5a1.5 1.5 0 0 0 0 2.1 1.5 1.5 0 0 0 2.1 0L20 16.2c.5.2 1.1.3 1.7.3 2.5 0 4.5-2 4.5-4.5 0-.6-.1-1.2-.3-1.7l-2.6 2.6-1.8-1.8 2.6-2.6C23.6 8.4 22.8 8 22 8z" fill="#ff3355"/><circle cx="10.5" cy="24.5" r="1.5" fill="#ff3355"/></svg><div><div style="font-size:10px;font-weight:900;color:rgba(240,240,248,.85);text-transform:uppercase;letter-spacing:.07em;line-height:1.3">פרטי המוסך</div><div style="font-size:9px;color:rgba(240,240,248,.35);margin-top:2px;font-weight:600">סוג המוסך • שעות פעילות</div></div></div>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+              <div class="sg" style="grid-column:1/-1">
+                <div class="sg-label">סוג המוסך *</div>
+                <select class="sg-input" id="bf-mosek-type">
+                  <option value="כללי">🔧 מוסך כללי</option>
+                  <option value="חשמל רכב">⚡ חשמל רכב</option>
+                  <option value="דיזל">🛢️ מוסך דיזל</option>
+                  <option value="בדיקת רישוי">📋 בדיקת רישוי</option>
+                  <option value="מוסך שטח">🏔️ רכבי שטח</option>
+                  <option value="ביצועים">🏎️ מוסך ביצועים</option>
+                </select>
+              </div>
+              <div class="sg" style="grid-column:1/-1">
+                <div class="sg-label">מה שעות הפעילות?</div>
+                <input class="sg-input" id="bf-mosek-hours" placeholder="א׳-ה׳ 8:00-18:00, ו׳ 8:00-13:00">
+              </div>
+            </div>
+          </div>
+          <div class="biz-section">
+            <div style="display:flex;align-items:center;gap:10px;margin-bottom:12px"><svg width="32" height="32" viewBox="0 0 32 32" fill="none"><rect width="32" height="32" rx="10" fill="rgba(200,16,46,0.15)"/><rect x="7" y="18" width="18" height="6" rx="2" stroke="#ff3355" stroke-width="1.6" fill="none"/><path d="M9 18V14c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2v4" stroke="#ff3355" stroke-width="1.6" fill="none"/><circle cx="11" cy="22" r="1.2" fill="#ff3355"/><circle cx="21" cy="22" r="1.2" fill="#ff3355"/></svg><div><div style="font-size:10px;font-weight:900;color:rgba(240,240,248,.85);text-transform:uppercase;letter-spacing:.07em;line-height:1.3">על אילו מכוניות עובדים?</div><div style="font-size:9px;color:rgba(240,240,248,.35);margin-top:2px;font-weight:600">יצרנים ודגמים</div></div></div>
+            <div class="sg-label" style="margin-bottom:8px">ציין יצרנים (הוסף עם Enter)</div>
+            <div class="tags-input-wrap" id="mosek-brands-wrap" onclick="document.getElementById('mosek-brands-input').focus()">
+              <input class="tags-text-input" id="mosek-brands-input" placeholder="לדוגמה: טויוטה, מאזדה..." onkeydown="handleTagInput(event,'mosek-brands')">
+            </div>
+            <input type="hidden" id="mosek-brands-val">
+            <div style="margin-top:8px;display:flex;flex-wrap:wrap;gap:6px">
+              <span style="font-size:10px;color:var(--t3)">בחר מהיר:</span>
+              <span class="tag-chip" style="cursor:pointer;background:rgba(255,255,255,0.06);border-color:var(--border2)" onclick="quickAddTag('mosek-brands','טויוטה')">+ טויוטה</span>
+              <span class="tag-chip" style="cursor:pointer;background:rgba(255,255,255,0.06);border-color:var(--border2)" onclick="quickAddTag('mosek-brands','יונדאי')">+ יונדאי</span>
+              <span class="tag-chip" style="cursor:pointer;background:rgba(255,255,255,0.06);border-color:var(--border2)" onclick="quickAddTag('mosek-brands','קיה')">+ קיה</span>
+              <span class="tag-chip" style="cursor:pointer;background:rgba(255,255,255,0.06);border-color:var(--border2)" onclick="quickAddTag('mosek-brands','פולקסווגן')">+ פולקסווגן</span>
+              <span class="tag-chip" style="cursor:pointer;background:rgba(255,255,255,0.06);border-color:var(--border2)" onclick="quickAddTag('mosek-brands','כל הדגמים')">+ כל הדגמים</span>
+            </div>
+          </div>
+          <div class="biz-section">
+            <div style="display:flex;align-items:center;gap:10px;margin-bottom:12px"><svg width="32" height="32" viewBox="0 0 32 32" fill="none"><rect width="32" height="32" rx="10" fill="rgba(200,16,46,0.15)"/><circle cx="16" cy="16" r="5" stroke="#ff3355" stroke-width="1.6" fill="none"/><path d="M16 7v2M16 23v2M7 16h2M23 16h2M9.5 9.5l1.4 1.4M21.1 21.1l1.4 1.4M9.5 22.5l1.4-1.4M21.1 10.9l1.4-1.4" stroke="#ff3355" stroke-width="1.6" stroke-linecap="round"/><circle cx="16" cy="16" r="2" fill="#ff3355"/></svg><div><div style="font-size:10px;font-weight:900;color:rgba(240,240,248,.85);text-transform:uppercase;letter-spacing:.07em;line-height:1.3">שירותים מוצעים</div><div style="font-size:9px;color:rgba(240,240,248,.35);margin-top:2px;font-weight:600">סמן את השירותים שלך</div></div></div>
+            <div class="tags-input-wrap" id="mosek-services-wrap" onclick="document.getElementById('mosek-services-input').focus()">
+              <input class="tags-text-input" id="mosek-services-input" placeholder="הוסף שירות..." onkeydown="handleTagInput(event,'mosek-services')">
+            </div>
+            <input type="hidden" id="mosek-services-val">
+            <div style="margin-top:8px;display:flex;flex-wrap:wrap;gap:6px">
+              <span style="font-size:10px;color:var(--t3)">בחר מהיר:</span>
+              <span class="tag-chip" style="cursor:pointer;background:rgba(255,255,255,0.06);border-color:var(--border2)" onclick="quickAddTag('mosek-services','טיפול שוטף')">+ טיפול שוטף</span>
+              <span class="tag-chip" style="cursor:pointer;background:rgba(255,255,255,0.06);border-color:var(--border2)" onclick="quickAddTag('mosek-services','בלמים')">+ בלמים</span>
+              <span class="tag-chip" style="cursor:pointer;background:rgba(255,255,255,0.06);border-color:var(--border2)" onclick="quickAddTag('mosek-services','מיזוג אוויר')">+ מיזוג אוויר</span>
+              <span class="tag-chip" style="cursor:pointer;background:rgba(255,255,255,0.06);border-color:var(--border2)" onclick="quickAddTag('mosek-services','חשמל רכב')">+ חשמל רכב</span>
+              <span class="tag-chip" style="cursor:pointer;background:rgba(255,255,255,0.06);border-color:var(--border2)" onclick="quickAddTag('mosek-services','פחחות')">+ פחחות</span>
+              <span class="tag-chip" style="cursor:pointer;background:rgba(255,255,255,0.06);border-color:var(--border2)" onclick="quickAddTag('mosek-services','גיר אוטומטי')">+ גיר אוטומטי</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- 🚗 MIGRASH fields -->
+        <div class="cat-fields" id="cf-migrash">
+          <div class="biz-section">
+            <div style="display:flex;align-items:center;gap:10px;margin-bottom:12px"><svg width="32" height="32" viewBox="0 0 32 32" fill="none"><rect width="32" height="32" rx="10" fill="rgba(200,16,46,0.15)"/><rect x="6" y="10" width="20" height="10" rx="2" stroke="#ff3355" stroke-width="1.6" fill="none"/><path d="M6 14h20" stroke="#ff3355" stroke-width="1.4"/><circle cx="10" cy="22" r="2" stroke="#ff3355" stroke-width="1.6" fill="none"/><circle cx="22" cy="22" r="2" stroke="#ff3355" stroke-width="1.6" fill="none"/><path d="M12 22h8" stroke="#ff3355" stroke-width="1.6" stroke-linecap="round"/></svg><div><div style="font-size:10px;font-weight:900;color:rgba(240,240,248,.85);text-transform:uppercase;letter-spacing:.07em;line-height:1.3">פרטי המגרש</div><div style="font-size:9px;color:rgba(240,240,248,.35);margin-top:2px;font-weight:600">סוג • מלאי • מחירים</div></div></div>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+              <div class="sg">
+                <div class="sg-label">סוג הפעילות *</div>
+                <select class="sg-input" id="bf-migrash-type">
+                  <option value="מכירה">מכירת רכבים</option>
+                  <option value="קנייה">קניית רכבים</option>
+                  <option value="מכירה וקנייה">מכירה + קנייה</option>
+                  <option value="ייבוא אישי">ייבוא אישי</option>
+                </select>
+              </div>
+              <div class="sg">
+                <div class="sg-label">כמות רכבים במלאי</div>
+                <select class="sg-input" id="bf-migrash-stock">
+                  <option value="1-10">1–10 רכבים</option>
+                  <option value="10-30">10–30 רכבים</option>
+                  <option value="30-50">30–50 רכבים</option>
+                  <option value="50+">50+ רכבים</option>
+                </select>
+              </div>
+              <div class="sg">
+                <div class="sg-label">מחיר מינימלי (₪)</div>
+                <input class="sg-input" id="bf-migrash-minprice" type="number" placeholder="30000">
+              </div>
+              <div class="sg">
+                <div class="sg-label">שנת ייצור מינימלית</div>
+                <input class="sg-input" id="bf-migrash-minyear" type="number" placeholder="2015">
+              </div>
+              <div class="sg" style="grid-column:1/-1">
+                <div class="sg-label">קישור לאתר / לדף הרכבים (אופציונלי)</div>
+                <input class="sg-input" id="bf-migrash-url" placeholder="https://..." type="url">
+              </div>
+            </div>
+          </div>
+          <div class="biz-section">
+            <div style="display:flex;align-items:center;gap:10px;margin-bottom:12px"><svg width="32" height="32" viewBox="0 0 32 32" fill="none"><rect width="32" height="32" rx="10" fill="rgba(200,16,46,0.15)"/><path d="M8 22l3-8h10l3 8H8z" stroke="#ff3355" stroke-width="1.6" fill="none" stroke-linejoin="round"/><path d="M8 22v2h16v-2" stroke="#ff3355" stroke-width="1.6" stroke-linecap="round"/><circle cx="11.5" cy="22.5" r="1.5" fill="#ff3355"/><circle cx="20.5" cy="22.5" r="1.5" fill="#ff3355"/></svg><div><div style="font-size:10px;font-weight:900;color:rgba(240,240,248,.85);text-transform:uppercase;letter-spacing:.07em;line-height:1.3">יצרנים עיקריים במלאי</div><div style="font-size:9px;color:rgba(240,240,248,.35);margin-top:2px;font-weight:600">הוסף יצרן עם Enter</div></div></div>
+            <div class="tags-input-wrap" id="migrash-brands-wrap" onclick="document.getElementById('migrash-brands-input').focus()">
+              <input class="tags-text-input" id="migrash-brands-input" placeholder="הוסף יצרן..." onkeydown="handleTagInput(event,'migrash-brands')">
+            </div>
+            <input type="hidden" id="migrash-brands-val">
+            <div style="margin-top:8px;display:flex;flex-wrap:wrap;gap:6px">
+              <span class="tag-chip" style="cursor:pointer;background:rgba(255,255,255,0.06);border-color:var(--border2)" onclick="quickAddTag('migrash-brands','יונדאי')">+ יונדאי</span>
+              <span class="tag-chip" style="cursor:pointer;background:rgba(255,255,255,0.06);border-color:var(--border2)" onclick="quickAddTag('migrash-brands','קיה')">+ קיה</span>
+              <span class="tag-chip" style="cursor:pointer;background:rgba(255,255,255,0.06);border-color:var(--border2)" onclick="quickAddTag('migrash-brands','סקודה')">+ סקודה</span>
+              <span class="tag-chip" style="cursor:pointer;background:rgba(255,255,255,0.06);border-color:var(--border2)" onclick="quickAddTag('migrash-brands','טויוטה')">+ טויוטה</span>
+              <span class="tag-chip" style="cursor:pointer;background:rgba(255,255,255,0.06);border-color:var(--border2)" onclick="quickAddTag('migrash-brands','מאזדה')">+ מאזדה</span>
+            </div>
+          </div>
+          <div class="biz-section">
+            <div style="display:flex;align-items:center;gap:10px;margin-bottom:12px"><svg width="32" height="32" viewBox="0 0 32 32" fill="none"><rect width="32" height="32" rx="10" fill="rgba(200,16,46,0.15)"/><rect x="8" y="9" width="16" height="14" rx="2" stroke="#ff3355" stroke-width="1.6" fill="none"/><path d="M8 14h16M13 9V7M19 9V7" stroke="#ff3355" stroke-width="1.5" stroke-linecap="round"/><path d="M12 18l2 2 4-4" stroke="#ff3355" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg><div><div style="font-size:10px;font-weight:900;color:rgba(240,240,248,.85);text-transform:uppercase;letter-spacing:.07em;line-height:1.3">שירותים נוספים</div><div style="font-size:9px;color:rgba(240,240,248,.35);margin-top:2px;font-weight:600">מה מציע המגרש?</div></div></div>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+              <div class="checkbox-row"><input type="checkbox" id="mg-finance"><label for="mg-finance">💰 מימון זמין</label></div>
+              <div class="checkbox-row"><input type="checkbox" id="mg-trade"><label for="mg-trade">🔄 טרייד-אין</label></div>
+              <div class="checkbox-row"><input type="checkbox" id="mg-warranty"><label for="mg-warranty">🛡️ אחריות</label></div>
+              <div class="checkbox-row"><input type="checkbox" id="mg-test"><label for="mg-test">🚘 נסיעת מבחן</label></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 💰 MIMUN fields -->
+        <div class="cat-fields" id="cf-mimun">
+          <div class="biz-section">
+            <div style="display:flex;align-items:center;gap:10px;margin-bottom:12px"><svg width="32" height="32" viewBox="0 0 32 32" fill="none"><rect width="32" height="32" rx="10" fill="rgba(200,16,46,0.15)"/><rect x="7" y="10" width="18" height="13" rx="2.5" stroke="#ff3355" stroke-width="1.6" fill="none"/><path d="M7 15h18" stroke="#ff3355" stroke-width="1.5"/><circle cx="16" cy="20" r="3" stroke="#ff3355" stroke-width="1.5" fill="none"/><path d="M16 18.5v1.5l1 1" stroke="#ff3355" stroke-width="1.3" stroke-linecap="round"/></svg><div><div style="font-size:10px;font-weight:900;color:rgba(240,240,248,.85);text-transform:uppercase;letter-spacing:.07em;line-height:1.3">פרטי שירות המימון</div><div style="font-size:9px;color:rgba(240,240,248,.35);margin-top:2px;font-weight:600">סכומים • ריבית • תקופה</div></div></div>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+              <div class="sg" style="grid-column:1/-1">
+                <div class="sg-label">סוג הגוף המממן *</div>
+                <select class="sg-input" id="bf-mimun-type">
+                  <option value="חברת מימון">🏢 חברת מימון</option>
+                  <option value="סוכן מימון">👤 סוכן עצמאי</option>
+                  <option value="בנק">🏦 בנק</option>
+                  <option value="מימון פרטי">💼 גוף פרטי</option>
+                </select>
+              </div>
+              <div class="sg">
+                <div class="sg-label">סכום מינימלי (₪)</div>
+                <input class="sg-input" id="bf-mimun-min" type="number" placeholder="20000">
+              </div>
+              <div class="sg">
+                <div class="sg-label">סכום מקסימלי (₪)</div>
+                <input class="sg-input" id="bf-mimun-max" type="number" placeholder="300000">
+              </div>
+              <div class="sg">
+                <div class="sg-label">ריבית שנתית %</div>
+                <input class="sg-input" id="bf-mimun-interest" type="number" step="0.1" placeholder="4.5">
+              </div>
+              <div class="sg">
+                <div class="sg-label">תקופת החזר (חודשים)</div>
+                <select class="sg-input" id="bf-mimun-period">
+                  <option value="עד 24 חודש">עד 24 חודש</option>
+                  <option value="עד 48 חודש">עד 48 חודש</option>
+                  <option value="עד 72 חודש">עד 72 חודש</option>
+                  <option value="עד 84 חודש">עד 84 חודש</option>
+                </select>
+              </div>
+            </div>
+          </div>
+          <div class="biz-section">
+            <div style="display:flex;align-items:center;gap:10px;margin-bottom:12px"><svg width="32" height="32" viewBox="0 0 32 32" fill="none"><rect width="32" height="32" rx="10" fill="rgba(200,16,46,0.15)"/><path d="M16 7l2.5 5 5.5.8-4 3.9.94 5.5L16 19.5l-4.94 2.7.94-5.5L8 12.8l5.5-.8L16 7z" stroke="#ff3355" stroke-width="1.5" fill="rgba(200,16,46,0.2)" stroke-linejoin="round"/><path d="M13 17l2 2 4-4" stroke="#ff3355" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg><div><div style="font-size:10px;font-weight:900;color:rgba(240,240,248,.85);text-transform:uppercase;letter-spacing:.07em;line-height:1.3">תנאי סף ויתרונות</div><div style="font-size:9px;color:rgba(240,240,248,.35);margin-top:2px;font-weight:600">מה מייחד את השירות?</div></div></div>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+              <div class="checkbox-row"><input type="checkbox" id="mm-nodocs"><label for="mm-nodocs">📄 ללא תלושי שכר</label></div>
+              <div class="checkbox-row"><input type="checkbox" id="mm-newcar"><label for="mm-newcar">🚘 לרכבים חדשים</label></div>
+              <div class="checkbox-row"><input type="checkbox" id="mm-usedcar"><label for="mm-usedcar">🔄 לרכבים יד-2</label></div>
+              <div class="checkbox-row"><input type="checkbox" id="mm-fast"><label for="mm-fast">⚡ אישור מהיר</label></div>
+              <div class="checkbox-row"><input type="checkbox" id="mm-badcredit"><label for="mm-badcredit">🟡 דירוג אשראי נמוך</label></div>
+              <div class="checkbox-row"><input type="checkbox" id="mm-online"><label for="mm-online">💻 טיפול מקוון</label></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 🚛 GRIRA fields -->
+        <div class="cat-fields" id="cf-grira">
+          <div class="biz-section">
+            <div style="display:flex;align-items:center;gap:10px;margin-bottom:12px"><svg width="32" height="32" viewBox="0 0 32 32" fill="none"><rect width="32" height="32" rx="10" fill="rgba(200,16,46,0.15)"/><rect x="14" y="10" width="11" height="8" rx="1.5" stroke="#ff3355" stroke-width="1.5" fill="none"/><path d="M7 13h7M7 16h7" stroke="#ff3355" stroke-width="1.3" stroke-linecap="round" opacity=".6"/><rect x="5" y="18" width="22" height="3" rx="1" fill="rgba(200,16,46,0.25)" stroke="#ff3355" stroke-width="1.4"/><circle cx="9" cy="24" r="2" stroke="#ff3355" stroke-width="1.5" fill="none"/><circle cx="23" cy="24" r="2" stroke="#ff3355" stroke-width="1.5" fill="none"/></svg><div><div style="font-size:10px;font-weight:900;color:rgba(240,240,248,.85);text-transform:uppercase;letter-spacing:.07em;line-height:1.3">פרטי שירות הגרירה</div><div style="font-size:9px;color:rgba(240,240,248,.35);margin-top:2px;font-weight:600">סוג גרר • זמן • אזור</div></div></div>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+              <div class="sg">
+                <div class="sg-label">סוג כלי הגרירה *</div>
+                <select class="sg-input" id="bf-grira-type">
+                  <option value="גרר מנוף">🏗️ גרר מנוף</option>
+                  <option value="גרר שטוח">🚛 גרר שטוח</option>
+                  <option value="גרר קל">🚐 גרר קל</option>
+                  <option value="גרר כבד">⚙️ גרר כבד (משאיות)</option>
+                  <option value="גרר אופנועים">🏍️ גרר אופנועים</option>
+                </select>
+              </div>
+              <div class="sg">
+                <div class="sg-label">זמן הגעה ממוצע</div>
+                <select class="sg-input" id="bf-grira-eta">
+                  <option value="עד 20 דקות">⚡ עד 20 דקות</option>
+                  <option value="עד 30 דקות">🕐 עד 30 דקות</option>
+                  <option value="עד 45 דקות">🕑 עד 45 דקות</option>
+                  <option value="עד שעה">🕒 עד שעה</option>
+                </select>
+              </div>
+              <div class="sg">
+                <div class="sg-label">מחיר מינימלי (₪)</div>
+                <input class="sg-input" id="bf-grira-price" type="number" placeholder="250">
+              </div>
+              <div class="sg">
+                <div class="sg-label">אזור כיסוי עיקרי</div>
+                <input class="sg-input" id="bf-grira-coverage" placeholder="חיפה, קריות, עכו...">
+              </div>
+            </div>
+          </div>
+          <div class="biz-section">
+            <div style="display:flex;align-items:center;gap:10px;margin-bottom:12px"><svg width="32" height="32" viewBox="0 0 32 32" fill="none"><rect width="32" height="32" rx="10" fill="rgba(200,16,46,0.15)"/><circle cx="16" cy="16" r="8" stroke="#ff3355" stroke-width="1.6" fill="none"/><path d="M16 10v6l4 2" stroke="#ff3355" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/><path d="M8 8l2 2M22 22l2 2M8 24l2-2M22 10l2-2" stroke="#ff3355" stroke-width="1.2" stroke-linecap="round" opacity=".5"/></svg><div><div style="font-size:10px;font-weight:900;color:rgba(240,240,248,.85);text-transform:uppercase;letter-spacing:.07em;line-height:1.3">זמינות ושירותים</div><div style="font-size:9px;color:rgba(240,240,248,.35);margin-top:2px;font-weight:600">מתי ואיפה?</div></div></div>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+              <div class="checkbox-row"><input type="checkbox" id="gr-247"><label for="gr-247">🌙 שירות 24/7</label></div>
+              <div class="checkbox-row"><input type="checkbox" id="gr-shabbat"><label for="gr-shabbat">✡️ שבת וחג</label></div>
+              <div class="checkbox-row"><input type="checkbox" id="gr-highway"><label for="gr-highway">🛣️ כביש מהיר</label></div>
+              <div class="checkbox-row"><input type="checkbox" id="gr-abroad"><label for="gr-abroad">🌍 גרירה לחו"ל</label></div>
+              <div class="checkbox-row"><input type="checkbox" id="gr-insurance"><label for="gr-insurance">📋 עבודה עם ביטוח</label></div>
+              <div class="checkbox-row"><input type="checkbox" id="gr-lock"><label for="gr-lock">🔑 פתיחת נעילה</label></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 🎨 PACH fields -->
+        <div class="cat-fields" id="cf-pach">
+          <div class="biz-section">
+            <div style="display:flex;align-items:center;gap:10px;margin-bottom:12px"><svg width="32" height="32" viewBox="0 0 32 32" fill="none"><rect width="32" height="32" rx="10" fill="rgba(200,16,46,0.15)"/><path d="M10 22c0-3.3 2.7-6 6-6s6 2.7 6 6" stroke="#ff3355" stroke-width="1.6" fill="none" stroke-linecap="round"/><path d="M16 16V9" stroke="#ff3355" stroke-width="1.6" stroke-linecap="round"/><circle cx="16" cy="8" r="2.5" fill="rgba(200,16,46,0.4)" stroke="#ff3355" stroke-width="1.4"/><path d="M8 22h16" stroke="#ff3355" stroke-width="1.5" stroke-linecap="round"/></svg><div><div style="font-size:10px;font-weight:900;color:rgba(240,240,248,.85);text-transform:uppercase;letter-spacing:.07em;line-height:1.3">פרטי מוסך פח וצבע</div><div style="font-size:9px;color:rgba(240,240,248,.35);margin-top:2px;font-weight:600">סוג • צבע • אחריות</div></div></div>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+              <div class="sg">
+                <div class="sg-label">סוג המוסך *</div>
+                <select class="sg-input" id="bf-pach-type">
+                  <option value="פח וצבע כללי">🎨 פח וצבע כללי</option>
+                  <option value="צבע בלבד">🖌️ צבע בלבד</option>
+                  <option value="פח ויישור">🔨 פח ויישור</option>
+                  <option value="תיקוני ברד">🌧️ תיקוני ברד (PDR)</option>
+                  <option value="קיט ורמות">⚙️ קיט ורמות</option>
+                </select>
+              </div>
+              <div class="sg">
+                <div class="sg-label">מותג צבע בשימוש</div>
+                <select class="sg-input" id="bf-pach-paint">
+                  <option value="">לא צוין</option>
+                  <option value="PPG">PPG</option>
+                  <option value="Sikkens">Sikkens</option>
+                  <option value="Spies Hecker">Spies Hecker</option>
+                  <option value="Standox">Standox</option>
+                  <option value="אחר">אחר</option>
+                </select>
+              </div>
+              <div class="sg" style="grid-column:1/-1">
+                <div class="sg-label">אחריות על עבודה</div>
+                <select class="sg-input" id="bf-pach-warranty">
+                  <option value="">ללא אחריות מוגדרת</option>
+                  <option value="6 חודש">6 חודשים</option>
+                  <option value="שנה">שנה</option>
+                  <option value="שנתיים">שנתיים</option>
+                  <option value="3 שנים">3 שנים</option>
+                </select>
+              </div>
+            </div>
+          </div>
+          <div class="biz-section">
+            <div style="display:flex;align-items:center;gap:10px;margin-bottom:12px"><svg width="32" height="32" viewBox="0 0 32 32" fill="none"><rect width="32" height="32" rx="10" fill="rgba(200,16,46,0.15)"/><path d="M9 21l5-5 3 3 5-7" stroke="#ff3355" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" fill="none"/><path d="M20 8l3 1-1 3" stroke="#ff3355" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/><path d="M7 25h18" stroke="#ff3355" stroke-width="1.4" stroke-linecap="round" opacity=".5"/></svg><div><div style="font-size:10px;font-weight:900;color:rgba(240,240,248,.85);text-transform:uppercase;letter-spacing:.07em;line-height:1.3">שירותים מוצעים</div><div style="font-size:9px;color:rgba(240,240,248,.35);margin-top:2px;font-weight:600">מה אתה מציע?</div></div></div>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+              <div class="checkbox-row"><input type="checkbox" id="pa-full"><label for="pa-full">✨ צביעה מלאה</label></div>
+              <div class="checkbox-row"><input type="checkbox" id="pa-partial"><label for="pa-partial">🎯 צביעה חלקית</label></div>
+              <div class="checkbox-row"><input type="checkbox" id="pa-pdr"><label for="pa-pdr">🌧️ תיקון ברד PDR</label></div>
+              <div class="checkbox-row"><input type="checkbox" id="pa-wrap"><label for="pa-wrap">🎁 ציפוי PPF/ויניל</label></div>
+              <div class="checkbox-row"><input type="checkbox" id="pa-polish"><label for="pa-polish">💎 פוליש מלא</label></div>
+              <div class="checkbox-row"><input type="checkbox" id="pa-estimate"><label for="pa-estimate">📋 הערכת נזקים</label></div>
+            </div>
+          </div>
+        </div>
+
+        <div style="margin-top:16px;display:flex;gap:10px;justify-content:space-between">
+          <button class="btn" onclick="bizGoStep1()">← חזרה</button>
+          <button class="btn btn-red" onclick="bizGoStep3()">הבא ←</button>
+        </div>
       </div>
+
+      <!-- STEP 3: Settings + save -->
+      <div id="biz-step-3" style="display:none">
+        <div class="biz-section">
+          <div style="display:flex;align-items:center;gap:10px;margin-bottom:12px"><svg width="32" height="32" viewBox="0 0 32 32" fill="none"><rect width="32" height="32" rx="10" fill="rgba(200,16,46,0.15)"/><circle cx="16" cy="16" r="4" stroke="#ff3355" stroke-width="1.5" fill="none"/><path d="M16 8v2M16 22v2M8 16h2M22 16h2M10.3 10.3l1.4 1.4M20.3 20.3l1.4 1.4M10.3 21.7l1.4-1.4M20.3 11.7l1.4-1.4" stroke="#ff3355" stroke-width="1.5" stroke-linecap="round"/></svg><div><div style="font-size:10px;font-weight:900;color:rgba(240,240,248,.85);text-transform:uppercase;letter-spacing:.07em;line-height:1.3">הגדרות פרסום</div><div style="font-size:9px;color:rgba(240,240,248,.35);margin-top:2px;font-weight:600">דירוג • סטטוס • ממומן</div></div></div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+            <div class="sg">
+              <div class="sg-label">דירוג (1-5)</div>
+              <input class="sg-input" id="bf-rating" type="number" min="1" max="5" step="0.1" value="4.5">
+            </div>
+            <div class="sg">
+              <div class="sg-label">מספר ביקורות</div>
+              <input class="sg-input" id="bf-reviews" type="number" value="0">
+            </div>
+          </div>
+          <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-top:10px">
+            <div class="checkbox-row"><input type="checkbox" id="bf-open" checked><label for="bf-open">🟢 פתוח עכשיו</label></div>
+            <div class="checkbox-row"><input type="checkbox" id="bf-sponsored"><label for="bf-sponsored" style="color:var(--gold)">💎 ממומן</label></div>
+            <div class="checkbox-row"><input type="checkbox" id="bf-verified" checked><label for="bf-verified" style="color:#4ade80">✓ מאומת</label></div>
+          </div>
+          <div style="margin-top:10px">
+            <div class="sg-label" style="margin-bottom:7px">סטטוס פרסום</div>
+            <select class="sg-input" id="bf-status">
+              <option value="active">✅ פעיל — יופיע באתר</option>
+              <option value="inactive">⏸ מושבת — לא יופיע</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Summary preview -->
+        <div class="biz-section" id="biz-summary-box" style="background:rgba(200,16,46,0.05);border-color:rgba(200,16,46,0.2)">
+          <div style="display:flex;align-items:center;gap:10px;margin-bottom:12px"><svg width="32" height="32" viewBox="0 0 32 32" fill="none"><rect width="32" height="32" rx="10" fill="rgba(200,16,46,0.15)"/><rect x="8" y="8" width="16" height="16" rx="2.5" stroke="#ff3355" stroke-width="1.5" fill="none"/><path d="M12 13h8M12 17h5M12 21h6" stroke="#ff3355" stroke-width="1.5" stroke-linecap="round"/><circle cx="22" cy="22" r="4" fill="rgba(34,197,94,0.2)" stroke="#4ade80" stroke-width="1.5"/><path d="M20.3 22l1.2 1.2 2-2" stroke="#4ade80" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg><div><div style="font-size:10px;font-weight:900;color:rgba(240,240,248,.85);text-transform:uppercase;letter-spacing:.07em;line-height:1.3">סיכום לפני שמירה</div><div style="font-size:9px;color:rgba(240,240,248,.35);margin-top:2px;font-weight:600">בדוק לפני שאתה שומר</div></div></div>
+          <div id="biz-summary-content" style="font-size:12px;color:var(--t1);line-height:1.8"></div>
+        </div>
+
+        <!-- Hidden legacy fields (needed by saveBiz) -->
+        <input type="hidden" id="bf-label">
+        <input type="hidden" id="bf-services" id="bf-services">
+
+        <div style="margin-top:16px;display:flex;gap:10px;justify-content:space-between">
+          <button class="btn" onclick="bizGoStep2()">← חזרה</button>
+          <button class="btn btn-red" id="biz-save-btn" onclick="saveBiz()" style="min-width:120px">💾 שמור עסק</button>
+        </div>
+      </div>
+
     </div>
   </div>
 </div>
 
-<!-- ══ MODAL: Rental ══ -->
+<!-- ══ MODAL: Rental (Smart Form) ══ -->
 <div class="overlay" id="rentOverlay" onclick="if(event.target.id==='rentOverlay')closeRentModal()">
   <div class="modal-box" onclick="event.stopPropagation()" style="max-width:640px">
     <div class="modal-hdr">
-      <div class="modal-title" id="rentModalTitle">רכב חדש להשכרה</div>
+      <div>
+        <div class="modal-title" id="rentModalTitle">רכב חדש להשכרה</div>
+        <div style="font-size:10px;color:var(--t3);margin-top:2px">מלא את פרטי הרכב בצורה מדויקת</div>
+      </div>
       <button class="modal-close" onclick="closeRentModal()">×</button>
     </div>
     <div class="modal-body">
       <input type="hidden" id="rent-edit-id">
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
-        <div class="sg">
-          <div class="sg-label">שם החברה *</div>
-          <input class="sg-input" id="rf-company" placeholder="רנטל ישראל">
-        </div>
-        <div class="sg">
-          <div class="sg-label">שם הרכב *</div>
-          <input class="sg-input" id="rf-car" placeholder="יונדאי i10">
-        </div>
-        <div class="sg">
-          <div class="sg-label">אמוג'י רכב</div>
-          <input class="sg-input" id="rf-emoji" placeholder="🚗" value="🚗">
-        </div>
-        <div class="sg">
-          <div class="sg-label">מחיר ליום (₪) *</div>
-          <input class="sg-input" id="rf-price" type="number" placeholder="150">
-        </div>
-        <div class="sg">
-          <div class="sg-label">אזור *</div>
-          <select class="sg-input" id="rf-region">
-            <option value="north">🌲 צפון</option>
-            <option value="center">🏙️ מרכז</option>
-            <option value="south">🌵 דרום</option>
-          </select>
-        </div>
-        <div class="sg">
-          <div class="sg-label">עיר</div>
-          <input class="sg-input" id="rf-city" placeholder="חיפה">
-        </div>
-        <div class="sg">
-          <div class="sg-label">טלפון *</div>
-          <input class="sg-input" id="rf-phone" placeholder="04-801-0001">
-        </div>
-        <div class="sg">
-          <div class="sg-label">WhatsApp</div>
-          <input class="sg-input" id="rf-wa" placeholder="050-801-0001">
-        </div>
-        <div class="sg sg-full" style="grid-column:1/-1">
-          <div class="sg-label">מפרטים (מופרד בפסיק)</div>
-          <input class="sg-input" id="rf-specs" placeholder="אוטומטי, 5 מושבים, מיזוג אוויר">
-        </div>
-        <div class="sg">
-          <div class="sg-label">בדג'</div>
-          <select class="sg-input" id="rf-badge">
-            <option value="available">🟢 זמין</option>
-            <option value="premium">👑 פרמיום</option>
-            <option value="sold_out">❌ אזל</option>
-          </select>
-        </div>
-        <div class="sg">
-          <div class="sg-label">סטטוס</div>
-          <select class="sg-input" id="rf-status">
-            <option value="active">פעיל ✅</option>
-            <option value="inactive">מושבת ⏸</option>
-          </select>
+
+      <!-- Section 1: Company -->
+      <div class="biz-section">
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:12px"><svg width="32" height="32" viewBox="0 0 32 32" fill="none"><rect width="32" height="32" rx="10" fill="rgba(200,16,46,0.15)"/><rect x="8" y="13" width="16" height="10" rx="2" stroke="#ff3355" stroke-width="1.5" fill="none"/><path d="M12 13V11c0-1.1.9-2 2-2h4c1.1 0 2 .9 2 2v2" stroke="#ff3355" stroke-width="1.5" fill="none"/><path d="M8 18h16" stroke="#ff3355" stroke-width="1.3" opacity=".6"/><circle cx="16" cy="18" r="1.5" fill="#ff3355"/></svg><div><div style="font-size:10px;font-weight:900;color:rgba(240,240,248,.85);text-transform:uppercase;letter-spacing:.07em;line-height:1.3">פרטי החברה</div><div style="font-size:9px;color:rgba(240,240,248,.35);margin-top:2px;font-weight:600">שם • טלפון • אזור</div></div></div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+          <div class="sg" style="grid-column:1/-1">
+            <div class="sg-label">שם החברה / בעל הרכב *</div>
+            <input class="sg-input" id="rf-company" placeholder="לדוגמה: רנטל ישראל">
+          </div>
+          <div class="sg">
+            <div class="sg-label">טלפון *</div>
+            <input class="sg-input" id="rf-phone" placeholder="050-000-0000" type="tel">
+          </div>
+          <div class="sg">
+            <div class="sg-label">WhatsApp</div>
+            <input class="sg-input" id="rf-wa" placeholder="050-000-0000" type="tel">
+          </div>
+          <div class="sg">
+            <div class="sg-label">אזור *</div>
+            <select class="sg-input" id="rf-region">
+              <option value="north">🌲 צפון</option>
+              <option value="center">🏙️ מרכז</option>
+              <option value="south">🌵 דרום</option>
+            </select>
+          </div>
+          <div class="sg">
+            <div class="sg-label">עיר</div>
+            <input class="sg-input" id="rf-city" placeholder="עיר...">
+          </div>
         </div>
       </div>
-      <div style="margin-top:20px;display:flex;gap:10px;justify-content:flex-end">
+
+      <!-- Section 2: Car details -->
+      <div class="biz-section">
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:12px"><svg width="32" height="32" viewBox="0 0 32 32" fill="none"><rect width="32" height="32" rx="10" fill="rgba(200,16,46,0.15)"/><path d="M6 19h2l2-5h12l2 5h2v3H6v-3z" stroke="#ff3355" stroke-width="1.5" fill="rgba(200,16,46,0.15)" stroke-linejoin="round"/><path d="M10 14l1.5-4h9L22 14" stroke="#ff3355" stroke-width="1.4" fill="none" stroke-linejoin="round"/><circle cx="10.5" cy="22.5" r="2" stroke="#ff3355" stroke-width="1.5" fill="none"/><circle cx="21.5" cy="22.5" r="2" stroke="#ff3355" stroke-width="1.5" fill="none"/></svg><div><div style="font-size:10px;font-weight:900;color:rgba(240,240,248,.85);text-transform:uppercase;letter-spacing:.07em;line-height:1.3">פרטי הרכב</div><div style="font-size:9px;color:rgba(240,240,248,.35);margin-top:2px;font-weight:600">יצרן • דגם • שנה • קטגוריה</div></div></div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+          <div class="sg">
+            <div class="sg-label">יצרן הרכב *</div>
+            <select class="sg-input" id="rf-maker" onchange="updateRentCarName()">
+              <option value="יונדאי">יונדאי</option>
+              <option value="קיה">קיה</option>
+              <option value="טויוטה">טויוטה</option>
+              <option value="מאזדה">מאזדה</option>
+              <option value="סקודה">סקודה</option>
+              <option value="פולקסווגן">פולקסווגן</option>
+              <option value="פורד">פורד</option>
+              <option value="סיאט">סיאט</option>
+              <option value="רנו">רנו</option>
+              <option value="פיג'ו">פיג'ו</option>
+              <option value="אחר">אחר</option>
+            </select>
+          </div>
+          <div class="sg">
+            <div class="sg-label">דגם *</div>
+            <input class="sg-input" id="rf-model" placeholder="i10, Clio, Yaris..." oninput="updateRentCarName()">
+          </div>
+          <div class="sg">
+            <div class="sg-label">שנת ייצור</div>
+            <input class="sg-input" id="rf-year" type="number" placeholder="2022" min="2000" max="2026">
+          </div>
+          <div class="sg">
+            <div class="sg-label">קבוצת רכב</div>
+            <select class="sg-input" id="rf-group" onchange="updateRentEmoji()">
+              <option value="small" data-emoji="🚗">🚗 קטנה / A</option>
+              <option value="medium" data-emoji="🚙">🚙 בינונית / B</option>
+              <option value="family" data-emoji="🚐">🚐 משפחתית / C</option>
+              <option value="suv" data-emoji="🛻">🛻 SUV / ג'יפ</option>
+              <option value="van" data-emoji="🚌">🚌 ואן / מסחרי</option>
+              <option value="luxury" data-emoji="🏎️">🏎️ יוקרה</option>
+              <option value="electric" data-emoji="⚡">⚡ חשמלי</option>
+            </select>
+          </div>
+          <input type="hidden" id="rf-car" value="">
+          <input type="hidden" id="rf-emoji" value="🚗">
+        </div>
+      </div>
+
+      <!-- Section 3: Pricing -->
+      <div class="biz-section">
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:12px"><svg width="32" height="32" viewBox="0 0 32 32" fill="none"><rect width="32" height="32" rx="10" fill="rgba(200,16,46,0.15)"/><rect x="7" y="9" width="18" height="14" rx="2.5" stroke="#ff3355" stroke-width="1.5" fill="none"/><path d="M7 14h18" stroke="#ff3355" stroke-width="1.4"/><path d="M14 18.5h4M16 17v3" stroke="#ff3355" stroke-width="1.6" stroke-linecap="round"/><circle cx="10.5" cy="11.5" r="1" fill="#ff3355"/><circle cx="13.5" cy="11.5" r="1" fill="#ff3355"/></svg><div><div style="font-size:10px;font-weight:900;color:rgba(240,240,248,.85);text-transform:uppercase;letter-spacing:.07em;line-height:1.3">תמחור</div><div style="font-size:9px;color:rgba(240,240,248,.35);margin-top:2px;font-weight:600">יומי • שבועי • חודשי</div></div></div>
+        <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px">
+          <div class="sg">
+            <div class="sg-label">מחיר ליום (₪) *</div>
+            <input class="sg-input" id="rf-price" type="number" placeholder="150">
+          </div>
+          <div class="sg">
+            <div class="sg-label">מחיר לשבוע (₪)</div>
+            <input class="sg-input" id="rf-price-week" type="number" placeholder="800">
+          </div>
+          <div class="sg">
+            <div class="sg-label">מחיר לחודש (₪)</div>
+            <input class="sg-input" id="rf-price-month" type="number" placeholder="2500">
+          </div>
+        </div>
+        <div style="margin-top:10px;display:grid;grid-template-columns:1fr 1fr;gap:8px">
+          <div class="checkbox-row"><input type="checkbox" id="rf-ins-included"><label for="rf-ins-included">🛡️ ביטוח כלול</label></div>
+          <div class="checkbox-row"><input type="checkbox" id="rf-delivery"><label for="rf-delivery">🚚 משלוח לכתובת</label></div>
+          <div class="checkbox-row"><input type="checkbox" id="rf-young"><label for="rf-young">👶 נהג צעיר (18+)</label></div>
+          <div class="checkbox-row"><input type="checkbox" id="rf-unlimited"><label for="rf-unlimited">♾️ ק"מ ללא הגבלה</label></div>
+        </div>
+      </div>
+
+      <!-- Section 4: Specs -->
+      <div class="biz-section">
+        <div class="biz-section-title">⚙️ מפרט טכני</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:10px">
+          <div class="checkbox-row"><input type="checkbox" id="sp-auto"><label for="sp-auto">🔄 גיר אוטומטי</label></div>
+          <div class="checkbox-row"><input type="checkbox" id="sp-ac"><label for="sp-ac">❄️ מיזוג אוויר</label></div>
+          <div class="checkbox-row"><input type="checkbox" id="sp-5seats"><label for="sp-5seats">👨‍👩‍👧‍👦 5 מושבים</label></div>
+          <div class="checkbox-row"><input type="checkbox" id="sp-gps"><label for="sp-gps">📍 ניווט GPS</label></div>
+          <div class="checkbox-row"><input type="checkbox" id="sp-camera"><label for="sp-camera">📷 מצלמת גיבוי</label></div>
+          <div class="checkbox-row"><input type="checkbox" id="sp-baby"><label for="sp-baby">👶 כיסא תינוק</label></div>
+        </div>
+        <div class="sg">
+          <div class="sg-label">מפרטים נוספים (מופרד בפסיק)</div>
+          <input class="sg-input" id="rf-specs" placeholder="4x4, מסך מגע, בלוטות'...">
+        </div>
+      </div>
+
+      <!-- Section 5: Settings -->
+      <div class="biz-section">
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:12px"><svg width="32" height="32" viewBox="0 0 32 32" fill="none"><rect width="32" height="32" rx="10" fill="rgba(200,16,46,0.15)"/><path d="M16 7l2 6h6l-5 4 2 6-5-4-5 4 2-6-5-4h6l2-6z" stroke="#ff3355" stroke-width="1.5" fill="rgba(200,16,46,0.2)" stroke-linejoin="round"/></svg><div><div style="font-size:10px;font-weight:900;color:rgba(240,240,248,.85);text-transform:uppercase;letter-spacing:.07em;line-height:1.3">הגדרות פרסום</div><div style="font-size:9px;color:rgba(240,240,248,.35);margin-top:2px;font-weight:600">זמינות • סטטוס</div></div></div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+          <div class="sg">
+            <div class="sg-label">בדג' זמינות</div>
+            <select class="sg-input" id="rf-badge">
+              <option value="available">🟢 זמין</option>
+              <option value="premium">👑 פרמיום</option>
+              <option value="sold_out">❌ אזל</option>
+            </select>
+          </div>
+          <div class="sg">
+            <div class="sg-label">סטטוס</div>
+            <select class="sg-input" id="rf-status">
+              <option value="active">✅ פעיל</option>
+              <option value="inactive">⏸ מושבת</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <div style="display:flex;gap:10px;justify-content:flex-end">
         <button class="btn" onclick="closeRentModal()">ביטול</button>
-        <button class="btn btn-red" id="rent-save-btn" onclick="saveRent()">💾 שמור רכב</button>
+        <button class="btn btn-red" id="rent-save-btn" onclick="saveRent()" style="min-width:120px">💾 שמור רכב</button>
       </div>
     </div>
   </div>
@@ -2752,6 +3201,389 @@ async function publishAdReq(id) {
 
 const BIZ_CAT_LABEL = {mosek:'מוסך רכב',migrash:'מגרש מכוניות',mimun:'מימון רכב',grira:'שירות גרירה',pach:'פח וצבע'};
 
+
+
+/* ═══════════════════════════════════════════════════
+   SMART BIZ FORM — Step logic, tags, dynamic fields
+═══════════════════════════════════════════════════ */
+
+// ── Tags system ──
+const _tagData = {};
+
+function handleTagInput(e, key) {
+  if (e.key === 'Enter' || e.key === ',') {
+    e.preventDefault();
+    const val = e.target.value.trim().replace(/,$/, '');
+    if (val) addTag(key, val);
+    e.target.value = '';
+  } else if (e.key === 'Backspace' && e.target.value === '') {
+    const arr = _tagData[key] || [];
+    if (arr.length) { arr.pop(); renderTags(key); }
+  }
+}
+
+function quickAddTag(key, val) {
+  if (!(_tagData[key] || []).includes(val)) addTag(key, val);
+}
+
+function addTag(key, val) {
+  if (!_tagData[key]) _tagData[key] = [];
+  if (!_tagData[key].includes(val)) {
+    _tagData[key].push(val);
+    renderTags(key);
+  }
+}
+
+function removeTag(key, val) {
+  _tagData[key] = (_tagData[key] || []).filter(v => v !== val);
+  renderTags(key);
+}
+
+function renderTags(key) {
+  const wrap = document.getElementById(key + '-wrap');
+  const inp  = document.getElementById(key + '-input');
+  const hid  = document.getElementById(key + '-val');
+  if (!wrap || !inp) return;
+  // Remove old chips
+  wrap.querySelectorAll('.tag-chip').forEach(c => c.remove());
+  // Insert new chips before input
+  const chips = (_tagData[key] || []).map(v => {
+    const span = document.createElement('span');
+    span.className = 'tag-chip';
+    span.innerHTML = v + '<span class="tag-chip-x" onclick="removeTag(\''+key+'\',\''+v+'\')">×</span>';
+    return span;
+  });
+  chips.forEach(c => wrap.insertBefore(c, inp));
+  if (hid) hid.value = (_tagData[key] || []).join(',');
+}
+
+function getTagsArr(key) {
+  return _tagData[key] || [];
+}
+
+// ── Category picker ──
+function selectBizCat(cat, el) {
+  document.querySelectorAll('.bcp-item').forEach(b => b.classList.remove('selected'));
+  el.classList.add('selected');
+  document.getElementById('biz-selected-cat').value = cat;
+  const btn = document.getElementById('biz-step1-next');
+  btn.disabled = false;
+  btn.style.opacity = '1';
+  // Update placeholder in name field
+  const names = {mosek:'מוסך הדר חיפה', migrash:'מגרש הכרמל', mimun:'מימון אקספרס', grira:'גרירת הצפון', pach:'פח וצבע אלי'};
+  const nameInput = document.getElementById('bf-name');
+  if (nameInput) nameInput.placeholder = names[cat] || 'שם העסק...';
+}
+
+// ── Step navigation ──
+function bizGoStep1() {
+  document.getElementById('biz-step-1').style.display = '';
+  document.getElementById('biz-step-2').style.display = 'none';
+  document.getElementById('biz-step-3').style.display = 'none';
+  document.getElementById('bstep1').className = 'step-dot active';
+  document.getElementById('bstep2').className = 'step-dot';
+  document.getElementById('bstep3').className = 'step-dot';
+  document.getElementById('bline1').className = 'step-line';
+  document.getElementById('bline2').className = 'step-line';
+  document.getElementById('bizModalSub').textContent = 'בחר קטגוריה להתחיל';
+}
+
+function bizGoStep2() {
+  const cat = document.getElementById('biz-selected-cat').value;
+  if (!cat) { toast('בחר קטגוריה תחילה', 'error'); return; }
+  // Show/hide cat fields
+  document.querySelectorAll('.cat-fields').forEach(f => f.classList.remove('active'));
+  const cf = document.getElementById('cf-' + cat);
+  if (cf) cf.classList.add('active');
+  document.getElementById('biz-step-1').style.display = 'none';
+  document.getElementById('biz-step-2').style.display = '';
+  document.getElementById('biz-step-3').style.display = 'none';
+  document.getElementById('bstep1').className = 'step-dot done';
+  document.getElementById('bstep2').className = 'step-dot active';
+  document.getElementById('bstep3').className = 'step-dot';
+  document.getElementById('bline1').className = 'step-line done';
+  document.getElementById('bline2').className = 'step-line';
+  const catNames = {mosek:'🔧 מוסך', migrash:'🚗 מגרש', mimun:'💰 מימון', grira:'🚛 גרירה', pach:'🎨 פח וצבע'};
+  document.getElementById('bizModalSub').textContent = catNames[cat] + ' — מלא פרטים';
+}
+
+function bizGoStep3() {
+  const name  = document.getElementById('bf-name').value.trim();
+  const phone = document.getElementById('bf-phone').value.trim();
+  if (!name)  { toast('חסר שם העסק', 'error'); return; }
+  if (!phone) { toast('חסר טלפון', 'error'); return; }
+  document.getElementById('biz-step-2').style.display = 'none';
+  document.getElementById('biz-step-3').style.display = '';
+  document.getElementById('bstep2').className = 'step-dot done';
+  document.getElementById('bstep3').className = 'step-dot active';
+  document.getElementById('bline2').className = 'step-line done';
+  document.getElementById('bizModalSub').textContent = 'הגדרות סיום';
+  // Render summary
+  renderBizSummary();
+}
+
+function renderBizSummary() {
+  const cat  = document.getElementById('biz-selected-cat').value;
+  const name = document.getElementById('bf-name').value.trim();
+  const phone= document.getElementById('bf-phone').value.trim();
+  const city = document.getElementById('bf-city').value.trim();
+  const catNames = {mosek:'🔧 מוסך', migrash:'🚗 מגרש', mimun:'💰 מימון', grira:'🚛 גרירה', pach:'🎨 פח וצבע'};
+  let html = `<div>📌 <strong>${name}</strong> — ${catNames[cat]||cat}</div>`;
+  html += `<div>📞 ${phone}${city?' | 📍 '+city:''}</div>`;
+  // Cat-specific summary
+  if (cat==='mosek') {
+    const t=document.getElementById('bf-mosek-type')?.value; if(t) html+=`<div>🔧 ${t}</div>`;
+    const b=getTagsArr('mosek-brands'); if(b.length) html+=`<div>🚘 ${b.join(', ')}</div>`;
+    const s=getTagsArr('mosek-services'); if(s.length) html+=`<div>🛠️ ${s.join(', ')}</div>`;
+  } else if (cat==='migrash') {
+    const t=document.getElementById('bf-migrash-type')?.value; if(t) html+=`<div>🚗 ${t}</div>`;
+    const stk=document.getElementById('bf-migrash-stock')?.value; if(stk) html+=`<div>📦 מלאי: ${stk}</div>`;
+    const b=getTagsArr('migrash-brands'); if(b.length) html+=`<div>🏷️ ${b.join(', ')}</div>`;
+    const extras=[];
+    if(document.getElementById('mg-finance')?.checked) extras.push('מימון');
+    if(document.getElementById('mg-trade')?.checked) extras.push('טרייד-אין');
+    if(extras.length) html+=`<div>✅ ${extras.join(', ')}</div>`;
+  } else if (cat==='mimun') {
+    const t=document.getElementById('bf-mimun-type')?.value; if(t) html+=`<div>🏢 ${t}</div>`;
+    const mn=document.getElementById('bf-mimun-min')?.value;
+    const mx=document.getElementById('bf-mimun-max')?.value;
+    if(mn||mx) html+=`<div>💰 ₪${mn||'?'} – ₪${mx||'?'}</div>`;
+    const ri=document.getElementById('bf-mimun-interest')?.value; if(ri) html+=`<div>📊 ריבית ${ri}%</div>`;
+  } else if (cat==='grira') {
+    const t=document.getElementById('bf-grira-type')?.value; if(t) html+=`<div>🚛 ${t}</div>`;
+    const eta=document.getElementById('bf-grira-eta')?.value; if(eta) html+=`<div>⏱️ ${eta}</div>`;
+    const p=document.getElementById('bf-grira-price')?.value; if(p) html+=`<div>💰 מ-₪${p}</div>`;
+    if(document.getElementById('gr-247')?.checked) html+=`<div>🌙 שירות 24/7</div>`;
+  } else if (cat==='pach') {
+    const t=document.getElementById('bf-pach-type')?.value; if(t) html+=`<div>🎨 ${t}</div>`;
+    const w=document.getElementById('bf-pach-warranty')?.value; if(w) html+=`<div>🛡️ אחריות ${w}</div>`;
+  }
+  document.getElementById('biz-summary-content').innerHTML = html;
+}
+
+// ── Build services array from cat-specific fields ──
+function buildBizServicesAndLabel() {
+  const cat = document.getElementById('biz-selected-cat').value;
+  let services = [], label = '';
+  if (cat==='mosek') {
+    const t = document.getElementById('bf-mosek-type')?.value||'';
+    label = t;
+    services = [...getTagsArr('mosek-services'), ...getTagsArr('mosek-brands').map(b=>'🚘 '+b)];
+    const hrs = document.getElementById('bf-mosek-hours')?.value;
+    if (hrs) services.push('⏰ '+hrs);
+  } else if (cat==='migrash') {
+    const t = document.getElementById('bf-migrash-type')?.value||'';
+    const stk = document.getElementById('bf-migrash-stock')?.value||'';
+    label = t;
+    services = getTagsArr('migrash-brands');
+    if (stk) services.push('📦 מלאי: '+stk);
+    const min = document.getElementById('bf-migrash-minprice')?.value;
+    if (min) services.push('💰 מ-₪'+min);
+    if (document.getElementById('mg-finance')?.checked) services.push('💳 מימון זמין');
+    if (document.getElementById('mg-trade')?.checked) services.push('🔄 טרייד-אין');
+    if (document.getElementById('mg-warranty')?.checked) services.push('🛡️ אחריות');
+    if (document.getElementById('mg-test')?.checked) services.push('🚘 נסיעת מבחן');
+  } else if (cat==='mimun') {
+    const t = document.getElementById('bf-mimun-type')?.value||'';
+    label = t;
+    const mn=document.getElementById('bf-mimun-min')?.value, mx=document.getElementById('bf-mimun-max')?.value;
+    const ri=document.getElementById('bf-mimun-interest')?.value, per=document.getElementById('bf-mimun-period')?.value;
+    if(mn&&mx) services.push('💰 ₪'+mn+' – ₪'+mx);
+    if(ri) services.push('📊 ריבית '+ri+'%');
+    if(per) services.push('📅 '+per);
+    if(document.getElementById('mm-nodocs')?.checked) services.push('📄 ללא תלושי שכר');
+    if(document.getElementById('mm-fast')?.checked) services.push('⚡ אישור מהיר');
+    if(document.getElementById('mm-badcredit')?.checked) services.push('🟡 דירוג נמוך OK');
+    if(document.getElementById('mm-online')?.checked) services.push('💻 טיפול מקוון');
+  } else if (cat==='grira') {
+    const t=document.getElementById('bf-grira-type')?.value||'';
+    label = t;
+    const eta=document.getElementById('bf-grira-eta')?.value, p=document.getElementById('bf-grira-price')?.value;
+    const cov=document.getElementById('bf-grira-coverage')?.value;
+    if(eta) services.push('⏱️ '+eta);
+    if(p) services.push('💰 מ-₪'+p);
+    if(cov) services.push('📍 '+cov);
+    if(document.getElementById('gr-247')?.checked) services.push('🌙 24/7');
+    if(document.getElementById('gr-shabbat')?.checked) services.push('✡️ שבת וחג');
+    if(document.getElementById('gr-insurance')?.checked) services.push('📋 עם ביטוח');
+    if(document.getElementById('gr-lock')?.checked) services.push('🔑 פתיחת נעילה');
+  } else if (cat==='pach') {
+    const t=document.getElementById('bf-pach-type')?.value||'';
+    label = t;
+    const pb=document.getElementById('bf-pach-paint')?.value, pw=document.getElementById('bf-pach-warranty')?.value;
+    if(pb) services.push('🎨 צבע '+pb);
+    if(pw) services.push('🛡️ אחריות '+pw);
+    if(document.getElementById('pa-full')?.checked) services.push('✨ צביעה מלאה');
+    if(document.getElementById('pa-pdr')?.checked) services.push('🌧️ תיקון ברד');
+    if(document.getElementById('pa-wrap')?.checked) services.push('🎁 PPF/ויניל');
+    if(document.getElementById('pa-polish')?.checked) services.push('💎 פוליש');
+    if(document.getElementById('pa-estimate')?.checked) services.push('📋 הערכת נזקים');
+  }
+  return { services, label };
+}
+
+// ── Override openBizModal to reset steps ──
+const _origOpenBizModal = openBizModal;
+function openBizModal(data=null) {
+  // Reset steps
+  bizGoStep1();
+  // Reset tags
+  ['mosek-brands','mosek-services','migrash-brands'].forEach(k => {
+    _tagData[k] = [];
+    const wrap = document.getElementById(k+'-wrap');
+    if (wrap) { wrap.querySelectorAll('.tag-chip').forEach(c=>c.remove()); }
+  });
+  document.getElementById('biz-step1-next').disabled = true;
+  document.getElementById('biz-step1-next').style.opacity = '0.4';
+  document.querySelectorAll('.bcp-item').forEach(b=>b.classList.remove('selected'));
+  // Fill data if editing
+  if (data) {
+    // pre-select cat
+    document.getElementById('biz-selected-cat').value = data.category||'mosek';
+    const catEl = document.querySelector(`.bcp-item[onclick*="${data.category||'mosek'}"]`);
+    if (catEl) { catEl.classList.add('selected'); }
+    document.getElementById('biz-step1-next').disabled = false;
+    document.getElementById('biz-step1-next').style.opacity = '1';
+    // Jump to step 2
+    setTimeout(() => {
+      bizGoStep2();
+      // Fill fields
+      document.getElementById('biz-edit-id').value = data.id||'';
+      document.getElementById('bf-name').value    = data.name||'';
+      document.getElementById('bf-phone').value   = data.phone||'';
+      document.getElementById('bf-wa').value      = data.whatsapp||'';
+      document.getElementById('bf-region').value  = data.region||'north';
+      document.getElementById('bf-city').value    = data.city||'';
+      document.getElementById('bf-address').value = data.address||'';
+    }, 50);
+  } else {
+    document.getElementById('biz-edit-id').value = '';
+  }
+  document.getElementById('bizModalTitle').textContent = data ? 'עריכת עסק' : 'עסק חדש';
+  document.getElementById('bizOverlay').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+// ── Override saveBiz to collect smart fields ──
+const _origSaveBiz = saveBiz;
+async function saveBiz() {
+  const name  = document.getElementById('bf-name').value.trim();
+  const phone = document.getElementById('bf-phone').value.trim();
+  if (!name)  { toast('חסר שם העסק', 'error'); return; }
+  if (!phone) { toast('חסר טלפון', 'error'); return; }
+  const { services, label } = buildBizServicesAndLabel();
+  const id  = document.getElementById('biz-edit-id').value;
+  const cat = document.getElementById('biz-selected-cat').value || 'mosek';
+  const payload = {
+    name, phone, category: cat,
+    region:       document.getElementById('bf-region').value,
+    city:         document.getElementById('bf-city').value.trim(),
+    address:      document.getElementById('bf-address').value.trim(),
+    whatsapp:     document.getElementById('bf-wa').value.trim(),
+    type_label:   label,
+    services:     services,
+    rating:       parseFloat(document.getElementById('bf-rating').value)||4.5,
+    review_count: parseInt(document.getElementById('bf-reviews').value)||0,
+    is_open:      document.getElementById('bf-open').checked,
+    is_sponsored: document.getElementById('bf-sponsored').checked,
+    is_verified:  document.getElementById('bf-verified').checked,
+    status:       document.getElementById('bf-status').value,
+  };
+  const btn = document.getElementById('biz-save-btn');
+  btn.disabled = true; btn.textContent = 'שומר...';
+  try {
+    if (id) {
+      await sb.from('businesses').update(payload).eq('id', id);
+      toast('✅ עסק עודכן בהצלחה');
+    } else {
+      await sb.from('businesses').insert(payload);
+      toast('✅ עסק נוסף בהצלחה');
+    }
+    closeBizModal();
+    await loadBizAdmin();
+  } catch(e) { toast('שגיאה: '+e.message, 'error'); }
+  finally { btn.disabled=false; btn.textContent='💾 שמור עסק'; }
+}
+
+/* ═══════════════════════════════════════════════════
+   SMART RENT FORM helpers
+═══════════════════════════════════════════════════ */
+function updateRentCarName() {
+  const maker = document.getElementById('rf-maker')?.value||'';
+  const model = document.getElementById('rf-model')?.value||'';
+  const car = document.getElementById('rf-car');
+  if (car) car.value = (maker + ' ' + model).trim();
+}
+
+function updateRentEmoji() {
+  const sel = document.getElementById('rf-group');
+  if (!sel) return;
+  const opt = sel.options[sel.selectedIndex];
+  const emoji = opt?.dataset?.emoji || '🚗';
+  const hid = document.getElementById('rf-emoji');
+  if (hid) hid.value = emoji;
+}
+
+// ── Override saveRent to collect smart fields ──
+const _origSaveRent = saveRent;
+async function saveRent() {
+  const co    = document.getElementById('rf-company').value.trim();
+  const model = document.getElementById('rf-model').value.trim();
+  const maker = document.getElementById('rf-maker')?.value||'';
+  const price = parseInt(document.getElementById('rf-price').value);
+  if (!co)    { toast('חסר שם חברה', 'error'); return; }
+  if (!model) { toast('חסר דגם רכב', 'error'); return; }
+  if (!price) { toast('חסר מחיר ליום', 'error'); return; }
+  const id = document.getElementById('rent-edit-id').value;
+  // Build specs from checkboxes + manual
+  const specMap = {
+    'sp-auto':'גיר אוטומטי','sp-ac':'מיזוג אוויר','sp-5seats':'5 מושבים',
+    'sp-gps':'GPS','sp-camera':'מצלמת גיבוי','sp-baby':'כיסא תינוק'
+  };
+  const specs = Object.entries(specMap)
+    .filter(([id]) => document.getElementById(id)?.checked)
+    .map(([,v]) => v);
+  const extra = document.getElementById('rf-specs').value.split(',').map(s=>s.trim()).filter(Boolean);
+  extra.forEach(s => { if(!specs.includes(s)) specs.push(s); });
+  // Year
+  const year = document.getElementById('rf-year')?.value;
+  const carName = maker + ' ' + model + (year?' ('+year+')':'');
+  const emoji = document.getElementById('rf-emoji')?.value||'🚗';
+  // Pricing extras
+  const addons = [];
+  if(document.getElementById('rf-ins-included')?.checked) addons.push('ביטוח כלול');
+  if(document.getElementById('rf-delivery')?.checked) addons.push('משלוח לכתובת');
+  if(document.getElementById('rf-young')?.checked) addons.push('נהג צעיר 18+');
+  if(document.getElementById('rf-unlimited')?.checked) addons.push('ק"מ ללא הגבלה');
+  addons.forEach(a => { if(!specs.includes(a)) specs.push(a); });
+  const payload = {
+    company_name:  co,
+    car_name:      carName,
+    car_emoji:     emoji,
+    price_per_day: price,
+    region:        document.getElementById('rf-region').value,
+    city:          document.getElementById('rf-city').value.trim(),
+    phone:         document.getElementById('rf-phone').value.trim(),
+    whatsapp:      document.getElementById('rf-wa').value.trim(),
+    specs:         specs,
+    badge:         document.getElementById('rf-badge').value,
+    status:        document.getElementById('rf-status').value,
+  };
+  const btn = document.getElementById('rent-save-btn');
+  btn.disabled=true; btn.textContent='שומר...';
+  try {
+    if (id) {
+      await sb.from('rentals').update(payload).eq('id', id);
+      toast('✅ רכב עודכן בהצלחה');
+    } else {
+      await sb.from('rentals').insert(payload);
+      toast('✅ רכב נוסף בהצלחה');
+    }
+    closeRentModal();
+    await loadRentAdmin();
+  } catch(e) { toast('שגיאה: '+e.message, 'error'); }
+  finally { btn.disabled=false; btn.textContent='💾 שמור רכב'; }
+}
 </script>
 <!-- ══════════════ AD REQUEST DETAIL MODAL ══════════════ -->
 <div class="overlay" id="adReqOverlay" onclick="closeAdReqModal()">
