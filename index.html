@@ -5218,28 +5218,93 @@ html[dir="ltr"] .foot-acc-arrow { margin-left:auto; margin-right:0; }
 
 /* CTA join bar for businesses */
 .biz-join-bar {
-  background:linear-gradient(135deg, rgba(232,17,46,0.1), rgba(10,10,25,0.9));
-  border:1px solid rgba(232,17,46,0.22);
-  border-radius:20px;
-  padding:28px 32px;
+  position:relative;
+  background:linear-gradient(135deg, rgba(232,17,46,0.12), rgba(10,10,25,0.95));
+  border:1px solid rgba(232,17,46,0.28);
+  border-radius:22px;
+  padding:32px 32px;
   display:flex;
   align-items:center;
   justify-content:space-between;
-  gap:20px;
+  gap:24px;
   flex-wrap:wrap;
-  margin-top:48px;
+  margin-top:40px;
+  overflow:hidden;
+}
+.biz-join-bar::before {
+  content:'';
+  position:absolute;
+  top:-60px;right:-60px;
+  width:200px;height:200px;
+  background:radial-gradient(circle, rgba(232,17,46,.15), transparent 70%);
+  pointer-events:none;
 }
 .biz-join-bar-text h3 {
   font-family:var(--font-display);
-  font-size:18px;
-  font-weight:800;
+  font-size:20px;
+  font-weight:900;
   color:#fff;
-  margin-bottom:5px;
+  margin-bottom:6px;
+  line-height:1.3;
 }
 .biz-join-bar-text p {
   font-size:13px;
-  color:rgba(255,255,255,0.5);
+  color:rgba(255,255,255,0.55);
+  line-height:1.6;
+  max-width:380px;
 }
+.biz-join-bar-text .join-trust {
+  display:flex;
+  align-items:center;
+  gap:16px;
+  margin-top:10px;
+}
+.biz-join-bar-text .join-trust span {
+  font-size:11px;
+  color:rgba(255,255,255,.4);
+  display:flex;
+  align-items:center;
+  gap:5px;
+}
+.biz-join-bar-text .join-trust svg { width:11px;height:11px;color:var(--red);stroke:var(--red); }
+
+/* ── Trial Banner ── */
+.trial-banner {
+  display:flex;
+  align-items:center;
+  gap:14px;
+  background:linear-gradient(135deg,rgba(232,17,46,.1),rgba(10,10,25,.97));
+  border:1px solid rgba(232,17,46,.25);
+  border-radius:16px;
+  padding:16px 20px;
+  margin:0 0 28px;
+  cursor:pointer;
+  transition:all .22s var(--ease);
+}
+.trial-banner:hover {
+  border-color:rgba(232,17,46,.45);
+  background:linear-gradient(135deg,rgba(232,17,46,.16),rgba(10,10,25,.97));
+}
+.trial-banner-icon {
+  width:40px;height:40px;flex-shrink:0;
+  border-radius:12px;
+  background:rgba(232,17,46,.12);
+  border:1px solid rgba(232,17,46,.25);
+  display:flex;align-items:center;justify-content:center;
+}
+.trial-banner-icon svg { width:18px;height:18px;stroke:var(--red); }
+.trial-banner-body { flex:1; }
+.trial-banner-title {
+  font-size:13px;font-weight:800;color:#fff;margin-bottom:2px;
+}
+.trial-banner-sub {
+  font-size:11px;color:rgba(255,255,255,.45);
+}
+.trial-banner-cta {
+  font-size:12px;font-weight:800;color:var(--red);
+  white-space:nowrap;display:flex;align-items:center;gap:4px;
+}
+.trial-banner-cta svg { width:12px;height:12px;stroke:var(--red); }
 
 
 
@@ -5752,28 +5817,33 @@ html[dir="ltr"] .foot-acc-arrow { margin-left:auto; margin-right:0; }
 .svc-back {
   display:inline-flex;
   align-items:center;
-  gap:8px;
-  padding:10px 18px;
+  gap:7px;
+  padding:9px 16px 9px 13px;
   border-radius:50px;
-  background:rgba(255,255,255,.07);
-  border:1px solid rgba(255,255,255,.12);
-  color:var(--t1);
-  font-size:13px;
+  background:rgba(12,12,22,.75);
+  border:1px solid rgba(255,255,255,.1);
+  color:rgba(255,255,255,.7);
+  font-size:12px;
   font-weight:700;
   cursor:pointer;
   font-family:var(--font);
-  transition:all .2s;
-  position:relative;
-  top:0;
+  transition:all .2s var(--ease);
   z-index:10;
-  margin:24px 24px 0;
-  backdrop-filter:blur(10px);
+  margin:0;
+  width:fit-content;
+  backdrop-filter:blur(20px);
+  -webkit-backdrop-filter:blur(20px);
+  box-shadow:0 2px 16px rgba(0,0,0,.4);
+  letter-spacing:.2px;
 }
+.svc-back svg { opacity:.55; transition:all .2s; flex-shrink:0; }
 .svc-back:hover {
-  background:rgba(255,255,255,.13);
+  background:rgba(232,17,46,.15);
+  border-color:rgba(232,17,46,.35);
   color:#fff;
-  transform:translateX(3px);
+  box-shadow:0 4px 20px rgba(232,17,46,.15);
 }
+.svc-back:hover svg { opacity:1; transform:translateX(3px); }
 
 /* ── Hero CTAs - Service Buttons ── */
 .btn-garage {
@@ -6703,9 +6773,12 @@ html[dir="ltr"] .foot-acc-arrow { margin-left:auto; margin-right:0; }
 <!-- ═══════════════════════════════════════════════════════
      PAGE: מוסכים — GARAGE DIRECTORY
      ═══════════════════════════════════════════════════════ -->\n<div class="svc-page" id="pageGarage">
+  <div style="display:flex;padding:16px 20px 0;position:relative;z-index:10;">
   <button class="svc-back" onclick="closeSvcPage('pageGarage')">
     <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"/></svg> חזרה לעמוד הראשי
   </button>
+  </div>
+  <div style="margin-top:-16px;"></div>
 
   <!-- HERO BANNER -->
   <div class="svc-hero-banner garage-banner">
@@ -6939,23 +7012,43 @@ html[dir="ltr"] .foot-acc-arrow { margin-left:auto; margin-right:0; }
   </div>
 
   <div class="svc-section" style="padding-top:0">
+
     <div class="biz-join-bar">
       <div class="biz-join-bar-text">
         <h3>יש לך עסק קשור לרכב?</h3>
-        <p>הגע לאלפי לקוחות מדי חודש — פרסם ב-YOUGO עסקים. הצעת מחיר תוך 24 שעות</p>
+        <p>הגע לאלפי לקוחות מדי חודש — מוסך, מגרש, מימון, גרירה ועוד. פרסם ב-YOUGO עסקים וקבל הצעת מחיר תוך 24 שעות.</p>
+        <div class="join-trust">
+          <span><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>ללא עמלות</span>
+          <span><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>פרסום מיידי</span>
+          <span><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>24/7 תמיכה</span>
+        </div>
       </div>
-      <button class="btn btn-red" onclick="showContactModal('garage')" style="flex-shrink:0;font-size:14px;padding:13px 28px;">
+      <button class="btn btn-red" onclick="showContactModal('garage')" style="flex-shrink:0;font-size:14px;padding:14px 30px;">
         + פרסם את העסק שלך
       </button>
     </div>
+
+    <!-- Trial Banner -->
+    <div class="trial-banner" style="margin-top:16px;" onclick="showContactModal('garage')">
+      <div class="trial-banner-icon"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg></div>
+      <div class="trial-banner-body">
+        <div class="trial-banner-title">🎁 חודש ניסיון חינם לעסקים חדשים</div>
+        <div class="trial-banner-sub">פרסם את העסק שלך — ללא עלות לחודש ראשון</div>
+      </div>
+      <div class="trial-banner-cta">נסה חינם <svg fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"/></svg></div>
+    </div>
+
   </div>
 </div>
 
 
 <div class="svc-page" id="pageRental">
+  <div style="display:flex;padding:16px 20px 0;position:relative;z-index:10;">
   <button class="svc-back" onclick="closeSvcPage('pageRental')">
     <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"/></svg> חזרה לעמוד הראשי
   </button>
+  </div>
+  <div style="margin-top:-16px;"></div>
 
   <!-- HERO BANNER -->
   <div class="svc-hero-banner rental-banner">
@@ -7022,14 +7115,29 @@ html[dir="ltr"] .foot-acc-arrow { margin-left:auto; margin-right:0; }
       </div>
     </div>
 
-    <div class="biz-join-bar" style="border-color:rgba(240,200,74,.22);background:linear-gradient(135deg,rgba(240,200,74,.07),rgba(10,10,25,.9));">
+    <div class="biz-join-bar" style="border-color:rgba(240,200,74,.28);background:linear-gradient(135deg,rgba(240,200,74,.09),rgba(10,10,25,0.97));">
       <div class="biz-join-bar-text">
         <h3 style="color:var(--gold)">יש לך חברת השכרה?</h3>
-        <p>פרסם את הצי שלך ב-YOUGO והגע לאלפי לקוחות מחפשי השכרה מדי יום</p>
+        <p>פרסם את הצי שלך ב-YOUGO והגע לאלפי לקוחות מחפשי השכרה מדי יום — בכל רחבי הארץ.</p>
+        <div class="join-trust">
+          <span style="color:rgba(240,200,74,.5)"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" style="stroke:var(--gold)"><polyline points="20 6 9 17 4 12"/></svg>ניהול פשוט</span>
+          <span style="color:rgba(240,200,74,.5)"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" style="stroke:var(--gold)"><polyline points="20 6 9 17 4 12"/></svg>לידים יומיים</span>
+          <span style="color:rgba(240,200,74,.5)"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" style="stroke:var(--gold)"><polyline points="20 6 9 17 4 12"/></svg>ללא עמלות</span>
+        </div>
       </div>
-      <button class="btn btn-red" onclick="showContactModal('rental')" style="flex-shrink:0;font-size:14px;padding:13px 28px;">
+      <button class="btn btn-red" onclick="showContactModal('rental')" style="flex-shrink:0;font-size:14px;padding:14px 30px;">
         + פרסם את הצי שלך
       </button>
+    </div>
+
+    <!-- Trial Banner Rental -->
+    <div class="trial-banner" style="margin-top:16px;margin-bottom:0;" onclick="showContactModal('rental')">
+      <div class="trial-banner-icon"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg></div>
+      <div class="trial-banner-body">
+        <div class="trial-banner-title">🎁 חודש ניסיון חינם לחברות השכרה</div>
+        <div class="trial-banner-sub">הצג את כל הצי שלך — ללא עלות לחודש ראשון</div>
+      </div>
+      <div class="trial-banner-cta">נסה חינם <svg fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"/></svg></div>
     </div>
   </div>
 </div>
@@ -8053,8 +8161,8 @@ function bizCard2(b) {
 function addBizCard2(cat) {
   return `
   <div class="add-biz-card" onclick="showContactModal('garage')">
-    <div class="add-biz-icon">${BIZ_CAT_EMOJI[cat]||'+'}</div>
-    <div class="add-biz-title">פרסם את העסק שלך כאן</div>
+    <div class="add-biz-icon"><svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></div>
+    <div class="add-biz-title">פרסם את העסק שלך</div>
     <div class="add-biz-sub">הגע לאלפי לקוחות<br>מדי חודש באזורך</div>
     <button class="biz-btn biz-btn-primary" style="margin-top:6px;max-width:140px">הצטרף עכשיו</button>
   </div>`;
@@ -8088,13 +8196,7 @@ function rentalCard2(r) {
 }
 
 function addRentCard2() {
-  return `
-  <div class="add-biz-card" onclick="showContactModal('rental')">
-    <div class="add-biz-icon">🚙</div>
-    <div class="add-biz-title">פרסם רכבים להשכרה</div>
-    <div class="add-biz-sub">חברת השכרה? הגע ללקוחות<br>חדשים באזורך</div>
-    <button class="biz-btn biz-btn-primary" style="margin-top:6px;max-width:160px">הצטרף עכשיו</button>
-  </div>`;
+  return '';
 }
 
 // ── Empty state
@@ -8151,8 +8253,8 @@ function renderBizGrid(cat,region) {
   const el=document.getElementById(`biz-grid-${cat}-${region}`); if(!el)return;
   const items=(_bizCache||[]).filter(b=>b.category===cat&&b.region===region);
   el.innerHTML = items.length
-    ? items.map(bizCard2).join('') + addBizCard2(cat)
-    : emptyBizState(cat) + addBizCard2(cat);
+    ? items.map(bizCard2).join('')
+    : emptyBizState(cat);
 }
 
 function renderAllRentGrids() {
@@ -8162,8 +8264,8 @@ function renderRentGrid(region) {
   const el=document.getElementById(`rent-grid-${region}`); if(!el)return;
   const items=(_rentCache||[]).filter(r=>r.region===region);
   el.innerHTML = items.length
-    ? items.map(rentalCard2).join('') + addRentCard2()
-    : `<div class="biz-empty" style="grid-column:1/-1"><div class="biz-empty-icon">🚗</div><div class="biz-empty-title">אין רכבים זמינים</div><div class="biz-empty-sub">בקרוב!</div><button class="btn btn-red" onclick="showContactModal('rental')">פרסם עכשיו</button></div>` + addRentCard2();
+    ? items.map(rentalCard2).join('')
+    : `<div class="biz-empty" style="grid-column:1/-1"><div class="biz-empty-icon">🚗</div><div class="biz-empty-title">אין רכבים זמינים</div><div class="biz-empty-sub">בקרוב!</div><button class="btn btn-red" onclick="showContactModal('rental')">פרסם עכשיו</button></div>`;
 }
 
 // ── Update stats
