@@ -5492,6 +5492,356 @@ html[dir="ltr"] .foot-acc-arrow { margin-left:auto; margin-right:0; }
   animation: biz-shimmer 1.4s linear infinite;
   border-radius:22px; height:260px;
 }
+/* ═══════════════════════════════════════════════════════
+   PRO BIZ CARD — Complete redesign
+═══════════════════════════════════════════════════════ */
+.pro-card {
+  position: relative;
+  border-radius: 24px;
+  overflow: hidden;
+  background: linear-gradient(155deg, rgba(18,18,32,0.97) 0%, rgba(10,10,20,0.99) 100%);
+  border: 1px solid rgba(255,255,255,0.07);
+  transition: transform .32s cubic-bezier(.22,1,.36,1), box-shadow .32s, border-color .28s;
+  display: flex; flex-direction: column;
+  cursor: default;
+}
+.pro-card:hover {
+  transform: translateY(-7px);
+  box-shadow: 0 32px 72px rgba(0,0,0,.65), 0 0 0 1px rgba(200,16,46,.18);
+  border-color: rgba(200,16,46,.22);
+}
+/* Sponsored gold glow */
+.pro-card.pc-sponsored {
+  border-color: rgba(240,200,74,.22);
+  background: linear-gradient(155deg, rgba(24,20,8,0.97) 0%, rgba(12,12,20,0.99) 100%);
+}
+.pro-card.pc-sponsored:hover {
+  box-shadow: 0 32px 72px rgba(0,0,0,.65), 0 0 0 1px rgba(240,200,74,.3);
+  border-color: rgba(240,200,74,.38);
+}
+
+/* ── Hero strip (gradient top bar per category) ── */
+.pc-hero {
+  height: 5px;
+  width: 100%;
+  flex-shrink: 0;
+}
+
+/* ── Top badges row ── */
+.pc-badges {
+  position: absolute;
+  top: 14px; left: 0; right: 0;
+  display: flex; justify-content: space-between;
+  padding: 0 14px;
+  z-index: 10;
+  pointer-events: none;
+}
+.pc-badge {
+  font-size: 9px; font-weight: 800;
+  letter-spacing: .08em; text-transform: uppercase;
+  padding: 4px 10px; border-radius: 20px;
+  backdrop-filter: blur(12px);
+}
+.pc-badge-sponsored {
+  background: rgba(240,200,74,.15);
+  border: 1px solid rgba(240,200,74,.32);
+  color: #f0c84a;
+}
+.pc-badge-verified {
+  background: rgba(74,222,128,.12);
+  border: 1px solid rgba(74,222,128,.28);
+  color: #4ade80;
+}
+.pc-badge-open {
+  background: rgba(74,222,128,.12);
+  border: 1px solid rgba(74,222,128,.28);
+  color: #4ade80;
+}
+.pc-badge-closed {
+  background: rgba(239,68,68,.1);
+  border: 1px solid rgba(239,68,68,.25);
+  color: #f87171;
+}
+
+/* ── Header ── */
+.pc-head {
+  display: flex; align-items: flex-start; gap: 14px;
+  padding: 18px 18px 12px;
+}
+.pc-icon {
+  width: 58px; height: 58px; border-radius: 18px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 26px; flex-shrink: 0;
+  position: relative; overflow: hidden;
+  box-shadow: 0 8px 24px rgba(0,0,0,.35);
+}
+.pc-icon::after {
+  content: '';
+  position: absolute; inset: 0;
+  background: linear-gradient(135deg, rgba(255,255,255,.12), rgba(255,255,255,0));
+}
+.pc-icon-mosek  { background: linear-gradient(135deg,#2d1f1f,#1a0a0a); border:1px solid rgba(200,16,46,.28); }
+.pc-icon-migrash{ background: linear-gradient(135deg,#1a1f2d,#0a0f1a); border:1px solid rgba(96,165,250,.28); }
+.pc-icon-mimun  { background: linear-gradient(135deg,#1f2d1a,#0a1a0a); border:1px solid rgba(74,222,128,.28); }
+.pc-icon-grira  { background: linear-gradient(135deg,#2d2a1a,#1a1500); border:1px solid rgba(240,200,74,.28); }
+.pc-icon-pach   { background: linear-gradient(135deg,#221a2d,#0f0a1a); border:1px solid rgba(167,139,250,.28); }
+
+.pc-title-area { flex: 1; min-width: 0; padding-top: 2px; }
+.pc-name {
+  font-size: 16px; font-weight: 900;
+  color: #fff; line-height: 1.2;
+  margin-bottom: 4px;
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  font-family: var(--font-display, inherit);
+}
+.pc-cat-label {
+  font-size: 10px; font-weight: 800;
+  text-transform: uppercase; letter-spacing: .08em;
+  opacity: .85;
+}
+.pc-cat-label-mosek   { color: #ff4466; }
+.pc-cat-label-migrash { color: #60a5fa; }
+.pc-cat-label-mimun   { color: #4ade80; }
+.pc-cat-label-grira   { color: #f0c84a; }
+.pc-cat-label-pach    { color: #a78bfa; }
+
+/* ── Rating row ── */
+.pc-rating-row {
+  display: flex; align-items: center; gap: 8px;
+  padding: 0 18px 10px;
+}
+.pc-stars { font-size: 13px; letter-spacing: 1.5px; }
+.pc-score { font-size: 13px; font-weight: 900; color: #fff; }
+.pc-rcnt  { font-size: 11px; color: rgba(255,255,255,.3); }
+
+/* ── Divider ── */
+.pc-divider {
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,.06), transparent);
+  margin: 0 18px;
+}
+
+/* ── Info rows ── */
+.pc-info-rows {
+  display: flex; flex-direction: column; gap: 0;
+  padding: 12px 18px 10px;
+}
+.pc-info-row {
+  display: flex; align-items: center; gap: 10px;
+  padding: 5px 0;
+  font-size: 12.5px; color: rgba(255,255,255,.75);
+  border-bottom: 1px solid rgba(255,255,255,.04);
+}
+.pc-info-row:last-child { border-bottom: none; }
+.pc-info-icon {
+  width: 28px; height: 28px; border-radius: 8px;
+  background: rgba(255,255,255,.05);
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+}
+
+/* ── Services chips ── */
+.pc-services {
+  display: flex; flex-wrap: wrap; gap: 5px;
+  padding: 4px 18px 14px;
+}
+.pc-svc {
+  font-size: 10.5px; font-weight: 700;
+  padding: 4px 10px; border-radius: 10px;
+  background: rgba(255,255,255,.05);
+  border: 1px solid rgba(255,255,255,.09);
+  color: rgba(255,255,255,.6);
+  transition: all .18s;
+}
+.pc-svc:hover { background: rgba(200,16,46,.1); border-color: rgba(200,16,46,.25); color: #fff; }
+.pc-svc.pc-svc-cat {
+  background: rgba(200,16,46,.08);
+  border-color: rgba(200,16,46,.2);
+  color: rgba(255,100,120,.9);
+  font-weight: 800;
+}
+
+/* ── Spacer ── */
+.pc-spacer { flex: 1; }
+
+/* ── Footer buttons ── */
+.pc-foot {
+  display: flex; gap: 10px;
+  padding: 0 14px 14px;
+}
+.pc-btn {
+  flex: 1; display: flex; align-items: center; justify-content: center; gap: 7px;
+  padding: 11px 14px; border-radius: 14px;
+  font-size: 13px; font-weight: 800;
+  cursor: pointer; font-family: var(--font, inherit);
+  transition: all .22s; text-decoration: none; border: none;
+  letter-spacing: .02em;
+}
+.pc-btn-call {
+  background: var(--red, #c8102e);
+  color: #fff;
+  box-shadow: 0 6px 20px rgba(200,16,46,.35);
+}
+.pc-btn-call:hover { filter: brightness(1.1); transform: scale(1.02); }
+.pc-btn-wa {
+  background: rgba(37,211,102,.1);
+  border: 1px solid rgba(37,211,102,.25);
+  color: #25d366;
+}
+.pc-btn-wa:hover { background: rgba(37,211,102,.2); transform: scale(1.02); }
+
+/* Hero colors per category */
+.pc-hero-mosek   { background: linear-gradient(90deg, #c8102e, #ff4466, rgba(200,16,46,0)); }
+.pc-hero-migrash { background: linear-gradient(90deg, #3b82f6, #60a5fa, rgba(59,130,246,0)); }
+.pc-hero-mimun   { background: linear-gradient(90deg, #22c55e, #4ade80, rgba(34,197,94,0)); }
+.pc-hero-grira   { background: linear-gradient(90deg, #eab308, #f0c84a, rgba(234,179,8,0)); }
+.pc-hero-pach    { background: linear-gradient(90deg, #7c3aed, #a78bfa, rgba(124,58,237,0)); }
+
+/* ═══════════════════════════════════════════════════════
+   PRO RENTAL CARD — Complete redesign
+═══════════════════════════════════════════════════════ */
+.pro-rent-card {
+  position: relative;
+  border-radius: 24px;
+  overflow: hidden;
+  background: linear-gradient(155deg, rgba(16,16,30,0.98) 0%, rgba(10,10,20,0.99) 100%);
+  border: 1px solid rgba(255,255,255,.07);
+  transition: transform .32s cubic-bezier(.22,1,.36,1), box-shadow .32s, border-color .28s;
+  display: flex; flex-direction: column;
+}
+.pro-rent-card:hover {
+  transform: translateY(-7px);
+  box-shadow: 0 32px 72px rgba(0,0,0,.65), 0 0 0 1px rgba(200,16,46,.18);
+  border-color: rgba(200,16,46,.2);
+}
+.pro-rent-card.prc-premium {
+  border-color: rgba(240,200,74,.22);
+}
+.pro-rent-card.prc-premium:hover {
+  box-shadow: 0 32px 72px rgba(0,0,0,.65), 0 0 0 1px rgba(240,200,74,.3);
+}
+
+/* Car visual area */
+.prc-visual {
+  position: relative;
+  height: 140px;
+  background: radial-gradient(ellipse at center top, rgba(200,16,46,.08) 0%, transparent 70%),
+              linear-gradient(180deg, rgba(30,20,30,0.6) 0%, rgba(10,10,20,0.95) 100%);
+  display: flex; align-items: center; justify-content: center;
+  overflow: hidden;
+}
+.prc-visual::before {
+  content: '';
+  position: absolute; bottom: 0; left: 0; right: 0;
+  height: 60px;
+  background: linear-gradient(transparent, rgba(10,10,20,.95));
+}
+.prc-car-emoji {
+  font-size: 72px;
+  filter: drop-shadow(0 12px 30px rgba(0,0,0,.6));
+  position: relative; z-index: 1;
+  animation: carFloat 3.5s ease-in-out infinite;
+}
+@keyframes carFloat {
+  0%,100% { transform: translateY(0); }
+  50%      { transform: translateY(-6px); }
+}
+.prc-visual.prc-premium-bg {
+  background: radial-gradient(ellipse at center top, rgba(240,200,74,.1) 0%, transparent 70%),
+              linear-gradient(180deg, rgba(28,20,8,0.7) 0%, rgba(12,10,4,0.98) 100%);
+}
+.prc-avail-badge {
+  position: absolute; top: 12px; right: 12px; z-index: 10;
+  font-size: 10px; font-weight: 800;
+  padding: 5px 12px; border-radius: 20px;
+  backdrop-filter: blur(10px);
+}
+.prc-avail-badge.available {
+  background: rgba(74,222,128,.15);
+  border: 1px solid rgba(74,222,128,.3);
+  color: #4ade80;
+}
+.prc-avail-badge.premium {
+  background: rgba(240,200,74,.15);
+  border: 1px solid rgba(240,200,74,.3);
+  color: #f0c84a;
+}
+.prc-avail-badge.sold_out {
+  background: rgba(239,68,68,.12);
+  border: 1px solid rgba(239,68,68,.28);
+  color: #f87171;
+}
+.prc-price-badge {
+  position: absolute; bottom: 14px; left: 14px; z-index: 10;
+  background: rgba(0,0,0,.75);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(255,255,255,.12);
+  border-radius: 12px;
+  padding: 6px 14px;
+  display: flex; align-items: baseline; gap: 4px;
+}
+.prc-price-num {
+  font-size: 20px; font-weight: 900; color: #fff;
+  font-family: var(--font-display, inherit);
+}
+.prc-price-unit {
+  font-size: 10px; font-weight: 700; color: rgba(255,255,255,.5);
+}
+
+/* Card body */
+.prc-body { padding: 14px 18px 10px; flex: 1; }
+.prc-car-name {
+  font-size: 18px; font-weight: 900; color: #fff;
+  margin-bottom: 3px; line-height: 1.2;
+  font-family: var(--font-display, inherit);
+}
+.prc-company-row {
+  display: flex; align-items: center; gap: 6px;
+  font-size: 12px; color: rgba(255,255,255,.45);
+  margin-bottom: 12px; font-weight: 600;
+}
+.prc-company-dot {
+  width: 3px; height: 3px; border-radius: 50%;
+  background: rgba(255,255,255,.25); flex-shrink: 0;
+}
+
+/* Specs chips */
+.prc-specs {
+  display: flex; flex-wrap: wrap; gap: 5px;
+  margin-bottom: 14px;
+}
+.prc-spec {
+  font-size: 10.5px; font-weight: 700;
+  padding: 4px 10px; border-radius: 10px;
+  background: rgba(255,255,255,.05);
+  border: 1px solid rgba(255,255,255,.08);
+  color: rgba(255,255,255,.55);
+}
+
+/* Footer */
+.prc-foot {
+  display: flex; gap: 10px;
+  padding: 0 14px 14px;
+}
+.prc-btn {
+  flex: 1; display: flex; align-items: center; justify-content: center; gap: 7px;
+  padding: 12px 14px; border-radius: 14px;
+  font-size: 13px; font-weight: 800;
+  cursor: pointer; font-family: var(--font, inherit);
+  transition: all .22s; text-decoration: none; border: none;
+}
+.prc-btn-call {
+  background: var(--red, #c8102e); color: #fff;
+  box-shadow: 0 6px 20px rgba(200,16,46,.35);
+}
+.prc-btn-call:hover { filter: brightness(1.1); transform: scale(1.02); }
+.prc-btn-wa {
+  background: rgba(37,211,102,.1);
+  border: 1px solid rgba(37,211,102,.25);
+  color: #25d366;
+}
+.prc-btn-wa:hover { background: rgba(37,211,102,.2); transform: scale(1.02); }
+
 
 /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
    RENTAL-CARD2 — Premium Rental Card (dynamic)
@@ -8565,49 +8915,77 @@ function renderStars(n) {
 
 // ── Business card HTML
 function bizCard2(b) {
-  const wa = (b.whatsapp||b.phone||'').replace(/\D/g,'').replace(/^0/,'972');
-  const ph = (b.phone||'').replace(/\D/g,'');
-  const tags = Array.isArray(b.services) ? b.services : (b.services ? JSON.parse(b.services||'[]') : []);
-  const logoColor = BIZ_CAT_COLOR[b.category] || '';
-  const typeColor = b.is_sponsored ? 'gold' : '';
-  const isOpen = b.is_open !== false;
-  const rating  = Number(b.rating||4.5).toFixed(1);
-  const rcount  = b.review_count||0;
-  const badge   = b.is_sponsored
-    ? '<div class="bc2-badge sponsored-b">💎 ממומן</div>'
-    : (b.is_verified ? '<div class="bc2-badge verified-b">✓ מאומת</div>' : '');
-  const logoEmoji = BIZ_CAT_EMOJI[b.category]||'🏢';
+  const wa  = (b.whatsapp||b.phone||'').replace(/\D/g,'').replace(/^0/,'972');
+  const ph  = (b.phone||'').replace(/\D/g,'');
+  const cat = b.category||'mosek';
+  const isOpen    = b.is_open !== false;
+  const rating    = Number(b.rating||4.5).toFixed(1);
+  const rcount    = b.review_count||0;
+  const logoEmoji = BIZ_CAT_EMOJI[cat]||'🏢';
+  const catName   = BIZ_CAT_NAMES[cat]||'';
+  const typeLabel = b.type_label||catName;
+
+  // Parse services
+  let svcs = [];
+  try { svcs = Array.isArray(b.services) ? b.services : JSON.parse(b.services||'[]'); }
+  catch(e) { svcs = typeof b.services==='string' ? b.services.split(',').map(s=>s.trim()).filter(Boolean) : []; }
+
+  // Stars
+  const fullStars  = Math.floor(Number(rating));
+  const halfStar   = Number(rating)-fullStars >= 0.5;
+  const starsHtml  = '★'.repeat(fullStars)+(halfStar?'½':'')+'☆'.repeat(5-fullStars-(halfStar?1:0));
+
+  // Badges top-right/left
+  const badgeLeft  = b.is_sponsored
+    ? '<span class="pc-badge pc-badge-sponsored">💎 ממומן</span>'
+    : (b.is_verified ? '<span class="pc-badge pc-badge-verified">✓ מאומת</span>' : '<span></span>');
+  const badgeRight = isOpen
+    ? '<span class="pc-badge pc-badge-open">● פתוח</span>'
+    : '<span class="pc-badge pc-badge-closed">● סגור</span>';
+
+  // Info rows
+  const pinIcon = `<svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13S3 17 3 10a9 9 0 1 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>`;
+  const phoneIcon = `<svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12 19.79 19.79 0 0 1 1.61 3.41 2 2 0 0 1 3.6 1.21h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 10.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 17.92z"/></svg>`;
+  const clockIcon = `<svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>`;
+
+  const hoursRow = svcs.find(s=>s.startsWith('⏰')) || '';
+  const cleanSvcs = svcs.filter(s=>!s.startsWith('⏰')).slice(0,6);
+  const hoursText = hoursRow.replace('⏰ ','');
+
+  const infoRows = [
+    b.city ? `<div class="pc-info-row"><div class="pc-info-icon">${pinIcon}</div><span>${b.city}${b.address?' · '+b.address:''}</span></div>` : '',
+    b.phone ? `<div class="pc-info-row"><div class="pc-info-icon">${phoneIcon}</div><span>${b.phone}</span></div>` : '',
+    hoursText ? `<div class="pc-info-row"><div class="pc-info-icon">${clockIcon}</div><span style="font-size:11.5px">${hoursText}</span></div>` : '',
+  ].filter(Boolean).join('');
+
+  const svcsHtml = cleanSvcs.length
+    ? `<div class="pc-services">${cleanSvcs.map((s,i)=>`<span class="pc-svc${i===0?' pc-svc-cat':''}">${s}</span>`).join('')}</div>`
+    : '';
+
+  const waBtn  = wa ? `<a class="pc-btn pc-btn-wa" href="https://wa.me/${wa}" target="_blank"><svg width="15" height="15" fill="currentColor" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.137.562 4.14 1.541 5.875L0 24l6.305-1.52C7.978 23.41 9.945 24 12 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.818c-1.955 0-3.77-.538-5.318-1.472l-.38-.226-3.742.9.944-3.642-.248-.396A9.778 9.778 0 0 1 2.182 12C2.182 6.57 6.57 2.182 12 2.182S21.818 6.57 21.818 12c0 5.43-4.388 9.818-9.818 9.818z"/></svg> וואטסאפ</a>` : '';
+  const callBtn = ph ? `<a class="pc-btn pc-btn-call" href="tel:0${ph.slice(3)||ph}"><svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12 19.79 19.79 0 0 1 1.61 3.41 2 2 0 0 1 3.6 1.21h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 10.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 17.92z"/></svg> התקשר</a>` : '';
 
   return `
-  <div class="biz-card2 ${b.is_sponsored?'sponsored':''}">
-    ${badge}
-    <div class="bc2-head" style="${b.is_sponsored||b.is_verified?'padding-top:30px':''}">
-      <div class="bc2-logo ${logoColor}">${logoEmoji}</div>
-      <div class="bc2-info">
-        <div class="bc2-name">${b.name||'—'}</div>
-        <div class="bc2-type ${typeColor}">${b.type_label||BIZ_CAT_NAMES[b.category]||''}</div>
+  <div class="pro-card ${b.is_sponsored?'pc-sponsored':''}">
+    <div class="pc-hero pc-hero-${cat}"></div>
+    <div class="pc-badges">${badgeLeft}${badgeRight}</div>
+    <div class="pc-head" style="padding-top:${b.is_sponsored||b.is_verified||isOpen?'26px':'18px'}">
+      <div class="pc-icon pc-icon-${cat}">${logoEmoji}</div>
+      <div class="pc-title-area">
+        <div class="pc-name">${b.name||'—'}</div>
+        <div class="pc-cat-label pc-cat-label-${cat}">${typeLabel}</div>
       </div>
     </div>
-    <div class="bc2-body">
-      <div class="bc2-rating">
-        <div class="bc2-stars">${renderStars(rating)}</div>
-        <span class="bc2-score">${rating}</span>
-        ${rcount ? `<span class="bc2-rcnt">(${rcount} ביקורות)</span>` : ''}
-      </div>
-      <div class="bc2-status ${isOpen?'open':'closed'}">
-        <div class="bc2-dot"></div>
-        ${isOpen ? 'פתוח עכשיו' : 'סגור כעת'}
-      </div>
-      <div class="bc2-rows">
-        ${b.city ? `<div class="bc2-row">${BIZ_ICO_PIN}<span>${b.city}${b.address?` — ${b.address}`:''}</span></div>` : ''}
-        ${b.phone ? `<div class="bc2-row">${BIZ_ICO_PHONE}<span>${b.phone}</span></div>` : ''}
-      </div>
-      ${tags.length ? `<div class="bc2-tags">${tags.map(t=>`<span class="bc2-tag">${t}</span>`).join('')}</div>` : ''}
+    <div class="pc-rating-row">
+      <span class="pc-stars" style="color:#f0c84a;font-size:12px">${starsHtml}</span>
+      <span class="pc-score">${rating}</span>
+      ${rcount ? `<span class="pc-rcnt">(${rcount} ביקורות)</span>` : ''}
     </div>
-    <div class="bc2-foot">
-      ${ph ? `<a class="bc2-btn bc2-btn-call" href="tel:0${ph.slice(3)||ph}">${BIZ_ICO_PHONE} התקשר</a>` : ''}
-      ${wa ? `<a class="bc2-btn bc2-btn-wa" href="https://wa.me/${wa}" target="_blank">${BIZ_ICO_WA} וואטסאפ</a>` : ''}
-    </div>
+    <div class="pc-divider"></div>
+    <div class="pc-info-rows">${infoRows}</div>
+    ${svcsHtml}
+    <div class="pc-spacer"></div>
+    <div class="pc-foot">${callBtn}${waBtn}</div>
   </div>`;
 }
 
@@ -8624,28 +9002,42 @@ function addBizCard2(cat) {
 
 // ── Rental card HTML
 function rentalCard2(r) {
-  const wa = (r.whatsapp||r.phone||'').replace(/\D/g,'').replace(/^0/,'972');
-  const ph = (r.phone||'').replace(/\D/g,'');
-  const specs = Array.isArray(r.specs) ? r.specs : (r.specs ? JSON.parse(r.specs||'[]') : []);
+  const wa   = (r.whatsapp||r.phone||'').replace(/\D/g,'').replace(/^0/,'972');
+  const ph   = (r.phone||'').replace(/\D/g,'');
   const badge = r.badge||'available';
-  const badgeLabel = {available:'🟢 זמין',premium:'👑 פרמיום',sold_out:'❌ אזל'}[badge]||'זמין';
+  const badgeLabel = {available:'● זמין',premium:'👑 פרמיום',sold_out:'✕ אזל'}[badge]||'● זמין';
   const emoji = r.car_emoji||'🚗';
+  const isPremium = badge === 'premium';
+
+  // Parse specs
+  let specs = [];
+  try { specs = Array.isArray(r.specs) ? r.specs : JSON.parse(r.specs||'[]'); }
+  catch(e) { specs = typeof r.specs==='string' ? r.specs.split(',').map(s=>s.trim()).filter(Boolean) : []; }
+
+  const specChips = specs.slice(0,6).map(s=>`<span class="prc-spec">${s}</span>`).join('');
+
+  const waBtn   = wa ? `<a class="prc-btn prc-btn-wa" href="https://wa.me/${wa}" target="_blank"><svg width="15" height="15" fill="currentColor" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.137.562 4.14 1.541 5.875L0 24l6.305-1.52C7.978 23.41 9.945 24 12 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.818c-1.955 0-3.77-.538-5.318-1.472l-.38-.226-3.742.9.944-3.642-.248-.396A9.778 9.778 0 0 1 2.182 12C2.182 6.57 6.57 2.182 12 2.182S21.818 6.57 21.818 12c0 5.43-4.388 9.818-9.818 9.818z"/></svg> וואטסאפ</a>` : '';
+  const callBtn = ph ? `<a class="prc-btn prc-btn-call" href="tel:0${ph.slice(3)||ph}"><svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12 19.79 19.79 0 0 1 1.61 3.41 2 2 0 0 1 3.6 1.21h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 10.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 17.92z"/></svg> התקשר</a>` : '';
+
   return `
-  <div class="rental-card2">
-    <div class="rc2-img">
-      <span style="position:relative;z-index:1">${emoji}</span>
-      <div class="rc2-avail ${badge}">${badgeLabel}</div>
-      <div class="rc2-price">₪${Number(r.price_per_day).toLocaleString()}<small>/יום</small></div>
+  <div class="pro-rent-card ${isPremium?'prc-premium':''}">
+    <div class="prc-visual ${isPremium?'prc-premium-bg':''}">
+      <span class="prc-car-emoji">${emoji}</span>
+      <div class="prc-avail-badge ${badge}">${badgeLabel}</div>
+      <div class="prc-price-badge">
+        <span class="prc-price-num">₪${Number(r.price_per_day).toLocaleString()}</span>
+        <span class="prc-price-unit">/יום</span>
+      </div>
     </div>
-    <div class="rc2-body">
-      <div class="rc2-car">${r.car_name||'—'}</div>
-      <div class="rc2-co">${r.company_name||''} · ${r.city||''}</div>
-      ${specs.length ? `<div class="rc2-specs">${specs.map(s=>`<span class="rc2-spec">${s}</span>`).join('')}</div>` : ''}
+    <div class="prc-body">
+      <div class="prc-car-name">${r.car_name||'—'}</div>
+      <div class="prc-company-row">
+        <span>${r.company_name||''}</span>
+        ${r.city ? `<div class="prc-company-dot"></div><span>${r.city}</span>` : ''}
+      </div>
+      ${specs.length ? `<div class="prc-specs">${specChips}</div>` : ''}
     </div>
-    <div class="rc2-foot">
-      ${ph ? `<a class="rc2-btn rc2-btn-call" href="tel:0${ph.slice(3)||ph}">${BIZ_ICO_PHONE} התקשר</a>` : ''}
-      ${wa ? `<a class="rc2-btn rc2-btn-wa" href="https://wa.me/${wa}" target="_blank">${BIZ_ICO_WA} וואטסאפ</a>` : ''}
-    </div>
+    <div class="prc-foot">${callBtn}${waBtn}</div>
   </div>`;
 }
 
