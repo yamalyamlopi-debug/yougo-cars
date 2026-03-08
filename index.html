@@ -5766,6 +5766,64 @@ html[dir="ltr"] .foot-acc-arrow { margin-left:auto; margin-right:0; }
 }
 
 .upr-spacer { flex:1; min-height:4px; }
+/* ── Rental card price tiles ── */
+.upr-prices {
+  display: flex; gap: 8px; flex-wrap: wrap;
+}
+.upr-ptile {
+  flex: 1; min-width: 72px;
+  background: rgba(255,255,255,.05);
+  border: 1px solid rgba(255,255,255,.09);
+  border-radius: 12px;
+  padding: 8px 10px;
+  text-align: center;
+}
+.upr-ptile-num {
+  font-size: 17px; font-weight: 900; color: #fff;
+  font-family: var(--font-display, inherit); line-height: 1;
+}
+.upr-ptile-lbl {
+  font-size: 9.5px; font-weight: 700;
+  color: rgba(255,255,255,.35);
+  text-transform: uppercase; letter-spacing: .06em;
+  margin-top: 3px;
+}
+.uprent.upr-premium .upr-ptile {
+  background: rgba(240,200,74,.07);
+  border-color: rgba(240,200,74,.18);
+}
+.uprent.upr-premium .upr-ptile-num { color: #f0c84a; }
+
+/* ── Description text ── */
+.upr-desc {
+  font-size: 12px; color: rgba(255,255,255,.5);
+  line-height: 1.55; padding: 8px 10px;
+  background: rgba(255,255,255,.03);
+  border-radius: 10px;
+  border: 1px solid rgba(255,255,255,.06);
+}
+
+/* ── Website link ── */
+.upr-website {
+  display: inline-flex; align-items: center; gap: 6px;
+  font-size: 11.5px; font-weight: 700;
+  color: rgba(96,165,250,.9);
+  text-decoration: none;
+  padding: 5px 10px;
+  background: rgba(59,130,246,.08);
+  border: 1px solid rgba(59,130,246,.2);
+  border-radius: 10px;
+  transition: all .2s;
+  align-self: flex-start;
+}
+.upr-website:hover {
+  background: rgba(59,130,246,.15);
+  color: #93c5fd;
+}
+
+/* upr-visual must be position:relative */
+.upr-visual { position: relative; }
+
 
 .upr-foot { display:flex; gap:8px; padding:0 0 2px; }
 .upr-btn {
@@ -9376,56 +9434,91 @@ function rentalCard2(r) {
   try { specs = Array.isArray(r.specs) ? r.specs : JSON.parse(r.specs||'[]'); }
   catch(e) { specs = typeof r.specs==='string' ? r.specs.split(',').map(s=>s.trim()).filter(Boolean) : []; }
 
-  // Image / visual zone
-  const hasImages = Array.isArray(r.images) && r.images.length > 0;
+  // Image zone
+  const hasImages = Array.isArray(r.images) && r.images.length>0;
   const firstImg  = hasImages ? r.images[0] : (r.logo_url||null);
 
   let visualHtml;
   if (firstImg) {
     visualHtml = `
       <img src="${firstImg}" alt="${r.car_name||''}" loading="lazy"
-           style="width:100%;height:100%;object-fit:cover"
+           style="width:100%;height:100%;object-fit:cover;position:absolute;inset:0"
            onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
-      <div class="upr-emoji-bg ${isPremium?'upr-premium-bg':''}" style="display:none;position:absolute;inset:0">
+      <div class="upr-emoji-bg ${isPremium?'upr-premium-bg':''}" style="display:none;position:absolute;inset:0;z-index:1">
         <span class="upr-big-emoji">${emoji}</span>
       </div>`;
   } else {
-    visualHtml = `
-      <div class="upr-emoji-bg ${isPremium?'upr-premium-bg':''}">
+    visualHtml = `<div class="upr-emoji-bg ${isPremium?'upr-premium-bg':''}" style="position:absolute;inset:0">
         <span class="upr-big-emoji">${emoji}</span>
       </div>`;
   }
 
-  // Key highlight specs (first 2 get gold style)
-  const specChips = specs.slice(0,6).map((s,i)=>
-    `<span class="upr-spec${i<2&&isPremium?' upr-spec-hi':''}">${s}</span>`
-  ).join('');
+  // Price row: daily always, weekly + monthly if available
+  const priceDay   = r.price_per_day   ? `<div class="upr-ptile"><div class="upr-ptile-num">₪${Number(r.price_per_day).toLocaleString()}</div><div class="upr-ptile-lbl">לום</div></div>` : '';
+  const priceWeek  = r.price_per_week  ? `<div class="upr-ptile"><div class="upr-ptile-num">₪${Number(r.price_per_week).toLocaleString()}</div><div class="upr-ptile-lbl">לשבוע</div></div>` : '';
+  const priceMonth = r.price_per_month ? `<div class="upr-ptile"><div class="upr-ptile-num">₪${Number(r.price_per_month).toLocaleString()}</div><div class="upr-ptile-lbl">לחודש</div></div>` : '';
+  const hasPrices  = priceDay||priceWeek||priceMonth;
+
+  // Meta info
+  const carYear  = r.car_year  ? `<span>${r.car_year}</span><div class="upr-meta-dot"></div>` : '';
+  const carGroup = r.car_group ? `<span>${r.car_group}</span><div class="upr-meta-dot"></div>` : '';
+
+  // Specs chips
+  const specChips = specs.slice(0,6).map(s=>`<span class="upr-spec">${s}</span>`).join('');
+
+  // Description
+  const descHtml = r.description ? `<div class="upr-desc">${r.description}</div>` : '';
+
+  // Website
+  const websiteHtml = r.website
+    ? `<a class="upr-website" href="${r.website.startsWith('http')?r.website:'https://'+r.website}" target="_blank">
+        <svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+        אתר העסק
+      </a>`
+    : '';
 
   const callBtn = ph ? `<a class="upr-btn upr-btn-call" href="tel:0${ph.slice(3)||ph}">${PH_SVG} התקשר</a>` : '';
   const waBtn   = wa ? `<a class="upr-btn upr-btn-wa"   href="https://wa.me/${wa}" target="_blank">${WA_SVG} וואטסאפ</a>` : '';
 
   return `
   <div class="uprent ${isPremium?'upr-premium':''}">
+
+    <!-- ── Visual zone ── -->
     <div class="upr-visual">
       ${visualHtml}
       <div class="upr-badges">
         <div class="upr-badge ${badgeClass}">${badgeLabel}</div>
-        <div></div>
-      </div>
-      <div class="upr-price-badge">
-        <span class="upr-price-num">₪${Number(r.price_per_day||0).toLocaleString()}</span>
-        <span class="upr-price-unit">/יום</span>
+        ${isPremium?'<div class="upr-badge upr-badge-premium">⭐ פרמיום</div>':'<div></div>'}
       </div>
     </div>
+
+    <!-- ── Body ── -->
     <div class="upr-body">
+
+      <!-- Car name -->
       <div class="upr-carname">${r.car_name||'—'}</div>
+
+      <!-- Meta: company · city · year · group -->
       <div class="upr-meta">
-        <span>${r.company_name||''}</span>
-        ${r.city ? `<div class="upr-meta-dot"></div><span>${r.city}</span>` : ''}
-        ${r.phone ? `<div class="upr-meta-dot"></div><span>${r.phone}</span>` : ''}
+        ${r.company_name?`<span style="font-weight:700;color:rgba(255,255,255,.65)">${r.company_name}</span><div class="upr-meta-dot"></div>`:''}
+        ${r.city?`<span>${r.city}</span>`:''}
+        ${r.car_year?`<div class="upr-meta-dot"></div><span>${r.car_year}</span>`:''}
+        ${r.car_group?`<div class="upr-meta-dot"></div><span>${r.car_group}</span>`:''}
       </div>
-      ${specs.length ? `<div class="upr-specs">${specChips}</div>` : ''}
-      <div class="upr-spacer"></div>
+
+      <!-- Price tiles -->
+      ${hasPrices?`<div class="upr-prices">${priceDay}${priceWeek}${priceMonth}</div>`:''}
+
+      <!-- Specs chips -->
+      ${specs.length?`<div class="upr-specs">${specChips}</div>`:''}
+
+      <!-- Description -->
+      ${descHtml}
+
+      <!-- Website link -->
+      ${websiteHtml}
+
+      <!-- Contact -->
       <div class="upr-foot">${callBtn}${waBtn}</div>
     </div>
   </div>`;
@@ -9875,6 +9968,17 @@ async function submitContact(){
       const maker=_getVal('c-rent-maker'), model=_getVal('cCarName'), yr=_getVal('c-rent-year');
       carName = (maker+' '+model+(yr?' ('+yr+')':'')).trim();
     }
+    // Build specs array for rental
+    let rentSpecs = [];
+    if (_contactType === 'rental') {
+      if(_getChecked('cr-auto')) rentSpecs.push('🔄 גיר אוטומטי');
+      if(_getChecked('cr-ac'))   rentSpecs.push('❄️ מיזוג אוויר');
+      if(_getChecked('cr-ins'))  rentSpecs.push('🛡️ ביטוח כלול');
+      if(_getChecked('cr-del'))  rentSpecs.push('📦 משלוח לכתובת');
+      if(_getChecked('cr-km'))   rentSpecs.push('♾️ ק"מ חופשי');
+      if(_getChecked('cr-yng'))  rentSpecs.push('🧑 נהג צעיר +18');
+    }
+
     const payload={
       page_type: _contactType,
       business_name: name,
@@ -9888,7 +9992,12 @@ async function submitContact(){
       website: _getVal('cWebsite'),
       category: _contactType==='garage'?_getVal('cCategory'):null,
       car_name: carName,
-      price_per_day: _contactType==='rental'?parseFloat(document.getElementById('cPriceDay')?.value)||null:null,
+      price_per_day:   _contactType==='rental'?parseFloat(document.getElementById('cPriceDay')?.value)||null:null,
+      price_per_week:  _contactType==='rental'?parseFloat(_getVal('c-rent-week'))||null:null,
+      price_per_month: _contactType==='rental'?parseFloat(_getVal('c-rent-month'))||null:null,
+      car_group:       _contactType==='rental'?_getVal('c-rent-group')||null:null,
+      car_year:        _contactType==='rental'?parseInt(_getVal('c-rent-year'))||null:null,
+      specs:           _contactType==='rental'?rentSpecs:[],
       logo_url: _cLogoUrl||null,
       images: _cImgUrls,
       package: _cPkg,
